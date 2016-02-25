@@ -2,6 +2,7 @@
 # break
 break is a lightweight, native app for accessing [SchoolLoop](http://www.schoolloop.com). It aims to provide an easier to use, more feature rich alternative to the official SchoolLoop [iOS](https://itunes.apple.com/us/app/school-loop/id739554978?mt=8) and [Android](https://play.google.com/store/apps/details?id=com.schoolloop.mobileloop.app&hl=en) apps.
 <br>
+![](https://travis-ci.org/saagarjha/break.svg?branch=master)
 <br>
 
 ## Features
