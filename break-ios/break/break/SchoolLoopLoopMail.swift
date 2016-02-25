@@ -15,6 +15,7 @@ class SchoolLoopLoopMail {
 	var ID: String
 
 	var message: String = ""
+    var links: [(title: String, URL: String)] = []
 
 	init(subject: String, sender: String, date: String, ID: String) {
 		self.subject = subject

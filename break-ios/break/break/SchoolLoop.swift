@@ -54,7 +54,7 @@ class SchoolLoop {
 		let session = NSURLSession.sharedSession()
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 				self.schoolDelegate?.gotSchools(self, error: .ParseError)
 				return
 			}
@@ -68,7 +68,7 @@ class SchoolLoop {
 					return
 				}
 				guard let name = schoolJSON["name"] as? String,
-					domainName = schoolJSON["domainName"] as? String else {
+				domainName = schoolJSON["domainName"] as? String else {
 					self.schoolDelegate?.gotSchools(self, error: .ParseError)
 					return
 				}
@@ -100,7 +100,7 @@ class SchoolLoop {
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
 				self.loginDelegate?.loggedIn(self, error: .ParseError)
 				return
 			}
@@ -109,7 +109,7 @@ class SchoolLoop {
 				return
 			}
 			guard let fullName = loginJSON["fullName"] as? String,
-				studentID = loginJSON["userID"] as? String else {
+			studentID = loginJSON["userID"] as? String else {
 				self.loginDelegate?.loggedIn(self, error: .ParseError)
 				return
 			}
@@ -126,7 +126,7 @@ class SchoolLoop {
 	func logOut() {
 		keychain.removePassword(username)
 		SchoolLoop.sharedInstance = SchoolLoop()
-		(UIApplication.sharedApplication().delegate as? AppDelegate)?.showLogout()
+			(UIApplication.sharedApplication().delegate as? AppDelegate)?.showLogout()
 	}
 
 	func getCourses() {
@@ -136,7 +136,7 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.courses.removeAll()
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 				self.courseDelegate?.gotGrades(self, error: .ParseError)
 				return
 			}
@@ -150,11 +150,11 @@ class SchoolLoop {
 					return
 				}
 				guard let courseName = courseJSON["courseName"] as? String,
-					period = courseJSON["period"] as? String,
-					teacherName = courseJSON["teacherName"] as? String,
-					grade = courseJSON["grade"] as? String,
-					score = courseJSON["score"] as? String,
-					periodID = courseJSON["periodID"] as? String else {
+				period = courseJSON["period"] as? String,
+				teacherName = courseJSON["teacherName"] as? String,
+				grade = courseJSON["grade"] as? String,
+				score = courseJSON["score"] as? String,
+				periodID = courseJSON["periodID"] as? String else {
 					self.courseDelegate?.gotGrades(self, error: .ParseError)
 					return
 				}
@@ -176,7 +176,7 @@ class SchoolLoop {
 			}
 			course.grades.removeAll()
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 				self.gradeDelegate?.gotGrades(self, error: .ParseError)
 				return
 			}
@@ -190,7 +190,7 @@ class SchoolLoop {
 					return
 				}
 				guard let percentScore = gradeJSON["percentScore"] as? String,
-					score = gradeJSON["score"] as? String else {
+				score = gradeJSON["score"] as? String else {
 					self.gradeDelegate?.gotGrades(self, error: .ParseError)
 					return
 				}
@@ -199,8 +199,8 @@ class SchoolLoop {
 					return
 				}
 				guard let title = assignmentJSON["title"] as? String,
-					categoryName = assignmentJSON["categoryName"] as? String,
-					maxPoints = assignmentJSON["maxPoints"] as? String else {
+				categoryName = assignmentJSON["categoryName"] as? String,
+				maxPoints = assignmentJSON["maxPoints"] as? String else {
 					self.gradeDelegate?.gotGrades(self, error: .ParseError)
 					return
 				}
@@ -218,7 +218,7 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.assignments.removeAll()
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments
 			) as? [AnyObject] else {
 				self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
 				return
@@ -233,10 +233,10 @@ class SchoolLoop {
 					return
 				}
 				guard let title = assignmentJSON["title"] as? String,
-					description = assignmentJSON["description"] as? String,
-					courseName = assignmentJSON["courseName"] as? String,
-					dueDate = assignmentJSON["dueDate"] as? String,
-					iD = assignmentJSON["iD"] as? String else {
+				description = assignmentJSON["description"] as? String,
+				courseName = assignmentJSON["courseName"] as? String,
+				dueDate = assignmentJSON["dueDate"] as? String,
+				iD = assignmentJSON["iD"] as? String else {
 					self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
 					return
 				}
@@ -248,7 +248,7 @@ class SchoolLoop {
 							return
 						}
 						guard let title = linkJSON["Title"] as? String,
-							URL = linkJSON["URL"] as? String else {
+						URL = linkJSON["URL"] as? String else {
 							self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
 							return
 						}
@@ -269,7 +269,7 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.loopMail.removeAll()
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 				self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
 				return
 			}
@@ -283,8 +283,8 @@ class SchoolLoop {
 					return
 				}
 				guard let subject = loopMailJSON["subject"] as? String,
-					date = loopMailJSON["date"] as? String,
-					ID = loopMailJSON["ID"] as? String else {
+				date = loopMailJSON["date"] as? String,
+				ID = loopMailJSON["ID"] as? String else {
 					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
 					return
 				}
@@ -313,7 +313,7 @@ class SchoolLoop {
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
 				self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
 				return
 			}
@@ -325,7 +325,23 @@ class SchoolLoop {
 				self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
 				return
 			}
+			var links: [(title: String, URL: String)] = []
+			if let linksJSON = messageJSON["links"] as? [AnyObject] {
+				for linkJSON in linksJSON {
+					guard let linkJSON = linkJSON as? [String: AnyObject] else {
+						self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
+						return
+					}
+					guard let title = linkJSON["Title"] as? String,
+					URL = linkJSON["URL"] as? String else {
+						self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
+						return
+					}
+					links.append((title: title, URL: URL))
+				}
+			}
 			loopMail.message = message
+			loopMail.links = links
 			self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: nil)
 		}.resume()
 	}
@@ -337,7 +353,7 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.news.removeAll()
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 				self.newsDelegate?.gotNews(self, error: .ParseError)
 				return
 			}
@@ -351,10 +367,10 @@ class SchoolLoop {
 					return
 				}
 				guard let title = newsJSON["title"] as? String,
-					authorName = newsJSON["authorName"] as? String,
-					createdDate = newsJSON["createdDate"] as? String,
-					description = newsJSON["description"] as? String,
-					iD = newsJSON["iD"] as? String else {
+				authorName = newsJSON["authorName"] as? String,
+				createdDate = newsJSON["createdDate"] as? String,
+				description = newsJSON["description"] as? String,
+				iD = newsJSON["iD"] as? String else {
 					self.newsDelegate?.gotNews(self, error: .ParseError)
 					return
 				}
@@ -366,7 +382,7 @@ class SchoolLoop {
 							return
 						}
 						guard let title = linkJSON["Title"] as? String,
-							URL = linkJSON["URL"] as? String else {
+						URL = linkJSON["URL"] as? String else {
 							self.newsDelegate?.gotNews(self, error: .ParseError)
 							return
 						}

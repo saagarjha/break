@@ -30,10 +30,10 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		 schoolLoop.loopMailMessageDelegate = self
-		 schoolLoop.getLoopMailMessage(ID)
+		schoolLoop.loopMailMessageDelegate = self
+		schoolLoop.getLoopMailMessage(ID)
 	}
-    
+
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
@@ -42,11 +42,14 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 	func gotLoopMailMessage(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
 		dispatch_async(dispatch_get_main_queue()) {
 			if error == nil {
-                guard let loopMail = schoolLoop.loopMailForID(self.ID) else {
-                    print("Could not get LoopMail for ID")
-                    return
-                }
-				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h3><h2>\(loopMail.subject)</h2><hr>\(loopMail.message)"
+				guard let loopMail = schoolLoop.loopMailForID(self.ID) else {
+					print("Could not get LoopMail for ID")
+					return
+				}
+				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h3><h2>\(loopMail.subject)</h2><hr>\(loopMail.message)<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+				for link in loopMail.links ?? [] {
+					self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
+				}
 				self.messageWebView.loadHTMLString(self.message, baseURL: nil)
 			}
 		}

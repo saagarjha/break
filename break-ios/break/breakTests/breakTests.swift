@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import break
+@testable import `break`
 
 class breakTests: XCTestCase {
     
