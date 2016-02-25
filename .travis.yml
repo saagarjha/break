@@ -1,1 +1,4 @@
 language: objective-c
+osx_image: xcode7.3
+xcode_project: break-iOS/break/break.xcodeproj
+xcode_scheme: break
