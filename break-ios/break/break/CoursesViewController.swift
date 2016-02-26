@@ -28,8 +28,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		automaticallyAdjustsScrollViewInsets = true
-
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.courseDelegate = self
 		schoolLoop.getCourses()
