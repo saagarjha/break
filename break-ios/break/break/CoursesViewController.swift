@@ -28,11 +28,13 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		automaticallyAdjustsScrollViewInsets = true
+
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.courseDelegate = self
 		schoolLoop.getCourses()
 	}
-    
+
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
@@ -48,10 +50,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
-        guard let viewController = navigationController?.storyboard?.instantiateViewControllerWithIdentifier("settings") else {
-            assertionFailure("Could not open SettingsTableViewController")
-            return
-        }
+		guard let viewController = navigationController?.storyboard?.instantiateViewControllerWithIdentifier("settings") else {
+			assertionFailure("Could not open SettingsTableViewController")
+			return
+		}
 		navigationController?.presentViewController(viewController, animated: true, completion: nil)
 	}
 
