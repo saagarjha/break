@@ -34,34 +34,38 @@ struct SchoolLoopConstants {
 	}
 
 	static func schoolURL() -> NSURL {
-		return NSURL(string: "https://lol.schoolloop.com/mapi/schools")!
+		return NSURL(string: "https://lol.schoolloop.com/mapi/schools".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func logInURL(domainName: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)")!
+		return NSURL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func courseURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/report_card?studentID=\(studentID)")!
+		return NSURL(string: "https://\(domainName)/mapi/report_card?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func gradeURL(domainName: String, studentID: String, periodID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/progress_report?studentID=\(studentID)&periodID=\(periodID)")!
+		return NSURL(string: "https://\(domainName)/mapi/progress_report?studentID=\(studentID)&periodID=\(periodID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func assignmentURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/assignments?studentID=\(studentID)")!
+		return NSURL(string: "https://\(domainName)/mapi/assignments?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func loopMailURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)")!
+		return NSURL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func loopMailMessageURL(domainName: String, studentID: String, ID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)")!
+		return NSURL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func newsURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)")!
+		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	}
+
+	static func lockerURL(path: String, domainName: String, username: String) -> NSURL {
+		return NSURL(string: "https://webdav-\(domainName)/users/\(username)\(path)")!
 	}
 }

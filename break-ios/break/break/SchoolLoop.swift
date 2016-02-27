@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SchoolLoop {
+class SchoolLoop: NSObject {
 
 	static var sharedInstance = SchoolLoop()
 	let keychain = SchoolLoopKeychain.sharedInstance
@@ -22,6 +22,7 @@ class SchoolLoop {
 	weak var loopMailDelegate: SchoolLoopLoopMailDelegate?
 	weak var loopMailMessageDelegate: SchoolLoopLoopMailMessageDelegate?
 	weak var newsDelegate: SchoolLoopNewsDelegate?
+	weak var lockerDelegate: SchoolLoopLockerDelegate?
 
 	var username: String!
 	var password: String!
@@ -46,6 +47,12 @@ class SchoolLoop {
 	}
 	var loopMail: [SchoolLoopLoopMail] = []
 	var news: [SchoolLoopNews] = []
+	var locker: SchoolLoopLockerItem!
+
+	var currentTokens: [String] = []
+	var currentName = ""
+	var currentPath = ""
+	var currentType = SchoolLoopLockerItemType.Unknown
 
 	func getSchools() {
 		let url = SchoolLoopConstants.schoolURL()
@@ -54,9 +61,9 @@ class SchoolLoop {
 		let session = NSURLSession.sharedSession()
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-				self.schoolDelegate?.gotSchools(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+					self.schoolDelegate?.gotSchools(self, error: .ParseError)
+					return
 			}
 			guard let schoolsJSON = dataJSON else {
 				self.schoolDelegate?.gotSchools(self, error: .ParseError)
@@ -68,9 +75,9 @@ class SchoolLoop {
 					return
 				}
 				guard let name = schoolJSON["name"] as? String,
-				domainName = schoolJSON["domainName"] as? String else {
-					self.schoolDelegate?.gotSchools(self, error: .ParseError)
-					return
+					domainName = schoolJSON["domainName"] as? String else {
+						self.schoolDelegate?.gotSchools(self, error: .ParseError)
+						return
 				}
 				let school = SchoolLoopSchool(name: name, domainName: domainName)
 				self.schools.append(school)
@@ -100,18 +107,18 @@ class SchoolLoop {
 				return
 			}
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
-				self.loginDelegate?.loggedIn(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
+					self.loginDelegate?.loggedIn(self, error: .ParseError)
+					return
 			}
 			guard let loginJSON = dataJSON else {
 				self.loginDelegate?.loggedIn(self, error: .ParseError)
 				return
 			}
 			guard let fullName = loginJSON["fullName"] as? String,
-			studentID = loginJSON["userID"] as? String else {
-				self.loginDelegate?.loggedIn(self, error: .ParseError)
-				return
+				studentID = loginJSON["userID"] as? String else {
+					self.loginDelegate?.loggedIn(self, error: .ParseError)
+					return
 			}
 			NSUserDefaults.standardUserDefaults().setObject(schoolName, forKey: "schoolName")
 			NSUserDefaults.standardUserDefaults().setObject(username, forKey: "username")
@@ -136,9 +143,9 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.courses.removeAll()
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-				self.courseDelegate?.gotGrades(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+					self.courseDelegate?.gotGrades(self, error: .ParseError)
+					return
 			}
 			guard let coursesJSON = dataJSON else {
 				self.courseDelegate?.gotGrades(self, error: .ParseError)
@@ -150,13 +157,13 @@ class SchoolLoop {
 					return
 				}
 				guard let courseName = courseJSON["courseName"] as? String,
-				period = courseJSON["period"] as? String,
-				teacherName = courseJSON["teacherName"] as? String,
-				grade = courseJSON["grade"] as? String,
-				score = courseJSON["score"] as? String,
-				periodID = courseJSON["periodID"] as? String else {
-					self.courseDelegate?.gotGrades(self, error: .ParseError)
-					return
+					period = courseJSON["period"] as? String,
+					teacherName = courseJSON["teacherName"] as? String,
+					grade = courseJSON["grade"] as? String,
+					score = courseJSON["score"] as? String,
+					periodID = courseJSON["periodID"] as? String else {
+						self.courseDelegate?.gotGrades(self, error: .ParseError)
+						return
 				}
 				let course = SchoolLoopCourse(courseName: courseName, period: period, teacherName: teacherName, grade: grade, score: score, periodID: periodID)
 				self.courses.append(course)
@@ -176,9 +183,9 @@ class SchoolLoop {
 			}
 			course.grades.removeAll()
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-				self.gradeDelegate?.gotGrades(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+					self.gradeDelegate?.gotGrades(self, error: .ParseError)
+					return
 			}
 			guard let gradesJSON = (dataJSON?.first as? [String: AnyObject])?["grades"] as? [AnyObject] else {
 				self.gradeDelegate?.gotGrades(self, error: .ParseError)
@@ -190,19 +197,19 @@ class SchoolLoop {
 					return
 				}
 				guard let percentScore = gradeJSON["percentScore"] as? String,
-				score = gradeJSON["score"] as? String else {
-					self.gradeDelegate?.gotGrades(self, error: .ParseError)
-					return
+					score = gradeJSON["score"] as? String else {
+						self.gradeDelegate?.gotGrades(self, error: .ParseError)
+						return
 				}
 				guard let assignmentJSON = gradeJSON["assignment"] as? [String: AnyObject] else {
 					self.gradeDelegate?.gotGrades(self, error: .ParseError)
 					return
 				}
 				guard let title = assignmentJSON["title"] as? String,
-				categoryName = assignmentJSON["categoryName"] as? String,
-				maxPoints = assignmentJSON["maxPoints"] as? String else {
-					self.gradeDelegate?.gotGrades(self, error: .ParseError)
-					return
+					categoryName = assignmentJSON["categoryName"] as? String,
+					maxPoints = assignmentJSON["maxPoints"] as? String else {
+						self.gradeDelegate?.gotGrades(self, error: .ParseError)
+						return
 				}
 				let grade = SchoolLoopGrade(title: title, categoryName: categoryName, percentScore: percentScore, score: score, maxPoints: maxPoints)
 				course.grades.append(grade)
@@ -218,10 +225,10 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.assignments.removeAll()
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments
 			) as? [AnyObject] else {
-				self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
-				return
+					self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
+					return
 			}
 			guard let assignmentsJSON = dataJSON else {
 				self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
@@ -233,12 +240,12 @@ class SchoolLoop {
 					return
 				}
 				guard let title = assignmentJSON["title"] as? String,
-				description = assignmentJSON["description"] as? String,
-				courseName = assignmentJSON["courseName"] as? String,
-				dueDate = assignmentJSON["dueDate"] as? String,
-				iD = assignmentJSON["iD"] as? String else {
-					self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
-					return
+					description = assignmentJSON["description"] as? String,
+					courseName = assignmentJSON["courseName"] as? String,
+					dueDate = assignmentJSON["dueDate"] as? String,
+					iD = assignmentJSON["iD"] as? String else {
+						self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
+						return
 				}
 				var links: [(title: String, URL: String)] = []
 				if let linksJSON = assignmentJSON["links"] as? [AnyObject] {
@@ -248,9 +255,9 @@ class SchoolLoop {
 							return
 						}
 						guard let title = linkJSON["Title"] as? String,
-						URL = linkJSON["URL"] as? String else {
-							self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
-							return
+							URL = linkJSON["URL"] as? String else {
+								self.assignmentDelegate?.gotAssignments(self, error: .ParseError)
+								return
 						}
 						links.append((title: title, URL: URL))
 					}
@@ -269,9 +276,9 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.loopMail.removeAll()
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-				self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
+					return
 			}
 			guard let loopMailJSON = dataJSON else {
 				self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
@@ -283,10 +290,10 @@ class SchoolLoop {
 					return
 				}
 				guard let subject = loopMailJSON["subject"] as? String,
-				date = loopMailJSON["date"] as? String,
-				ID = loopMailJSON["ID"] as? String else {
-					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
-					return
+					date = loopMailJSON["date"] as? String,
+					ID = loopMailJSON["ID"] as? String else {
+						self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
+						return
 				}
 				guard let senderJSON = loopMailJSON["sender"] as? [String: AnyObject] else {
 					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
@@ -313,9 +320,9 @@ class SchoolLoop {
 				return
 			}
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
-				self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
+					self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
+					return
 			}
 			guard let messageJSON = dataJSON else {
 				self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
@@ -333,9 +340,9 @@ class SchoolLoop {
 						return
 					}
 					guard let title = linkJSON["Title"] as? String,
-					URL = linkJSON["URL"] as? String else {
-						self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
-						return
+						URL = linkJSON["URL"] as? String else {
+							self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: .ParseError)
+							return
 					}
 					links.append((title: title, URL: URL))
 				}
@@ -353,9 +360,9 @@ class SchoolLoop {
 		session.dataTaskWithRequest(request) { (data, response, error) in
 			self.news.removeAll()
 			guard let data = data,
-			dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-				self.newsDelegate?.gotNews(self, error: .ParseError)
-				return
+				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
+					self.newsDelegate?.gotNews(self, error: .ParseError)
+					return
 			}
 			guard let newsJSON = dataJSON else {
 				self.newsDelegate?.gotNews(self, error: .ParseError)
@@ -367,12 +374,12 @@ class SchoolLoop {
 					return
 				}
 				guard let title = newsJSON["title"] as? String,
-				authorName = newsJSON["authorName"] as? String,
-				createdDate = newsJSON["createdDate"] as? String,
-				description = newsJSON["description"] as? String,
-				iD = newsJSON["iD"] as? String else {
-					self.newsDelegate?.gotNews(self, error: .ParseError)
-					return
+					authorName = newsJSON["authorName"] as? String,
+					createdDate = newsJSON["createdDate"] as? String,
+					description = newsJSON["description"] as? String,
+					iD = newsJSON["iD"] as? String else {
+						self.newsDelegate?.gotNews(self, error: .ParseError)
+						return
 				}
 				var links: [(title: String, URL: String)] = []
 				if let linksJSON = newsJSON["links"] as? [AnyObject] {
@@ -382,9 +389,9 @@ class SchoolLoop {
 							return
 						}
 						guard let title = linkJSON["Title"] as? String,
-						URL = linkJSON["URL"] as? String else {
-							self.newsDelegate?.gotNews(self, error: .ParseError)
-							return
+							URL = linkJSON["URL"] as? String else {
+								self.newsDelegate?.gotNews(self, error: .ParseError)
+								return
 						}
 						links.append((title: title, URL: URL))
 					}
@@ -396,7 +403,28 @@ class SchoolLoop {
 		}.resume()
 	}
 
-	func authenticatedRequest(url: NSURL) -> NSURLRequest {
+	func getLocker(path: String) {
+		let url = SchoolLoopConstants.lockerURL(path, domainName: school.domainName, username: username)
+		let request = authenticatedRequest(url)
+		request.HTTPMethod = "PROPFIND"
+		let session = NSURLSession.sharedSession()
+		session.dataTaskWithRequest(request) { (data, response, error) in
+			guard let data = data else {
+				self.lockerDelegate?.gotLocker(self, error: .ParseError)
+				return
+			}
+			let parser = NSXMLParser(data: data)
+			parser.delegate = self
+			if !parser.parse() {
+				self.lockerDelegate?.gotLocker(self, error: .ParseError)
+				return
+			} else {
+				self.lockerDelegate?.gotLocker(self, error: nil)
+			}
+		}.resume()
+	}
+
+	func authenticatedRequest(url: NSURL) -> NSMutableURLRequest {
 		let request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "GET"
 
@@ -453,5 +481,81 @@ class SchoolLoop {
 			}
 		}
 		return nil
+	}
+
+	func lockerItemParentForPath(path: String) -> SchoolLoopLockerItem? {
+		let cleanPath = path.hasSuffix("/") ? path.substringToIndex((path.rangeOfString("/", options: .BackwardsSearch)?.startIndex)!) : path
+		var currentLockerItem: SchoolLoopLockerItem? = locker
+		var currentDirectoryContents: [SchoolLoopLockerItem] = locker?.lockerItems ?? []
+		for (index, pathComponent) in cleanPath.componentsSeparatedByString("/").enumerate().dropFirst().dropLast() {
+			for lockerItem in currentDirectoryContents {
+				if lockerItem.path.componentsSeparatedByString("/").dropFirst()[index] == pathComponent {
+					currentLockerItem = lockerItem
+					currentDirectoryContents = lockerItem.lockerItems
+					break
+				}
+				currentLockerItem = nil
+			}
+		}
+		return currentLockerItem
+	}
+
+	func lockerItemForPath(path: String) -> SchoolLoopLockerItem? {
+		guard let parent = lockerItemParentForPath(path) else {
+			return nil
+		}
+		for lockerItem in parent.lockerItems {
+			if lockerItem.path == path {
+				return lockerItem
+			}
+		}
+		return nil
+	}
+
+	func urlForLockerItemPath(path: String) -> NSURLRequest {
+		return authenticatedRequest(SchoolLoopConstants.lockerURL(path, domainName: school.domainName, username: username))
+	}
+}
+
+extension SchoolLoop: NSXMLParserDelegate {
+	func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+		currentTokens.append(elementName)
+	}
+
+	func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+		if currentTokens.last == "d:collection" {
+			currentType = .Directory
+		} else if currentTokens.last == "d:response" {
+			let lockerItem = SchoolLoopLockerItem(name: currentName, path: currentPath, type: currentType)
+			if let parent = lockerItemParentForPath(lockerItem.path) {
+				if !parent.lockerItems.contains({ $0 == lockerItem }) {
+					parent.lockerItems.append(lockerItem)
+				}
+			} else {
+				locker = lockerItem
+			}
+			currentName = ""
+			currentPath = ""
+			currentType = .Unknown
+		}
+		currentTokens.popLast()
+	}
+
+	func parser(parser: NSXMLParser, foundCharacters string: String) {
+		if currentTokens.last == "d:href" {
+			currentPath = string.substringFromIndex(string.characters.indexOf("/")!.advancedBy(1))
+			currentPath = currentPath.substringFromIndex(currentPath.characters.indexOf("/")!.advancedBy(1))
+			currentPath = currentPath.substringFromIndex(currentPath.characters.indexOf("/")!)
+		} else if currentTokens.last == "d:displayname" {
+			currentName = string
+		} else if currentTokens.last == "d:getcontenttype" {
+			if currentType != .Directory {
+				if string == "application/pdf" {
+					currentType = .PDF
+				} else {
+					currentType = .Unknown
+				}
+			}
+		}
 	}
 }

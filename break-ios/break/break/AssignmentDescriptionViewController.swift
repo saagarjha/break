@@ -30,7 +30,7 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		 loadDescription()
+		loadDescription()
 	}
 
 	override func didReceiveMemoryWarning() {

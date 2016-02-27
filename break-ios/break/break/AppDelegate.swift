@@ -60,7 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 		if error == nil {
 			let storybard = UIStoryboard(name: "Main", bundle: nil)
 			let tabViewController = storybard.instantiateViewControllerWithIdentifier("tab")
-//			(tabViewController as? UITabBarController)?.selectedIndex = 1
 			dispatch_async(dispatch_get_main_queue()) {
 				self.window?.rootViewController = tabViewController
 			}
