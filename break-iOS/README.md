@@ -8,13 +8,15 @@ Building break requires [Xcode](https://developer.apple.com/xcode/), which requi
 * Grades
 * Assignments
 * LoopMail viewing
-* News viewing
+* News
+* Locker
 
 ## TODO
 * Comments
 * Code efficiency
-* Locker support
 * POST (i.e. LoopMail sending, "viewed" checking)
 * One-time login (Guest mode)
+* Notifications
+* Grade calculation
 * Parent/Teacher support
 * UI improvements (especially the storyboard)

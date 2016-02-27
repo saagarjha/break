@@ -11,11 +11,12 @@ break is a lightweight, native app for accessing [SchoolLoop](http://www.schooll
 * **Security:** Passwords are encrypted with AES to prevent malicious access
 
 ## Planned features
-* Android app
-* Locker support
-* UI improvements
 * One-time login (Guest mode)
+* Notifications
+* Grade calculation
 * Parent/Teacher support
+* UI improvements
+* Android app
 
 ## Installation
 ### iOS
