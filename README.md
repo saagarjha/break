@@ -8,6 +8,7 @@ break is a lightweight, native app for accessing [SchoolLoop](http://www.schooll
 ## Features
 * **Native:** Written from the ground up to support the target platform
 * **Login persistence:** Stay logged in until you log out
+* **Locker support:** Access your locker on all of your devices
 * **Security:** Passwords are encrypted with AES to prevent malicious access
 
 ## Planned features
