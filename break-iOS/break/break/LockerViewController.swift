@@ -42,7 +42,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 				segmentedControl.selectedSegmentIndex = 0
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 			}
-			segmentedControl.addTarget(self, action: #selector(LockerViewController.changePath(_:)), forControlEvents: .ValueChanged)
+			segmentedControl.addTarget(self, action: Selector("changePath:"), forControlEvents: .ValueChanged)
 		}
 
 		schoolLoop = SchoolLoop.sharedInstance
