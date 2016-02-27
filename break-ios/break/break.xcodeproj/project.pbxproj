@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49053FD31C810EF200AC4EFF /* LockerItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49053FD21C810EF200AC4EFF /* LockerItemViewController.swift */; };
 		493E178F1C63E95000AFC7A6 /* breakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E178E1C63E95000AFC7A6 /* breakTests.swift */; };
 		493E179A1C63E95000AFC7A6 /* breakUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E17991C63E95000AFC7A6 /* breakUITests.swift */; };
+		49C003B91C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003B81C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift */; };
+		49C003BB1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003BA1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift */; };
+		49C003BD1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */; };
+		49C003C11C80C1C900FFB593 /* LockerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */; };
+		49C003C31C80C76600FFB593 /* LockerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003C21C80C76600FFB593 /* LockerViewController.swift */; };
 		49D04DFB1C646F3D00363A2F /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */; };
 		49D04DFC1C646F3D00363A2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD41C646F3C00363A2F /* AppDelegate.swift */; };
 		49D04DFD1C646F3D00363A2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49D04DD51C646F3C00363A2F /* Assets.xcassets */; };
@@ -68,6 +74,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49053FD21C810EF200AC4EFF /* LockerItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemViewController.swift; sourceTree = "<group>"; };
 		493E17761C63E95000AFC7A6 /* break.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = break.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E178A1C63E95000AFC7A6 /* breakTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = breakTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E178E1C63E95000AFC7A6 /* breakTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = breakTests.swift; sourceTree = "<group>"; };
@@ -75,6 +82,11 @@
 		493E17951C63E95000AFC7A6 /* breakUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = breakUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E17991C63E95000AFC7A6 /* breakUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = breakUITests.swift; sourceTree = "<group>"; };
 		493E179B1C63E95000AFC7A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49C003B81C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerDelegate.swift; sourceTree = "<group>"; };
+		49C003BA1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItem.swift; sourceTree = "<group>"; };
+		49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItemType.swift; sourceTree = "<group>"; };
+		49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		49C003C21C80C76600FFB593 /* LockerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerViewController.swift; sourceTree = "<group>"; };
 		49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTableViewController.swift; sourceTree = "<group>"; };
 		49D04DD41C646F3C00363A2F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49D04DD51C646F3C00363A2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -173,6 +185,9 @@
 				49D04DDA1C646F3C00363A2F /* CoursesViewController.swift */,
 				49D04DDB1C646F3C00363A2F /* CourseTableViewCell.swift */,
 				49D04DDC1C646F3C00363A2F /* GradeTableViewCell.swift */,
+				49C003C21C80C76600FFB593 /* LockerViewController.swift */,
+				49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */,
+				49053FD21C810EF200AC4EFF /* LockerItemViewController.swift */,
 				49D04DDE1C646F3C00363A2F /* LoginViewController.swift */,
 				49D04DDF1C646F3C00363A2F /* LoopMailMessageViewController.swift */,
 				49D04DE01C646F3C00363A2F /* LoopMailTableViewCell.swift */,
@@ -193,6 +208,9 @@
 				49D04DEE1C646F3C00363A2F /* SchoolLoopGrade.swift */,
 				49D04DEF1C646F3C00363A2F /* SchoolLoopGradeDelegate.swift */,
 				49D04DF01C646F3D00363A2F /* SchoolLoopKeychain.swift */,
+				49C003B81C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift */,
+				49C003BA1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift */,
+				49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */,
 				49D04DF11C646F3D00363A2F /* SchoolLoopLoginDelegate.swift */,
 				49D04DF21C646F3D00363A2F /* SchoolLoopLoopMail.swift */,
 				49D04DF31C646F3D00363A2F /* SchoolLoopLoopMailDelegate.swift */,
@@ -379,11 +397,16 @@
 				49D04DFF1C646F3D00363A2F /* AssignmentsViewController.swift in Sources */,
 				49D04E1C1C646F3D00363A2F /* SchoolLoopLoopMailMessageDelegate.swift in Sources */,
 				49D04E201C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift in Sources */,
+				49C003B91C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift in Sources */,
 				49D04E1D1C646F3D00363A2F /* SchoolLoopNews.swift in Sources */,
 				49D04E001C646F3D00363A2F /* AssignmentTableViewCell.swift in Sources */,
+				49053FD31C810EF200AC4EFF /* LockerItemViewController.swift in Sources */,
+				49C003C11C80C1C900FFB593 /* LockerItemCollectionViewCell.swift in Sources */,
 				49D04E131C646F3D00363A2F /* SchoolLoopCourse.swift in Sources */,
+				49C003C31C80C76600FFB593 /* LockerViewController.swift in Sources */,
 				49D04E181C646F3D00363A2F /* SchoolLoopKeychain.swift in Sources */,
 				49D04E171C646F3D00363A2F /* SchoolLoopGradeDelegate.swift in Sources */,
+				49C003BB1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift in Sources */,
 				49D04DFC1C646F3D00363A2F /* AppDelegate.swift in Sources */,
 				49D04E0B1C646F3D00363A2F /* NewsTableViewCell.swift in Sources */,
 				49D04E191C646F3D00363A2F /* SchoolLoopLoginDelegate.swift in Sources */,
@@ -393,6 +416,7 @@
 				49D04E111C646F3D00363A2F /* SchoolLoopAssignmentDelegate.swift in Sources */,
 				49D04DFB1C646F3D00363A2F /* AccountTableViewController.swift in Sources */,
 				49D04E151C646F3D00363A2F /* SchoolLoopError.swift in Sources */,
+				49C003BD1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift in Sources */,
 				49D04E081C646F3D00363A2F /* LoopMailTableViewCell.swift in Sources */,
 				49D04E1A1C646F3D00363A2F /* SchoolLoopLoopMail.swift in Sources */,
 				49D04E021C646F3D00363A2F /* CoursesViewController.swift in Sources */,
@@ -521,6 +545,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = break/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -534,6 +559,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = break/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
