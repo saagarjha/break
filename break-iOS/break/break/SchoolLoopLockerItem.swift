@@ -22,6 +22,13 @@ class SchoolLoopLockerItem {
 	}
 }
 
+extension SchoolLoopLockerItem: Equatable, Comparable {
+}
+
 func == (lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
 	return lhs.name == rhs.name && lhs.path == rhs.path && lhs.type == rhs.type
+}
+
+func < (lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
+	return lhs.name < rhs.name
 }

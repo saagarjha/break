@@ -65,6 +65,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 					return
 				}
 
+				lockerItem.lockerItems.sortInPlace()
 				self.lockerItems = lockerItem.lockerItems
 				self.lockerCollectionView.reloadData()
 			}
