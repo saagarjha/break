@@ -43,6 +43,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 			}
 			segmentedControl.addTarget(self, action: #selector(LockerViewController.changePath(_:)), forControlEvents: .ValueChanged)
+		} else {
+			navigationItem.leftItemsSupplementBackButton = true
+			navigationItem.leftBarButtonItem = nil
 		}
 
 		schoolLoop = SchoolLoop.sharedInstance
@@ -66,6 +69,14 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 				self.lockerCollectionView.reloadData()
 			}
 		}
+	}
+
+	@IBAction func openSettings(sender: AnyObject) {
+		guard let viewController = navigationController?.storyboard?.instantiateViewControllerWithIdentifier("settings") else {
+			assertionFailure("Could not open SettingsTableViewController")
+			return
+		}
+		navigationController?.presentViewController(viewController, animated: true, completion: nil)
 	}
 
 	func changePath(sender: UISegmentedControl) {

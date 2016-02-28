@@ -374,7 +374,13 @@
                             <constraint firstItem="qGn-7F-1or" firstAttribute="top" secondItem="UMd-dn-EKa" secondAttribute="topMargin" id="gbV-6L-0lV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Locker" id="iEF-Pc-h1B"/>
+                    <navigationItem key="navigationItem" title="Locker" id="iEF-Pc-h1B">
+                        <barButtonItem key="leftBarButtonItem" image="SettingsBarButtonIcon" id="I4G-Ti-cEf">
+                            <connections>
+                                <action selector="openSettings:" destination="w7W-9S-jni" id="JLe-li-fcO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="lockerCollectionView" destination="qGn-7F-1or" id="P7u-GU-y1X"/>
                     </connections>
