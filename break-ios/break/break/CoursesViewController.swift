@@ -48,10 +48,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
-		guard let viewController = navigationController?.storyboard?.instantiateViewControllerWithIdentifier("settings") else {
-			assertionFailure("Could not open SettingsTableViewController")
-			return
-		}
+		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewControllerWithIdentifier("settings")
 		navigationController?.presentViewController(viewController, animated: true, completion: nil)
 	}
 

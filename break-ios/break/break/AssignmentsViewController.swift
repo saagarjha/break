@@ -48,10 +48,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
-        guard let viewController = navigationController?.storyboard?.instantiateViewControllerWithIdentifier("settings") else {
-            assertionFailure("Could not open SettingsTableViewController")
-            return
-        }
+		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewControllerWithIdentifier("settings")
 		navigationController?.presentViewController(viewController, animated: true, completion: nil)
 	}
 
@@ -62,11 +59,11 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		let dateFormatter = NSDateFormatter()
 		dateFormatter.dateFormat = "EEEE, MMMM d"
-		return dateFormatter.stringFromDate(assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending }) [section])
+		return dateFormatter.stringFromDate(assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })[section])
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return assignments[assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending }) [section]]!.count
+		return assignments[assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })[section]]!.count
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -76,7 +73,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		}
 		let section = indexPath.section
 		let row = indexPath.row
-		let dueDate = assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending }) [section]
+		let dueDate = assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })[section]
 		let assignment = assignments[dueDate]?[row]
 		cell.titleLabel.text = assignment?.title
 		cell.courseNameLabel.text = assignment?.courseName
@@ -84,7 +81,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedAssignment = assignments[assignments.keys.sort { $0.compare($1) == NSComparisonResult.OrderedAscending } [indexPath.section]]![indexPath.row]
+		let selectedAssignment = assignments[assignments.keys.sort { $0.compare($1) == NSComparisonResult.OrderedAscending }[indexPath.section]]![indexPath.row]
 		destinationViewController.iD = selectedAssignment.iD
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}

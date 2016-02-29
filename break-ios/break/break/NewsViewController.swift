@@ -47,10 +47,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
-        guard let viewController = navigationController?.storyboard?.instantiateViewControllerWithIdentifier("settings") else {
-            assertionFailure("Could not open SettingsTableViewController")
-            return
-        }
+		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewControllerWithIdentifier("settings")
 		navigationController?.presentViewController(viewController, animated: true, completion: nil)
 	}
 
@@ -63,10 +60,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as? NewsTableViewCell else {
-            assertionFailure("Could not deque NewsTableViewCell")
-            return tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
-        }
+		guard let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as? NewsTableViewCell else {
+			assertionFailure("Could not deque NewsTableViewCell")
+			return tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+		}
 		cell.titleLabel.text = news[indexPath.row].title
 		cell.authorNameLabel.text = news[indexPath.row].authorName
 		let dateFormatter = NSDateFormatter()
@@ -87,10 +84,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-        guard let destinationViewController = segue.destinationViewController as? NewsDescriptionViewController else {
-            assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")
-            return
-        }
-        self.destinationViewController = destinationViewController
+		guard let destinationViewController = segue.destinationViewController as? NewsDescriptionViewController else {
+			assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")
+			return
+		}
+		self.destinationViewController = destinationViewController
 	}
 }

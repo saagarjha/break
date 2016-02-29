@@ -15,6 +15,7 @@
 		49C003BD1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */; };
 		49C003C11C80C1C900FFB593 /* LockerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */; };
 		49C003C31C80C76600FFB593 /* LockerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003C21C80C76600FFB593 /* LockerViewController.swift */; };
+		49C80BC31C840F9B00E05379 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49C80BC21C840F9B00E05379 /* Settings.storyboard */; };
 		49D04DFB1C646F3D00363A2F /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */; };
 		49D04DFC1C646F3D00363A2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD41C646F3C00363A2F /* AppDelegate.swift */; };
 		49D04DFD1C646F3D00363A2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49D04DD51C646F3C00363A2F /* Assets.xcassets */; };
@@ -87,6 +88,7 @@
 		49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItemType.swift; sourceTree = "<group>"; };
 		49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		49C003C21C80C76600FFB593 /* LockerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerViewController.swift; sourceTree = "<group>"; };
+		49C80BC21C840F9B00E05379 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTableViewController.swift; sourceTree = "<group>"; };
 		49D04DD41C646F3C00363A2F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49D04DD51C646F3C00363A2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				49D04DF71C646F3D00363A2F /* SchoolLoopSchool.swift */,
 				49D04DF81C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift */,
 				49D04E241C646FBE00363A2F /* Main.storyboard */,
+				49C80BC21C840F9B00E05379 /* Settings.storyboard */,
 				49D04E231C646FBE00363A2F /* LaunchScreen.storyboard */,
 				49D04DD51C646F3C00363A2F /* Assets.xcassets */,
 				49D04DDD1C646F3C00363A2F /* Info.plist */,
@@ -355,6 +358,7 @@
 				49D04E251C646FBE00363A2F /* LaunchScreen.storyboard in Resources */,
 				49D04DFD1C646F3D00363A2F /* Assets.xcassets in Resources */,
 				49D04E261C646FBE00363A2F /* Main.storyboard in Resources */,
+				49C80BC31C840F9B00E05379 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
