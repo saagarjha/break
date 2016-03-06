@@ -82,6 +82,10 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		schoolLoop.getLocker(path)
 	}
 
+	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+		return UIEdgeInsetsMake(0, 25, 0, 25)
+	}
+
 	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
 		return 1
 	}

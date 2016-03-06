@@ -512,7 +512,7 @@ class SchoolLoop: NSObject {
 		return nil
 	}
 
-	func urlForLockerItemPath(path: String) -> NSURLRequest {
+	func requestForLockerItemPath(path: String) -> NSURLRequest {
 		return authenticatedRequest(SchoolLoopConstants.lockerURL(path, domainName: school.domainName, username: username))
 	}
 }
@@ -547,7 +547,7 @@ extension SchoolLoop: NSXMLParserDelegate {
 			currentPath = currentPath.substringFromIndex(currentPath.characters.indexOf("/")!.advancedBy(1))
 			currentPath = currentPath.substringFromIndex(currentPath.characters.indexOf("/")!)
 		} else if currentTokens.last == "d:displayname" {
-			currentName = string
+			currentName += string
 		} else if currentTokens.last == "d:getcontenttype" {
 			if currentType != .Directory {
 				if string == "application/pdf" {

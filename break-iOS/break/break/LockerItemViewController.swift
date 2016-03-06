@@ -41,7 +41,7 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 	}
 
 	func loadLockerItem() {
-		request = schoolLoop.urlForLockerItemPath(path)
+		request = schoolLoop.requestForLockerItemPath(path)
 		lockerItemWebView.loadRequest(request)
 	}
 

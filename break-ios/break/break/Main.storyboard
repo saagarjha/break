@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10112" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VA0-KO-lQk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10112" systemVersion="15E56a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VA0-KO-lQk">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10083"/>
@@ -123,7 +123,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="79" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hjw-JQ-1z0">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="79" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hjw-JQ-1z0">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -172,10 +172,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hjw-JQ-1z0" firstAttribute="top" secondItem="Q5o-k6-UaD" secondAttribute="topMargin" id="EMs-wV-ow0"/>
-                            <constraint firstItem="hjw-JQ-1z0" firstAttribute="bottom" secondItem="Q5o-k6-UaD" secondAttribute="bottomMargin" id="Iok-fU-FLI"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hjw-JQ-1z0" secondAttribute="trailing" constant="-20" id="mmJ-1J-ni2"/>
-                            <constraint firstItem="hjw-JQ-1z0" firstAttribute="leading" secondItem="Q5o-k6-UaD" secondAttribute="leadingMargin" constant="-20" id="xO6-V3-1DS"/>
+                            <constraint firstItem="hjw-JQ-1z0" firstAttribute="leading" secondItem="Q5o-k6-UaD" secondAttribute="leading" id="0yS-eF-Kot"/>
+                            <constraint firstAttribute="topMargin" secondItem="hjw-JQ-1z0" secondAttribute="top" id="4tm-zP-Ws4"/>
+                            <constraint firstAttribute="trailing" secondItem="hjw-JQ-1z0" secondAttribute="trailing" id="gbu-05-UQ0"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="hjw-JQ-1z0" secondAttribute="bottom" id="gon-w3-69m"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Assignments" id="7vz-iW-xmX">
@@ -278,10 +278,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="up6-2q-Hy6" secondAttribute="trailing" constant="-20" id="5oj-BH-GXZ"/>
-                            <constraint firstItem="up6-2q-Hy6" firstAttribute="top" secondItem="6ML-ev-X2G" secondAttribute="topMargin" id="XRM-yr-icn"/>
-                            <constraint firstItem="up6-2q-Hy6" firstAttribute="bottom" secondItem="6ML-ev-X2G" secondAttribute="bottomMargin" id="p6D-2h-GN5"/>
-                            <constraint firstItem="up6-2q-Hy6" firstAttribute="leading" secondItem="6ML-ev-X2G" secondAttribute="leadingMargin" constant="-20" id="t0x-pZ-qgX"/>
+                            <constraint firstItem="up6-2q-Hy6" firstAttribute="leading" secondItem="6ML-ev-X2G" secondAttribute="leading" id="52K-rE-CjJ"/>
+                            <constraint firstAttribute="trailing" secondItem="up6-2q-Hy6" secondAttribute="trailing" id="NYL-rt-fq7"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="up6-2q-Hy6" secondAttribute="bottom" id="aSd-Ve-oRR"/>
+                            <constraint firstAttribute="topMargin" secondItem="up6-2q-Hy6" secondAttribute="top" id="wsw-bQ-tih"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="News" id="PpK-Fe-odu">
@@ -368,9 +368,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="qGn-7F-1or" secondAttribute="trailing" id="BZd-tU-wYE"/>
                             <constraint firstItem="qGn-7F-1or" firstAttribute="bottom" secondItem="UMd-dn-EKa" secondAttribute="bottomMargin" id="SpW-Ja-diI"/>
-                            <constraint firstItem="qGn-7F-1or" firstAttribute="leading" secondItem="UMd-dn-EKa" secondAttribute="leadingMargin" constant="-20" id="YWl-UC-JPd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="qGn-7F-1or" secondAttribute="trailing" constant="-20" id="ZBC-i4-qDO"/>
+                            <constraint firstItem="qGn-7F-1or" firstAttribute="leading" secondItem="UMd-dn-EKa" secondAttribute="leading" id="XUV-eM-KdZ"/>
                             <constraint firstItem="qGn-7F-1or" firstAttribute="top" secondItem="UMd-dn-EKa" secondAttribute="topMargin" id="gbV-6L-0lV"/>
                         </constraints>
                     </view>
@@ -503,10 +503,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="C4q-HD-c9l" secondAttribute="trailing" constant="-20" id="BdQ-dc-dUp"/>
-                            <constraint firstItem="C4q-HD-c9l" firstAttribute="top" secondItem="B9c-6r-Vu4" secondAttribute="topMargin" id="Tfo-d1-crF"/>
-                            <constraint firstItem="C4q-HD-c9l" firstAttribute="leading" secondItem="B9c-6r-Vu4" secondAttribute="leadingMargin" constant="-20" id="Unv-kG-sdm"/>
-                            <constraint firstItem="C4q-HD-c9l" firstAttribute="bottom" secondItem="B9c-6r-Vu4" secondAttribute="bottomMargin" id="y0r-bP-wJG"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="C4q-HD-c9l" secondAttribute="bottom" id="HO7-Gf-wKS"/>
+                            <constraint firstAttribute="topMargin" secondItem="C4q-HD-c9l" secondAttribute="top" id="WJZ-ed-2qr"/>
+                            <constraint firstAttribute="trailing" secondItem="C4q-HD-c9l" secondAttribute="trailing" id="WVx-QX-WoW"/>
+                            <constraint firstItem="C4q-HD-c9l" firstAttribute="leading" secondItem="B9c-6r-Vu4" secondAttribute="leading" id="v2r-of-tpj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="LoopMail" id="o2s-8c-5aI">
@@ -671,10 +671,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Tat-IW-8Jd" firstAttribute="top" secondItem="ETq-st-Ybw" secondAttribute="topMargin" id="D49-Wt-64j"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Tat-IW-8Jd" secondAttribute="trailing" constant="-20" id="Ofk-eI-gBo"/>
-                            <constraint firstItem="Tat-IW-8Jd" firstAttribute="leading" secondItem="ETq-st-Ybw" secondAttribute="leadingMargin" constant="-20" id="TXx-y2-aBH"/>
-                            <constraint firstItem="Tat-IW-8Jd" firstAttribute="bottom" secondItem="ETq-st-Ybw" secondAttribute="bottomMargin" id="nid-Zd-f7A"/>
+                            <constraint firstAttribute="trailing" secondItem="Tat-IW-8Jd" secondAttribute="trailing" id="6tU-QJ-aoK"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Tat-IW-8Jd" secondAttribute="bottom" id="Q5T-b7-jo7"/>
+                            <constraint firstAttribute="topMargin" secondItem="Tat-IW-8Jd" secondAttribute="top" id="STT-dx-yTd"/>
+                            <constraint firstItem="Tat-IW-8Jd" firstAttribute="leading" secondItem="ETq-st-Ybw" secondAttribute="leading" id="iqB-EK-vK5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Courses" id="5nO-t4-kKP">
@@ -771,10 +771,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="lFc-e7-zUx" firstAttribute="bottom" secondItem="jhk-Sn-SAt" secondAttribute="bottomMargin" id="8ey-1n-OhK"/>
-                            <constraint firstItem="lFc-e7-zUx" firstAttribute="top" secondItem="jhk-Sn-SAt" secondAttribute="topMargin" id="A81-mT-0Ig"/>
-                            <constraint firstItem="lFc-e7-zUx" firstAttribute="leading" secondItem="jhk-Sn-SAt" secondAttribute="leadingMargin" constant="-20" id="BgZ-05-c4Q"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="lFc-e7-zUx" secondAttribute="trailing" constant="-20" id="NgY-RU-MJR"/>
+                            <constraint firstAttribute="trailing" secondItem="lFc-e7-zUx" secondAttribute="trailing" id="2xw-2J-MOa"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="lFc-e7-zUx" secondAttribute="bottom" id="VOJ-AD-vsg"/>
+                            <constraint firstAttribute="topMargin" secondItem="lFc-e7-zUx" secondAttribute="top" id="fus-NZ-S6g"/>
+                            <constraint firstItem="lFc-e7-zUx" firstAttribute="leading" secondItem="jhk-Sn-SAt" secondAttribute="leading" id="w6L-gA-uL1"/>
                         </constraints>
                     </view>
                     <connections>

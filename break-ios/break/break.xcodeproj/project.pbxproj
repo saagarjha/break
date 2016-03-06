@@ -551,7 +551,7 @@
 				INFOPLIST_FILE = break/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -565,7 +565,7 @@
 				INFOPLIST_FILE = break/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
