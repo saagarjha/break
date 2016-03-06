@@ -23,6 +23,11 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 			assignmentsTableView.estimatedRowHeight = 80.0
 		}
 	}
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = false
+    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

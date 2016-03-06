@@ -25,12 +25,15 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 		view = lockerItemWebView
 	}
 
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		navigationController?.hidesBarsOnSwipe = true
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		navigationController?.hidesBarsOnSwipe = true
-
 		schoolLoop = SchoolLoop.sharedInstance
 		loadLockerItem()
 	}

@@ -24,13 +24,16 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 		messageWebView.allowsBackForwardNavigationGestures = true
 		view = messageWebView
 	}
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = true
+    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		navigationController?.hidesBarsOnSwipe = true
-
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.loopMailMessageDelegate = self
 		schoolLoop.getLoopMailMessage(ID)

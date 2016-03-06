@@ -23,6 +23,12 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			newsTableView.estimatedRowHeight = 80.0
 		}
 	}
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = false
+    }
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 

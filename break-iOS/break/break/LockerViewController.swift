@@ -27,6 +27,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		if let schoolLoop = schoolLoop {
 			schoolLoop.lockerDelegate = self
 		}
+        navigationController?.hidesBarsOnSwipe = false
 	}
 
 	override func viewDidLoad() {

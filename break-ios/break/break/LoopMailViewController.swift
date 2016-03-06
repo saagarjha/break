@@ -24,6 +24,11 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		}
 	}
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = false
+    }
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
