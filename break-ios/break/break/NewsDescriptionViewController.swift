@@ -29,10 +29,12 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+        navigationController?.hidesBarsOnSwipe = true
+        
 		schoolLoop = SchoolLoop.sharedInstance
 		loadDescription()
 	}
-    
+
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
@@ -43,12 +45,19 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 			print("Could not get news for iD")
 			return
 		}
-		newsDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h2>\(news.title)</h2>\(news.description)<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+		newsDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h2>\(news.title)</h2>\(news.description)"
+		if !news.links.isEmpty {
+			newsDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+		}
 		for link in news.links ?? [] {
 			newsDescription += "<a href=\(link.URL)>\(link.title)</a><br>"
 		}
 		descriptionWebView.loadHTMLString(newsDescription, baseURL: nil)
 	}
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return navigationController?.navigationBarHidden ?? false
+    }
 
 	/*
 	 // MARK: - Navigation

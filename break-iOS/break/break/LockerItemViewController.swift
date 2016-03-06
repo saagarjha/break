@@ -45,6 +45,10 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 		lockerItemWebView.loadRequest(request)
 	}
 
+	override func prefersStatusBarHidden() -> Bool {
+		return navigationController?.navigationBarHidden ?? false
+	}
+
 	/*
 	 // MARK: - Navigation
 

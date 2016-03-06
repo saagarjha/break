@@ -29,6 +29,8 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		navigationController?.hidesBarsOnSwipe = true
+
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.loopMailMessageDelegate = self
 		schoolLoop.getLoopMailMessage(ID)
@@ -46,13 +48,20 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 					print("Could not get LoopMail for ID")
 					return
 				}
-				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h3><h2>\(loopMail.subject)</h2><hr>\(loopMail.message)<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h3><h2>\(loopMail.subject)</h2><hr>\(loopMail.message)"
+				if !loopMail.links.isEmpty {
+					self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+				}
 				for link in loopMail.links ?? [] {
 					self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
 				}
 				self.messageWebView.loadHTMLString(self.message, baseURL: nil)
 			}
 		}
+	}
+
+	override func prefersStatusBarHidden() -> Bool {
+		return navigationController?.navigationBarHidden ?? false
 	}
 
 	/*

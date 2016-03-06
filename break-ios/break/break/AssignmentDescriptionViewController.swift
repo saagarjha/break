@@ -29,6 +29,8 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		navigationController?.hidesBarsOnSwipe = true
+
 		schoolLoop = SchoolLoop.sharedInstance
 		loadDescription()
 	}
@@ -40,11 +42,18 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 
 	func loadDescription() {
 		let assignment = schoolLoop.assignmentForID(iD)!
-		assignmentDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h2>\(assignment.title)</h2>\(assignment.description)<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+		assignmentDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h2>\(assignment.title)</h2>\(assignment.description)"
+		if !assignment.links.isEmpty {
+			assignmentDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+		}
 		for link in assignment.links {
 			assignmentDescription += "<a href=\(link.URL)>\(link.title)</a><br>"
 		}
 		descriptionWebView.loadHTMLString(assignmentDescription, baseURL: nil)
+	}
+
+	override func prefersStatusBarHidden() -> Bool {
+		return navigationController?.navigationBarHidden ?? false
 	}
 
 	/*
