@@ -7,54 +7,54 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		49053FD31C810EF200AC4EFF /* LockerItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49053FD21C810EF200AC4EFF /* LockerItemViewController.swift */; };
 		493E178F1C63E95000AFC7A6 /* breakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E178E1C63E95000AFC7A6 /* breakTests.swift */; };
 		493E179A1C63E95000AFC7A6 /* breakUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E17991C63E95000AFC7A6 /* breakUITests.swift */; };
-		49C003B91C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003B81C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift */; };
-		49C003BB1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003BA1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift */; };
-		49C003BD1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */; };
-		49C003C11C80C1C900FFB593 /* LockerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */; };
-		49C003C31C80C76600FFB593 /* LockerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C003C21C80C76600FFB593 /* LockerViewController.swift */; };
-		49C80BC31C840F9B00E05379 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49C80BC21C840F9B00E05379 /* Settings.storyboard */; };
-		49D04DFB1C646F3D00363A2F /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */; };
-		49D04DFC1C646F3D00363A2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD41C646F3C00363A2F /* AppDelegate.swift */; };
-		49D04DFD1C646F3D00363A2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49D04DD51C646F3C00363A2F /* Assets.xcassets */; };
-		49D04DFE1C646F3D00363A2F /* AssignmentDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD61C646F3C00363A2F /* AssignmentDescriptionViewController.swift */; };
-		49D04DFF1C646F3D00363A2F /* AssignmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD71C646F3C00363A2F /* AssignmentsViewController.swift */; };
-		49D04E001C646F3D00363A2F /* AssignmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DD81C646F3C00363A2F /* AssignmentTableViewCell.swift */; };
-		49D04E021C646F3D00363A2F /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DDA1C646F3C00363A2F /* CoursesViewController.swift */; };
-		49D04E031C646F3D00363A2F /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DDB1C646F3C00363A2F /* CourseTableViewCell.swift */; };
-		49D04E041C646F3D00363A2F /* GradeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DDC1C646F3C00363A2F /* GradeTableViewCell.swift */; };
-		49D04E061C646F3D00363A2F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DDE1C646F3C00363A2F /* LoginViewController.swift */; };
-		49D04E071C646F3D00363A2F /* LoopMailMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DDF1C646F3C00363A2F /* LoopMailMessageViewController.swift */; };
-		49D04E081C646F3D00363A2F /* LoopMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE01C646F3C00363A2F /* LoopMailTableViewCell.swift */; };
-		49D04E091C646F3D00363A2F /* LoopMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE11C646F3C00363A2F /* LoopMailViewController.swift */; };
-		49D04E0A1C646F3D00363A2F /* NewsDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE21C646F3C00363A2F /* NewsDescriptionViewController.swift */; };
-		49D04E0B1C646F3D00363A2F /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE31C646F3C00363A2F /* NewsTableViewCell.swift */; };
-		49D04E0C1C646F3D00363A2F /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE41C646F3C00363A2F /* NewsViewController.swift */; };
-		49D04E0D1C646F3D00363A2F /* ProgressReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE51C646F3C00363A2F /* ProgressReportViewController.swift */; };
-		49D04E0E1C646F3D00363A2F /* SchoolLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE61C646F3C00363A2F /* SchoolLoop.swift */; };
-		49D04E0F1C646F3D00363A2F /* SchoolLoopAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE71C646F3C00363A2F /* SchoolLoopAccount.swift */; };
-		49D04E101C646F3D00363A2F /* SchoolLoopAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE81C646F3C00363A2F /* SchoolLoopAssignment.swift */; };
-		49D04E111C646F3D00363A2F /* SchoolLoopAssignmentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DE91C646F3C00363A2F /* SchoolLoopAssignmentDelegate.swift */; };
-		49D04E121C646F3D00363A2F /* SchoolLoopConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DEA1C646F3C00363A2F /* SchoolLoopConstants.swift */; };
-		49D04E131C646F3D00363A2F /* SchoolLoopCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DEB1C646F3C00363A2F /* SchoolLoopCourse.swift */; };
-		49D04E141C646F3D00363A2F /* SchoolLoopCourseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DEC1C646F3C00363A2F /* SchoolLoopCourseDelegate.swift */; };
-		49D04E151C646F3D00363A2F /* SchoolLoopError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DED1C646F3C00363A2F /* SchoolLoopError.swift */; };
-		49D04E161C646F3D00363A2F /* SchoolLoopGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DEE1C646F3C00363A2F /* SchoolLoopGrade.swift */; };
-		49D04E171C646F3D00363A2F /* SchoolLoopGradeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DEF1C646F3C00363A2F /* SchoolLoopGradeDelegate.swift */; };
-		49D04E181C646F3D00363A2F /* SchoolLoopKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF01C646F3D00363A2F /* SchoolLoopKeychain.swift */; };
-		49D04E191C646F3D00363A2F /* SchoolLoopLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF11C646F3D00363A2F /* SchoolLoopLoginDelegate.swift */; };
-		49D04E1A1C646F3D00363A2F /* SchoolLoopLoopMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF21C646F3D00363A2F /* SchoolLoopLoopMail.swift */; };
-		49D04E1B1C646F3D00363A2F /* SchoolLoopLoopMailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF31C646F3D00363A2F /* SchoolLoopLoopMailDelegate.swift */; };
-		49D04E1C1C646F3D00363A2F /* SchoolLoopLoopMailMessageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF41C646F3D00363A2F /* SchoolLoopLoopMailMessageDelegate.swift */; };
-		49D04E1D1C646F3D00363A2F /* SchoolLoopNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF51C646F3D00363A2F /* SchoolLoopNews.swift */; };
-		49D04E1E1C646F3D00363A2F /* SchoolLoopNewsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF61C646F3D00363A2F /* SchoolLoopNewsDelegate.swift */; };
-		49D04E1F1C646F3D00363A2F /* SchoolLoopSchool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF71C646F3D00363A2F /* SchoolLoopSchool.swift */; };
-		49D04E201C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF81C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift */; };
-		49D04E211C646F3D00363A2F /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04DF91C646F3D00363A2F /* SettingsTableViewController.swift */; };
-		49D04E251C646FBE00363A2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D04E231C646FBE00363A2F /* LaunchScreen.storyboard */; };
-		49D04E261C646FBE00363A2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49D04E241C646FBE00363A2F /* Main.storyboard */; };
+		4986658F1C8D24E9004BA249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665541C8D24E9004BA249 /* AppDelegate.swift */; };
+		498665901C8D24E9004BA249 /* AssignmentDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */; };
+		498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665571C8D24E9004BA249 /* AssignmentsViewController.swift */; };
+		498665921C8D24E9004BA249 /* AssignmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665581C8D24E9004BA249 /* AssignmentTableViewCell.swift */; };
+		498665931C8D24E9004BA249 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655A1C8D24E9004BA249 /* CoursesViewController.swift */; };
+		498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655B1C8D24E9004BA249 /* CourseTableViewCell.swift */; };
+		498665951C8D24E9004BA249 /* GradeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */; };
+		498665961C8D24E9004BA249 /* ProgressReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */; };
+		498665971C8D24E9004BA249 /* LockerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655F1C8D24E9004BA249 /* LockerItemCollectionViewCell.swift */; };
+		498665981C8D24E9004BA249 /* LockerItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665601C8D24E9004BA249 /* LockerItemViewController.swift */; };
+		498665991C8D24E9004BA249 /* LockerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665611C8D24E9004BA249 /* LockerViewController.swift */; };
+		4986659A1C8D24E9004BA249 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665621C8D24E9004BA249 /* LoginViewController.swift */; };
+		4986659B1C8D24E9004BA249 /* LoopMailMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */; };
+		4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665651C8D24E9004BA249 /* LoopMailTableViewCell.swift */; };
+		4986659D1C8D24E9004BA249 /* LoopMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665661C8D24E9004BA249 /* LoopMailViewController.swift */; };
+		4986659E1C8D24E9004BA249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 498665671C8D24E9004BA249 /* Main.storyboard */; };
+		4986659F1C8D24E9004BA249 /* NewsDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665691C8D24E9004BA249 /* NewsDescriptionViewController.swift */; };
+		498665A01C8D24E9004BA249 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656A1C8D24E9004BA249 /* NewsTableViewCell.swift */; };
+		498665A11C8D24E9004BA249 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656B1C8D24E9004BA249 /* NewsViewController.swift */; };
+		498665A21C8D24E9004BA249 /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */; };
+		498665A31C8D24E9004BA249 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4986656E1C8D24E9004BA249 /* Settings.storyboard */; };
+		498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */; };
+		498665A51C8D24E9004BA249 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 498665711C8D24E9004BA249 /* Assets.xcassets */; };
+		498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 498665731C8D24E9004BA249 /* LaunchScreen.storyboard */; };
+		498665DF1C8D2628004BA249 /* SchoolLoopAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C31C8D2628004BA249 /* SchoolLoopAssignment.swift */; };
+		498665E01C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C41C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift */; };
+		498665E11C8D2628004BA249 /* SchoolLoopCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C61C8D2628004BA249 /* SchoolLoopCourse.swift */; };
+		498665E21C8D2628004BA249 /* SchoolLoopCourseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C71C8D2628004BA249 /* SchoolLoopCourseDelegate.swift */; };
+		498665E31C8D2628004BA249 /* SchoolLoopGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C91C8D2628004BA249 /* SchoolLoopGrade.swift */; };
+		498665E41C8D2628004BA249 /* SchoolLoopGradeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CA1C8D2628004BA249 /* SchoolLoopGradeDelegate.swift */; };
+		498665E51C8D2628004BA249 /* SchoolLoopLockerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CC1C8D2628004BA249 /* SchoolLoopLockerDelegate.swift */; };
+		498665E61C8D2628004BA249 /* SchoolLoopLockerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CD1C8D2628004BA249 /* SchoolLoopLockerItem.swift */; };
+		498665E71C8D2628004BA249 /* SchoolLoopLockerItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CE1C8D2628004BA249 /* SchoolLoopLockerItemType.swift */; };
+		498665E81C8D2628004BA249 /* SchoolLoopLoopMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D01C8D2628004BA249 /* SchoolLoopLoopMail.swift */; };
+		498665E91C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D11C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift */; };
+		498665EA1C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D21C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift */; };
+		498665EB1C8D2628004BA249 /* SchoolLoopNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D41C8D2628004BA249 /* SchoolLoopNews.swift */; };
+		498665EC1C8D2628004BA249 /* SchoolLoopNewsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D51C8D2628004BA249 /* SchoolLoopNewsDelegate.swift */; };
+		498665ED1C8D2628004BA249 /* SchoolLoopSchool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D71C8D2628004BA249 /* SchoolLoopSchool.swift */; };
+		498665EE1C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D81C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift */; };
+		498665EF1C8D2628004BA249 /* SchoolLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D91C8D2628004BA249 /* SchoolLoop.swift */; };
+		498665F01C8D2628004BA249 /* SchoolLoopAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DA1C8D2628004BA249 /* SchoolLoopAccount.swift */; };
+		498665F11C8D2628004BA249 /* SchoolLoopConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */; };
+		498665F21C8D2628004BA249 /* SchoolLoopError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DC1C8D2628004BA249 /* SchoolLoopError.swift */; };
+		498665F31C8D2628004BA249 /* SchoolLoopKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */; };
+		498665F41C8D2628004BA249 /* SchoolLoopLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DE1C8D2628004BA249 /* SchoolLoopLoginDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +75,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		49053FD21C810EF200AC4EFF /* LockerItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemViewController.swift; sourceTree = "<group>"; };
 		493E17761C63E95000AFC7A6 /* break.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = break.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E178A1C63E95000AFC7A6 /* breakTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = breakTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E178E1C63E95000AFC7A6 /* breakTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = breakTests.swift; sourceTree = "<group>"; };
@@ -83,52 +82,53 @@
 		493E17951C63E95000AFC7A6 /* breakUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = breakUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E17991C63E95000AFC7A6 /* breakUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = breakUITests.swift; sourceTree = "<group>"; };
 		493E179B1C63E95000AFC7A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49C003B81C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerDelegate.swift; sourceTree = "<group>"; };
-		49C003BA1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItem.swift; sourceTree = "<group>"; };
-		49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItemType.swift; sourceTree = "<group>"; };
-		49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemCollectionViewCell.swift; sourceTree = "<group>"; };
-		49C003C21C80C76600FFB593 /* LockerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerViewController.swift; sourceTree = "<group>"; };
-		49C80BC21C840F9B00E05379 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
-		49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTableViewController.swift; sourceTree = "<group>"; };
-		49D04DD41C646F3C00363A2F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		49D04DD51C646F3C00363A2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		49D04DD61C646F3C00363A2F /* AssignmentDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentDescriptionViewController.swift; sourceTree = "<group>"; };
-		49D04DD71C646F3C00363A2F /* AssignmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentsViewController.swift; sourceTree = "<group>"; };
-		49D04DD81C646F3C00363A2F /* AssignmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentTableViewCell.swift; sourceTree = "<group>"; };
-		49D04DDA1C646F3C00363A2F /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
-		49D04DDB1C646F3C00363A2F /* CourseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
-		49D04DDC1C646F3C00363A2F /* GradeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradeTableViewCell.swift; sourceTree = "<group>"; };
-		49D04DDD1C646F3C00363A2F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49D04DDE1C646F3C00363A2F /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		49D04DDF1C646F3C00363A2F /* LoopMailMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailMessageViewController.swift; sourceTree = "<group>"; };
-		49D04DE01C646F3C00363A2F /* LoopMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailTableViewCell.swift; sourceTree = "<group>"; };
-		49D04DE11C646F3C00363A2F /* LoopMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailViewController.swift; sourceTree = "<group>"; };
-		49D04DE21C646F3C00363A2F /* NewsDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsDescriptionViewController.swift; sourceTree = "<group>"; };
-		49D04DE31C646F3C00363A2F /* NewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
-		49D04DE41C646F3C00363A2F /* NewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
-		49D04DE51C646F3C00363A2F /* ProgressReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportViewController.swift; sourceTree = "<group>"; };
-		49D04DE61C646F3C00363A2F /* SchoolLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoop.swift; sourceTree = "<group>"; };
-		49D04DE71C646F3C00363A2F /* SchoolLoopAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAccount.swift; sourceTree = "<group>"; };
-		49D04DE81C646F3C00363A2F /* SchoolLoopAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignment.swift; sourceTree = "<group>"; };
-		49D04DE91C646F3C00363A2F /* SchoolLoopAssignmentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignmentDelegate.swift; sourceTree = "<group>"; };
-		49D04DEA1C646F3C00363A2F /* SchoolLoopConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopConstants.swift; sourceTree = "<group>"; };
-		49D04DEB1C646F3C00363A2F /* SchoolLoopCourse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCourse.swift; sourceTree = "<group>"; };
-		49D04DEC1C646F3C00363A2F /* SchoolLoopCourseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCourseDelegate.swift; sourceTree = "<group>"; };
-		49D04DED1C646F3C00363A2F /* SchoolLoopError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopError.swift; sourceTree = "<group>"; };
-		49D04DEE1C646F3C00363A2F /* SchoolLoopGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGrade.swift; sourceTree = "<group>"; };
-		49D04DEF1C646F3C00363A2F /* SchoolLoopGradeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGradeDelegate.swift; sourceTree = "<group>"; };
-		49D04DF01C646F3D00363A2F /* SchoolLoopKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopKeychain.swift; sourceTree = "<group>"; };
-		49D04DF11C646F3D00363A2F /* SchoolLoopLoginDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoginDelegate.swift; sourceTree = "<group>"; };
-		49D04DF21C646F3D00363A2F /* SchoolLoopLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMail.swift; sourceTree = "<group>"; };
-		49D04DF31C646F3D00363A2F /* SchoolLoopLoopMailDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMailDelegate.swift; sourceTree = "<group>"; };
-		49D04DF41C646F3D00363A2F /* SchoolLoopLoopMailMessageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMailMessageDelegate.swift; sourceTree = "<group>"; };
-		49D04DF51C646F3D00363A2F /* SchoolLoopNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNews.swift; sourceTree = "<group>"; };
-		49D04DF61C646F3D00363A2F /* SchoolLoopNewsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNewsDelegate.swift; sourceTree = "<group>"; };
-		49D04DF71C646F3D00363A2F /* SchoolLoopSchool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchool.swift; sourceTree = "<group>"; };
-		49D04DF81C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchoolDelegate.swift; sourceTree = "<group>"; };
-		49D04DF91C646F3D00363A2F /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
-		49D04E231C646FBE00363A2F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		49D04E241C646FBE00363A2F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		498665541C8D24E9004BA249 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentDescriptionViewController.swift; sourceTree = "<group>"; };
+		498665571C8D24E9004BA249 /* AssignmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentsViewController.swift; sourceTree = "<group>"; };
+		498665581C8D24E9004BA249 /* AssignmentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentTableViewCell.swift; sourceTree = "<group>"; };
+		4986655A1C8D24E9004BA249 /* CoursesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
+		4986655B1C8D24E9004BA249 /* CourseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseTableViewCell.swift; sourceTree = "<group>"; };
+		4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradeTableViewCell.swift; sourceTree = "<group>"; };
+		4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportViewController.swift; sourceTree = "<group>"; };
+		4986655F1C8D24E9004BA249 /* LockerItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		498665601C8D24E9004BA249 /* LockerItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemViewController.swift; sourceTree = "<group>"; };
+		498665611C8D24E9004BA249 /* LockerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerViewController.swift; sourceTree = "<group>"; };
+		498665621C8D24E9004BA249 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailMessageViewController.swift; sourceTree = "<group>"; };
+		498665651C8D24E9004BA249 /* LoopMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailTableViewCell.swift; sourceTree = "<group>"; };
+		498665661C8D24E9004BA249 /* LoopMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailViewController.swift; sourceTree = "<group>"; };
+		498665671C8D24E9004BA249 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = break/Main.storyboard; sourceTree = "<group>"; };
+		498665691C8D24E9004BA249 /* NewsDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsDescriptionViewController.swift; sourceTree = "<group>"; };
+		4986656A1C8D24E9004BA249 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
+		4986656B1C8D24E9004BA249 /* NewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
+		4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTableViewController.swift; sourceTree = "<group>"; };
+		4986656E1C8D24E9004BA249 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		498665711C8D24E9004BA249 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		498665721C8D24E9004BA249 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		498665731C8D24E9004BA249 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		498665C31C8D2628004BA249 /* SchoolLoopAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignment.swift; sourceTree = "<group>"; };
+		498665C41C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignmentDelegate.swift; sourceTree = "<group>"; };
+		498665C61C8D2628004BA249 /* SchoolLoopCourse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCourse.swift; sourceTree = "<group>"; };
+		498665C71C8D2628004BA249 /* SchoolLoopCourseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCourseDelegate.swift; sourceTree = "<group>"; };
+		498665C91C8D2628004BA249 /* SchoolLoopGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGrade.swift; sourceTree = "<group>"; };
+		498665CA1C8D2628004BA249 /* SchoolLoopGradeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGradeDelegate.swift; sourceTree = "<group>"; };
+		498665CC1C8D2628004BA249 /* SchoolLoopLockerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerDelegate.swift; sourceTree = "<group>"; };
+		498665CD1C8D2628004BA249 /* SchoolLoopLockerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItem.swift; sourceTree = "<group>"; };
+		498665CE1C8D2628004BA249 /* SchoolLoopLockerItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItemType.swift; sourceTree = "<group>"; };
+		498665D01C8D2628004BA249 /* SchoolLoopLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMail.swift; sourceTree = "<group>"; };
+		498665D11C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMailDelegate.swift; sourceTree = "<group>"; };
+		498665D21C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMailMessageDelegate.swift; sourceTree = "<group>"; };
+		498665D41C8D2628004BA249 /* SchoolLoopNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNews.swift; sourceTree = "<group>"; };
+		498665D51C8D2628004BA249 /* SchoolLoopNewsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNewsDelegate.swift; sourceTree = "<group>"; };
+		498665D71C8D2628004BA249 /* SchoolLoopSchool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchool.swift; sourceTree = "<group>"; };
+		498665D81C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchoolDelegate.swift; sourceTree = "<group>"; };
+		498665D91C8D2628004BA249 /* SchoolLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoop.swift; sourceTree = "<group>"; };
+		498665DA1C8D2628004BA249 /* SchoolLoopAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAccount.swift; sourceTree = "<group>"; };
+		498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopConstants.swift; sourceTree = "<group>"; };
+		498665DC1C8D2628004BA249 /* SchoolLoopError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopError.swift; sourceTree = "<group>"; };
+		498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopKeychain.swift; sourceTree = "<group>"; };
+		498665DE1C8D2628004BA249 /* SchoolLoopLoginDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoginDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,53 +179,10 @@
 		493E17781C63E95000AFC7A6 /* break */ = {
 			isa = PBXGroup;
 			children = (
-				49D04DD31C646F3C00363A2F /* AccountTableViewController.swift */,
-				49D04DD41C646F3C00363A2F /* AppDelegate.swift */,
-				49D04DD61C646F3C00363A2F /* AssignmentDescriptionViewController.swift */,
-				49D04DD71C646F3C00363A2F /* AssignmentsViewController.swift */,
-				49D04DD81C646F3C00363A2F /* AssignmentTableViewCell.swift */,
-				49D04DDA1C646F3C00363A2F /* CoursesViewController.swift */,
-				49D04DDB1C646F3C00363A2F /* CourseTableViewCell.swift */,
-				49D04DDC1C646F3C00363A2F /* GradeTableViewCell.swift */,
-				49C003C21C80C76600FFB593 /* LockerViewController.swift */,
-				49C003C01C80C1C900FFB593 /* LockerItemCollectionViewCell.swift */,
-				49053FD21C810EF200AC4EFF /* LockerItemViewController.swift */,
-				49D04DDE1C646F3C00363A2F /* LoginViewController.swift */,
-				49D04DDF1C646F3C00363A2F /* LoopMailMessageViewController.swift */,
-				49D04DE01C646F3C00363A2F /* LoopMailTableViewCell.swift */,
-				49D04DE11C646F3C00363A2F /* LoopMailViewController.swift */,
-				49D04DE21C646F3C00363A2F /* NewsDescriptionViewController.swift */,
-				49D04DE31C646F3C00363A2F /* NewsTableViewCell.swift */,
-				49D04DE41C646F3C00363A2F /* NewsViewController.swift */,
-				49D04DE51C646F3C00363A2F /* ProgressReportViewController.swift */,
-				49D04DF91C646F3D00363A2F /* SettingsTableViewController.swift */,
-				49D04DE61C646F3C00363A2F /* SchoolLoop.swift */,
-				49D04DE71C646F3C00363A2F /* SchoolLoopAccount.swift */,
-				49D04DE81C646F3C00363A2F /* SchoolLoopAssignment.swift */,
-				49D04DE91C646F3C00363A2F /* SchoolLoopAssignmentDelegate.swift */,
-				49D04DEA1C646F3C00363A2F /* SchoolLoopConstants.swift */,
-				49D04DEB1C646F3C00363A2F /* SchoolLoopCourse.swift */,
-				49D04DEC1C646F3C00363A2F /* SchoolLoopCourseDelegate.swift */,
-				49D04DED1C646F3C00363A2F /* SchoolLoopError.swift */,
-				49D04DEE1C646F3C00363A2F /* SchoolLoopGrade.swift */,
-				49D04DEF1C646F3C00363A2F /* SchoolLoopGradeDelegate.swift */,
-				49D04DF01C646F3D00363A2F /* SchoolLoopKeychain.swift */,
-				49C003B81C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift */,
-				49C003BA1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift */,
-				49C003BC1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift */,
-				49D04DF11C646F3D00363A2F /* SchoolLoopLoginDelegate.swift */,
-				49D04DF21C646F3D00363A2F /* SchoolLoopLoopMail.swift */,
-				49D04DF31C646F3D00363A2F /* SchoolLoopLoopMailDelegate.swift */,
-				49D04DF41C646F3D00363A2F /* SchoolLoopLoopMailMessageDelegate.swift */,
-				49D04DF51C646F3D00363A2F /* SchoolLoopNews.swift */,
-				49D04DF61C646F3D00363A2F /* SchoolLoopNewsDelegate.swift */,
-				49D04DF71C646F3D00363A2F /* SchoolLoopSchool.swift */,
-				49D04DF81C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift */,
-				49D04E241C646FBE00363A2F /* Main.storyboard */,
-				49C80BC21C840F9B00E05379 /* Settings.storyboard */,
-				49D04E231C646FBE00363A2F /* LaunchScreen.storyboard */,
-				49D04DD51C646F3C00363A2F /* Assets.xcassets */,
-				49D04DDD1C646F3C00363A2F /* Info.plist */,
+				498665531C8D24E9004BA249 /* break */,
+				498665671C8D24E9004BA249 /* Main.storyboard */,
+				498665C11C8D2628004BA249 /* SchoolLoop */,
+				498665701C8D24E9004BA249 /* Resources */,
 			);
 			path = break;
 			sourceTree = "<group>";
@@ -246,6 +203,178 @@
 				493E179B1C63E95000AFC7A6 /* Info.plist */,
 			);
 			path = breakUITests;
+			sourceTree = "<group>";
+		};
+		498665531C8D24E9004BA249 /* break */ = {
+			isa = PBXGroup;
+			children = (
+				498665541C8D24E9004BA249 /* AppDelegate.swift */,
+				498665621C8D24E9004BA249 /* LoginViewController.swift */,
+				498665551C8D24E9004BA249 /* Assignments */,
+				498665591C8D24E9004BA249 /* Courses */,
+				4986655E1C8D24E9004BA249 /* Locker */,
+				498665631C8D24E9004BA249 /* LoopMail */,
+				498665681C8D24E9004BA249 /* News */,
+				4986656C1C8D24E9004BA249 /* Settings */,
+			);
+			path = break;
+			sourceTree = "<group>";
+		};
+		498665551C8D24E9004BA249 /* Assignments */ = {
+			isa = PBXGroup;
+			children = (
+				498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */,
+				498665571C8D24E9004BA249 /* AssignmentsViewController.swift */,
+				498665581C8D24E9004BA249 /* AssignmentTableViewCell.swift */,
+			);
+			path = Assignments;
+			sourceTree = "<group>";
+		};
+		498665591C8D24E9004BA249 /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				4986655A1C8D24E9004BA249 /* CoursesViewController.swift */,
+				4986655B1C8D24E9004BA249 /* CourseTableViewCell.swift */,
+				4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */,
+				4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */,
+			);
+			path = Courses;
+			sourceTree = "<group>";
+		};
+		4986655E1C8D24E9004BA249 /* Locker */ = {
+			isa = PBXGroup;
+			children = (
+				4986655F1C8D24E9004BA249 /* LockerItemCollectionViewCell.swift */,
+				498665601C8D24E9004BA249 /* LockerItemViewController.swift */,
+				498665611C8D24E9004BA249 /* LockerViewController.swift */,
+			);
+			path = Locker;
+			sourceTree = "<group>";
+		};
+		498665631C8D24E9004BA249 /* LoopMail */ = {
+			isa = PBXGroup;
+			children = (
+				498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */,
+				498665651C8D24E9004BA249 /* LoopMailTableViewCell.swift */,
+				498665661C8D24E9004BA249 /* LoopMailViewController.swift */,
+			);
+			path = LoopMail;
+			sourceTree = "<group>";
+		};
+		498665681C8D24E9004BA249 /* News */ = {
+			isa = PBXGroup;
+			children = (
+				498665691C8D24E9004BA249 /* NewsDescriptionViewController.swift */,
+				4986656A1C8D24E9004BA249 /* NewsTableViewCell.swift */,
+				4986656B1C8D24E9004BA249 /* NewsViewController.swift */,
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
+		4986656C1C8D24E9004BA249 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */,
+				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
+				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		498665701C8D24E9004BA249 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				498665711C8D24E9004BA249 /* Assets.xcassets */,
+				498665721C8D24E9004BA249 /* Info.plist */,
+				498665731C8D24E9004BA249 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		498665C11C8D2628004BA249 /* SchoolLoop */ = {
+			isa = PBXGroup;
+			children = (
+				498665D91C8D2628004BA249 /* SchoolLoop.swift */,
+				498665DA1C8D2628004BA249 /* SchoolLoopAccount.swift */,
+				498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */,
+				498665DC1C8D2628004BA249 /* SchoolLoopError.swift */,
+				498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */,
+				498665DE1C8D2628004BA249 /* SchoolLoopLoginDelegate.swift */,
+				498665C21C8D2628004BA249 /* Assignment */,
+				498665C51C8D2628004BA249 /* Course */,
+				498665C81C8D2628004BA249 /* Grade */,
+				498665CB1C8D2628004BA249 /* Locker */,
+				498665CF1C8D2628004BA249 /* LoopMail */,
+				498665D31C8D2628004BA249 /* News */,
+				498665D61C8D2628004BA249 /* School */,
+			);
+			name = SchoolLoop;
+			path = break/SchoolLoop;
+			sourceTree = "<group>";
+		};
+		498665C21C8D2628004BA249 /* Assignment */ = {
+			isa = PBXGroup;
+			children = (
+				498665C31C8D2628004BA249 /* SchoolLoopAssignment.swift */,
+				498665C41C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift */,
+			);
+			path = Assignment;
+			sourceTree = "<group>";
+		};
+		498665C51C8D2628004BA249 /* Course */ = {
+			isa = PBXGroup;
+			children = (
+				498665C61C8D2628004BA249 /* SchoolLoopCourse.swift */,
+				498665C71C8D2628004BA249 /* SchoolLoopCourseDelegate.swift */,
+			);
+			path = Course;
+			sourceTree = "<group>";
+		};
+		498665C81C8D2628004BA249 /* Grade */ = {
+			isa = PBXGroup;
+			children = (
+				498665C91C8D2628004BA249 /* SchoolLoopGrade.swift */,
+				498665CA1C8D2628004BA249 /* SchoolLoopGradeDelegate.swift */,
+			);
+			path = Grade;
+			sourceTree = "<group>";
+		};
+		498665CB1C8D2628004BA249 /* Locker */ = {
+			isa = PBXGroup;
+			children = (
+				498665CC1C8D2628004BA249 /* SchoolLoopLockerDelegate.swift */,
+				498665CD1C8D2628004BA249 /* SchoolLoopLockerItem.swift */,
+				498665CE1C8D2628004BA249 /* SchoolLoopLockerItemType.swift */,
+			);
+			path = Locker;
+			sourceTree = "<group>";
+		};
+		498665CF1C8D2628004BA249 /* LoopMail */ = {
+			isa = PBXGroup;
+			children = (
+				498665D01C8D2628004BA249 /* SchoolLoopLoopMail.swift */,
+				498665D11C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift */,
+				498665D21C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift */,
+			);
+			path = LoopMail;
+			sourceTree = "<group>";
+		};
+		498665D31C8D2628004BA249 /* News */ = {
+			isa = PBXGroup;
+			children = (
+				498665D41C8D2628004BA249 /* SchoolLoopNews.swift */,
+				498665D51C8D2628004BA249 /* SchoolLoopNewsDelegate.swift */,
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
+		498665D61C8D2628004BA249 /* School */ = {
+			isa = PBXGroup;
+			children = (
+				498665D71C8D2628004BA249 /* SchoolLoopSchool.swift */,
+				498665D81C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift */,
+			);
+			path = School;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,10 +484,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49D04E251C646FBE00363A2F /* LaunchScreen.storyboard in Resources */,
-				49D04DFD1C646F3D00363A2F /* Assets.xcassets in Resources */,
-				49D04E261C646FBE00363A2F /* Main.storyboard in Resources */,
-				49C80BC31C840F9B00E05379 /* Settings.storyboard in Resources */,
+				4986659E1C8D24E9004BA249 /* Main.storyboard in Resources */,
+				498665A51C8D24E9004BA249 /* Assets.xcassets in Resources */,
+				498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */,
+				498665A31C8D24E9004BA249 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,48 +512,48 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49D04E1B1C646F3D00363A2F /* SchoolLoopLoopMailDelegate.swift in Sources */,
-				49D04E1E1C646F3D00363A2F /* SchoolLoopNewsDelegate.swift in Sources */,
-				49D04E061C646F3D00363A2F /* LoginViewController.swift in Sources */,
-				49D04E141C646F3D00363A2F /* SchoolLoopCourseDelegate.swift in Sources */,
-				49D04E0D1C646F3D00363A2F /* ProgressReportViewController.swift in Sources */,
-				49D04E1F1C646F3D00363A2F /* SchoolLoopSchool.swift in Sources */,
-				49D04DFE1C646F3D00363A2F /* AssignmentDescriptionViewController.swift in Sources */,
-				49D04E041C646F3D00363A2F /* GradeTableViewCell.swift in Sources */,
-				49D04E211C646F3D00363A2F /* SettingsTableViewController.swift in Sources */,
-				49D04E0C1C646F3D00363A2F /* NewsViewController.swift in Sources */,
-				49D04E091C646F3D00363A2F /* LoopMailViewController.swift in Sources */,
-				49D04E121C646F3D00363A2F /* SchoolLoopConstants.swift in Sources */,
-				49D04E071C646F3D00363A2F /* LoopMailMessageViewController.swift in Sources */,
-				49D04E0F1C646F3D00363A2F /* SchoolLoopAccount.swift in Sources */,
-				49D04E101C646F3D00363A2F /* SchoolLoopAssignment.swift in Sources */,
-				49D04DFF1C646F3D00363A2F /* AssignmentsViewController.swift in Sources */,
-				49D04E1C1C646F3D00363A2F /* SchoolLoopLoopMailMessageDelegate.swift in Sources */,
-				49D04E201C646F3D00363A2F /* SchoolLoopSchoolDelegate.swift in Sources */,
-				49C003B91C7FECE300FFB593 /* SchoolLoopLockerDelegate.swift in Sources */,
-				49D04E1D1C646F3D00363A2F /* SchoolLoopNews.swift in Sources */,
-				49D04E001C646F3D00363A2F /* AssignmentTableViewCell.swift in Sources */,
-				49053FD31C810EF200AC4EFF /* LockerItemViewController.swift in Sources */,
-				49C003C11C80C1C900FFB593 /* LockerItemCollectionViewCell.swift in Sources */,
-				49D04E131C646F3D00363A2F /* SchoolLoopCourse.swift in Sources */,
-				49C003C31C80C76600FFB593 /* LockerViewController.swift in Sources */,
-				49D04E181C646F3D00363A2F /* SchoolLoopKeychain.swift in Sources */,
-				49D04E171C646F3D00363A2F /* SchoolLoopGradeDelegate.swift in Sources */,
-				49C003BB1C7FEE5D00FFB593 /* SchoolLoopLockerItem.swift in Sources */,
-				49D04DFC1C646F3D00363A2F /* AppDelegate.swift in Sources */,
-				49D04E0B1C646F3D00363A2F /* NewsTableViewCell.swift in Sources */,
-				49D04E191C646F3D00363A2F /* SchoolLoopLoginDelegate.swift in Sources */,
-				49D04E161C646F3D00363A2F /* SchoolLoopGrade.swift in Sources */,
-				49D04E0A1C646F3D00363A2F /* NewsDescriptionViewController.swift in Sources */,
-				49D04E0E1C646F3D00363A2F /* SchoolLoop.swift in Sources */,
-				49D04E111C646F3D00363A2F /* SchoolLoopAssignmentDelegate.swift in Sources */,
-				49D04DFB1C646F3D00363A2F /* AccountTableViewController.swift in Sources */,
-				49D04E151C646F3D00363A2F /* SchoolLoopError.swift in Sources */,
-				49C003BD1C7FFA1800FFB593 /* SchoolLoopLockerItemType.swift in Sources */,
-				49D04E081C646F3D00363A2F /* LoopMailTableViewCell.swift in Sources */,
-				49D04E1A1C646F3D00363A2F /* SchoolLoopLoopMail.swift in Sources */,
-				49D04E021C646F3D00363A2F /* CoursesViewController.swift in Sources */,
-				49D04E031C646F3D00363A2F /* CourseTableViewCell.swift in Sources */,
+				498665E71C8D2628004BA249 /* SchoolLoopLockerItemType.swift in Sources */,
+				498665EA1C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift in Sources */,
+				498665E51C8D2628004BA249 /* SchoolLoopLockerDelegate.swift in Sources */,
+				4986659D1C8D24E9004BA249 /* LoopMailViewController.swift in Sources */,
+				498665F41C8D2628004BA249 /* SchoolLoopLoginDelegate.swift in Sources */,
+				498665DF1C8D2628004BA249 /* SchoolLoopAssignment.swift in Sources */,
+				4986659B1C8D24E9004BA249 /* LoopMailMessageViewController.swift in Sources */,
+				498665E01C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift in Sources */,
+				4986659A1C8D24E9004BA249 /* LoginViewController.swift in Sources */,
+				498665921C8D24E9004BA249 /* AssignmentTableViewCell.swift in Sources */,
+				498665E11C8D2628004BA249 /* SchoolLoopCourse.swift in Sources */,
+				498665961C8D24E9004BA249 /* ProgressReportViewController.swift in Sources */,
+				498665971C8D24E9004BA249 /* LockerItemCollectionViewCell.swift in Sources */,
+				498665951C8D24E9004BA249 /* GradeTableViewCell.swift in Sources */,
+				498665F01C8D2628004BA249 /* SchoolLoopAccount.swift in Sources */,
+				498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */,
+				498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */,
+				4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */,
+				498665A21C8D24E9004BA249 /* AccountTableViewController.swift in Sources */,
+				498665E41C8D2628004BA249 /* SchoolLoopGradeDelegate.swift in Sources */,
+				498665ED1C8D2628004BA249 /* SchoolLoopSchool.swift in Sources */,
+				498665991C8D24E9004BA249 /* LockerViewController.swift in Sources */,
+				498665EC1C8D2628004BA249 /* SchoolLoopNewsDelegate.swift in Sources */,
+				498665E81C8D2628004BA249 /* SchoolLoopLoopMail.swift in Sources */,
+				498665901C8D24E9004BA249 /* AssignmentDescriptionViewController.swift in Sources */,
+				498665E31C8D2628004BA249 /* SchoolLoopGrade.swift in Sources */,
+				4986658F1C8D24E9004BA249 /* AppDelegate.swift in Sources */,
+				498665EF1C8D2628004BA249 /* SchoolLoop.swift in Sources */,
+				498665931C8D24E9004BA249 /* CoursesViewController.swift in Sources */,
+				498665F21C8D2628004BA249 /* SchoolLoopError.swift in Sources */,
+				498665A01C8D24E9004BA249 /* NewsTableViewCell.swift in Sources */,
+				498665EB1C8D2628004BA249 /* SchoolLoopNews.swift in Sources */,
+				498665E61C8D2628004BA249 /* SchoolLoopLockerItem.swift in Sources */,
+				498665F31C8D2628004BA249 /* SchoolLoopKeychain.swift in Sources */,
+				498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */,
+				498665A11C8D24E9004BA249 /* NewsViewController.swift in Sources */,
+				498665F11C8D2628004BA249 /* SchoolLoopConstants.swift in Sources */,
+				4986659F1C8D24E9004BA249 /* NewsDescriptionViewController.swift in Sources */,
+				498665981C8D24E9004BA249 /* LockerItemViewController.swift in Sources */,
+				498665E21C8D2628004BA249 /* SchoolLoopCourseDelegate.swift in Sources */,
+				498665EE1C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift in Sources */,
+				498665E91C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +677,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = break/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS";
@@ -562,7 +691,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = break/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS";
