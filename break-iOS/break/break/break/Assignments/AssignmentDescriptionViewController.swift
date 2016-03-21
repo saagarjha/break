@@ -27,7 +27,7 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = true
+//        navigationController?.hidesBarsOnSwipe = true
     }
 
 	override func viewDidLoad() {
@@ -45,7 +45,7 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 
 	func loadDescription() {
 		let assignment = schoolLoop.assignmentForID(iD)!
-		assignmentDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h2>\(assignment.title)</h2>\(assignment.description)"
+		assignmentDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3>\(assignment.title)</h3>\(assignment.description)"
 		if !assignment.links.isEmpty {
 			assignmentDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 		}
@@ -55,9 +55,9 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 		descriptionWebView.loadHTMLString(assignmentDescription, baseURL: nil)
 	}
 
-	override func prefersStatusBarHidden() -> Bool {
-		return navigationController?.navigationBarHidden ?? false
-	}
+//	override func prefersStatusBarHidden() -> Bool {
+//		return navigationController?.navigationBarHidden ?? false
+//	}
 
 	/*
 	 // MARK: - Navigation

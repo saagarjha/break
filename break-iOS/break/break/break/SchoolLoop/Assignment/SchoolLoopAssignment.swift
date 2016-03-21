@@ -24,4 +24,8 @@ class SchoolLoopAssignment {
 		self.links = links
 		self.iD = iD
 	}
+    
+    func setDueDate(dueDate: String) {
+        self.dueDate = NSDate(timeIntervalSince1970: NSTimeInterval(dueDate)! / 1000)
+    }
 }

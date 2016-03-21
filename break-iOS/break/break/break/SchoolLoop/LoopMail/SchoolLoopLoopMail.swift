@@ -23,4 +23,8 @@ class SchoolLoopLoopMail {
 		self.date = NSDate(timeIntervalSince1970: NSTimeInterval(date)! / 1000)
 		self.ID = ID
 	}
+    
+    func setDate(date: String) {
+        self.date = NSDate(timeIntervalSince1970: NSTimeInterval(date)! / 1000)
+    }
 }

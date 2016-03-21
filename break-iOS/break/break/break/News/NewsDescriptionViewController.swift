@@ -24,11 +24,11 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 		descriptionWebView.allowsBackForwardNavigationGestures = true
 		view = descriptionWebView
 	}
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = true
-    }
+
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationController?.hidesBarsOnSwipe = true
+//    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -48,7 +48,7 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 			print("Could not get news for iD")
 			return
 		}
-		newsDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h2>\(news.title)</h2>\(news.description)"
+		newsDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3>\(news.title)</h3>\(news.description)"
 		if !news.links.isEmpty {
 			newsDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 		}
@@ -57,10 +57,10 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 		}
 		descriptionWebView.loadHTMLString(newsDescription, baseURL: nil)
 	}
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return navigationController?.navigationBarHidden ?? false
-    }
+
+//    override func prefersStatusBarHidden() -> Bool {
+//        return navigationController?.navigationBarHidden ?? false
+//    }
 
 	/*
 	 // MARK: - Navigation

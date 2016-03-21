@@ -16,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
+		if (UIApplication.instancesRespondToSelector(#selector(UIApplication.registerUserNotificationSettings(_:)))) {
+			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
+		}
+		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+		application.applicationIconBadgeNumber = 0
+
 		let schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.schoolDelegate = self
 		schoolLoop.getSchools()
@@ -44,6 +50,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
 
+	func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+		completionHandler(fetch() ? .NewData : .NoData)
+	}
+
+	func fetch() -> Bool {
+		var updated = false
+		if let tabBarController = window?.rootViewController as? UITabBarController,
+			viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
+				for viewController in viewControllers {
+					if let coursesViewController = viewController as? CoursesViewController {
+						coursesViewController.schoolLoop = SchoolLoop.sharedInstance
+						updated ||= coursesViewController.refresh(self)
+					}
+					if let assignmentsViewController = viewController as? AssignmentsViewController {
+						assignmentsViewController.schoolLoop = SchoolLoop.sharedInstance
+						updated ||= assignmentsViewController.refresh(self)
+					}
+					if let loopMailViewController = viewController as? LoopMailViewController {
+						loopMailViewController.schoolLoop = SchoolLoop.sharedInstance
+						updated ||= loopMailViewController.refresh(self)
+					}
+					if let newsViewController = viewController as? NewsViewController {
+						newsViewController.schoolLoop = SchoolLoop.sharedInstance
+						updated ||= newsViewController.refresh(self)
+					}
+				}
+		}
+		return updated
+	}
+
 	func gotSchools(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
 		if error == nil {
 			if let schoolName = NSUserDefaults.standardUserDefaults().stringForKey("schoolName"), username = NSUserDefaults.standardUserDefaults().stringForKey("username"), password = schoolLoop.keychain.getPassword(username) {
@@ -63,6 +99,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 			dispatch_async(dispatch_get_main_queue()) {
 				self.window?.rootViewController = tabViewController
 			}
+		} else {
+			dispatch_async(dispatch_get_main_queue()) {
+				let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
+				let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
+					dispatch_async(dispatch_get_main_queue()) {
+						self.showLogin()
+					}
+				}
+				alertController.addAction(okAction)
+				UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+			}
 		}
 	}
 
@@ -74,8 +121,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 	}
 
 	func showLogout() {
+		UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let loginViewController = storyboard.instantiateViewControllerWithIdentifier("login")
 		window?.rootViewController = loginViewController
 	}
+}
+
+infix operator ||= { associativity left precedence 90 }
+
+func ||= (inout lhs: Bool, rhs: Bool) {
+	lhs = lhs || rhs
 }

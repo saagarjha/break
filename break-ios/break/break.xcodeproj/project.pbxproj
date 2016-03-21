@@ -446,6 +446,11 @@
 					493E17751C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = X4A9GH5NN2;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					493E17891C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;

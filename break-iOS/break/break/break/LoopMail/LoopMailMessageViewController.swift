@@ -24,11 +24,11 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 		messageWebView.allowsBackForwardNavigationGestures = true
 		view = messageWebView
 	}
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = true
-    }
+
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationController?.hidesBarsOnSwipe = true
+//    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -51,7 +51,7 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 					print("Could not get LoopMail for ID")
 					return
 				}
-				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h3><h2>\(loopMail.subject)</h2><hr>\(loopMail.message)"
+				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
 				if !loopMail.links.isEmpty {
 					self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 				}
@@ -63,9 +63,9 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 		}
 	}
 
-	override func prefersStatusBarHidden() -> Bool {
-		return navigationController?.navigationBarHidden ?? false
-	}
+//	override func prefersStatusBarHidden() -> Bool {
+//		return navigationController?.navigationBarHidden ?? false
+//	}
 
 	/*
 	 // MARK: - Navigation

@@ -20,14 +20,21 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	var destinationViewController: LockerItemViewController!
 
-	@IBOutlet weak var lockerCollectionView: UICollectionView!
+	@IBOutlet weak var lockerCollectionView: UICollectionView! {
+		didSet {
+			lockerCollectionView.alwaysBounceVertical = true
+			refreshControl.addTarget(self, action: #selector(LockerViewController.refresh(_:)), forControlEvents: .ValueChanged)
+			lockerCollectionView.addSubview(refreshControl)
+		}
+	}
+	let refreshControl = UIRefreshControl()
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		if let schoolLoop = schoolLoop {
 			schoolLoop.lockerDelegate = self
 		}
-        navigationController?.hidesBarsOnSwipe = false
+//        navigationController?.hidesBarsOnSwipe = false
 	}
 
 	override func viewDidLoad() {
@@ -61,6 +68,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	func gotLocker(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
 		dispatch_async(dispatch_get_main_queue()) {
+            self.refreshControl.endRefreshing()
 			if error == nil {
 				guard let lockerItem = schoolLoop.lockerItemForPath(self.path) else {
 					return
@@ -71,6 +79,10 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 				self.lockerCollectionView.reloadData()
 			}
 		}
+	}
+
+    func refresh(sender: AnyObject) {
+		schoolLoop.getLocker(path)
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

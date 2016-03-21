@@ -24,4 +24,8 @@ class SchoolLoopNews {
 		self.links = links
 		self.iD = iD
 	}
+
+	func setCreatedDate(createdDate: String) {
+		self.createdDate = NSDate(timeIntervalSince1970: NSTimeInterval(createdDate)! / 1000)
+	}
 }

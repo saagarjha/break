@@ -21,21 +21,26 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		didSet {
 			loopMailTableView.rowHeight = UITableViewAutomaticDimension
 			loopMailTableView.estimatedRowHeight = 80.0
+			refreshControl.addTarget(self, action: #selector(LoopMailViewController.refresh(_:)), forControlEvents: .ValueChanged)
+			loopMailTableView.addSubview(refreshControl)
 		}
 	}
+	let refreshControl = UIRefreshControl()
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = false
-    }
-    
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationController?.hidesBarsOnSwipe = false
+//    }
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.loopMailDelegate = self
-		schoolLoop.getLoopMail()
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.getLoopMail()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -49,7 +54,12 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 				self.loopMail = schoolLoop.loopMail
 				self.loopMailTableView.reloadData()
 			}
+            self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 		}
+	}
+
+    func refresh(sender: AnyObject) -> Bool {
+		return schoolLoop.getLoopMail()
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

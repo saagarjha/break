@@ -133,15 +133,15 @@ class SchoolLoop: NSObject {
 	func logOut() {
 		keychain.removePassword(username)
 		SchoolLoop.sharedInstance = SchoolLoop()
-			(UIApplication.sharedApplication().delegate as? AppDelegate)?.showLogout()
+		(UIApplication.sharedApplication().delegate as? AppDelegate)?.showLogout()
 	}
 
-	func getCourses() {
+	func getCourses() -> Bool {
+		var updated = false
 		let url = SchoolLoopConstants.courseURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
-			self.courses.removeAll()
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
 				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 					self.courseDelegate?.gotGrades(self, error: .ParseError)
@@ -161,15 +161,36 @@ class SchoolLoop: NSObject {
 					teacherName = courseJSON["teacherName"] as? String,
 					grade = courseJSON["grade"] as? String,
 					score = courseJSON["score"] as? String,
-					periodID = courseJSON["periodID"] as? String else {
+					periodID = courseJSON["periodID"] as? String,
+					lastUpdated = courseJSON["lastUpdated"] as? String else {
 						self.courseDelegate?.gotGrades(self, error: .ParseError)
 						return
 				}
-				let course = SchoolLoopCourse(courseName: courseName, period: period, teacherName: teacherName, grade: grade, score: score, periodID: periodID)
-				self.courses.append(course)
+				if let course = self.courseForPeriodID(periodID) { #column
+					course.courseName = courseName
+					course.period = period
+					course.teacherName = teacherName
+					course.grade = grade
+					if course.setLastUpdated(lastUpdated) {
+						updated = true
+						if UIApplication.sharedApplication().applicationState == .Background {
+							let notification = UILocalNotification()
+							notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+							notification.alertBody = "Your grade in \(courseName) has changed"
+							notification.applicationIconBadgeNumber = 1
+							notification.soundName = UILocalNotificationDefaultSoundName
+							UIApplication.sharedApplication().scheduleLocalNotification(notification)
+						}
+					}
+				} else {
+					let course = SchoolLoopCourse(courseName: courseName, period: period, teacherName: teacherName, grade: grade, score: score, periodID: periodID)
+					course.setLastUpdated(lastUpdated)
+					self.courses.append(course)
+				}
 			}
 			self.courseDelegate?.gotGrades(self, error: nil)
-		}.resume()
+		}
+		return updated
 	}
 
 	func getGrades(periodID: String) {
@@ -218,12 +239,12 @@ class SchoolLoop: NSObject {
 		}.resume()
 	}
 
-	func getAssignments() {
+	func getAssignments() -> Bool {
+		var updated = false
 		let url = SchoolLoopConstants.assignmentURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
-			self.assignments.removeAll()
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
 				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments
 			) as? [AnyObject] else {
@@ -262,19 +283,36 @@ class SchoolLoop: NSObject {
 						links.append((title: title, URL: URL))
 					}
 				}
-				let assignment = SchoolLoopAssignment(title: title, description: description, courseName: courseName, dueDate: dueDate, links: links, iD: iD)
-				self.assignments.append(assignment)
+				if let assignment = self.assignmentForID(iD) {
+					assignment.title = title
+					assignment.courseName = courseName
+					assignment.description = description
+					assignment.setDueDate(dueDate)
+				} else {
+					updated = true
+					if UIApplication.sharedApplication().applicationState == .Background {
+						let notification = UILocalNotification()
+						notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+						notification.alertBody = "New assignment \(title) posted for \(courseName)"
+						notification.applicationIconBadgeNumber = 1
+						notification.soundName = UILocalNotificationDefaultSoundName
+						UIApplication.sharedApplication().scheduleLocalNotification(notification)
+					}
+					let assignment = SchoolLoopAssignment(title: title, description: description, courseName: courseName, dueDate: dueDate, links: links, iD: iD)
+					self.assignments.append(assignment)
+				}
 			}
 			self.assignmentDelegate?.gotAssignments(self, error: nil)
-		}.resume()
+		}
+		return updated
 	}
 
-	func getLoopMail() {
+	func getLoopMail() -> Bool {
+		var updated = false
 		let url = SchoolLoopConstants.loopMailURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
-			self.loopMail.removeAll()
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
 				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
@@ -303,11 +341,28 @@ class SchoolLoop: NSObject {
 					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
 					return
 				}
-				let loopMail = SchoolLoopLoopMail(subject: subject, sender: sender, date: date, ID: ID)
-				self.loopMail.append(loopMail)
+				if let loopMail = self.loopMailForID(ID) {
+					loopMail.subject = subject
+					loopMail.sender = sender
+					loopMail.setDate(date)
+					loopMail.ID = ID
+				} else {
+					updated = true
+					if UIApplication.sharedApplication().applicationState == .Background {
+						let notification = UILocalNotification()
+						notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+						notification.alertBody = "From: \(sender)\n\(subject)"
+						notification.applicationIconBadgeNumber = 1
+						notification.soundName = UILocalNotificationDefaultSoundName
+						UIApplication.sharedApplication().scheduleLocalNotification(notification)
+					}
+					let loopMail = SchoolLoopLoopMail(subject: subject, sender: sender, date: date, ID: ID)
+					self.loopMail.append(loopMail)
+				}
 			}
 			self.loopMailDelegate?.gotLoopMail(self, error: nil)
-		}.resume()
+		}
+		return updated
 	}
 
 	func getLoopMailMessage(ID: String) {
@@ -353,12 +408,12 @@ class SchoolLoop: NSObject {
 		}.resume()
 	}
 
-	func getNews() {
+	func getNews() -> Bool {
+		var updated = false
 		let url = SchoolLoopConstants.newsURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
-			self.news.removeAll()
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
 				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 					self.newsDelegate?.gotNews(self, error: .ParseError)
@@ -396,11 +451,29 @@ class SchoolLoop: NSObject {
 						links.append((title: title, URL: URL))
 					}
 				}
-				let news = SchoolLoopNews(title: title, authorName: authorName, createdDate: createdDate, description: description, links: links, iD: iD)
-				self.news.append(news)
+				if let news = self.newsForID(iD) {
+					news.title = title
+					news.authorName = authorName
+					news.setCreatedDate(createdDate)
+					news.description = description
+					news.links = links
+				} else {
+					updated = true
+					if UIApplication.sharedApplication().applicationState == .Background {
+						let notification = UILocalNotification()
+						notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+						notification.alertBody = "\(title)\n\(authorName)"
+						notification.applicationIconBadgeNumber = 1
+						notification.soundName = UILocalNotificationDefaultSoundName
+						UIApplication.sharedApplication().scheduleLocalNotification(notification)
+					}
+					let news = SchoolLoopNews(title: title, authorName: authorName, createdDate: createdDate, description: description, links: links, iD: iD)
+					self.news.append(news)
+				}
 			}
 			self.newsDelegate?.gotNews(self, error: nil)
-		}.resume()
+		}
+		return updated
 	}
 
 	func getLocker(path: String) {
@@ -408,7 +481,7 @@ class SchoolLoop: NSObject {
 		let request = authenticatedRequest(url)
 		request.HTTPMethod = "PROPFIND"
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data else {
 				self.lockerDelegate?.gotLocker(self, error: .ParseError)
 				return
@@ -421,7 +494,7 @@ class SchoolLoop: NSObject {
 			} else {
 				self.lockerDelegate?.gotLocker(self, error: nil)
 			}
-		}.resume()
+		}
 	}
 
 	func authenticatedRequest(url: NSURL) -> NSMutableURLRequest {
@@ -466,9 +539,9 @@ class SchoolLoop: NSObject {
 	}
 
 	func loopMailForID(ID: String) -> SchoolLoopLoopMail? {
-		for mail in loopMail {
-			if mail.ID == ID {
-				return mail
+		for loopMail in self.loopMail {
+			if loopMail.ID == ID {
+				return loopMail
 			}
 		}
 		return nil
@@ -518,7 +591,7 @@ class SchoolLoop: NSObject {
 }
 
 extension SchoolLoop: NSXMLParserDelegate {
-	func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+	func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
 		currentTokens.append(elementName)
 	}
 
@@ -557,5 +630,20 @@ extension SchoolLoop: NSXMLParserDelegate {
 				}
 			}
 		}
+	}
+}
+
+extension NSURLSession {
+	func synchronousDataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
+		var data: NSData?, response: NSURLResponse?, error: NSError?
+		let semaphore = dispatch_semaphore_create(0)
+		dataTaskWithRequest(request) {
+			data = $0
+			response = $1
+			error = $2
+			dispatch_semaphore_signal(semaphore)
+		}.resume()
+		dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+		completionHandler(data, response, error)
 	}
 }

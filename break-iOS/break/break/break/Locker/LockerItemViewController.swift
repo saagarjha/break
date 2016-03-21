@@ -25,10 +25,10 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 		view = lockerItemWebView
 	}
 
-	override func viewWillAppear(animated: Bool) {
-		super.viewWillAppear(animated)
-		navigationController?.hidesBarsOnSwipe = true
-	}
+//	override func viewWillAppear(animated: Bool) {
+//		super.viewWillAppear(animated)
+//		navigationController?.hidesBarsOnSwipe = true
+//	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -48,9 +48,9 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 		lockerItemWebView.loadRequest(request)
 	}
 
-	override func prefersStatusBarHidden() -> Bool {
-		return navigationController?.navigationBarHidden ?? false
-	}
+//	override func prefersStatusBarHidden() -> Bool {
+//		return navigationController?.navigationBarHidden ?? false
+//	}
 
 	/*
 	 // MARK: - Navigation

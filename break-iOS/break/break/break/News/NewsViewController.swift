@@ -21,21 +21,26 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		didSet {
 			newsTableView.rowHeight = UITableViewAutomaticDimension
 			newsTableView.estimatedRowHeight = 80.0
+			refreshControl.addTarget(self, action: #selector(NewsViewController.refresh(_:)), forControlEvents: .ValueChanged)
+			newsTableView.addSubview(refreshControl)
 		}
 	}
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = false
-    }
-    
+	let refreshControl = UIRefreshControl()
+
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationController?.hidesBarsOnSwipe = false
+//    }
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.newsDelegate = self
-		schoolLoop.getNews()
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.getNews()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -49,7 +54,12 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 				self.news = schoolLoop.news
 				self.newsTableView.reloadData()
 			}
+			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 		}
+	}
+
+	func refresh(sender: AnyObject) -> Bool {
+		return schoolLoop.getNews()
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

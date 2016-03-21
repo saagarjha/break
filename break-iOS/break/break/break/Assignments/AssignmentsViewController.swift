@@ -21,13 +21,16 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		didSet {
 			assignmentsTableView.rowHeight = UITableViewAutomaticDimension
 			assignmentsTableView.estimatedRowHeight = 80.0
+			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), forControlEvents: .ValueChanged)
+			assignmentsTableView.addSubview(refreshControl)
 		}
 	}
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.hidesBarsOnSwipe = false
-    }
+	let refreshControl = UIRefreshControl()
+
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationController?.hidesBarsOnSwipe = false
+//    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -35,7 +38,9 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.assignmentDelegate = self
-		schoolLoop.getAssignments()
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.getAssignments()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -49,7 +54,12 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 				self.assignments = schoolLoop.assignmentsWithDueDates
 				self.assignmentsTableView.reloadData()
 			}
+			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 		}
+	}
+
+	func refresh(sender: AnyObject) -> Bool {
+		return schoolLoop.getAssignments()
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
@@ -78,7 +88,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		}
 		let section = indexPath.section
 		let row = indexPath.row
-		let dueDate = assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })[section]
+		let dueDate = assignments.keys.sort({ $0.compare($1) == .OrderedAscending })[section]
 		let assignment = assignments[dueDate]?[row]
 		cell.titleLabel.text = assignment?.title
 		cell.courseNameLabel.text = assignment?.courseName
@@ -86,7 +96,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedAssignment = assignments[assignments.keys.sort { $0.compare($1) == NSComparisonResult.OrderedAscending }[indexPath.section]]![indexPath.row]
+		let selectedAssignment = assignments[assignments.keys.sort { $0.compare($1) == .OrderedAscending }[indexPath.section]]![indexPath.row]
 		destinationViewController.iD = selectedAssignment.iD
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}

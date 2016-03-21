@@ -21,8 +21,11 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		didSet {
 			coursesTableView.rowHeight = UITableViewAutomaticDimension
 			coursesTableView.estimatedRowHeight = 80.0
+			refreshControl.addTarget(self, action: #selector(CoursesViewController.refresh(_:)), forControlEvents: .ValueChanged)
+			coursesTableView.addSubview(refreshControl)
 		}
 	}
+	let refreshControl = UIRefreshControl()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -30,7 +33,9 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.courseDelegate = self
-		schoolLoop.getCourses()
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.getCourses()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -44,7 +49,12 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 				self.courses = schoolLoop.courses
 				self.coursesTableView.reloadData()
 			}
+			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 		}
+	}
+
+	func refresh(sender: AnyObject) -> Bool {
+		return schoolLoop.getCourses()
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
