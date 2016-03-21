@@ -10,6 +10,7 @@ Building break requires [Xcode](https://developer.apple.com/xcode/), which requi
 * LoopMail viewing
 * News
 * Locker
+* Notifications
 
 ## TODO
 * Comments
@@ -17,7 +18,6 @@ Building break requires [Xcode](https://developer.apple.com/xcode/), which requi
 * Use the `QuickLook` framework for previewing files in the Locker
 * POST (i.e. LoopMail sending, "viewed" checking)
 * One-time login (Guest mode)
-* Notifications
 * Grade calculation
 * Parent/Teacher support
 * UI improvements (especially the storyboard)
