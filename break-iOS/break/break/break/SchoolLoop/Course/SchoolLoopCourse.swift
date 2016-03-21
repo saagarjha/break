@@ -30,7 +30,7 @@ class SchoolLoopCourse {
 
 	func setLastUpdated(lastUpdated: String) -> Bool {
 		let dateFormatter = NSDateFormatter()
-		dateFormatter.dateFormat = "M'\\'/d'\\/'yyyy' 'h':'mm' 'a"
+		dateFormatter.dateFormat = "M'/'d'/'yy' 'h':'mm' 'a"
 		let newLastUpdated = dateFormatter.dateFromString(lastUpdated) ?? NSDate.distantPast()
 		let updated = self.lastUpdated.compare(newLastUpdated) == .OrderedAscending
 		self.lastUpdated = newLastUpdated

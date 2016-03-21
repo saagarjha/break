@@ -127,6 +127,12 @@ class SchoolLoop: NSObject {
 			self.studentID = studentID
 			self.account = SchoolLoopAccount(username: username, password: password, fullName: self.fullName, studentID: self.studentID)
 			self.loginDelegate?.loggedIn(self, error: nil)
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+				self.getCourses()
+				self.getAssignments()
+				self.getLoopMail()
+				self.getNews()
+			}
 		}.resume()
 	}
 
@@ -166,7 +172,7 @@ class SchoolLoop: NSObject {
 						self.courseDelegate?.gotGrades(self, error: .ParseError)
 						return
 				}
-				if let course = self.courseForPeriodID(periodID) { #column
+				if let course = self.courseForPeriodID(periodID) {
 					course.courseName = courseName
 					course.period = period
 					course.teacherName = teacherName
