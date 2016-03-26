@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10112" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10083"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -61,6 +62,26 @@
                                             <segue destination="dh5-aG-QG7" kind="show" id="pUD-c4-gJl">
                                                 <nil key="action"/>
                                             </segue>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="4LX-Yt-j1g" style="IBUITableViewCellStyleDefault" id="2L1-00-nOn">
+                                        <rect key="frame" x="0.0" y="158" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2L1-00-nOn" id="EZ5-z8-miV">
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Log" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4LX-Yt-j1g">
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="qMr-P6-21R" kind="show" id="GnZ-IX-X0Q"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -155,6 +176,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9yQ-Em-4Xm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5727" y="322"/>
+        </scene>
+        <!--Log-->
+        <scene sceneID="7Og-J4-F55">
+            <objects>
+                <viewController id="qMr-P6-21R" customClass="LoggerViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="syq-uF-vfw"/>
+                        <viewControllerLayoutGuide type="bottom" id="xKF-rY-7gf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7IR-sX-2Yp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Log" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SNU-Qm-00Q">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="SNU-Qm-00Q" secondAttribute="trailing" constant="-20" id="4Me-wg-i5B"/>
+                            <constraint firstItem="SNU-Qm-00Q" firstAttribute="top" secondItem="7IR-sX-2Yp" secondAttribute="topMargin" id="Jft-7B-uje"/>
+                            <constraint firstItem="SNU-Qm-00Q" firstAttribute="leading" secondItem="7IR-sX-2Yp" secondAttribute="leadingMargin" constant="-20" id="MFU-df-oHg"/>
+                            <constraint firstItem="xKF-rY-7gf" firstAttribute="top" secondItem="SNU-Qm-00Q" secondAttribute="bottom" id="fGj-Fb-R3n"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Log" id="T3q-Be-TtG">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="I2e-2z-6tr">
+                            <connections>
+                                <action selector="clear:" destination="qMr-P6-21R" id="uta-vz-w4C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="logTextView" destination="SNU-Qm-00Q" id="2kP-iO-67f"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cNe-9U-Kj2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5727" y="1013"/>
         </scene>
     </scenes>
 </document>

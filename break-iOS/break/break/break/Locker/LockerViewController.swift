@@ -58,7 +58,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.lockerDelegate = self
-		schoolLoop.getLocker(path)
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.getLocker(self.path)
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -68,7 +70,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	func gotLocker(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
 		dispatch_async(dispatch_get_main_queue()) {
-            self.refreshControl.endRefreshing()
+			self.refreshControl.endRefreshing()
 			if error == nil {
 				guard let lockerItem = schoolLoop.lockerItemForPath(self.path) else {
 					return
@@ -81,7 +83,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 	}
 
-    func refresh(sender: AnyObject) {
+	func refresh(sender: AnyObject) {
 		schoolLoop.getLocker(path)
 	}
 

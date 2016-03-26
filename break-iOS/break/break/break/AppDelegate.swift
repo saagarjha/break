@@ -10,7 +10,6 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate, SchoolLoopLoginDelegate {
-
 	var window: UIWindow?
 	var splashView: UIImageView!
 
@@ -20,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
 		}
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
-		application.applicationIconBadgeNumber = 0
 
 		let schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.schoolDelegate = self
@@ -44,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 
 	func applicationDidBecomeActive(application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+		application.applicationIconBadgeNumber = 0
 	}
 
 	func applicationWillTerminate(application: UIApplication) {
@@ -55,28 +54,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SchoolLoopSchoolDelegate,
 	}
 
 	func fetch() -> Bool {
+		Logger.log("Started fetch")
+		let schoolLoop = SchoolLoop.sharedInstance
 		var updated = false
 		if let tabBarController = window?.rootViewController as? UITabBarController,
 			viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
 				for viewController in viewControllers {
+					Logger.log("Started courses fetch")
 					if let coursesViewController = viewController as? CoursesViewController {
-						coursesViewController.schoolLoop = SchoolLoop.sharedInstance
+						schoolLoop.courseDelegate = coursesViewController
+						coursesViewController.schoolLoop = schoolLoop
 						updated ||= coursesViewController.refresh(self)
 					}
+					Logger.log("Ended courses fetch")
+					Logger.log("Started assignments fetch")
 					if let assignmentsViewController = viewController as? AssignmentsViewController {
-						assignmentsViewController.schoolLoop = SchoolLoop.sharedInstance
+						schoolLoop.assignmentDelegate = assignmentsViewController
+						assignmentsViewController.schoolLoop = schoolLoop
 						updated ||= assignmentsViewController.refresh(self)
 					}
+					Logger.log("Ended assignments fetch")
+					Logger.log("Started LoopMail fetch")
 					if let loopMailViewController = viewController as? LoopMailViewController {
-						loopMailViewController.schoolLoop = SchoolLoop.sharedInstance
+						schoolLoop.loopMailDelegate = loopMailViewController
+						loopMailViewController.schoolLoop = schoolLoop
 						updated ||= loopMailViewController.refresh(self)
 					}
+					Logger.log("Ended LoopMail fetch")
+					Logger.log("Started News fetch")
 					if let newsViewController = viewController as? NewsViewController {
-						newsViewController.schoolLoop = SchoolLoop.sharedInstance
+						schoolLoop.newsDelegate = newsViewController
+						newsViewController.schoolLoop = schoolLoop
 						updated ||= newsViewController.refresh(self)
 					}
+					Logger.log("Ended news fetch")
 				}
 		}
+		Logger.log("Ended fetch, updated: \(updated)")
 		return updated
 	}
 

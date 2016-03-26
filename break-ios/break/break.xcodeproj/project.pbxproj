@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		493E178F1C63E95000AFC7A6 /* breakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E178E1C63E95000AFC7A6 /* breakTests.swift */; };
 		493E179A1C63E95000AFC7A6 /* breakUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E17991C63E95000AFC7A6 /* breakUITests.swift */; };
+		495574871CA6081100193EE5 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574861CA6081100193EE5 /* Logger.swift */; };
+		495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574881CA6112000193EE5 /* LoggerViewController.swift */; };
 		4986658F1C8D24E9004BA249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665541C8D24E9004BA249 /* AppDelegate.swift */; };
 		498665901C8D24E9004BA249 /* AssignmentDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */; };
 		498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665571C8D24E9004BA249 /* AssignmentsViewController.swift */; };
@@ -82,6 +84,8 @@
 		493E17951C63E95000AFC7A6 /* breakUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = breakUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		493E17991C63E95000AFC7A6 /* breakUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = breakUITests.swift; sourceTree = "<group>"; };
 		493E179B1C63E95000AFC7A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		495574861CA6081100193EE5 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		495574881CA6112000193EE5 /* LoggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerViewController.swift; sourceTree = "<group>"; };
 		498665541C8D24E9004BA249 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentDescriptionViewController.swift; sourceTree = "<group>"; };
 		498665571C8D24E9004BA249 /* AssignmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentsViewController.swift; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 				498665631C8D24E9004BA249 /* LoopMail */,
 				498665681C8D24E9004BA249 /* News */,
 				4986656C1C8D24E9004BA249 /* Settings */,
+				495574861CA6081100193EE5 /* Logger.swift */,
 			);
 			path = break;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 			children = (
 				4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */,
 				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
+				495574881CA6112000193EE5 /* LoggerViewController.swift */,
 				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 			);
 			path = Settings;
@@ -525,6 +531,7 @@
 				498665DF1C8D2628004BA249 /* SchoolLoopAssignment.swift in Sources */,
 				4986659B1C8D24E9004BA249 /* LoopMailMessageViewController.swift in Sources */,
 				498665E01C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift in Sources */,
+				495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */,
 				4986659A1C8D24E9004BA249 /* LoginViewController.swift in Sources */,
 				498665921C8D24E9004BA249 /* AssignmentTableViewCell.swift in Sources */,
 				498665E11C8D2628004BA249 /* SchoolLoopCourse.swift in Sources */,
@@ -532,6 +539,7 @@
 				498665971C8D24E9004BA249 /* LockerItemCollectionViewCell.swift in Sources */,
 				498665951C8D24E9004BA249 /* GradeTableViewCell.swift in Sources */,
 				498665F01C8D2628004BA249 /* SchoolLoopAccount.swift in Sources */,
+				495574871CA6081100193EE5 /* Logger.swift in Sources */,
 				498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */,
 				498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */,
 				4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */,
