@@ -214,13 +214,13 @@
 			children = (
 				498665541C8D24E9004BA249 /* AppDelegate.swift */,
 				498665621C8D24E9004BA249 /* LoginViewController.swift */,
+				495574861CA6081100193EE5 /* Logger.swift */,
 				498665551C8D24E9004BA249 /* Assignments */,
 				498665591C8D24E9004BA249 /* Courses */,
 				4986655E1C8D24E9004BA249 /* Locker */,
 				498665631C8D24E9004BA249 /* LoopMail */,
 				498665681C8D24E9004BA249 /* News */,
 				4986656C1C8D24E9004BA249 /* Settings */,
-				495574861CA6081100193EE5 /* Logger.swift */,
 			);
 			path = break;
 			sourceTree = "<group>";

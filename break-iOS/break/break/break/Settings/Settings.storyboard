@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -75,7 +76,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="550" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -189,7 +190,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Log" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SNU-Qm-00Q">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SNU-Qm-00Q">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -198,18 +199,30 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="SNU-Qm-00Q" secondAttribute="trailing" constant="-20" id="4Me-wg-i5B"/>
-                            <constraint firstItem="SNU-Qm-00Q" firstAttribute="top" secondItem="7IR-sX-2Yp" secondAttribute="topMargin" id="Jft-7B-uje"/>
-                            <constraint firstItem="SNU-Qm-00Q" firstAttribute="leading" secondItem="7IR-sX-2Yp" secondAttribute="leadingMargin" constant="-20" id="MFU-df-oHg"/>
-                            <constraint firstItem="xKF-rY-7gf" firstAttribute="top" secondItem="SNU-Qm-00Q" secondAttribute="bottom" id="fGj-Fb-R3n"/>
+                            <constraint firstItem="SNU-Qm-00Q" firstAttribute="leading" secondItem="7IR-sX-2Yp" secondAttribute="leading" id="4vA-0H-9GO"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="SNU-Qm-00Q" secondAttribute="bottom" id="7OF-QH-HSx"/>
+                            <constraint firstAttribute="topMargin" secondItem="SNU-Qm-00Q" secondAttribute="top" id="LgM-PL-h1c"/>
+                            <constraint firstAttribute="trailing" secondItem="SNU-Qm-00Q" secondAttribute="trailing" id="oEM-Lo-7fS"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Log" id="T3q-Be-TtG">
-                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="I2e-2z-6tr">
-                            <connections>
-                                <action selector="clear:" destination="qMr-P6-21R" id="uta-vz-w4C"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="trash" id="I2e-2z-6tr">
+                                <connections>
+                                    <action selector="clear:" destination="qMr-P6-21R" id="uta-vz-w4C"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="action" id="k5R-GF-9OS">
+                                <connections>
+                                    <action selector="share:" destination="qMr-P6-21R" id="IgQ-Qh-7Ex"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="add" id="nOH-am-kbI">
+                                <connections>
+                                    <action selector="mark:" destination="qMr-P6-21R" id="SlR-Dw-Fhh"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="logTextView" destination="SNU-Qm-00Q" id="2kP-iO-67f"/>

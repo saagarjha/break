@@ -16,12 +16,10 @@ class Logger {
 			NSFileManager.defaultManager().createFileAtPath(filePath, contents: nil, attributes: nil)
 		}
 		let formatter = NSDateFormatter()
-		formatter.dateStyle = .MediumStyle
-		formatter.timeStyle = .MediumStyle
-		formatter.timeZone = NSTimeZone.localTimeZone()
+		formatter.dateFormat = "M/d H:mm:ss.SSS"
 		let file = NSFileHandle(forUpdatingAtPath: filePath)
 		file?.seekToEndOfFile()
-		file?.writeData("break \(formatter.stringFromDate(NSDate())): \(string)\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+		file?.writeData("\(formatter.stringFromDate(NSDate())): \(string)\n".dataUsingEncoding(NSUTF8StringEncoding)!)
 		file?.closeFile()
 	}
 
@@ -32,8 +30,8 @@ class Logger {
 			return ""
 		}
 	}
-    
-    class func clearLog() {
-        NSFileManager.defaultManager().createFileAtPath(filePath, contents: nil, attributes: nil)
-    }
+
+	class func clearLog() {
+		NSFileManager.defaultManager().createFileAtPath(filePath, contents: nil, attributes: nil)
+	}
 }
