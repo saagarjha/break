@@ -54,7 +54,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SchoolLoopScho
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.schoolDelegate = self
 		schoolLoop.loginDelegate = self
-		schoolLoop.getSchools()
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.getSchools()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -70,7 +72,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SchoolLoopScho
 	@IBAction func logIn(sender: AnyObject) {
 		view.bringSubviewToFront(loginActivityIndicatorView)
 		loginActivityIndicatorView.startAnimating()
-		schoolLoop.logIn(schoolNameTextField.text ?? "", username: usernameTextField.text ?? "", password: passwordTextField.text ?? "")
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "")
+		}
 	}
 
 	func loggedIn(schoolLoop: SchoolLoop, error: SchoolLoopError?) {

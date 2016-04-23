@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SchoolLoopLoopMail {
+class SchoolLoopLoopMail: NSObject, NSCoding {
 	var subject: String
 	var sender: String
 	var date: NSDate
@@ -22,9 +22,29 @@ class SchoolLoopLoopMail {
 		self.sender = sender
 		self.date = NSDate(timeIntervalSince1970: NSTimeInterval(date)! / 1000)
 		self.ID = ID
+        super.init()
 	}
     
-    func setDate(date: String) {
+    func setNewDate(date: String) {
         self.date = NSDate(timeIntervalSince1970: NSTimeInterval(date)! / 1000)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        subject = aDecoder.decodeObjectForKey("subject")  as? String ?? ""
+        sender = aDecoder.decodeObjectForKey("sender") as? String ?? ""
+        date = aDecoder.decodeObjectForKey("date") as? NSDate ?? NSDate.distantPast()
+        ID = aDecoder.decodeObjectForKey("ID") as? String ?? ""
+        message = aDecoder.decodeObjectForKey("message") as? String ?? ""
+        links = aDecoder.decodeObjectForKey("links")  as? [(title: String, URL: String)] ?? []
+        super.init()
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(subject, forKey: "subject")
+        aCoder.encodeObject(sender, forKey: "sender")
+        aCoder.encodeObject(date, forKey: "date")
+        aCoder.encodeObject(ID, forKey: "ID")
+        aCoder.encodeObject(message, forKey: "message")
+        aCoder.encodeObject(links as? AnyObject, forKey: "links")
     }
 }

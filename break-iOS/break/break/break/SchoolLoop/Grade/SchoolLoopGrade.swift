@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SchoolLoopGrade {
+class SchoolLoopGrade: NSObject, NSCoding {
 	var title: String
 	var categoryName: String
 	var percentScore: String
@@ -21,5 +21,22 @@ class SchoolLoopGrade {
 		self.percentScore = percentScore
 		self.score = score
 		self.maxPoints = maxPoints
+		super.init()
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		title = aDecoder.decodeObjectForKey("title") as? String ?? ""
+		categoryName = aDecoder.decodeObjectForKey("categoryName") as? String ?? ""
+		percentScore = aDecoder.decodeObjectForKey("percentScore") as? String ?? ""
+		score = aDecoder.decodeObjectForKey("score") as? String ?? ""
+		maxPoints = aDecoder.decodeObjectForKey("maxPoints") as? String ?? ""
+	}
+
+	func encodeWithCoder(aCoder: NSCoder) {
+		aCoder.encodeObject(title, forKey: "title")
+		aCoder.encodeObject(categoryName, forKey: "categoryName")
+		aCoder.encodeObject(percentScore, forKey: "percentScore")
+		aCoder.encodeObject(score, forKey: "score")
+		aCoder.encodeObject(maxPoints, forKey: "maxPoints")
 	}
 }

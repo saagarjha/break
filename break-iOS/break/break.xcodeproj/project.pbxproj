@@ -456,6 +456,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
 						};
 					};
 					493E17891C63E95000AFC7A6 = {

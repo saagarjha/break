@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SchoolLoop: NSObject {
+class SchoolLoop: NSObject, NSCoding {
 	static var sharedInstance = SchoolLoop()
 	let keychain = SchoolLoopKeychain.sharedInstance
 
@@ -53,12 +53,37 @@ class SchoolLoop: NSObject {
 	var currentPath = ""
 	var currentType = SchoolLoopLockerItemType.Unknown
 
+	private override init() {
+		super.init()
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		let schoolLoop = SchoolLoop.sharedInstance
+		schoolLoop.school = aDecoder.decodeObjectForKey("school") as? SchoolLoopSchool
+		schoolLoop.schools = aDecoder.decodeObjectForKey("schools") as? [SchoolLoopSchool] ?? []
+		account = aDecoder.decodeObjectForKey("account") as? SchoolLoopAccount
+		schoolLoop.courses = aDecoder.decodeObjectForKey("courses") as? [SchoolLoopCourse] ?? []
+		schoolLoop.assignments = aDecoder.decodeObjectForKey("assignments") as? [SchoolLoopAssignment] ?? []
+		schoolLoop.loopMail = aDecoder.decodeObjectForKey("loopMail") as? [SchoolLoopLoopMail] ?? []
+		schoolLoop.news = aDecoder.decodeObjectForKey("news") as? [SchoolLoopNews] ?? []
+	}
+
+	func encodeWithCoder(aCoder: NSCoder) {
+		aCoder.encodeObject(school, forKey: "school")
+		aCoder.encodeObject(schools, forKey: "schools")
+		aCoder.encodeObject(account, forKey: "account")
+		aCoder.encodeObject(courses, forKey: "courses")
+		aCoder.encodeObject(assignments, forKey: "assignments")
+		aCoder.encodeObject(loopMail, forKey: "loopMail")
+		aCoder.encodeObject(news, forKey: "news")
+	}
+
 	func getSchools() {
 		let url = SchoolLoopConstants.schoolURL()
 		let request = NSMutableURLRequest(URL: url)
 		request.HTTPMethod = "GET"
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			guard let data = data,
 				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 					self.schoolDelegate?.gotSchools(self, error: .ParseError)
@@ -82,21 +107,26 @@ class SchoolLoop: NSObject {
 				self.schools.append(school)
 			}
 			self.schoolDelegate?.gotSchools(self, error: nil)
-		}.resume()
+		}
 	}
 
-	func logIn(schoolName: String, username: String, password: String) {
-		Logger.log("logIn called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
-		school = schoolForName(schoolName)
-		if school == nil {
+	func logIn(schoolName: String, username: String, password: String) -> Bool {
+//		loginDelegate?.loggedIn(self, error: nil)
+//		return true
+//		Logger.log("logIn called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		school = schoolForName(schoolName)
+		var loggedIn = false
+		guard let school = schoolForName(schoolName) else {
 			loginDelegate?.loggedIn(self, error: .AuthenticationError)
+			return false
 		}
+		self.school = school
 		self.username = username
 		self.password = password
 		let url = SchoolLoopConstants.logInURL(school.domainName)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		session.synchronousDataTaskWithRequest(request) { (data, response, error) in
 			if let _ = error {
 				self.loginDelegate?.loggedIn(self, error: .UnknownError)
 				return
@@ -126,6 +156,7 @@ class SchoolLoop: NSObject {
 			self.fullName = fullName
 			self.studentID = studentID
 			self.account = SchoolLoopAccount(username: username, password: password, fullName: self.fullName, studentID: self.studentID)
+			loggedIn = true
 			self.loginDelegate?.loggedIn(self, error: nil)
 			dispatch_async(dispatch_get_main_queue()) {
 				var view: UIView?
@@ -150,8 +181,9 @@ class SchoolLoop: NSObject {
 					return
 				}
 			}
-			Logger.log("logIn ended")
-		}.resume()
+//			Logger.log("logIn ended")
+		}
+		return loggedIn
 	}
 
 	func logOut() {
@@ -161,7 +193,7 @@ class SchoolLoop: NSObject {
 	}
 
 	func getCourses() -> Bool {
-		Logger.log("getCourses called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getCourses called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		var updated = false
 		let url = SchoolLoopConstants.courseURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
@@ -191,14 +223,14 @@ class SchoolLoop: NSObject {
 						self.courseDelegate?.gotGrades(self, error: .ParseError)
 						return
 				}
-				Logger.log("Course \(courseName), lastUpdated \(lastUpdated)")
+//				Logger.log("Course \(courseName), lastUpdated \(lastUpdated)")
 				if let course = self.courseForPeriodID(periodID) {
-					Logger.log("lastUpdated new, updating")
+//					Logger.log("lastUpdated new, updating")
 					course.courseName = courseName
 					course.period = period
 					course.teacherName = teacherName
 					course.grade = grade
-					if course.setLastUpdated(lastUpdated) {
+					if course.setNewLastUpdated(lastUpdated) {
 						updated = true
 						if UIApplication.sharedApplication().applicationState != .Active {
 							let notification = UILocalNotification()
@@ -210,20 +242,20 @@ class SchoolLoop: NSObject {
 						}
 					}
 				} else {
-					Logger.log("New course, adding")
+//					Logger.log("New course, adding")
 					let course = SchoolLoopCourse(courseName: courseName, period: period, teacherName: teacherName, grade: grade, score: score, periodID: periodID)
-					course.setLastUpdated(lastUpdated)
+					course.setNewLastUpdated(lastUpdated)
 					self.courses.append(course)
 				}
 			}
 			self.courseDelegate?.gotGrades(self, error: nil)
 		}
-		Logger.log("getCourses ended")
+//		Logger.log("getCourses ended")
 		return updated
 	}
 
 	func getGrades(periodID: String) {
-		Logger.log("getGrades called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getGrades called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		let url = SchoolLoopConstants.gradeURL(school.domainName, studentID: studentID, periodID: periodID)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
@@ -266,12 +298,12 @@ class SchoolLoop: NSObject {
 				course.grades.append(grade)
 			}
 			self.gradeDelegate?.gotGrades(self, error: nil)
-			Logger.log("getCourses ended")
+//			Logger.log("getCourses ended")
 		}.resume()
 	}
 
 	func getAssignments() -> Bool {
-		Logger.log("getAssignments called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getAssignments called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		var updated = false
 		let url = SchoolLoopConstants.assignmentURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
@@ -315,15 +347,15 @@ class SchoolLoop: NSObject {
 						links.append((title: title, URL: URL))
 					}
 				}
-				Logger.log("Assignment \(title)")
+//				Logger.log("Assignment \(title)")
 				if let assignment = self.assignmentForID(iD) {
-					Logger.log("Existing, updating")
+//					Logger.log("Existing, updating")
 					assignment.title = title
 					assignment.courseName = courseName
-					assignment.description = description
-					assignment.setDueDate(dueDate)
+					assignment.assignmentDescription = description
+					assignment.setNewDueDate(dueDate)
 				} else {
-					Logger.log("New assignment, adding")
+//					Logger.log("New assignment, adding")
 					updated = true
 					if UIApplication.sharedApplication().applicationState != .Active {
 						let notification = UILocalNotification()
@@ -333,18 +365,18 @@ class SchoolLoop: NSObject {
 						notification.soundName = UILocalNotificationDefaultSoundName
 						UIApplication.sharedApplication().scheduleLocalNotification(notification)
 					}
-					let assignment = SchoolLoopAssignment(title: title, description: description, courseName: courseName, dueDate: dueDate, links: links, iD: iD)
+					let assignment = SchoolLoopAssignment(title: title, assignmentDescription: description, courseName: courseName, dueDate: dueDate, links: links, iD: iD)
 					self.assignments.append(assignment)
 				}
 			}
 			self.assignmentDelegate?.gotAssignments(self, error: nil)
 		}
-		Logger.log("getAssignments ended")
+//		Logger.log("getAssignments ended")
 		return updated
 	}
 
 	func getLoopMail() -> Bool {
-		Logger.log("getLoopMail called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getLoopMail called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		var updated = false
 		let url = SchoolLoopConstants.loopMailURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
@@ -378,15 +410,15 @@ class SchoolLoop: NSObject {
 					self.loopMailDelegate?.gotLoopMail(self, error: .ParseError)
 					return
 				}
-				Logger.log("LoopMail \(subject)")
+//				Logger.log("LoopMail \(subject)")
 				if let loopMail = self.loopMailForID(ID) {
-					Logger.log("Existing, updating")
+//					Logger.log("Existing, updating")
 					loopMail.subject = subject
 					loopMail.sender = sender
-					loopMail.setDate(date)
+					loopMail.setNewDate(date)
 					loopMail.ID = ID
 				} else {
-					Logger.log("New LoopMail, adding")
+//					Logger.log("New LoopMail, adding")
 					updated = true
 					if UIApplication.sharedApplication().applicationState != .Active {
 						let notification = UILocalNotification()
@@ -402,12 +434,12 @@ class SchoolLoop: NSObject {
 			}
 			self.loopMailDelegate?.gotLoopMail(self, error: nil)
 		}
-		Logger.log("getLoopMail ended")
+//		Logger.log("getLoopMail ended")
 		return updated
 	}
 
 	func getLoopMailMessage(ID: String) {
-		Logger.log("getLoopMailMessage called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getLoopMailMessage called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		let url = SchoolLoopConstants.loopMailMessageURL(school.domainName, studentID: studentID, ID: ID)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
@@ -447,12 +479,12 @@ class SchoolLoop: NSObject {
 			loopMail.message = message
 			loopMail.links = links
 			self.loopMailMessageDelegate?.gotLoopMailMessage(self, error: nil)
-			Logger.log("getLoopMailMessage ended for loopMail: \(loopMail.subject)")
+//			Logger.log("getLoopMailMessage ended for loopMail: \(loopMail.subject)")
 		}.resume()
 	}
 
 	func getNews() -> Bool {
-		Logger.log("getNews called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getNews called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		var updated = false
 		let url = SchoolLoopConstants.newsURL(school.domainName, studentID: studentID)
 		let request = authenticatedRequest(url)
@@ -495,16 +527,16 @@ class SchoolLoop: NSObject {
 						links.append((title: title, URL: URL))
 					}
 				}
-				Logger.log("News \(title)")
+//				Logger.log("News \(title)")
 				if let news = self.newsForID(iD) {
-					Logger.log("Existing, updating")
+//					Logger.log("Existing, updating")
 					news.title = title
 					news.authorName = authorName
-					news.setCreatedDate(createdDate)
-					news.description = description
+					news.setNewCreatedDate(createdDate)
+					news.newsDescription = description
 					news.links = links
 				} else {
-					Logger.log("New news, adding")
+//					Logger.log("New news, adding")
 					updated = true
 					if UIApplication.sharedApplication().applicationState != .Active {
 						let notification = UILocalNotification()
@@ -514,18 +546,18 @@ class SchoolLoop: NSObject {
 						notification.soundName = UILocalNotificationDefaultSoundName
 						UIApplication.sharedApplication().scheduleLocalNotification(notification)
 					}
-					let news = SchoolLoopNews(title: title, authorName: authorName, createdDate: createdDate, description: description, links: links, iD: iD)
+					let news = SchoolLoopNews(title: title, authorName: authorName, createdDate: createdDate, newsDescription: description, links: links, iD: iD)
 					self.news.append(news)
 				}
 			}
 			self.newsDelegate?.gotNews(self, error: nil)
 		}
-		Logger.log("getNews ended")
+//		Logger.log("getNews ended")
 		return updated
 	}
 
 	func getLocker(path: String) {
-		Logger.log("getLocker called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
+//		Logger.log("getLocker called, background: \(UIApplication.sharedApplication().applicationState == .Background)")
 		let url = SchoolLoopConstants.lockerURL(path, domainName: school.domainName, username: username)
 		let request = authenticatedRequest(url)
 		request.HTTPMethod = "PROPFIND"
@@ -543,7 +575,7 @@ class SchoolLoop: NSObject {
 			} else {
 				self.lockerDelegate?.gotLocker(self, error: nil)
 			}
-			Logger.log("getLocker ended")
+//			Logger.log("getLocker ended")
 		}
 	}
 
