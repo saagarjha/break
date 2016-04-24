@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
     </dependencies>
     <scenes>
         <!--Login-->
@@ -161,7 +162,10 @@
                                         <connections>
                                             <outlet property="courseNameLabel" destination="s01-OF-ewj" id="XsG-Cm-iC5"/>
                                             <outlet property="titleLabel" destination="VYV-Bi-RkN" id="Ruv-jY-wgh"/>
-                                            <segue destination="dfx-bd-QRX" kind="show" id="DBr-2N-smW"/>
+                                            <segue destination="dfx-bd-QRX" kind="show" id="DBr-2N-smW">
+                                                <segue key="commit" inheritsFrom="parent" id="1M7-Q0-X3X"/>
+                                                <segue key="preview" inheritsFrom="commit" id="K8J-pN-Epk"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -270,7 +274,10 @@
                                             <outlet property="authorNameLabel" destination="Jao-iq-UiQ" id="GCC-U6-sfI"/>
                                             <outlet property="createdDateLabel" destination="Usv-wU-8ia" id="AAk-XY-KBt"/>
                                             <outlet property="titleLabel" destination="aub-WS-Em7" id="R3p-5t-4PO"/>
-                                            <segue destination="nba-0f-x9V" kind="show" id="ncT-Sv-NS9"/>
+                                            <segue destination="nba-0f-x9V" kind="show" id="ncT-Sv-NS9">
+                                                <segue key="commit" inheritsFrom="parent" id="mUe-b6-lAn"/>
+                                                <segue key="preview" inheritsFrom="commit" id="scF-83-yyF"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -360,7 +367,10 @@
                                         <connections>
                                             <outlet property="nameLabel" destination="eex-1j-T2n" id="a8W-as-zcq"/>
                                             <outlet property="typeImageView" destination="aC2-87-bLg" id="Yr5-Y0-DDj"/>
-                                            <segue destination="8ou-gO-SHQ" kind="show" id="mn4-cf-FOy"/>
+                                            <segue destination="8ou-gO-SHQ" kind="show" id="mn4-cf-FOy">
+                                                <segue key="commit" inheritsFrom="parent" id="FRF-CH-hup"/>
+                                                <segue key="preview" inheritsFrom="commit" id="zIR-gO-euZ"/>
+                                            </segue>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -496,7 +506,10 @@
                                             <outlet property="dateLabel" destination="8wU-RD-Vap" id="UjP-z6-eRc"/>
                                             <outlet property="senderLabel" destination="dKz-2e-SeY" id="gb2-64-dsO"/>
                                             <outlet property="subjectLabel" destination="Y82-R4-SVY" id="NCq-Ah-V1L"/>
-                                            <segue destination="vY2-MK-FCV" kind="show" id="kce-Tu-qVK"/>
+                                            <segue destination="vY2-MK-FCV" kind="show" id="kce-Tu-qVK">
+                                                <segue key="commit" inheritsFrom="parent" id="GJ3-84-G9L"/>
+                                                <segue key="preview" inheritsFrom="commit" id="PwL-Mm-uyk"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -668,7 +681,10 @@
                                             <outlet property="periodLabel" destination="ekR-ua-CQw" id="KgH-Hq-dOa"/>
                                             <outlet property="scoreLabel" destination="jVD-xy-Doh" id="AB7-Ex-Vsf"/>
                                             <outlet property="teacherNameLabel" destination="hsl-7n-bfX" id="vzR-PJ-ymP"/>
-                                            <segue destination="y9r-Jb-Tkn" kind="show" id="HQd-0d-6Op"/>
+                                            <segue destination="y9r-Jb-Tkn" kind="show" id="HQd-0d-6Op">
+                                                <segue key="commit" inheritsFrom="parent" id="FXb-Jg-meZ"/>
+                                                <segue key="preview" inheritsFrom="commit" id="Stw-yl-fg9"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -879,4 +895,11 @@
         <image name="NewsBarButtonIcon" width="25" height="25"/>
         <image name="SettingsBarButtonIcon" width="22" height="22"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="kce-Tu-qVK"/>
+        <segue reference="DBr-2N-smW"/>
+        <segue reference="ncT-Sv-NS9"/>
+        <segue reference="mn4-cf-FOy"/>
+        <segue reference="HQd-0d-6Op"/>
+    </inferredMetricsTieBreakers>
 </document>
