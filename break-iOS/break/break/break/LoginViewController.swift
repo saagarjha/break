@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate, SchoolLoopSchoolDelegate, SchoolLoopLoginDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 	let logInSegueIdentifier = "logInSegue"
 
 	var schoolLoop: SchoolLoop!
@@ -40,57 +40,97 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SchoolLoopScho
 		}
 	}
 	@IBOutlet weak var logInButton: UIButton!
-	var loginActivityIndicatorView: UIActivityIndicatorView!
+//	var loginActivityIndicatorView: UIActivityIndicatorView!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		loginActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-		loginActivityIndicatorView.center = view.center
-		view.addSubview(loginActivityIndicatorView)
-		view.sendSubviewToBack(loginActivityIndicatorView)
+//		loginActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+//		loginActivityIndicatorView.center = view.center
+//		view.addSubview(loginActivityIndicatorView)
+//		view.sendSubviewToBack(loginActivityIndicatorView)
 
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.schoolDelegate = self
-		schoolLoop.loginDelegate = self
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.getSchools()
+//		schoolLoop.schoolDelegate = self
+//		schoolLoop.loginDelegate = self
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+		schoolLoop.getSchools() { error in
+			if error == .NoError {
+				self.schools = self.schoolLoop.schools
+				self.schools.sortInPlace()
+			}
 		}
+//		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-	func gotSchools(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		schools = schoolLoop.schools
-		schools.sortInPlace()
-	}
+//
+//	func gotSchools(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		schools = schoolLoop.schools
+//		schools.sortInPlace()
+//	}
 
 	@IBAction func logIn(sender: AnyObject) {
-		view.bringSubviewToFront(loginActivityIndicatorView)
-		loginActivityIndicatorView.startAnimating()
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "")
+//		view.bringSubviewToFront(loginActivityIndicatorView)
+//		loginActivityIndicatorView.startAnimating()
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+		self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
+			dispatch_async(dispatch_get_main_queue()) {
+				if error == .NoError {
+					self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
+					var view: UIView?
+					if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController,
+						viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
+							for viewController in viewControllers {
+								if let coursesViewController = viewController as? CoursesViewController {
+									view = coursesViewController.view
+								}
+								if let assignmentsViewController = viewController as? AssignmentsViewController {
+									view = assignmentsViewController.view
+								}
+								if let loopMailViewController = viewController as? LoopMailViewController {
+									view = loopMailViewController.view
+								}
+								if let newsViewController = viewController as? NewsViewController {
+									view = newsViewController.view
+								}
+							}
+					}
+					if let _ = view as? AnyObject {
+						return
+					}
+				} else {
+					let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
+					let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+					alertController.addAction(okAction)
+					self.presentViewController(alertController, animated: true, completion: nil)
+				}
+
+//				self.loginActivityIndicatorView.stopAnimating()
+//				self.view.sendSubviewToBack(self.loginActivityIndicatorView)
+			}
 		}
+//		}
 	}
 
-	func loggedIn(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
-			} else {
-				let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
-				let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-				alertController.addAction(okAction)
-				self.presentViewController(alertController, animated: true, completion: nil)
-			}
-			self.loginActivityIndicatorView.stopAnimating()
-			self.view.sendSubviewToBack(self.loginActivityIndicatorView)
-		}
-	}
+//	func loggedIn(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			if error == nil {
+//				self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
+//			} else {
+//				let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
+//				let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+//				alertController.addAction(okAction)
+//				self.presentViewController(alertController, animated: true, completion: nil)
+//			}
+//			self.loginActivityIndicatorView.stopAnimating()
+//			self.view.sendSubviewToBack(self.loginActivityIndicatorView)
+//		}
+//	}
 
 	func textFieldShouldReturn(textField: UITextField) -> Bool {
 		if textField === schoolNameTextField {

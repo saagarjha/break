@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SchoolLoopCourseDelegate {
+class CoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 	let cellIdentifier = "course"
 
@@ -32,10 +32,11 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.courseDelegate = self
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.getCourses()
-		}
+//		schoolLoop.courseDelegate = self
+		refresh(self)
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+//			self.schoolLoop.getCourses()
+//		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -43,18 +44,28 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotGrades(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				self.courses = schoolLoop.courses
-				self.coursesTableView.reloadData()
-			}
-			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-		}
-	}
+//	func gotGrades(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			if error == nil {
+//				self.courses = schoolLoop.courses
+//				self.coursesTableView.reloadData()
+//			}
+//			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+//		}
+//	}
 
-	func refresh(sender: AnyObject) -> Bool {
-		return schoolLoop.getCourses()
+	func refresh(sender: AnyObject) {
+		dispatch_async(dispatch_get_main_queue()) {
+			self.schoolLoop.getCourses() { (_, error) in
+				dispatch_async(dispatch_get_main_queue()) {
+					if error == .NoError {
+						self.courses = self.schoolLoop.courses
+						self.coursesTableView.reloadData()
+					}
+					self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+				}
+			}
+		}
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

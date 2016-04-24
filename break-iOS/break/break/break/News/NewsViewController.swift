@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SchoolLoopNewsDelegate {
+class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 	let cellIdentifier = "news"
 
@@ -37,10 +37,11 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.newsDelegate = self
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.getNews()
-		}
+//		schoolLoop.newsDelegate = self
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+		refresh(self)
+//			self.schoolLoop.getNews()
+//		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -58,8 +59,16 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		}
 	}
 
-	func refresh(sender: AnyObject) -> Bool {
-		return schoolLoop.getNews()
+	func refresh(sender: AnyObject) {
+		schoolLoop.getNews() { (_, error) in
+			dispatch_async(dispatch_get_main_queue()) {
+				if error == .NoError {
+					self.news = self.schoolLoop.news
+					self.newsTableView.reloadData()
+				}
+				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+			}
+		}
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

@@ -19,7 +19,11 @@ class Logger {
 		formatter.dateFormat = "M/d H:mm:ss.SSS"
 		let file = NSFileHandle(forUpdatingAtPath: filePath)
 		file?.seekToEndOfFile()
-		file?.writeData("\(formatter.stringFromDate(NSDate())): \(string)\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+		#if arch(i386) || arch(x86_64)
+            print("\(formatter.stringFromDate(NSDate())): \(string)\n")
+		#else
+			file?.writeData("\(formatter.stringFromDate(NSDate())): \(string)\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+		#endif
 		file?.closeFile()
 	}
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SchoolLoopGradeDelegate {
+class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 	let cellIdentifier = "grade"
 
@@ -29,8 +29,19 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.gradeDelegate = self
-		schoolLoop.getGrades(periodID)
+//		schoolLoop.gradeDelegate = self
+		schoolLoop.getGrades(periodID) { error in
+			dispatch_async(dispatch_get_main_queue()) {
+				if error == .NoError {
+					guard let grades = self.schoolLoop.courseForPeriodID(self.periodID)?.grades else {
+						assertionFailure("Could not get grades for periodID")
+						return
+					}
+					self.grades = grades
+					self.gradesTableView.reloadData()
+				}
+			}
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -38,18 +49,18 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotGrades(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				guard let grades = schoolLoop.courseForPeriodID(self.periodID)?.grades else {
-					assertionFailure("Could not get grades for periodID")
-					return
-				}
-				self.grades = grades
-				self.gradesTableView.reloadData()
-			}
-		}
-	}
+//	func gotGrades(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			if error == nil {
+//				guard let grades = schoolLoop.courseForPeriodID(self.periodID)?.grades else {
+//					assertionFailure("Could not get grades for periodID")
+//					return
+//				}
+//				self.grades = grades
+//				self.gradesTableView.reloadData()
+//			}
+//		}
+//	}
 
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 		return 1

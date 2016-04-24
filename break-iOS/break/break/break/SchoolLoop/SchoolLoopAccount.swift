@@ -19,21 +19,22 @@ class SchoolLoopAccount: NSObject, NSCoding {
 		self.password = password
 		self.fullName = fullName
 		self.studentID = studentID
-        super.init()
+		super.init()
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		username = aDecoder.decodeObjectForKey("username") as? String ?? ""
 //		password = aDecoder.decodeObjectForKey("password") as? String ?? ""
-        password = SchoolLoopKeychain.sharedInstance.getPassword(username) ?? ""
+		password = SchoolLoopKeychain.sharedInstance.getPasswordForUsername(username) ?? ""
 		fullName = aDecoder.decodeObjectForKey("fullName") as? String ?? ""
 		studentID = aDecoder.decodeObjectForKey("studentID") as? String ?? ""
-        super.init()
+		super.init()
 	}
 
 	func encodeWithCoder(aCoder: NSCoder) {
 		aCoder.encodeObject(username, forKey: "username")
 //		aCoder.encodeObject(password, forKey: "password")
+		SchoolLoopKeychain.sharedInstance.setPassword(password, forUsername: username)
 		aCoder.encodeObject(fullName, forKey: "fullName")
 		aCoder.encodeObject(studentID, forKey: "studentID")
 	}

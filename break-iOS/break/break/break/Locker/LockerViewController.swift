@@ -9,7 +9,7 @@
 import SafariServices
 import UIKit
 
-class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SchoolLoopLockerDelegate {
+class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
 	let cellIdentifier = "lockerItem"
 
@@ -31,9 +31,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
-		if let schoolLoop = schoolLoop {
-			schoolLoop.lockerDelegate = self
-		}
+//		if let schoolLoop = schoolLoop {
+//			schoolLoop.lockerDelegate = self
+//		}
 //        navigationController?.hidesBarsOnSwipe = false
 	}
 
@@ -46,7 +46,8 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			let segmentedControl = UISegmentedControl(items: items)
 			navigationItem.titleView = segmentedControl
 			if items.indexOf(path.componentsSeparatedByString("/")[1]) == nil {
-				SchoolLoop.sharedInstance.getLocker(path)
+//				SchoolLoop.sharedInstance.getLocker(path)
+				refresh(self)
 				segmentedControl.selectedSegmentIndex = 0
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 			}
@@ -57,10 +58,11 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.lockerDelegate = self
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.getLocker(self.path)
-		}
+//		schoolLoop.lockerDelegate = self
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+		refresh(self)
+//			self.schoolLoop.getLocker(self.path)
+//		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -68,23 +70,36 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotLocker(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			self.refreshControl.endRefreshing()
-			if error == nil {
-				guard let lockerItem = schoolLoop.lockerItemForPath(self.path) else {
-					return
-				}
-
-				lockerItem.lockerItems.sortInPlace()
-				self.lockerItems = lockerItem.lockerItems
-				self.lockerCollectionView.reloadData()
-			}
-		}
-	}
+//	func gotLocker(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			self.refreshControl.endRefreshing()
+//			if error == nil {
+//				guard let lockerItem = schoolLoop.lockerItemForPath(self.path) else {
+//					return
+//				}
+//
+//				lockerItem.lockerItems.sortInPlace()
+//				self.lockerItems = lockerItem.lockerItems
+//				self.lockerCollectionView.reloadData()
+//			}
+//		}
+//	}
 
 	func refresh(sender: AnyObject) {
-		schoolLoop.getLocker(path)
+		schoolLoop.getLocker(path) { error in
+			dispatch_async(dispatch_get_main_queue()) {
+				if error == .NoError {
+					guard let lockerItem = self.schoolLoop.lockerItemForPath(self.path) else {
+						return
+					}
+
+					lockerItem.lockerItems.sortInPlace()
+					self.lockerItems = lockerItem.lockerItems
+					self.lockerCollectionView.reloadData()
+				}
+                self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+			}
+		}
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
@@ -94,7 +109,8 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	func changePath(sender: UISegmentedControl) {
 		path = "/" + sender.titleForSegmentAtIndex(sender.selectedSegmentIndex)!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
-		schoolLoop.getLocker(path)
+//		schoolLoop.getLocker(path)
+		refresh(self)
 	}
 
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

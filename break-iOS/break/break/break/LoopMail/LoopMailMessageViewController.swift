@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, SchoolLoopLoopMailMessageDelegate {
+class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 
 	var ID: String!
 
@@ -35,8 +35,25 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.loopMailMessageDelegate = self
-		schoolLoop.getLoopMailMessage(ID)
+//		schoolLoop.loopMailMessageDelegate = self
+		schoolLoop.getLoopMailMessage(ID) { error in
+			dispatch_async(dispatch_get_main_queue()) {
+				if error == .NoError {
+					guard let loopMail = self.schoolLoop.loopMailForID(self.ID) else {
+						assertionFailure("Could not get LoopMail for ID")
+						return
+					}
+					self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
+					if !loopMail.links.isEmpty {
+						self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+					}
+					for link in loopMail.links ?? [] {
+						self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
+					}
+					self.messageWebView.loadHTMLString(self.message, baseURL: nil)
+				}
+			}
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -44,24 +61,24 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate, Sch
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotLoopMailMessage(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				guard let loopMail = schoolLoop.loopMailForID(self.ID) else {
-					print("Could not get LoopMail for ID")
-					return
-				}
-				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
-				if !loopMail.links.isEmpty {
-					self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
-				}
-				for link in loopMail.links ?? [] {
-					self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
-				}
-				self.messageWebView.loadHTMLString(self.message, baseURL: nil)
-			}
-		}
-	}
+//	func gotLoopMailMessage(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			if error == nil {
+//				guard let loopMail = schoolLoop.loopMailForID(self.ID) else {
+//					print("Could not get LoopMail for ID")
+//					return
+//				}
+//				self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
+//				if !loopMail.links.isEmpty {
+//					self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+//				}
+//				for link in loopMail.links ?? [] {
+//					self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
+//				}
+//				self.messageWebView.loadHTMLString(self.message, baseURL: nil)
+//			}
+//		}
+//	}
 
 //	override func prefersStatusBarHidden() -> Bool {
 //		return navigationController?.navigationBarHidden ?? false

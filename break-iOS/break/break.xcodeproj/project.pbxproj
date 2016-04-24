@@ -36,27 +36,19 @@
 		498665A51C8D24E9004BA249 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 498665711C8D24E9004BA249 /* Assets.xcassets */; };
 		498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 498665731C8D24E9004BA249 /* LaunchScreen.storyboard */; };
 		498665DF1C8D2628004BA249 /* SchoolLoopAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C31C8D2628004BA249 /* SchoolLoopAssignment.swift */; };
-		498665E01C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C41C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift */; };
 		498665E11C8D2628004BA249 /* SchoolLoopCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C61C8D2628004BA249 /* SchoolLoopCourse.swift */; };
-		498665E21C8D2628004BA249 /* SchoolLoopCourseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C71C8D2628004BA249 /* SchoolLoopCourseDelegate.swift */; };
 		498665E31C8D2628004BA249 /* SchoolLoopGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665C91C8D2628004BA249 /* SchoolLoopGrade.swift */; };
-		498665E41C8D2628004BA249 /* SchoolLoopGradeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CA1C8D2628004BA249 /* SchoolLoopGradeDelegate.swift */; };
-		498665E51C8D2628004BA249 /* SchoolLoopLockerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CC1C8D2628004BA249 /* SchoolLoopLockerDelegate.swift */; };
 		498665E61C8D2628004BA249 /* SchoolLoopLockerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CD1C8D2628004BA249 /* SchoolLoopLockerItem.swift */; };
 		498665E71C8D2628004BA249 /* SchoolLoopLockerItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665CE1C8D2628004BA249 /* SchoolLoopLockerItemType.swift */; };
 		498665E81C8D2628004BA249 /* SchoolLoopLoopMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D01C8D2628004BA249 /* SchoolLoopLoopMail.swift */; };
-		498665E91C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D11C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift */; };
-		498665EA1C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D21C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift */; };
 		498665EB1C8D2628004BA249 /* SchoolLoopNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D41C8D2628004BA249 /* SchoolLoopNews.swift */; };
 		498665EC1C8D2628004BA249 /* SchoolLoopNewsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D51C8D2628004BA249 /* SchoolLoopNewsDelegate.swift */; };
 		498665ED1C8D2628004BA249 /* SchoolLoopSchool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D71C8D2628004BA249 /* SchoolLoopSchool.swift */; };
-		498665EE1C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D81C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift */; };
 		498665EF1C8D2628004BA249 /* SchoolLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D91C8D2628004BA249 /* SchoolLoop.swift */; };
 		498665F01C8D2628004BA249 /* SchoolLoopAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DA1C8D2628004BA249 /* SchoolLoopAccount.swift */; };
 		498665F11C8D2628004BA249 /* SchoolLoopConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */; };
 		498665F21C8D2628004BA249 /* SchoolLoopError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DC1C8D2628004BA249 /* SchoolLoopError.swift */; };
 		498665F31C8D2628004BA249 /* SchoolLoopKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */; };
-		498665F41C8D2628004BA249 /* SchoolLoopLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DE1C8D2628004BA249 /* SchoolLoopLoginDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,27 +104,19 @@
 		498665721C8D24E9004BA249 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		498665731C8D24E9004BA249 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		498665C31C8D2628004BA249 /* SchoolLoopAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignment.swift; sourceTree = "<group>"; };
-		498665C41C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignmentDelegate.swift; sourceTree = "<group>"; };
 		498665C61C8D2628004BA249 /* SchoolLoopCourse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCourse.swift; sourceTree = "<group>"; };
-		498665C71C8D2628004BA249 /* SchoolLoopCourseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCourseDelegate.swift; sourceTree = "<group>"; };
 		498665C91C8D2628004BA249 /* SchoolLoopGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGrade.swift; sourceTree = "<group>"; };
-		498665CA1C8D2628004BA249 /* SchoolLoopGradeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGradeDelegate.swift; sourceTree = "<group>"; };
-		498665CC1C8D2628004BA249 /* SchoolLoopLockerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerDelegate.swift; sourceTree = "<group>"; };
 		498665CD1C8D2628004BA249 /* SchoolLoopLockerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItem.swift; sourceTree = "<group>"; };
 		498665CE1C8D2628004BA249 /* SchoolLoopLockerItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItemType.swift; sourceTree = "<group>"; };
 		498665D01C8D2628004BA249 /* SchoolLoopLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMail.swift; sourceTree = "<group>"; };
-		498665D11C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMailDelegate.swift; sourceTree = "<group>"; };
-		498665D21C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMailMessageDelegate.swift; sourceTree = "<group>"; };
 		498665D41C8D2628004BA249 /* SchoolLoopNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNews.swift; sourceTree = "<group>"; };
 		498665D51C8D2628004BA249 /* SchoolLoopNewsDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNewsDelegate.swift; sourceTree = "<group>"; };
 		498665D71C8D2628004BA249 /* SchoolLoopSchool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchool.swift; sourceTree = "<group>"; };
-		498665D81C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchoolDelegate.swift; sourceTree = "<group>"; };
 		498665D91C8D2628004BA249 /* SchoolLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoop.swift; sourceTree = "<group>"; };
 		498665DA1C8D2628004BA249 /* SchoolLoopAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAccount.swift; sourceTree = "<group>"; };
 		498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopConstants.swift; sourceTree = "<group>"; };
 		498665DC1C8D2628004BA249 /* SchoolLoopError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopError.swift; sourceTree = "<group>"; };
 		498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopKeychain.swift; sourceTree = "<group>"; };
-		498665DE1C8D2628004BA249 /* SchoolLoopLoginDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoginDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,7 +289,6 @@
 				498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */,
 				498665DC1C8D2628004BA249 /* SchoolLoopError.swift */,
 				498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */,
-				498665DE1C8D2628004BA249 /* SchoolLoopLoginDelegate.swift */,
 				498665C21C8D2628004BA249 /* Assignment */,
 				498665C51C8D2628004BA249 /* Course */,
 				498665C81C8D2628004BA249 /* Grade */,
@@ -322,7 +305,6 @@
 			isa = PBXGroup;
 			children = (
 				498665C31C8D2628004BA249 /* SchoolLoopAssignment.swift */,
-				498665C41C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift */,
 			);
 			path = Assignment;
 			sourceTree = "<group>";
@@ -331,7 +313,6 @@
 			isa = PBXGroup;
 			children = (
 				498665C61C8D2628004BA249 /* SchoolLoopCourse.swift */,
-				498665C71C8D2628004BA249 /* SchoolLoopCourseDelegate.swift */,
 			);
 			path = Course;
 			sourceTree = "<group>";
@@ -340,7 +321,6 @@
 			isa = PBXGroup;
 			children = (
 				498665C91C8D2628004BA249 /* SchoolLoopGrade.swift */,
-				498665CA1C8D2628004BA249 /* SchoolLoopGradeDelegate.swift */,
 			);
 			path = Grade;
 			sourceTree = "<group>";
@@ -348,7 +328,6 @@
 		498665CB1C8D2628004BA249 /* Locker */ = {
 			isa = PBXGroup;
 			children = (
-				498665CC1C8D2628004BA249 /* SchoolLoopLockerDelegate.swift */,
 				498665CD1C8D2628004BA249 /* SchoolLoopLockerItem.swift */,
 				498665CE1C8D2628004BA249 /* SchoolLoopLockerItemType.swift */,
 			);
@@ -359,8 +338,6 @@
 			isa = PBXGroup;
 			children = (
 				498665D01C8D2628004BA249 /* SchoolLoopLoopMail.swift */,
-				498665D11C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift */,
-				498665D21C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift */,
 			);
 			path = LoopMail;
 			sourceTree = "<group>";
@@ -378,7 +355,6 @@
 			isa = PBXGroup;
 			children = (
 				498665D71C8D2628004BA249 /* SchoolLoopSchool.swift */,
-				498665D81C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift */,
 			);
 			path = School;
 			sourceTree = "<group>";
@@ -527,13 +503,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				498665E71C8D2628004BA249 /* SchoolLoopLockerItemType.swift in Sources */,
-				498665EA1C8D2628004BA249 /* SchoolLoopLoopMailMessageDelegate.swift in Sources */,
-				498665E51C8D2628004BA249 /* SchoolLoopLockerDelegate.swift in Sources */,
 				4986659D1C8D24E9004BA249 /* LoopMailViewController.swift in Sources */,
-				498665F41C8D2628004BA249 /* SchoolLoopLoginDelegate.swift in Sources */,
 				498665DF1C8D2628004BA249 /* SchoolLoopAssignment.swift in Sources */,
 				4986659B1C8D24E9004BA249 /* LoopMailMessageViewController.swift in Sources */,
-				498665E01C8D2628004BA249 /* SchoolLoopAssignmentDelegate.swift in Sources */,
 				495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */,
 				4986659A1C8D24E9004BA249 /* LoginViewController.swift in Sources */,
 				498665921C8D24E9004BA249 /* AssignmentTableViewCell.swift in Sources */,
@@ -547,7 +519,6 @@
 				498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */,
 				4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */,
 				498665A21C8D24E9004BA249 /* AccountTableViewController.swift in Sources */,
-				498665E41C8D2628004BA249 /* SchoolLoopGradeDelegate.swift in Sources */,
 				498665ED1C8D2628004BA249 /* SchoolLoopSchool.swift in Sources */,
 				498665991C8D24E9004BA249 /* LockerViewController.swift in Sources */,
 				498665EC1C8D2628004BA249 /* SchoolLoopNewsDelegate.swift in Sources */,
@@ -567,9 +538,6 @@
 				498665F11C8D2628004BA249 /* SchoolLoopConstants.swift in Sources */,
 				4986659F1C8D24E9004BA249 /* NewsDescriptionViewController.swift in Sources */,
 				498665981C8D24E9004BA249 /* LockerItemViewController.swift in Sources */,
-				498665E21C8D2628004BA249 /* SchoolLoopCourseDelegate.swift in Sources */,
-				498665EE1C8D2628004BA249 /* SchoolLoopSchoolDelegate.swift in Sources */,
-				498665E91C8D2628004BA249 /* SchoolLoopLoopMailDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

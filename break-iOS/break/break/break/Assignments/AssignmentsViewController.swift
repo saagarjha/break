@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SchoolLoopAssignmentDelegate {
+class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 	let cellIdentifier = "assignment"
 
@@ -37,10 +37,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.assignmentDelegate = self
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.getAssignments()
-		}
+//		schoolLoop.assignmentDelegate = self
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+		refresh(self)
+//		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -48,18 +48,26 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotAssignments(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				self.assignments = schoolLoop.assignmentsWithDueDates
-				self.assignmentsTableView.reloadData()
-			}
-			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-		}
-	}
+//	func gotAssignments(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			if error == nil {
+//				self.assignments = schoolLoop.assignmentsWithDueDates
+//				self.assignmentsTableView.reloadData()
+//			}
+//			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+//		}
+//	}
 
-	func refresh(sender: AnyObject) -> Bool {
-		return schoolLoop.getAssignments()
+	func refresh(sender: AnyObject) {
+		dispatch_async(dispatch_get_main_queue()) {
+			self.schoolLoop.getAssignments() { (_, error) in
+				if error == .NoError {
+					self.assignments = self.schoolLoop.assignmentsWithDueDates
+					self.assignmentsTableView.reloadData()
+				}
+				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+			}
+		}
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

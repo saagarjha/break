@@ -32,6 +32,7 @@ struct SchoolLoopConstants {
 			return dateFormatter.stringFromDate(NSDate())
 		}
 	}
+    static let max = "10000"
 
 	static func schoolURL() -> NSURL {
 		return NSURL(string: "https://lol.schoolloop.com/mapi/schools".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!

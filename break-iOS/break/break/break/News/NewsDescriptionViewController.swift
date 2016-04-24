@@ -45,7 +45,7 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 
 	func loadDescription() {
 		guard let news = schoolLoop.newsForID(iD) else {
-			print("Could not get news for iD")
+			assertionFailure("Could not get news for iD")
 			return
 		}
 		newsDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3>\(news.title)</h3>\(news.newsDescription)"

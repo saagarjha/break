@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoopMailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SchoolLoopLoopMailDelegate {
+class LoopMailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 	let cellIdentifier = "LoopMail"
 
@@ -37,10 +37,11 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.loopMailDelegate = self
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.schoolLoop.getLoopMail()
-		}
+//		schoolLoop.loopMailDelegate = self
+//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+//			self.schoolLoop.getLoopMail()
+		refresh(self)
+//		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -48,18 +49,26 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotLoopMail(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				self.loopMail = schoolLoop.loopMail
-				self.loopMailTableView.reloadData()
-			}
-            self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-		}
-	}
+//	func gotLoopMail(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
+//		dispatch_async(dispatch_get_main_queue()) {
+//			if error == nil {
+//				self.loopMail = schoolLoop.loopMail
+//				self.loopMailTableView.reloadData()
+//			}
+//			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+//		}
+//	}
 
-    func refresh(sender: AnyObject) -> Bool {
-		return schoolLoop.getLoopMail()
+	func refresh(sender: AnyObject) {
+		schoolLoop.getLoopMail() { (_, error) in
+			dispatch_async(dispatch_get_main_queue()) {
+				if error == .NoError {
+					self.loopMail = self.schoolLoop.loopMail
+					self.loopMailTableView.reloadData()
+				}
+				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+			}
+		}
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
