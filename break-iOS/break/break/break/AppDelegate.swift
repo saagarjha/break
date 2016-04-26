@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import WatchConnectivity
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	let file = NSURL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!).URLByAppendingPathComponent("schoolLoop").path ?? ""
 
 	var window: UIWindow?
@@ -23,6 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
 		}
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+		if WCSession.isSupported() {
+			let session = WCSession.defaultSession()
+			session.delegate = self
+			session.activateSession()
+		}
 
 		if archived {
 			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
@@ -34,10 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 //			schoolLoop.getSchools()
 //		}
-		if let schoolName = NSUserDefaults.standardUserDefaults().stringForKey("schoolName"), username = NSUserDefaults.standardUserDefaults().stringForKey("username"), password = schoolLoop.keychain.getPasswordForUsername(username) {
+		if schoolLoop.school != nil && schoolLoop.account != nil {
 //			schoolLoop.loginDelegate = self
 
-			schoolLoop.logIn(schoolName, username: username, password: password) { error in
+			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				dispatch_async(dispatch_get_main_queue()) {
 					if error == .NoError {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
@@ -218,11 +224,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //		}
 //	}
 
+	func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+		completionHandler(true)
+	}
+
 	func showLogin() {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let loginViewController = storyboard.instantiateViewControllerWithIdentifier("login")
 		window?.makeKeyAndVisible()
-		window?.rootViewController?.presentViewController(loginViewController, animated: true, completion: nil)
+		window?.rootViewController?.presentViewController(loginViewController, animated: false, completion: nil)
 	}
 
 	func showLogout() {
@@ -237,6 +247,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			try NSFileManager.defaultManager().removeItemAtPath(file)
 		} catch let error {
 			Logger.log("Could not remove file, error: \(error)")
+		}
+	}
+
+	func session(session: WCSession, didReceiveMessage message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void) {
+		if archived {
+			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
+			archived = false
+		}
+		let schoolLoop = SchoolLoop.sharedInstance
+		schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
+			if error == .NoError {
+				if message["courses"] != nil {
+					schoolLoop.getCourses() { _ in
+						replyHandler(["courses": NSKeyedArchiver.archivedDataWithRootObject(schoolLoop.courses)])
+					}
+				} else if let periodID = message["grades"] as? String {
+					if let course = schoolLoop.courseForPeriodID(periodID) {
+						schoolLoop.getGrades(periodID) { _ in
+							replyHandler(["grades": NSKeyedArchiver.archivedDataWithRootObject(course.grades)])
+						}
+					}
+				} else {
+					print("Failure")
+					replyHandler(["error": ""])
+				}
+			} else {
+				print("Failure")
+				replyHandler(["error": ""])
+			}
 		}
 	}
 }

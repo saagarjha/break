@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(SchoolLoopCourse)
 class SchoolLoopCourse: NSObject, NSCoding {
 	var courseName: String
 	var period: String

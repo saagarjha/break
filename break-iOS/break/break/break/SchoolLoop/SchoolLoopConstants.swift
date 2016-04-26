@@ -11,7 +11,11 @@ import UIKit
 
 struct SchoolLoopConstants {
 	static let version = "2"
-	static let devToken = UIDevice.currentDevice().identifierForVendor!.UUIDString
+	#if os(iOS)
+		static let devToken = UIDevice.currentDevice().identifierForVendor!.UUIDString
+	#else
+		static let devToken = ""
+	#endif
 	static var devOS: String {
 		get {
 			var systemInfo = utsname()
@@ -32,7 +36,7 @@ struct SchoolLoopConstants {
 			return dateFormatter.stringFromDate(NSDate())
 		}
 	}
-    static let max = "10000"
+	static let max = "10000"
 
 	static func schoolURL() -> NSURL {
 		return NSURL(string: "https://lol.schoolloop.com/mapi/schools".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!

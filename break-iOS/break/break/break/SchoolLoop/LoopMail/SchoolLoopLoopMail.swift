@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(SchoolLoopLoopMail)
 class SchoolLoopLoopMail: NSObject, NSCoding {
 	var subject: String
 	var sender: String
@@ -30,21 +31,21 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        subject = aDecoder.decodeObjectForKey("subject")  as? String ?? ""
-        sender = aDecoder.decodeObjectForKey("sender") as? String ?? ""
-        date = aDecoder.decodeObjectForKey("date") as? NSDate ?? NSDate.distantPast()
-        ID = aDecoder.decodeObjectForKey("ID") as? String ?? ""
-        message = aDecoder.decodeObjectForKey("message") as? String ?? ""
-        links = aDecoder.decodeObjectForKey("links")  as? [(title: String, URL: String)] ?? []
-        super.init()
-    }
-    
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(subject, forKey: "subject")
-        aCoder.encodeObject(sender, forKey: "sender")
-        aCoder.encodeObject(date, forKey: "date")
-        aCoder.encodeObject(ID, forKey: "ID")
-        aCoder.encodeObject(message, forKey: "message")
-        aCoder.encodeObject(links as? AnyObject, forKey: "links")
-    }
+		subject = aDecoder.decodeObjectForKey("subject") as? String ?? ""
+		sender = aDecoder.decodeObjectForKey("sender") as? String ?? ""
+		date = aDecoder.decodeObjectForKey("date") as? NSDate ?? NSDate.distantPast()
+		ID = aDecoder.decodeObjectForKey("ID") as? String ?? ""
+		message = aDecoder.decodeObjectForKey("message") as? String ?? ""
+		links = aDecoder.decodeObjectForKey("links") as? [(title: String, URL: String)] ?? []
+		super.init()
+	}
+
+	func encodeWithCoder(aCoder: NSCoder) {
+		aCoder.encodeObject(subject, forKey: "subject")
+		aCoder.encodeObject(sender, forKey: "sender")
+		aCoder.encodeObject(date, forKey: "date")
+		aCoder.encodeObject(ID, forKey: "ID")
+		aCoder.encodeObject(message, forKey: "message")
+		aCoder.encodeObject(links as? AnyObject, forKey: "links")
+	}
 }

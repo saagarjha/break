@@ -14,6 +14,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 	var schoolLoop: SchoolLoop!
 	var assignments: [NSDate: [SchoolLoopAssignment]] = [:]
+	var assignmentDueDates: [NSDate] = []
 
 	var destinationViewController: AssignmentDescriptionViewController!
 
@@ -61,11 +62,15 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	func refresh(sender: AnyObject) {
 		dispatch_async(dispatch_get_main_queue()) {
 			self.schoolLoop.getAssignments() { (_, error) in
-				if error == .NoError {
-					self.assignments = self.schoolLoop.assignmentsWithDueDates
-					self.assignmentsTableView.reloadData()
+				dispatch_async(dispatch_get_main_queue()) {
+					if error == .NoError {
+						self.assignments = self.schoolLoop.assignmentsWithDueDates
+						self.assignmentDueDates = Array(self.assignments.keys)
+						self.assignmentDueDates.sortInPlace({ $0.compare($1) == NSComparisonResult.OrderedAscending })
+						self.assignmentsTableView.reloadData()
+					}
+					self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 				}
-				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 			}
 		}
 	}
@@ -82,7 +87,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		let dateFormatter = NSDateFormatter()
 		dateFormatter.dateFormat = "EEEE, MMMM d"
-		return dateFormatter.stringFromDate(assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })[section])
+		return dateFormatter.stringFromDate(assignmentDueDates[section])
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,15 +101,14 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		}
 		let section = indexPath.section
 		let row = indexPath.row
-		let dueDate = assignments.keys.sort({ $0.compare($1) == .OrderedAscending })[section]
-		let assignment = assignments[dueDate]?[row]
+		let assignment = assignments[assignmentDueDates[section]]?[row]
 		cell.titleLabel.text = assignment?.title
 		cell.courseNameLabel.text = assignment?.courseName
 		return cell
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedAssignment = assignments[assignments.keys.sort { $0.compare($1) == .OrderedAscending }[indexPath.section]]![indexPath.row]
+		let selectedAssignment = assignments[assignmentDueDates[indexPath.section]]![indexPath.row]
 		destinationViewController.iD = selectedAssignment.iD
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}

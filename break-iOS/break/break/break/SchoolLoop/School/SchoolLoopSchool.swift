@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(SchoolLoopSchool)
 class SchoolLoopSchool: NSObject, NSCoding {
 	var name: String!
 	var domainName: String!

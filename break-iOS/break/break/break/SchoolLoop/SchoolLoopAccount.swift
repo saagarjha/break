@@ -8,11 +8,13 @@
 
 import Foundation
 
+@objc(SchoolLoopAccount)
 class SchoolLoopAccount: NSObject, NSCoding {
 	var username: String
 	var password: String
 	var fullName: String
 	var studentID: String
+    var loggedIn: Bool = false
 
 	init(username: String, password: String, fullName: String, studentID: String) {
 		self.username = username

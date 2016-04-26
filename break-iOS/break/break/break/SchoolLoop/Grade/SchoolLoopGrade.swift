@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(SchoolLoopGrade)
 class SchoolLoopGrade: NSObject, NSCoding {
 	var title: String
 	var categoryName: String

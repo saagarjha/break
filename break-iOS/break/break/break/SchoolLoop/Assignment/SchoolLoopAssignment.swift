@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(SchoolLoopAssignment)
 class SchoolLoopAssignment: NSObject, NSCoding {
 	var title: String
 	var assignmentDescription: String
@@ -23,7 +24,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		self.dueDate = NSDate(timeIntervalSince1970: NSTimeInterval(dueDate)! / 1000)
 		self.links = links
 		self.iD = iD
-        super.init()
+		super.init()
 	}
 
 	func setNewDueDate(dueDate: String) {
@@ -37,7 +38,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		dueDate = aDecoder.decodeObjectForKey("dueDate") as? NSDate ?? NSDate.distantPast()
 		links = aDecoder.decodeObjectForKey("links") as? [(title: String, URL: String)] ?? []
 		iD = aDecoder.decodeObjectForKey("iD") as? String ?? ""
-        super.init()
+		super.init()
 	}
 
 	func encodeWithCoder(aCoder: NSCoder) {

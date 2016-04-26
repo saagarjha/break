@@ -31,6 +31,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+
 		schoolLoop = SchoolLoop.sharedInstance
 //		schoolLoop.courseDelegate = self
 		refresh(self)

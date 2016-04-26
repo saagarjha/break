@@ -41,13 +41,15 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		schoolLoop = SchoolLoop.sharedInstance
+
 		if path.componentsSeparatedByString("/").count < 3 {
 			let items = ["My Courses", "My Locker"]
 			let segmentedControl = UISegmentedControl(items: items)
 			navigationItem.titleView = segmentedControl
 			if items.indexOf(path.componentsSeparatedByString("/")[1]) == nil {
 //				SchoolLoop.sharedInstance.getLocker(path)
-				refresh(self)
+				schoolLoop.getLocker(path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 			}
@@ -57,7 +59,6 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			navigationItem.leftBarButtonItem = nil
 		}
 
-		schoolLoop = SchoolLoop.sharedInstance
 //		schoolLoop.lockerDelegate = self
 //		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		refresh(self)
@@ -97,7 +98,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 					self.lockerItems = lockerItem.lockerItems
 					self.lockerCollectionView.reloadData()
 				}
-                self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 			}
 		}
 	}

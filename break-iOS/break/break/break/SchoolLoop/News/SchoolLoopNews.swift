@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objc(SchoolLoopNews)
 class SchoolLoopNews: NSObject, NSCoding {
 	var title: String
 	var authorName: String
@@ -36,7 +37,7 @@ class SchoolLoopNews: NSObject, NSCoding {
 		createdDate = aDecoder.decodeObjectForKey("createdDate") as? NSDate ?? NSDate.distantPast()
 		newsDescription = aDecoder.decodeObjectForKey("newsDescription") as? String ?? ""
 		links = aDecoder.decodeObjectForKey("links") as? [(title: String, URL: String)] ?? []
-        iD = aDecoder.decodeObjectForKey("iD") as? String ?? ""
+		iD = aDecoder.decodeObjectForKey("iD") as? String ?? ""
 		super.init()
 	}
 
@@ -46,6 +47,6 @@ class SchoolLoopNews: NSObject, NSCoding {
 		aCoder.encodeObject(createdDate, forKey: "createdDate")
 		aCoder.encodeObject(newsDescription, forKey: "newsDescription")
 		aCoder.encodeObject(links as? AnyObject, forKey: "links")
-        aCoder.encodeObject(iD, forKey: "iD")
+		aCoder.encodeObject(iD, forKey: "iD")
 	}
 }
