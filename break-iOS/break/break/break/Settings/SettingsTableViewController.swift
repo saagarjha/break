@@ -13,6 +13,14 @@ class SettingsTableViewController: UITableViewController {
 	var schoolLoop: SchoolLoop!
 
 	@IBOutlet weak var accountNameLabel: UILabel!
+	@IBOutlet weak var securityEnabledLabel: UILabel!
+
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		schoolLoop = SchoolLoop.sharedInstance
+		accountNameLabel.text = schoolLoop.account.fullName
+		securityEnabledLabel.text = NSUserDefaults.standardUserDefaults().boolForKey("password") ? "Enabled" : "Disabled"
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -22,8 +30,6 @@ class SettingsTableViewController: UITableViewController {
 
 		// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 		// self.navigationItem.rightBarButtonItem = self.editButtonItem()
-		schoolLoop = SchoolLoop.sharedInstance
-		accountNameLabel.text = schoolLoop.account.fullName
 	}
 
 	override func didReceiveMemoryWarning() {

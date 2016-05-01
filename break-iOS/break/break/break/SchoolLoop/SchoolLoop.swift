@@ -155,7 +155,10 @@ class SchoolLoop: NSObject, NSCoding {
 //			self.studentID = studentID
 			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID)
 			self.account.loggedIn = true
-			completion?(error: .NoError)
+			#if os(iOS)
+				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				completion?(error: .NoError)
+			#endif
 //			Logger.log("logIn ended")
 		}.resume()
 	}

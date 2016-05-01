@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4906AB7D1CCDBFBA00610448 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4906AB7B1CCDBFBA00610448 /* Interface.storyboard */; };
 		4906AB861CCDBFBB00610448 /* break-watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4906AB851CCDBFBA00610448 /* break-watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		4906AB8B1CCDBFBB00610448 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906AB8A1CCDBFBB00610448 /* InterfaceController.swift */; };
 		4906AB8D1CCDBFBB00610448 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906AB8C1CCDBFBB00610448 /* ExtensionDelegate.swift */; };
 		4906AB931CCDBFBB00610448 /* break-watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 4906AB791CCDBFB800610448 /* break-watchOS.app */; };
 		4906AB9D1CCDE79B00610448 /* CoursesInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906AB9C1CCDE79B00610448 /* CoursesInterfaceController.swift */; };
@@ -53,6 +52,9 @@
 		498665F11C8D2628004BA249 /* SchoolLoopConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */; };
 		498665F21C8D2628004BA249 /* SchoolLoopError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DC1C8D2628004BA249 /* SchoolLoopError.swift */; };
 		498665F31C8D2628004BA249 /* SchoolLoopKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */; };
+		49CC70961CD1CF53000566D4 /* SecurityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */; };
+		49D04A311CD58B7200CB6650 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04A301CD58B7200CB6650 /* ComplicationController.swift */; };
+		49D04A331CD58B9300CB6650 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49D04A321CD58B9300CB6650 /* Assets.xcassets */; };
 		49DC05BA1CCDEDDD0090578F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49DC05B91CCDEDDD0090578F /* Assets.xcassets */; };
 		49DC05BB1CCDEE860090578F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49DC05B91CCDEDDD0090578F /* Assets.xcassets */; };
 		49DC05BF1CCDF3C00090578F /* SchoolLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665D91C8D2628004BA249 /* SchoolLoop.swift */; };
@@ -134,7 +136,6 @@
 		4906AB7C1CCDBFBA00610448 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		4906AB801CCDBFBA00610448 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4906AB851CCDBFBA00610448 /* break-watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "break-watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4906AB8A1CCDBFBB00610448 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		4906AB8C1CCDBFBB00610448 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		4906AB901CCDBFBB00610448 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4906AB9C1CCDE79B00610448 /* CoursesInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesInterfaceController.swift; sourceTree = "<group>"; };
@@ -184,6 +185,9 @@
 		498665DB1C8D2628004BA249 /* SchoolLoopConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopConstants.swift; sourceTree = "<group>"; };
 		498665DC1C8D2628004BA249 /* SchoolLoopError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopError.swift; sourceTree = "<group>"; };
 		498665DD1C8D2628004BA249 /* SchoolLoopKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopKeychain.swift; sourceTree = "<group>"; };
+		49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityTableViewController.swift; sourceTree = "<group>"; };
+		49D04A301CD58B7200CB6650 /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		49D04A321CD58B9300CB6650 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49DC05B91CCDEDDD0090578F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49DC05BD1CCDF29C0090578F /* CourseRowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CourseRowController.swift; path = "break-watchOS Extension/CourseRowController.swift"; sourceTree = SOURCE_ROOT; };
 		49DC05CD1CCFD7440090578F /* ProgressReportInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportInterfaceController.swift; sourceTree = "<group>"; };
@@ -234,13 +238,14 @@
 		4906AB891CCDBFBB00610448 /* break-watchOS Extension */ = {
 			isa = PBXGroup;
 			children = (
-				4906AB8C1CCDBFBB00610448 /* ExtensionDelegate.swift */,
 				49DC05BD1CCDF29C0090578F /* CourseRowController.swift */,
+				49D04A301CD58B7200CB6650 /* ComplicationController.swift */,
 				4906AB9C1CCDE79B00610448 /* CoursesInterfaceController.swift */,
 				49DC05CF1CCFD9E80090578F /* GradeRowController.swift */,
-				4906AB8A1CCDBFBB00610448 /* InterfaceController.swift */,
+				4906AB8C1CCDBFBB00610448 /* ExtensionDelegate.swift */,
 				49DC05CD1CCFD7440090578F /* ProgressReportInterfaceController.swift */,
 				4906AB901CCDBFBB00610448 /* Info.plist */,
+				49D04A321CD58B9300CB6650 /* Assets.xcassets */,
 			);
 			path = "break-watchOS Extension";
 			sourceTree = "<group>";
@@ -370,6 +375,7 @@
 			children = (
 				4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */,
 				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
+				49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */,
 				495574881CA6112000193EE5 /* LoggerViewController.swift */,
 				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 			);
@@ -633,6 +639,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D04A331CD58B9300CB6650 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,9 +682,9 @@
 				4906AB8D1CCDBFBB00610448 /* ExtensionDelegate.swift in Sources */,
 				49DC05BF1CCDF3C00090578F /* SchoolLoop.swift in Sources */,
 				49DC05C21CCDF3C00090578F /* SchoolLoopError.swift in Sources */,
+				49D04A311CD58B7200CB6650 /* ComplicationController.swift in Sources */,
 				49DC05C11CCDF3C00090578F /* SchoolLoopConstants.swift in Sources */,
 				49DC05C61CCDF3CA0090578F /* SchoolLoopGrade.swift in Sources */,
-				4906AB8B1CCDBFBB00610448 /* InterfaceController.swift in Sources */,
 				49DC05C91CCDF3D20090578F /* SchoolLoopLoopMail.swift in Sources */,
 				49DC05C81CCDF3CE0090578F /* SchoolLoopLockerItemType.swift in Sources */,
 				49DC05CA1CCDF3E00090578F /* SchoolLoopNews.swift in Sources */,
@@ -703,6 +710,7 @@
 				498665921C8D24E9004BA249 /* AssignmentTableViewCell.swift in Sources */,
 				498665E11C8D2628004BA249 /* SchoolLoopCourse.swift in Sources */,
 				498665961C8D24E9004BA249 /* ProgressReportViewController.swift in Sources */,
+				49CC70961CD1CF53000566D4 /* SecurityTableViewController.swift in Sources */,
 				498665971C8D24E9004BA249 /* LockerItemCollectionViewCell.swift in Sources */,
 				498665951C8D24E9004BA249 /* GradeTableViewCell.swift in Sources */,
 				498665F01C8D2628004BA249 /* SchoolLoopAccount.swift in Sources */,
@@ -822,6 +830,7 @@
 		4906AB961CCDBFBB00610448 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -837,6 +846,7 @@
 		4906AB971CCDBFBB00610448 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";

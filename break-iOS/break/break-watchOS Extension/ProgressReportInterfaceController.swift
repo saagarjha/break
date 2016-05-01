@@ -30,30 +30,23 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 	override func willActivate() {
 		// This method is called when watch view controller is about to be visible to user
 		super.willActivate()
-		if WCSession.isSupported() {
-			let session = WCSession.defaultSession()
-			session.delegate = self
-			session.activateSession()
-			print("\(session.reachable)")
-			session.sendMessage(["grades": periodID], replyHandler: { response in
-				if let data = response["grades"] as? NSData,
-					let grades = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopGrade] {
-						self.grades = grades
-						self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
-						for (index, grade) in grades.enumerate() {
-							if let controller = self.gradesTable.rowControllerAtIndex(index) as? GradeRowController {
-								controller.titleLabel.setText(grade.title)
-								controller.categoryName.setText(grade.categoryName)
-								controller.scoreLabel.setText("\(grade.score)/\(grade.maxPoints)")
-								controller.percentScoreLabel.setText(grade.percentScore)
-							}
+		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID], replyHandler: { response in
+			if let data = response["grades"] as? NSData,
+				let grades = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopGrade] {
+					self.grades = grades
+					self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
+					for (index, grade) in grades.enumerate() {
+						if let controller = self.gradesTable.rowControllerAtIndex(index) as? GradeRowController {
+							controller.titleLabel.setText(grade.title)
+							controller.categoryName.setText(grade.categoryName)
+							controller.scoreLabel.setText("\(grade.score)/\(grade.maxPoints)")
+							controller.percentScoreLabel.setText(grade.percentScore)
 						}
-				}
-				}, errorHandler: { error in
-				print(error)
-			})
-
-		}
+					}
+			}
+			}, errorHandler: { error in
+			print(error)
+		})
 	}
 
 	override func didDeactivate() {

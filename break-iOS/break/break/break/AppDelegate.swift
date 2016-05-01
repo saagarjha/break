@@ -6,6 +6,7 @@
 //  Copyright © 2016 Saagar Jha. All rights reserved.
 //
 
+import LocalAuthentication
 import UIKit
 import WatchConnectivity
 
@@ -15,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	var window: UIWindow?
 	var splashView: UIImageView!
+	var securityView: UIView!
 
 	var archived = true
 
@@ -47,8 +49,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				dispatch_async(dispatch_get_main_queue()) {
 					if error == .NoError {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
-						let tabViewController = storybard.instantiateViewControllerWithIdentifier("tab")
-						self.window?.rootViewController = tabViewController
+						let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
+						let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+						tabBarController.view.addSubview(oldView)
+						self.window?.rootViewController = tabBarController
+						if UIApplication.sharedApplication().applicationState == .Active && NSUserDefaults.standardUserDefaults().boolForKey("password") {
+							let view: UIView
+							if let viewController = self.window?.rootViewController {
+								if !UIAccessibilityIsReduceTransparencyEnabled() {
+									let effect = UIBlurEffect(style: .Light)
+									view = UIVisualEffectView(effect: effect)
+									view.frame = viewController.view.bounds
+								} else {
+									view = UIView(frame: viewController.view.bounds)
+									view.backgroundColor = UIColor.whiteColor()
+								}
+								view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+								viewController.view.addSubview(view)
+								self.securityView = view
+							}
+							if NSUserDefaults.standardUserDefaults().boolForKey("touchID") {
+								self.showAuthententication()
+							} else {
+								self.showPassword()
+							}
+						}
+						UIView.animateWithDuration(0.25, animations: {
+							oldView.alpha = 0
+							}, completion: { _ in
+							oldView.removeFromSuperview()
+						})
 					} else {
 						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
 						let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
@@ -76,10 +106,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func applicationDidEnterBackground(application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+		if NSUserDefaults.standardUserDefaults().boolForKey("password") {
+			if let tabBarController = self.window?.rootViewController as? UITabBarController {
+				let view: UIView
+				if !UIAccessibilityIsReduceTransparencyEnabled() {
+					let effect = UIBlurEffect(style: .Light)
+					view = UIVisualEffectView(effect: effect)
+					view.frame = tabBarController.view.bounds
+				} else {
+					view = UIView(frame: tabBarController.view.bounds)
+					view.backgroundColor = UIColor.whiteColor()
+				}
+				view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+				tabBarController.view.addSubview(view)
+				securityView = view
+			}
+		}
 	}
 
 	func applicationWillEnterForeground(application: UIApplication) {
 		// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+		if NSUserDefaults.standardUserDefaults().boolForKey("password") {
+			if NSUserDefaults.standardUserDefaults().boolForKey("touchID") {
+				self.showAuthententication()
+			} else {
+				self.showPassword()
+			}
+		}
 	}
 
 	func applicationDidBecomeActive(application: UIApplication) {
@@ -229,10 +282,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showLogin() {
-		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		let loginViewController = storyboard.instantiateViewControllerWithIdentifier("login")
-		window?.makeKeyAndVisible()
-		window?.rootViewController?.presentViewController(loginViewController, animated: false, completion: nil)
+		dispatch_async(dispatch_get_main_queue()) {
+			let storyboard = UIStoryboard(name: "Main", bundle: nil)
+			let loginViewController = storyboard.instantiateViewControllerWithIdentifier("login")
+			self.window?.makeKeyAndVisible()
+			self.window?.rootViewController?.presentViewController(loginViewController, animated: false, completion: nil)
+		}
 	}
 
 	func showLogout() {
@@ -242,11 +297,95 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		window?.rootViewController = loginViewController
 	}
 
+	func saveCache() {
+		NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file)
+	}
+
 	func clearCache() {
 		do {
 			try NSFileManager.defaultManager().removeItemAtPath(file)
 		} catch let error {
 			Logger.log("Could not remove file, error: \(error)")
+		}
+	}
+
+	func showAuthententication() {
+//		if let tabBarController = self.window?.rootViewController as? UITabBarController {
+		LAContext().evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { (success, error) in
+			if success {
+				dispatch_async(dispatch_get_main_queue()) {
+					UIView.animateWithDuration(0.25, animations: {
+						if let view = self.securityView as? UIVisualEffectView {
+							view.effect = nil
+						} else {
+							self.securityView.alpha = 0
+						}
+						}, completion: { _ in
+						self.securityView.removeFromSuperview()
+					})
+				}
+			} else {
+				self.showPassword()
+			}
+
+		}
+//		}
+	}
+
+	func showPassword() {
+		if let tabBarController = self.window?.rootViewController as? UITabBarController {
+			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your SchoolLoop account.", preferredStyle: .Alert)
+			let forgotAction = UIAlertAction(title: "Forgot", style: .Default) { _ in
+				SchoolLoop.sharedInstance.logOut()
+				dispatch_async(dispatch_get_main_queue()) {
+					UIView.animateWithDuration(0.25, animations: {
+						if let view = self.securityView as? UIVisualEffectView {
+							view.effect = nil
+						} else {
+							self.securityView.alpha = 0
+						}
+						}, completion: { _ in
+						self.securityView.removeFromSuperview()
+					})
+				}
+			}
+			let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
+				let schoolLoop = SchoolLoop.sharedInstance
+				if alertController.textFields![0].text == schoolLoop.keychain.getPasswordForUsername("\(schoolLoop.account.username)appPassword") {
+					dispatch_async(dispatch_get_main_queue()) {
+						UIView.animateWithDuration(0.25, animations: {
+							if let view = self.securityView as? UIVisualEffectView {
+								view.effect = nil
+							} else {
+								self.securityView.alpha = 0
+							}
+							}, completion: { _ in
+							self.securityView.removeFromSuperview()
+						})
+					}
+				} else {
+					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .Alert)
+					let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
+						dispatch_async(dispatch_get_main_queue()) {
+							self.showPassword()
+						}
+					}
+					alertController.addAction(okAction)
+					dispatch_async(dispatch_get_main_queue()) {
+						tabBarController.presentViewController(alertController, animated: true, completion: nil)
+					}
+				}
+
+			}
+			alertController.addAction(forgotAction)
+			alertController.addAction(okAction)
+			alertController.addTextFieldWithConfigurationHandler({ textField in
+				textField.placeholder = "Password"
+				textField.secureTextEntry = true
+			})
+			dispatch_async(dispatch_get_main_queue()) {
+				tabBarController.presentViewController(alertController, animated: true, completion: nil)
+			}
 		}
 	}
 
@@ -268,6 +407,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 							replyHandler(["grades": NSKeyedArchiver.archivedDataWithRootObject(course.grades)])
 						}
 					}
+				} else if message["assignments"] != nil {
+					schoolLoop.getAssignments({ _ in
+						replyHandler(["assignments": NSKeyedArchiver.archivedDataWithRootObject(schoolLoop.assignmentsWithDueDates)])
+					})
 				} else {
 					print("Failure")
 					replyHandler(["error": ""])

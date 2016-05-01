@@ -14,6 +14,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	var schoolLoop: SchoolLoop!
 	var schools: [SchoolLoopSchool] = []
 
+//	@IBOutlet weak var breakImageView: UIImageView!
+//	@IBOutlet weak var breakLabel: UILabel!
+
+	@IBOutlet weak var breakStackView: UIStackView!
 	@IBOutlet weak var schoolNameTextField: UITextField! {
 		didSet {
 			schoolNameTextField.delegate = self
@@ -39,7 +43,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			passwordTextField.returnKeyType = .Done
 		}
 	}
-	@IBOutlet weak var logInButton: UIButton!
+	@IBOutlet weak var logInButton: UIButton! {
+		didSet {
+			logInButton.layer.cornerRadius = 4
+		}
+	}
 //	var loginActivityIndicatorView: UIActivityIndicatorView!
 
 	override func viewDidLoad() {
@@ -61,7 +69,56 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				self.schools.sortInPlace()
 			}
 		}
+//		breakImageView.alpha = 0
+//		breakLabel.alpha = 0
+		breakStackView.alpha = 0
+		schoolNameTextField.alpha = 0
+		usernameTextField.alpha = 0
+		passwordTextField.alpha = 0
+		logInButton.alpha = 0
 //		}
+	}
+
+	override func viewDidAppear(animated: Bool) {
+		super.viewDidAppear(animated)
+//        breakImageView.hidden = true
+//        breakLabel.hidden = true
+//        schoolNameTextField.hidden = true
+//        usernameTextField.hidden = true
+//        passwordTextField.hidden = true
+//        logInButton.hidden = true
+		let dy = passwordTextField.frame.midY - schoolNameTextField.frame.midY
+		schoolNameTextField.frame = schoolNameTextField.frame.offsetBy(dx: 0, dy: dy)
+		usernameTextField.frame = usernameTextField.frame.offsetBy(dx: 0, dy: dy)
+		passwordTextField.frame = passwordTextField.frame.offsetBy(dx: 0, dy: dy)
+		logInButton.frame = logInButton.frame.offsetBy(dx: 0, dy: dy)
+//        breakImageView.hidden = false
+//        breakLabel.hidden = false
+//        schoolNameTextField.hidden = false
+//        usernameTextField.hidden = false
+//        passwordTextField.hidden = false
+//        logInButton.hidden = false
+		UIView.animateWithDuration(1, delay: 0, options: .CurveEaseInOut, animations: {
+//			self.breakImageView.alpha = 1
+//			self.breakLabel.alpha = 1
+			self.breakStackView.alpha = 1
+			}, completion: nil)
+		UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseInOut, animations: {
+			self.schoolNameTextField.frame = self.schoolNameTextField.frame.offsetBy(dx: 0, dy: -dy)
+			self.schoolNameTextField.alpha = 1
+			}, completion: nil)
+		UIView.animateWithDuration(0.5, delay: 0.1, options: .CurveEaseInOut, animations: {
+			self.usernameTextField.frame = self.usernameTextField.frame.offsetBy(dx: 0, dy: -dy)
+			self.usernameTextField.alpha = 1
+			}, completion: nil)
+		UIView.animateWithDuration(0.5, delay: 0.2, options: .CurveEaseInOut, animations: {
+			self.passwordTextField.frame = self.passwordTextField.frame.offsetBy(dx: 0, dy: -dy)
+			self.passwordTextField.alpha = 1
+			}, completion: nil)
+		UIView.animateWithDuration(0.5, delay: 0.3, options: .CurveEaseInOut, animations: {
+			self.logInButton.frame = self.logInButton.frame.offsetBy(dx: 0, dy: -dy)
+			self.logInButton.alpha = 1
+			}, completion: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -81,7 +138,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
 			dispatch_async(dispatch_get_main_queue()) {
 				if error == .NoError {
-					self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
+//					self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
+					let storybard = UIStoryboard(name: "Main", bundle: nil)
+					let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
+					let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+					tabBarController.view.addSubview(oldView)
+					UIApplication.sharedApplication().keyWindow?.rootViewController = tabBarController
+					UIView.animateWithDuration(0.25, animations: {
+						oldView.alpha = 0
+						}, completion: { _ in
+						oldView.removeFromSuperview()
+					})
 					var view: UIView?
 					if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController,
 						viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
@@ -198,6 +265,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			}
 		}
 		return schoolName
+	}
+
+	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+		view.endEditing(true)
+
 	}
 
 	/*
