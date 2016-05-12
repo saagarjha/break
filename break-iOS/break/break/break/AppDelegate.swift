@@ -37,63 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			archived = false
 		}
 
-		let schoolLoop = SchoolLoop.sharedInstance
+//		let schoolLoop = SchoolLoop.sharedInstance
 //		schoolLoop.schoolDelegate = self
 //		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 //			schoolLoop.getSchools()
 //		}
-		if schoolLoop.school != nil && schoolLoop.account != nil {
-//			schoolLoop.loginDelegate = self
-
-			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-				dispatch_async(dispatch_get_main_queue()) {
-					if error == .NoError {
-						let storybard = UIStoryboard(name: "Main", bundle: nil)
-						let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
-						let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
-						tabBarController.view.addSubview(oldView)
-						self.window?.rootViewController = tabBarController
-						if UIApplication.sharedApplication().applicationState == .Active && NSUserDefaults.standardUserDefaults().boolForKey("password") {
-							let view: UIView
-							if let viewController = self.window?.rootViewController {
-								if !UIAccessibilityIsReduceTransparencyEnabled() {
-									let effect = UIBlurEffect(style: .Light)
-									view = UIVisualEffectView(effect: effect)
-									view.frame = viewController.view.bounds
-								} else {
-									view = UIView(frame: viewController.view.bounds)
-									view.backgroundColor = UIColor.whiteColor()
-								}
-								view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-								viewController.view.addSubview(view)
-								self.securityView = view
-							}
-							if NSUserDefaults.standardUserDefaults().boolForKey("touchID") {
-								self.showAuthententication()
-							} else {
-								self.showPassword()
-							}
-						}
-						UIView.animateWithDuration(0.25, animations: {
-							oldView.alpha = 0
-							}, completion: { _ in
-							oldView.removeFromSuperview()
-						})
-					} else {
-						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
-						let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
-							dispatch_async(dispatch_get_main_queue()) {
-								self.showLogin()
-							}
-						}
-						alertController.addAction(okAction)
-						UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-					}
-				}
-			}
-		} else {
-			showLogin()
-		}
+		loginOnLaunch()
 
 		return true
 	}
@@ -279,6 +228,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
 		completionHandler(true)
+	}
+
+	func loginOnLaunch() {
+		let schoolLoop = SchoolLoop.sharedInstance
+		if schoolLoop.school != nil && schoolLoop.account != nil {
+			// schoolLoop.loginDelegate = self
+
+			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
+				dispatch_async(dispatch_get_main_queue()) {
+					if error == .NoError {
+						let storybard = UIStoryboard(name: "Main", bundle: nil)
+						let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
+						let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+						tabBarController.view.addSubview(oldView)
+						self.window?.rootViewController = tabBarController
+						if UIApplication.sharedApplication().applicationState == .Active && NSUserDefaults.standardUserDefaults().boolForKey("password") {
+							let view: UIView
+							if let viewController = self.window?.rootViewController {
+								if !UIAccessibilityIsReduceTransparencyEnabled() {
+									let effect = UIBlurEffect(style: .Light)
+									view = UIVisualEffectView(effect: effect)
+									view.frame = viewController.view.bounds
+								} else {
+									view = UIView(frame: viewController.view.bounds)
+									view.backgroundColor = UIColor.whiteColor()
+								}
+								view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+								viewController.view.addSubview(view)
+								self.securityView = view
+							}
+							if NSUserDefaults.standardUserDefaults().boolForKey("touchID") {
+								self.showAuthententication()
+							} else {
+								self.showPassword()
+							}
+						}
+						UIView.animateWithDuration(0.25, animations: {
+							oldView.alpha = 0
+							}, completion: { _ in
+							oldView.removeFromSuperview()
+						})
+					} else if error == .AuthenticationError {
+						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
+						let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
+							dispatch_async(dispatch_get_main_queue()) {
+								self.showLogin()
+							}
+						}
+						alertController.addAction(okAction)
+						UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+					} else {
+						self.loginOnLaunch()
+					}
+				}
+			}
+		} else {
+			showLogin()
+		}
+
 	}
 
 	func showLogin() {

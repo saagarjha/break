@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerPreviewingDelegate {
 
 	let cellIdentifier = "assignment"
 
@@ -38,6 +38,9 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
+        if traitCollection.forceTouchCapability == .Available {
+            registerForPreviewingWithDelegate(self, sourceView: view)
+        }
 //		schoolLoop.assignmentDelegate = self
 //		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		refresh(self)
@@ -114,6 +117,26 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = assignmentsTableView.indexPathForRowAtPoint(location),
+            cell = assignmentsTableView.cellForRowAtIndexPath(indexPath) else {
+                return nil
+        }
+        
+        guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("assignmentDescription") as? AssignmentDescriptionViewController else {
+            return nil
+        }
+        let selectedAssignment = assignments[assignmentDueDates[indexPath.section]]![indexPath.row]
+        destinationViewController.iD = selectedAssignment.iD
+        destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+        previewingContext.sourceRect = cell.frame
+        return destinationViewController
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

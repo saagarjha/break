@@ -573,15 +573,15 @@
 				TargetAttributes = {
 					4906AB781CCDBFB800610448 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = X4A9GH5NN2;
+						DevelopmentTeam = 3493UDPWAK;
 					};
 					4906AB841CCDBFBA00610448 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = X4A9GH5NN2;
+						DevelopmentTeam = 3493UDPWAK;
 					};
 					493E17751C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = X4A9GH5NN2;
+						DevelopmentTeam = 3493UDPWAK;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -798,10 +798,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -815,10 +816,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -832,9 +834,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -848,9 +851,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -947,10 +951,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -961,10 +966,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.saagarjha.break-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

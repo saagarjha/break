@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F28b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VA0-KO-lQk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F31a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VA0-KO-lQk">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -446,7 +446,7 @@
         <!--News Description View Controller-->
         <scene sceneID="A4h-TD-Izq">
             <objects>
-                <viewController id="nba-0f-x9V" customClass="NewsDescriptionViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newsDecription" id="nba-0f-x9V" customClass="NewsDescriptionViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CuB-xZ-LZl"/>
                         <viewControllerLayoutGuide type="bottom" id="k5Q-7W-gfO"/>
@@ -585,7 +585,7 @@
         <!--Assignment Description View Controller-->
         <scene sceneID="7Ve-1V-cJV">
             <objects>
-                <viewController id="dfx-bd-QRX" customClass="AssignmentDescriptionViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="assignmentDescription" id="dfx-bd-QRX" customClass="AssignmentDescriptionViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FVV-qG-d0k"/>
                         <viewControllerLayoutGuide type="bottom" id="gva-RE-SAG"/>
@@ -603,7 +603,7 @@
         <!--Loop Mail Message View Controller-->
         <scene sceneID="qrG-f3-UcG">
             <objects>
-                <viewController id="vY2-MK-FCV" customClass="LoopMailMessageViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loopMailMessage" id="vY2-MK-FCV" customClass="LoopMailMessageViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="82N-DA-GiQ"/>
                         <viewControllerLayoutGuide type="bottom" id="Ql8-x8-zE0"/>
@@ -760,7 +760,7 @@
         <!--Progess Report-->
         <scene sceneID="93k-tD-N7l">
             <objects>
-                <viewController title="Progess Report" id="y9r-Jb-Tkn" customClass="ProgressReportViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="progressReport" title="Progess Report" id="y9r-Jb-Tkn" customClass="ProgressReportViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3a2-y1-N4p"/>
                         <viewControllerLayoutGuide type="bottom" id="UUE-O7-vAb"/>

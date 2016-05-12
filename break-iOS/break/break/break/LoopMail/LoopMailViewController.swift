@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoopMailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class LoopMailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerPreviewingDelegate {
 
 	let cellIdentifier = "LoopMail"
 
@@ -37,6 +37,9 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
+        if traitCollection.forceTouchCapability == .Available {
+            registerForPreviewingWithDelegate(self, sourceView: view)
+        }
 //		schoolLoop.loopMailDelegate = self
 //		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 //			self.schoolLoop.getLoopMail()
@@ -105,6 +108,25 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	// MARK: - Navigation
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = loopMailTableView.indexPathForRowAtPoint(location),
+            cell = loopMailTableView.cellForRowAtIndexPath(indexPath) else {
+                return nil
+        }
+        
+        guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("loopMailMessage") as? LoopMailMessageViewController else {
+            return nil
+        }
+        let selectedLoopMail = loopMail[indexPath.row]
+        destinationViewController.ID = selectedLoopMail.ID
+        destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+        previewingContext.sourceRect = cell.frame
+        return destinationViewController
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

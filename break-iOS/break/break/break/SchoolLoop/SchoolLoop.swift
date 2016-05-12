@@ -157,8 +157,8 @@ class SchoolLoop: NSObject, NSCoding {
 			self.account.loggedIn = true
 			#if os(iOS)
 				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
-				completion?(error: .NoError)
 			#endif
+			completion?(error: .NoError)
 //			Logger.log("logIn ended")
 		}.resume()
 	}
@@ -265,6 +265,9 @@ class SchoolLoop: NSObject, NSCoding {
 //				}
 			}
 			self.courses = newCourses
+			#if os(iOS)
+				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+			#endif
 			completion?(updated: updated, error: .NoError)
 		}.resume()
 //		Logger.log("getCourses ended")
@@ -317,6 +320,9 @@ class SchoolLoop: NSObject, NSCoding {
 				let grade = SchoolLoopGrade(title: title, categoryName: categoryName, percentScore: percentScore, score: score, maxPoints: maxPoints)
 				course.grades.append(grade)
 			}
+			#if os(iOS)
+				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+			#endif
 			completion?(error: .NoError)
 //			Logger.log("getCourses ended")
 		}.resume()
@@ -410,6 +416,9 @@ class SchoolLoop: NSObject, NSCoding {
 //				}
 			}
 			self.assignments = newAssignments
+			#if os(iOS)
+				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+			#endif
 			completion?(updated: updated, error: .NoError)
 		}.resume()
 //		Logger.log("getAssignments ended")
@@ -493,6 +502,9 @@ class SchoolLoop: NSObject, NSCoding {
 //				}
 			}
 			self.loopMail = newLoopMail
+			#if os(iOS)
+				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+			#endif
 			completion?(updated: updated, error: .NoError)
 		}.resume()
 //		Logger.log("getLoopMail ended")
@@ -635,6 +647,9 @@ class SchoolLoop: NSObject, NSCoding {
 //				}
 			}
 			self.news = newNews
+			#if os(iOS)
+				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+			#endif
 			completion?(updated: updated, error: .NoError)
 		}.resume()
 //		Logger.log("getNews ended")

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerPreviewingDelegate {
 
 	let cellIdentifier = "news"
 
@@ -37,6 +37,9 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
+		if traitCollection.forceTouchCapability == .Available {
+			registerForPreviewingWithDelegate(self, sourceView: view)
+		}
 //		schoolLoop.newsDelegate = self
 //		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		refresh(self)
@@ -104,6 +107,26 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	// MARK: - Navigation
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = newsTableView.indexPathForRowAtPoint(location),
+			cell = newsTableView.cellForRowAtIndexPath(indexPath) else {
+				return nil
+		}
+
+		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("newsDescription") as? NewsDescriptionViewController else {
+			return nil
+		}
+		let selectedNews = news[indexPath.row]
+		destinationViewController.iD = selectedNews.iD
+		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		previewingContext.sourceRect = cell.frame
+		return destinationViewController
+	}
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
