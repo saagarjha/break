@@ -12,6 +12,8 @@ break is a lightweight, native app for accessing [SchoolLoop](http://www.schooll
 * **Login persistence:** Stay logged in until you log out
 * **Locker support:** Access your locker on all of your devices
 * **Notifications:** Be notified when your grade changes or you receive mail
+* **watchOS extension:** Check your grades on the go
+* **Password protection:** Prevent others from viewing sensitive data
 * **Security:** Passwords are encrypted with AES to prevent malicious access
 
 ## Planned features
@@ -23,7 +25,7 @@ break is a lightweight, native app for accessing [SchoolLoop](http://www.schooll
 
 ## Installation
 ### iOS
-* TestFlight: Waiting for developer license
+* TestFlight: **OPEN!** Sign up [here](http://goo.gl/forms/SvYR80ZqIy).
 * Manual installation: Sign the app with your developer license, then build and deploy `break-iOS` using Xcode. See the [iOS README](./break-iOS) for more details.
 <br>
 

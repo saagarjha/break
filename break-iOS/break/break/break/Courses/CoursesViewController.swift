@@ -27,36 +27,27 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 	let refreshControl = UIRefreshControl()
 
+	override func viewDidAppear(animated: Bool) {
+		super.viewDidAppear(animated)
+		courses = SchoolLoop.sharedInstance.courses
+        coursesTableView.reloadData()
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-
 		schoolLoop = SchoolLoop.sharedInstance
-        if traitCollection.forceTouchCapability == .Available {
-            registerForPreviewingWithDelegate(self, sourceView: view)
-        }
-//		schoolLoop.courseDelegate = self
+		if traitCollection.forceTouchCapability == .Available {
+			registerForPreviewingWithDelegate(self, sourceView: view)
+		}
 		refresh(self)
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-//			self.schoolLoop.getCourses()
-//		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-//	func gotGrades(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		dispatch_async(dispatch_get_main_queue()) {
-//			if error == nil {
-//				self.courses = schoolLoop.courses
-//				self.coursesTableView.reloadData()
-//			}
-//			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-//		}
-//	}
 
 	func refresh(sender: AnyObject) {
 		dispatch_async(dispatch_get_main_queue()) {
@@ -106,27 +97,27 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	// MARK: - Navigation
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = coursesTableView.indexPathForRowAtPoint(location),
-            cell = coursesTableView.cellForRowAtIndexPath(indexPath) else {
-                return nil
-        }
-        
-        guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("progressReport") as? ProgressReportViewController else {
-            return nil
-        }
-        let selectedCourse = courses[indexPath.row]
-        destinationViewController.title = selectedCourse.courseName
-        destinationViewController.periodID = selectedCourse.periodID
-        destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
-        previewingContext.sourceRect = cell.frame
-        return destinationViewController
-    }
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = coursesTableView.indexPathForRowAtPoint(location),
+			cell = coursesTableView.cellForRowAtIndexPath(indexPath) else {
+				return nil
+		}
+
+		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("progressReport") as? ProgressReportViewController else {
+			return nil
+		}
+		let selectedCourse = courses[indexPath.row]
+		destinationViewController.title = selectedCourse.courseName
+		destinationViewController.periodID = selectedCourse.periodID
+		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		previewingContext.sourceRect = cell.frame
+		return destinationViewController
+	}
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

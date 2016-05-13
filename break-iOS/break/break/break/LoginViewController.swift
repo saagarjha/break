@@ -6,6 +6,7 @@
 //  Copyright © 2016 Saagar Jha. All rights reserved.
 //
 
+import SafariServices
 import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
@@ -13,9 +14,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	var schoolLoop: SchoolLoop!
 	var schools: [SchoolLoopSchool] = []
-
-//	@IBOutlet weak var breakImageView: UIImageView!
-//	@IBOutlet weak var breakLabel: UILabel!
 
 	@IBOutlet weak var breakStackView: UIStackView!
 	@IBOutlet weak var schoolNameTextField: UITextField! {
@@ -48,60 +46,48 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			logInButton.layer.cornerRadius = 4
 		}
 	}
-//	var loginActivityIndicatorView: UIActivityIndicatorView!
+	@IBOutlet weak var forgotButton: UIButton!
+	@IBOutlet weak var privacyPolicyButton: UIButton!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-//		loginActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-//		loginActivityIndicatorView.center = view.center
-//		view.addSubview(loginActivityIndicatorView)
-//		view.sendSubviewToBack(loginActivityIndicatorView)
-
+		navigationController?.setNavigationBarHidden(true, animated: false)
 		schoolLoop = SchoolLoop.sharedInstance
-//		schoolLoop.schoolDelegate = self
-//		schoolLoop.loginDelegate = self
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		schoolLoop.getSchools() { error in
 			if error == .NoError {
 				self.schools = self.schoolLoop.schools
 				self.schools.sortInPlace()
 			}
 		}
-//		breakImageView.alpha = 0
-//		breakLabel.alpha = 0
 		breakStackView.alpha = 0
 		schoolNameTextField.alpha = 0
 		usernameTextField.alpha = 0
 		passwordTextField.alpha = 0
 		logInButton.alpha = 0
-//		}
+		forgotButton.alpha = 0
+		privacyPolicyButton.alpha = 0
 	}
 
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
-//        breakImageView.hidden = true
-//        breakLabel.hidden = true
-//        schoolNameTextField.hidden = true
-//        usernameTextField.hidden = true
-//        passwordTextField.hidden = true
-//        logInButton.hidden = true
+		breakStackView.alpha = 0
+		schoolNameTextField.alpha = 0
+		usernameTextField.alpha = 0
+		passwordTextField.alpha = 0
+		logInButton.alpha = 0
+		forgotButton.alpha = 0
+		privacyPolicyButton.alpha = 0
 		let dy = passwordTextField.frame.midY - schoolNameTextField.frame.midY
 		schoolNameTextField.frame = schoolNameTextField.frame.offsetBy(dx: 0, dy: dy)
 		usernameTextField.frame = usernameTextField.frame.offsetBy(dx: 0, dy: dy)
 		passwordTextField.frame = passwordTextField.frame.offsetBy(dx: 0, dy: dy)
 		logInButton.frame = logInButton.frame.offsetBy(dx: 0, dy: dy)
-//        breakImageView.hidden = false
-//        breakLabel.hidden = false
-//        schoolNameTextField.hidden = false
-//        usernameTextField.hidden = false
-//        passwordTextField.hidden = false
-//        logInButton.hidden = false
 		UIView.animateWithDuration(1, delay: 0, options: .CurveEaseInOut, animations: {
-//			self.breakImageView.alpha = 1
-//			self.breakLabel.alpha = 1
 			self.breakStackView.alpha = 1
+			self.forgotButton.alpha = 1
+			self.privacyPolicyButton.alpha = 1
 			}, completion: nil)
 		UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseInOut, animations: {
 			self.schoolNameTextField.frame = self.schoolNameTextField.frame.offsetBy(dx: 0, dy: -dy)
@@ -125,20 +111,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-//
-//	func gotSchools(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		schools = schoolLoop.schools
-//		schools.sortInPlace()
-//	}
 
 	@IBAction func logIn(sender: AnyObject) {
-//		view.bringSubviewToFront(loginActivityIndicatorView)
-//		loginActivityIndicatorView.startAnimating()
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
 			dispatch_async(dispatch_get_main_queue()) {
 				if error == .NoError {
-//					self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
 					let storybard = UIStoryboard(name: "Main", bundle: nil)
 					let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
 					let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
@@ -176,28 +153,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					alertController.addAction(okAction)
 					self.presentViewController(alertController, animated: true, completion: nil)
 				}
-
-//				self.loginActivityIndicatorView.stopAnimating()
-//				self.view.sendSubviewToBack(self.loginActivityIndicatorView)
 			}
 		}
-//		}
 	}
 
-//	func loggedIn(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		dispatch_async(dispatch_get_main_queue()) {
-//			if error == nil {
-//				self.performSegueWithIdentifier(self.logInSegueIdentifier, sender: self)
-//			} else {
-//				let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
-//				let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-//				alertController.addAction(okAction)
-//				self.presentViewController(alertController, animated: true, completion: nil)
-//			}
-//			self.loginActivityIndicatorView.stopAnimating()
-//			self.view.sendSubviewToBack(self.loginActivityIndicatorView)
-//		}
-//	}
+	@IBAction func forgot(sender: AnyObject) {
+		let safariViewController = SFSafariViewController(URL: SchoolLoopConstants.forgotURL)
+		presentViewController(safariViewController, animated: true, completion: nil)
+	}
 
 	func textFieldShouldReturn(textField: UITextField) -> Bool {
 		if textField === schoolNameTextField {
@@ -206,6 +169,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		} else if textField === usernameTextField {
 			passwordTextField.becomeFirstResponder()
 		} else {
+			view.endEditing(true)
 			logIn(logInButton)
 			return false
 		}

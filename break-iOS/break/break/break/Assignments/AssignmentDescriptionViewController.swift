@@ -24,11 +24,11 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 		descriptionWebView.allowsBackForwardNavigationGestures = true
 		view = descriptionWebView
 	}
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
 //        navigationController?.hidesBarsOnSwipe = true
-    }
+//    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

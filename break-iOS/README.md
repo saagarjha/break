@@ -11,6 +11,7 @@ Building break requires [Xcode](https://developer.apple.com/xcode/), which requi
 * News
 * Locker
 * Notifications
+* watchOS extension
 
 ## TODO
 * Comments
@@ -20,4 +21,6 @@ Building break requires [Xcode](https://developer.apple.com/xcode/), which requi
 * One-time login (Guest mode)
 * Grade calculation
 * Parent/Teacher support
-* UI improvements (especially the storyboard)
+* UI improvements
+* 3D Touch
+* watchOS complications

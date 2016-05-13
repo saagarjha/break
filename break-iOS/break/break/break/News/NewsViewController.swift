@@ -27,10 +27,12 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	let refreshControl = UIRefreshControl()
 
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		news = SchoolLoop.sharedInstance.news
+		newsTableView.reloadData()
 //        navigationController?.hidesBarsOnSwipe = false
-//    }
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -40,11 +42,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		if traitCollection.forceTouchCapability == .Available {
 			registerForPreviewingWithDelegate(self, sourceView: view)
 		}
-//		schoolLoop.newsDelegate = self
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		refresh(self)
-//			self.schoolLoop.getNews()
-//		}
 	}
 
 	override func didReceiveMemoryWarning() {

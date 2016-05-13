@@ -28,39 +28,30 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	let refreshControl = UIRefreshControl()
 
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
-//        navigationController?.hidesBarsOnSwipe = false
-//    }
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		assignments = SchoolLoop.sharedInstance.assignmentsWithDueDates
+		assignmentDueDates = Array(self.assignments.keys)
+		assignmentDueDates.sortInPlace({ $0.compare($1) == NSComparisonResult.OrderedAscending })
+		assignmentsTableView.reloadData()
+		navigationController?.hidesBarsOnSwipe = false
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-        if traitCollection.forceTouchCapability == .Available {
-            registerForPreviewingWithDelegate(self, sourceView: view)
-        }
-//		schoolLoop.assignmentDelegate = self
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+		if traitCollection.forceTouchCapability == .Available {
+			registerForPreviewingWithDelegate(self, sourceView: view)
+		}
 		refresh(self)
-//		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-//	func gotAssignments(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		dispatch_async(dispatch_get_main_queue()) {
-//			if error == nil {
-//				self.assignments = schoolLoop.assignmentsWithDueDates
-//				self.assignmentsTableView.reloadData()
-//			}
-//			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-//		}
-//	}
 
 	func refresh(sender: AnyObject) {
 		dispatch_async(dispatch_get_main_queue()) {
@@ -117,26 +108,26 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = assignmentsTableView.indexPathForRowAtPoint(location),
-            cell = assignmentsTableView.cellForRowAtIndexPath(indexPath) else {
-                return nil
-        }
-        
-        guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("assignmentDescription") as? AssignmentDescriptionViewController else {
-            return nil
-        }
-        let selectedAssignment = assignments[assignmentDueDates[indexPath.section]]![indexPath.row]
-        destinationViewController.iD = selectedAssignment.iD
-        destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
-        previewingContext.sourceRect = cell.frame
-        return destinationViewController
-    }
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = assignmentsTableView.indexPathForRowAtPoint(location),
+			cell = assignmentsTableView.cellForRowAtIndexPath(indexPath) else {
+				return nil
+		}
+
+		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("assignmentDescription") as? AssignmentDescriptionViewController else {
+			return nil
+		}
+		let selectedAssignment = assignments[assignmentDueDates[indexPath.section]]![indexPath.row]
+		destinationViewController.iD = selectedAssignment.iD
+		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		previewingContext.sourceRect = cell.frame
+		return destinationViewController
+	}
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

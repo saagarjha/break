@@ -29,7 +29,6 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-//		schoolLoop.gradeDelegate = self
 		schoolLoop.getGrades(periodID) { error in
 			dispatch_async(dispatch_get_main_queue()) {
 				if error == .NoError {
@@ -48,19 +47,6 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-//	func gotGrades(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		dispatch_async(dispatch_get_main_queue()) {
-//			if error == nil {
-//				guard let grades = schoolLoop.courseForPeriodID(self.periodID)?.grades else {
-//					assertionFailure("Could not get grades for periodID")
-//					return
-//				}
-//				self.grades = grades
-//				self.gradesTableView.reloadData()
-//			}
-//		}
-//	}
 
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 		return 1

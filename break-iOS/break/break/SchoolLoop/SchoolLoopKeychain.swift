@@ -13,13 +13,13 @@ class SchoolLoopKeychain {
 
 	static let sharedInstance = SchoolLoopKeychain()
 
-	func save(username: String, password: String) -> Bool {
+	func setPassword(password: String, forUsername username: String) -> Bool {
 		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username.dataUsingEncoding(NSUTF8StringEncoding)!, kSecValueData as String: password.dataUsingEncoding(NSUTF8StringEncoding)!]
 		SecItemDelete(item)
 		return SecItemAdd(item, nil) == noErr
 	}
 
-	func getPassword(username: String) -> String? {
+	func getPasswordForUsername(username: String) -> String? {
 		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username, kSecReturnData as String: kCFBooleanTrue, kSecMatchLimit as String: kSecMatchLimitOne]
 		var reference: AnyObject?
 		if SecItemCopyMatching(item, &reference) == noErr {

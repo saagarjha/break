@@ -36,12 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
 			archived = false
 		}
-
-//		let schoolLoop = SchoolLoop.sharedInstance
-//		schoolLoop.schoolDelegate = self
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-//			schoolLoop.getSchools()
-//		}
 		loginOnLaunch()
 
 		return true
@@ -92,139 +86,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func applicationWillTerminate(application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 		guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
-			Logger.log("Could not archive")
 			return
 		}
 		do {
 			try NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionCompleteUntilFirstUserAuthentication], ofItemAtPath: file)
-		} catch let error {
-			Logger.log("Could not secure, error: \(error)")
+		} catch _ {
 		}
-//		guard (try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionCompleteUntilFirstUserAuthentication], ofItemAtPath: file)) != nil else {
-//			Logger.log("Securing data failed")
-//			return
-//		}
+		guard (try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionCompleteUntilFirstUserAuthentication], ofItemAtPath: file)) != nil else {
+			return
+		}
 	}
 
 	func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-		Logger.log("Started fetch")
 
 		if archived {
 			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
 			archived = false
 		}
 		let schoolLoop = SchoolLoop.sharedInstance
-//		if let schoolName = NSUserDefaults.standardUserDefaults().stringForKey("schoolName"), username = NSUserDefaults.standardUserDefaults().stringForKey("username"), password = schoolLoop.keychain.getPasswordForUsername(username) {
-//			schoolLoop.loginDelegate = self
 		var updated = UIBackgroundFetchResult.Failed
-		schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-			if error == .NoError {
-				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-					let group = dispatch_group_create()
-					let completion: (Bool, SchoolLoopError) -> Void = {
-						if $0.1 == .NoError {
-							updated = updated == .Failed ? .NoData : updated
-							updated = $0.0 ? .NewData : updated
+		if schoolLoop.school != nil && schoolLoop.account != nil {
+			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
+				if error == .NoError {
+					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+						let group = dispatch_group_create()
+						let completion: (Bool, SchoolLoopError) -> Void = {
+							if $0.1 == .NoError {
+								updated = updated == .Failed ? .NoData : updated
+								updated = $0.0 ? .NewData : updated
+							}
+							dispatch_group_leave(group)
 						}
-						dispatch_group_leave(group)
+						dispatch_group_enter(group)
+						schoolLoop.getCourses(completion)
+						dispatch_group_enter(group)
+						schoolLoop.getAssignments(completion)
+						dispatch_group_enter(group)
+						schoolLoop.getLoopMail(completion)
+						dispatch_group_enter(group)
+						schoolLoop.getNews(completion)
+						dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, Int64(30 * NSEC_PER_SEC)))
+						completionHandler(updated)
 					}
-					dispatch_group_enter(group)
-					schoolLoop.getCourses(completion)
-					dispatch_group_enter(group)
-					schoolLoop.getAssignments(completion)
-					dispatch_group_enter(group)
-					schoolLoop.getLoopMail(completion)
-					dispatch_group_enter(group)
-					schoolLoop.getNews(completion)
-					dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, Int64(30 * NSEC_PER_SEC)))
-					Logger.log("Ended fetch, updated: \(updated == .NoData ? "NoData" : updated == .Failed ? "Failed" : "NewData")")
-					completionHandler(updated)
+				} else {
+					completionHandler(.Failed)
 				}
-			} else {
-				completionHandler(.Failed)
 			}
+		} else {
+			completionHandler(.Failed)
 		}
-//		} else {
-//			return completionHandler(.Failed)
-//		}
-		// if let tabBarController = window?.rootViewController as? UITabBarController,
-		// viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
-		// for viewController in viewControllers {
-		// Logger.log("Started courses fetch")
-		// if let coursesViewController = viewController as? CoursesViewController {
-		// schoolLoop.courseDelegate = coursesViewController
-		// coursesViewController.schoolLoop = schoolLoop
-		// updated ||= coursesViewController.refresh(self)
-		// }
-		// Logger.log("Ended courses fetch")
-		// Logger.log("Started assignments fetch")
-		// if let assignmentsViewController = viewController as? AssignmentsViewController {
-		// schoolLoop.assignmentDelegate = assignmentsViewController
-		// assignmentsViewController.schoolLoop = schoolLoop
-		// updated ||= assignmentsViewController.refresh(self)
-		// }
-		// Logger.log("Ended assignments fetch")
-		// Logger.log("Started LoopMail fetch")
-		// if let loopMailViewController = viewController as? LoopMailViewController {
-		// schoolLoop.loopMailDelegate = loopMailViewController
-		// loopMailViewController.schoolLoop = schoolLoop
-		// updated ||= loopMailViewController.refresh(self)
-		// }
-		// Logger.log("Ended LoopMail fetch")
-		// Logger.log("Started News fetch")
-		// if let newsViewController = viewController as? NewsViewController {
-		// schoolLoop.newsDelegate = newsViewController
-		// newsViewController.schoolLoop = schoolLoop
-		// updated ||= newsViewController.refresh(self)
-		// }
-		// Logger.log("Ended news fetch")
-		// }
-		// }
-		// if schoolLoop.account == nil {
-		// schoolLoop.getSchools()
-		// if let schoolName = NSUserDefaults.standardUserDefaults().stringForKey("schoolName"), username = NSUserDefaults.standardUserDefaults().stringForKey("username"), password = schoolLoop.keychain.getPassword(username) {
-		// schoolLoop.loginDelegate = self
-		//
-		// schoolLoop.logIn(schoolName, username: username, password: password)
-		// } else {
-		// return false
-		// }
-		// }
-//		updated = schoolLoop.getCourses() | schoolLoop.getAssignments() | schoolLoop.getLoopMail() | schoolLoop.getNews()
 	}
-
-//	func gotSchools(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		if error == nil {
-//			if let schoolName = NSUserDefaults.standardUserDefaults().stringForKey("schoolName"), username = NSUserDefaults.standardUserDefaults().stringForKey("username"), password = schoolLoop.keychain.getPassword(username) {
-//				schoolLoop.loginDelegate = self
-//
-//				schoolLoop.logIn(schoolName, username: username, password: password)
-//			} else {
-//				showLogin()
-//			}
-//		}
-//	}
-
-//	func loggedIn(error: SchoolLoopError?) {
-//		if error == .NoError {
-//			let storybard = UIStoryboard(name: "Main", bundle: nil)
-//			let tabViewController = storybard.instantiateViewControllerWithIdentifier("tab")
-//			dispatch_async(dispatch_get_main_queue()) {
-//				self.window?.rootViewController = tabViewController
-//			}
-//		} else {
-//			dispatch_async(dispatch_get_main_queue()) {
-//				let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
-//				let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
-//					dispatch_async(dispatch_get_main_queue()) {
-//						self.showLogin()
-//					}
-//				}
-//				alertController.addAction(okAction)
-//				UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-//			}
-//		}
-//	}
 
 	func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
 		completionHandler(true)
@@ -233,8 +144,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func loginOnLaunch() {
 		let schoolLoop = SchoolLoop.sharedInstance
 		if schoolLoop.school != nil && schoolLoop.account != nil {
-			// schoolLoop.loginDelegate = self
-
 			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				dispatch_async(dispatch_get_main_queue()) {
 					if error == .NoError {
@@ -312,13 +221,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func clearCache() {
 		do {
 			try NSFileManager.defaultManager().removeItemAtPath(file)
-		} catch let error {
-			Logger.log("Could not remove file, error: \(error)")
+		} catch _ {
 		}
 	}
 
 	func showAuthententication() {
-//		if let tabBarController = self.window?.rootViewController as? UITabBarController {
 		LAContext().evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { (success, error) in
 			if success {
 				dispatch_async(dispatch_get_main_queue()) {
@@ -337,7 +244,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			}
 
 		}
-//		}
 	}
 
 	func showPassword() {
@@ -429,18 +335,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			}
 		}
 	}
-}
-
-infix operator ||= { associativity left precedence 90 }
-
-//func ||= (inout lhs: UIBackgroundFetchResult, rhs: UIBackgroundFetchResult) {
-//    if lhs == .NoData && rhs == .NewData {
-//        lhs = .NewData
-//    } else if lhs == .Failed {
-//        lhs = rhs
-//    }
-//}
-
-func | (lhs: Bool, rhs: Bool) -> Bool {
-	return lhs || rhs
 }

@@ -40,7 +40,6 @@ class LoggerViewController: UIViewController {
 		}
 		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
 		let doneAction = UIAlertAction(title: "Done", style: .Default) { action in
-			Logger.log("[MARK] \(alertController.textFields!.first!.text!)")
 			self.logTextView.text = Logger.readLog()
 		}
 		alertController.addAction(cancelAction)

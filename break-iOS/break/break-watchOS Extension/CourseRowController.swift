@@ -11,7 +11,7 @@ import WatchKit
 class CourseRowController: NSObject {
 
 	@IBOutlet var courseNameLabel: WKInterfaceLabel!
-    @IBOutlet var teacherNameLabel: WKInterfaceLabel!
+	@IBOutlet var teacherNameLabel: WKInterfaceLabel!
 	@IBOutlet var scoreLabel: WKInterfaceLabel!
 	@IBOutlet var gradeLabel: WKInterfaceLabel!
 }

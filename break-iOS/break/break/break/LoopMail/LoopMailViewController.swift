@@ -27,40 +27,28 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	let refreshControl = UIRefreshControl()
 
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		loopMail = SchoolLoop.sharedInstance.loopMail
+        loopMailTableView.reloadData()
 //        navigationController?.hidesBarsOnSwipe = false
-//    }
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-        if traitCollection.forceTouchCapability == .Available {
-            registerForPreviewingWithDelegate(self, sourceView: view)
-        }
-//		schoolLoop.loopMailDelegate = self
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-//			self.schoolLoop.getLoopMail()
+		if traitCollection.forceTouchCapability == .Available {
+			registerForPreviewingWithDelegate(self, sourceView: view)
+		}
 		refresh(self)
-//		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-//	func gotLoopMail(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		dispatch_async(dispatch_get_main_queue()) {
-//			if error == nil {
-//				self.loopMail = schoolLoop.loopMail
-//				self.loopMailTableView.reloadData()
-//			}
-//			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-//		}
-//	}
 
 	func refresh(sender: AnyObject) {
 		schoolLoop.getLoopMail() { (_, error) in
@@ -108,25 +96,25 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	// MARK: - Navigation
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = loopMailTableView.indexPathForRowAtPoint(location),
-            cell = loopMailTableView.cellForRowAtIndexPath(indexPath) else {
-                return nil
-        }
-        
-        guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("loopMailMessage") as? LoopMailMessageViewController else {
-            return nil
-        }
-        let selectedLoopMail = loopMail[indexPath.row]
-        destinationViewController.ID = selectedLoopMail.ID
-        destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
-        previewingContext.sourceRect = cell.frame
-        return destinationViewController
-    }
-    
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
+	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = loopMailTableView.indexPathForRowAtPoint(location),
+			cell = loopMailTableView.cellForRowAtIndexPath(indexPath) else {
+				return nil
+		}
+
+		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("loopMailMessage") as? LoopMailMessageViewController else {
+			return nil
+		}
+		let selectedLoopMail = loopMail[indexPath.row]
+		destinationViewController.ID = selectedLoopMail.ID
+		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		previewingContext.sourceRect = cell.frame
+		return destinationViewController
+	}
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

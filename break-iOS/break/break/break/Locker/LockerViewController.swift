@@ -31,10 +31,6 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
-//		if let schoolLoop = schoolLoop {
-//			schoolLoop.lockerDelegate = self
-//		}
-//        navigationController?.hidesBarsOnSwipe = false
 	}
 
 	override func viewDidLoad() {
@@ -42,13 +38,11 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-
 		if path.componentsSeparatedByString("/").count < 3 {
 			let items = ["My Courses", "My Locker"]
 			let segmentedControl = UISegmentedControl(items: items)
 			navigationItem.titleView = segmentedControl
 			if items.indexOf(path.componentsSeparatedByString("/")[1]) == nil {
-//				SchoolLoop.sharedInstance.getLocker(path)
 				schoolLoop.getLocker(path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
@@ -58,33 +52,13 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			navigationItem.leftItemsSupplementBackButton = true
 			navigationItem.leftBarButtonItem = nil
 		}
-
-//		schoolLoop.lockerDelegate = self
-//		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
 		refresh(self)
-//			self.schoolLoop.getLocker(self.path)
-//		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-//	func gotLocker(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-//		dispatch_async(dispatch_get_main_queue()) {
-//			self.refreshControl.endRefreshing()
-//			if error == nil {
-//				guard let lockerItem = schoolLoop.lockerItemForPath(self.path) else {
-//					return
-//				}
-//
-//				lockerItem.lockerItems.sortInPlace()
-//				self.lockerItems = lockerItem.lockerItems
-//				self.lockerCollectionView.reloadData()
-//			}
-//		}
-//	}
 
 	func refresh(sender: AnyObject) {
 		schoolLoop.getLocker(path) { error in
@@ -110,7 +84,6 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	func changePath(sender: UISegmentedControl) {
 		path = "/" + sender.titleForSegmentAtIndex(sender.selectedSegmentIndex)!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
-//		schoolLoop.getLocker(path)
 		refresh(self)
 	}
 
