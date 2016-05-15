@@ -135,7 +135,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zQv-YR-1BU">
-                                <rect key="frame" x="217" y="239" width="167" height="75"/>
+                                <rect key="frame" x="223" y="239" width="167" height="75"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ind-bh-GfR">
                                         <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
@@ -162,7 +162,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="zQv-YR-1BU" firstAttribute="centerY" secondItem="Ts5-SV-BTr" secondAttribute="centerY" multiplier="0.92" id="7Bb-Xj-Nr2"/>
-                            <constraint firstItem="zQv-YR-1BU" firstAttribute="centerX" secondItem="Ts5-SV-BTr" secondAttribute="centerX" id="Fhd-3P-6Dl"/>
+                            <constraint firstItem="zQv-YR-1BU" firstAttribute="centerX" secondItem="Ts5-SV-BTr" secondAttribute="centerX" multiplier="1.02" id="Fhd-3P-6Dl"/>
                             <constraint firstItem="uyt-lz-qya" firstAttribute="top" secondItem="zQv-YR-1BU" secondAttribute="bottom" constant="8" id="Xi1-gm-Ktx"/>
                             <constraint firstItem="uyt-lz-qya" firstAttribute="centerX" secondItem="Ts5-SV-BTr" secondAttribute="centerX" id="b0q-JD-ZP8"/>
                         </constraints>

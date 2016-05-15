@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dfP-ob-rye">
-                                <rect key="frame" x="217" y="239" width="167" height="75"/>
+                                <rect key="frame" x="223" y="239" width="167" height="75"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="5ai-9x-coI">
                                         <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
@@ -38,7 +38,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dfP-ob-rye" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Fqn-nT-NcX"/>
+                            <constraint firstItem="dfP-ob-rye" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" multiplier="1.02" id="Fqn-nT-NcX"/>
                             <constraint firstItem="dfP-ob-rye" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.92" id="ld3-3m-Xam"/>
                         </constraints>
                     </view>
