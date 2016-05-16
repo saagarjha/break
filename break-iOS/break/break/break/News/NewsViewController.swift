@@ -8,12 +8,13 @@
 
 import UIKit
 
-class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerPreviewingDelegate {
+class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
 	let cellIdentifier = "news"
 
 	var schoolLoop: SchoolLoop!
 	var news: [SchoolLoopNews] = []
+	var filteredNews: [SchoolLoopNews] = []
 
 	var destinationViewController: NewsDescriptionViewController!
 
@@ -26,11 +27,12 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		}
 	}
 	let refreshControl = UIRefreshControl()
+	let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		news = SchoolLoop.sharedInstance.news
-		newsTableView.reloadData()
+		updateSearchResultsForSearchController(searchController)
 //        navigationController?.hidesBarsOnSwipe = false
 	}
 
@@ -38,6 +40,9 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		searchController.searchResultsUpdater = self
+		searchController.delegate = self
+		newsTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .Available {
 			registerForPreviewingWithDelegate(self, sourceView: view)
@@ -50,22 +55,12 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		// Dispose of any resources that can be recreated.
 	}
 
-	func gotNews(schoolLoop: SchoolLoop, error: SchoolLoopError?) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if error == nil {
-				self.news = schoolLoop.news
-				self.newsTableView.reloadData()
-			}
-			self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
-		}
-	}
-
 	func refresh(sender: AnyObject) {
 		schoolLoop.getNews() { (_, error) in
 			dispatch_async(dispatch_get_main_queue()) {
 				if error == .NoError {
 					self.news = self.schoolLoop.news
-					self.newsTableView.reloadData()
+					self.updateSearchResultsForSearchController(self.searchController)
 				}
 				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 			}
@@ -90,18 +85,34 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			assertionFailure("Could not deque NewsTableViewCell")
 			return tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
 		}
-		cell.titleLabel.text = news[indexPath.row].title
-		cell.authorNameLabel.text = news[indexPath.row].authorName
+		let news = filteredNews[indexPath.row]
+		cell.titleLabel.text = news.title
+		cell.authorNameLabel.text = news.authorName
 		let dateFormatter = NSDateFormatter()
 		dateFormatter.dateFormat = "M/d/yy"
-		cell.createdDateLabel.text = dateFormatter.stringFromDate(news[indexPath.row].createdDate)
+		cell.createdDateLabel.text = dateFormatter.stringFromDate(news.createdDate)
 		return cell
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedNews = news[indexPath.row]
+		let selectedNews = filteredNews[indexPath.row]
 		destinationViewController.iD = selectedNews.iD
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+	}
+
+	func updateSearchResultsForSearchController(searchController: UISearchController) {
+		let filter = searchController.searchBar.text?.lowercaseString ?? ""
+		if filter != "" {
+			filteredNews.removeAll()
+			filteredNews = news.filter() { news in
+				return news.title.lowercaseString.containsString(filter)
+			}
+		} else {
+			filteredNews = news
+		}
+		dispatch_async(dispatch_get_main_queue()) {
+			self.newsTableView.reloadData()
+		}
 	}
 
 	// MARK: - Navigation
