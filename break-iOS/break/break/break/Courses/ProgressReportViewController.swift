@@ -25,17 +25,25 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 	let searchController = UISearchController(searchResultsController: nil)
+    
+    deinit {
+        searchController.loadViewIfNeeded()
+    }
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+        definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
+        searchController.dimsBackgroundDuringPresentation = false
 		gradesTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 		schoolLoop.getGrades(periodID) { error in
 			dispatch_async(dispatch_get_main_queue()) {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
 				if error == .NoError {
 					guard let grades = self.schoolLoop.courseForPeriodID(self.periodID)?.grades else {
 						assertionFailure("Could not get grades for periodID")

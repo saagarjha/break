@@ -30,6 +30,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 
+	deinit {
+		searchController.loadViewIfNeeded()
+	}
+
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		assignments = SchoolLoop.sharedInstance.assignmentsWithDueDates
@@ -41,8 +45,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
+		searchController.dimsBackgroundDuringPresentation = false
 		assignmentsTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .Available {
@@ -57,17 +63,18 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func refresh(sender: AnyObject) {
-		dispatch_async(dispatch_get_main_queue()) {
-			self.schoolLoop.getAssignments { (_, error) in
-				dispatch_async(dispatch_get_main_queue()) {
-					if error == .NoError {
-						self.assignments = self.schoolLoop.assignmentsWithDueDates
-						self.updateSearchResultsForSearchController(self.searchController)
-					}
-					self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+		schoolLoop.getAssignments { (_, error) in
+			dispatch_async(dispatch_get_main_queue()) {
+				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+				if error == .NoError {
+					self.assignments = self.schoolLoop.assignmentsWithDueDates
+					self.updateSearchResultsForSearchController(self.searchController)
 				}
+				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 			}
 		}
+
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {

@@ -38,7 +38,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			passwordTextField.secureTextEntry = true
 			passwordTextField.autocorrectionType = .No
 			passwordTextField.autocapitalizationType = .None
-			passwordTextField.returnKeyType = .Done
+			passwordTextField.returnKeyType = .Go
 		}
 	}
 	@IBOutlet weak var logInButton: UIButton! {
@@ -55,7 +55,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
 		schoolLoop = SchoolLoop.sharedInstance
+		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 		schoolLoop.getSchools { error in
+			UIApplication.sharedApplication().networkActivityIndicatorVisible = false
 			if error == .NoError {
 				self.schools = self.schoolLoop.schools
 				self.schools.sortInPlace()
@@ -113,8 +115,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 	@IBAction func logIn(sender: AnyObject) {
+		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+		logInButton.enabled = false
+		logInButton.alpha = 0.5
 		self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
 			dispatch_async(dispatch_get_main_queue()) {
+				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
 				if error == .NoError {
 					let storybard = UIStoryboard(name: "Main", bundle: nil)
 					let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
@@ -147,12 +153,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					if let _ = view as? AnyObject {
 						return
 					}
+				} else if error == .NetworkError {
+					let alertController = UIAlertController(title: "Network error", message: "There was an issue accessing SchoolLoop. Please try again.", preferredStyle: .Alert)
+					let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+					alertController.addAction(okAction)
+					self.presentViewController(alertController, animated: true, completion: nil)
+
 				} else {
 					let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
 					let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
 					alertController.addAction(okAction)
 					self.presentViewController(alertController, animated: true, completion: nil)
 				}
+				self.logInButton.enabled = true
+				self.logInButton.alpha = 1
 			}
 		}
 	}

@@ -29,6 +29,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 
+	deinit {
+		searchController.loadViewIfNeeded()
+	}
+
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		courses = SchoolLoop.sharedInstance.courses
@@ -39,8 +43,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
+		searchController.dimsBackgroundDuringPresentation = false
 		coursesTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .Available {
@@ -55,17 +61,18 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	func refresh(sender: AnyObject) {
-		dispatch_async(dispatch_get_main_queue()) {
-			self.schoolLoop.getCourses { (_, error) in
-				dispatch_async(dispatch_get_main_queue()) {
-					if error == .NoError {
-						self.courses = self.schoolLoop.courses
-						self.updateSearchResultsForSearchController(self.searchController)
-					}
-					self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+		schoolLoop.getCourses { (_, error) in
+			dispatch_async(dispatch_get_main_queue()) {
+				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+				if error == .NoError {
+					self.courses = self.schoolLoop.courses
+					self.updateSearchResultsForSearchController(self.searchController)
 				}
+				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
 			}
 		}
+
 	}
 
 	@IBAction func openSettings(sender: AnyObject) {
@@ -100,6 +107,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		destinationViewController.title = selectedCourse.courseName
 		destinationViewController.periodID = selectedCourse.periodID
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+	}
+
+	func willDismissSearchController(searchController: UISearchController) {
+		updateSearchResultsForSearchController(searchController)
 	}
 
 	func updateSearchResultsForSearchController(searchController: UISearchController) {

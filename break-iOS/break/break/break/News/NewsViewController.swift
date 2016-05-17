@@ -28,6 +28,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
+    
+    deinit {
+        searchController.loadViewIfNeeded()
+    }
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
@@ -40,8 +44,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
+		searchController.dimsBackgroundDuringPresentation = false
 		newsTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .Available {
@@ -56,8 +62,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func refresh(sender: AnyObject) {
+		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 		schoolLoop.getNews() { (_, error) in
 			dispatch_async(dispatch_get_main_queue()) {
+				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
 				if error == .NoError {
 					self.news = self.schoolLoop.news
 					self.updateSearchResultsForSearchController(self.searchController)

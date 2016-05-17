@@ -37,7 +37,7 @@ struct SchoolLoopConstants {
 		}
 	}
 	static let max = "10000"
-    static let forgotURL = NSURL(string: "https://montavista.schoolloop.com/portal/forgot_password")!
+	static let forgotURL = NSURL(string: "https://montavista.schoolloop.com/portal/forgot_password")!
 
 	static func schoolURL() -> NSURL {
 		return NSURL(string: "https://lol.schoolloop.com/mapi/schools".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
@@ -68,7 +68,7 @@ struct SchoolLoopConstants {
 	}
 
 	static func newsURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)?max=1000".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func lockerURL(path: String, domainName: String, username: String) -> NSURL {

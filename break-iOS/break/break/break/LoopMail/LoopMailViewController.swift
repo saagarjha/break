@@ -28,6 +28,10 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
+    
+    deinit {
+        searchController.loadViewIfNeeded()
+    }
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
@@ -40,8 +44,10 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
+		searchController.dimsBackgroundDuringPresentation = false
 		loopMailTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .Available {

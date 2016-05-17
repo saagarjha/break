@@ -45,6 +45,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			if items.indexOf(path.componentsSeparatedByString("/")[1]) == nil {
 				schoolLoop.getLocker(path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
+				title = items[0]
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 			}
 			segmentedControl.addTarget(self, action: #selector(LockerViewController.changePath(_:)), forControlEvents: .ValueChanged)
@@ -64,13 +65,14 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func refresh(sender: AnyObject) {
+		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 		schoolLoop.getLocker(path) { error in
 			dispatch_async(dispatch_get_main_queue()) {
+				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
 				if error == .NoError {
 					guard let lockerItem = self.schoolLoop.lockerItemForPath(self.path) else {
 						return
 					}
-
 					lockerItem.lockerItems.sortInPlace()
 					self.lockerItems = lockerItem.lockerItems
 					self.lockerCollectionView.reloadData()
@@ -86,7 +88,8 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func changePath(sender: UISegmentedControl) {
-		path = "/" + sender.titleForSegmentAtIndex(sender.selectedSegmentIndex)!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
+		title = sender.titleForSegmentAtIndex(sender.selectedSegmentIndex) ?? ""
+		path = "/" + (sender.titleForSegmentAtIndex(sender.selectedSegmentIndex) ?? "").stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 		refresh(self)
 	}
 
