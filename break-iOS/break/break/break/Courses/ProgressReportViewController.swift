@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
 
 	let cellIdentifier = "grade"
 
@@ -16,6 +16,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 	var schoolLoop: SchoolLoop!
 	var grades: [SchoolLoopGrade] = []
+	var filteredGrades: [SchoolLoopGrade] = []
 
 	@IBOutlet weak var gradesTableView: UITableView! {
 		didSet {
@@ -23,11 +24,15 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			gradesTableView.estimatedRowHeight = 80.0
 		}
 	}
+	let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		searchController.searchResultsUpdater = self
+		searchController.delegate = self
+		gradesTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		schoolLoop.getGrades(periodID) { error in
 			dispatch_async(dispatch_get_main_queue()) {
@@ -37,7 +42,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 						return
 					}
 					self.grades = grades
-					self.gradesTableView.reloadData()
+					self.updateSearchResultsForSearchController(self.searchController)
 				}
 			}
 		}
@@ -53,7 +58,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return grades.count
+		return filteredGrades.count
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -61,15 +66,31 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			assertionFailure("Could not deque GradeTableViewCell")
 			return tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
 		}
-		cell.titleLabel.text = grades[indexPath.row].title
-		cell.categoryNameLabel.text = grades[indexPath.row].categoryName
-		cell.percentScoreLabel.text = grades[indexPath.row].percentScore
-		cell.scoreLabel.text = "\(grades[indexPath.row].score)/\(grades[indexPath.row].maxPoints)"
+		let grade = filteredGrades[indexPath.row]
+		cell.titleLabel.text = grade.title
+		cell.categoryNameLabel.text = grade.categoryName
+		cell.percentScoreLabel.text = grade.percentScore
+		cell.scoreLabel.text = "\(grade.score)/\(grade.maxPoints)"
 		return cell
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+	}
+
+	func updateSearchResultsForSearchController(searchController: UISearchController) {
+		let filter = searchController.searchBar.text?.lowercaseString ?? ""
+		if filter != "" {
+			filteredGrades.removeAll()
+			filteredGrades = grades.filter() { grade in
+				return grade.title.lowercaseString.containsString(filter) || grade.categoryName.lowercaseString.containsString(filter)
+			}
+		} else {
+			filteredGrades = grades
+		}
+		dispatch_async(dispatch_get_main_queue()) {
+			self.gradesTableView.reloadData()
+		}
 	}
 
 	/*

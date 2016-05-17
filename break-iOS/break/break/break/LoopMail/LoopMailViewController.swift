@@ -32,7 +32,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		loopMail = SchoolLoop.sharedInstance.loopMail
-        updateSearchResultsForSearchController(searchController)
+		updateSearchResultsForSearchController(searchController)
 //        navigationController?.hidesBarsOnSwipe = false
 	}
 
@@ -77,7 +77,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return loopMail.count
+		return filteredLoopMail.count
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -106,7 +106,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		if filter != "" {
 			filteredLoopMail.removeAll()
 			filteredLoopMail = loopMail.filter() { loopMail in
-				return loopMail.subject.lowercaseString.containsString(filter)
+				return loopMail.subject.lowercaseString.containsString(filter) || loopMail.sender.lowercaseString.containsString(filter)
 			}
 		} else {
 			filteredLoopMail = loopMail
@@ -122,7 +122,6 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 			cell = loopMailTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}
-
 		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("loopMailMessage") as? LoopMailMessageViewController else {
 			return nil
 		}

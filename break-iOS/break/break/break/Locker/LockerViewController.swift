@@ -9,7 +9,7 @@
 import SafariServices
 import UIKit
 
-class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerPreviewingDelegate {
 
 	let cellIdentifier = "lockerItem"
 
@@ -51,6 +51,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		} else {
 			navigationItem.leftItemsSupplementBackButton = true
 			navigationItem.leftBarButtonItem = nil
+		}
+		if traitCollection.forceTouchCapability == .Available {
+			registerForPreviewingWithDelegate(self, sourceView: view)
 		}
 		refresh(self)
 	}
@@ -137,6 +140,26 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	// MARK: - Navigation
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = lockerCollectionView.indexPathForItemAtPoint(location),
+			cell = lockerCollectionView.cellForItemAtIndexPath(indexPath) else {
+				return nil
+		}
+		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("locker") as? LockerViewController else {
+			return nil
+		}
+		let selectedItem = lockerItems[indexPath.row]
+		destinationViewController.title = selectedItem.name
+		destinationViewController.path = selectedItem.path
+		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		previewingContext.sourceRect = cell.frame
+		return destinationViewController
+	}
+
+	func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

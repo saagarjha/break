@@ -107,7 +107,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		if filter != "" {
 			filteredCourses.removeAll()
 			filteredCourses = courses.filter() { course in
-				return course.courseName.lowercaseString.containsString(filter)
+				return course.courseName.lowercaseString.containsString(filter) || course.teacherName.lowercaseString.containsString(filter)
 			}
 		} else {
 			filteredCourses = courses
@@ -124,7 +124,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 			cell = coursesTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}
-
 		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("progressReport") as? ProgressReportViewController else {
 			return nil
 		}

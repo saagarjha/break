@@ -77,7 +77,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return news.count
+		return filteredNews.count
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -105,7 +105,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		if filter != "" {
 			filteredNews.removeAll()
 			filteredNews = news.filter() { news in
-				return news.title.lowercaseString.containsString(filter)
+				return news.title.lowercaseString.containsString(filter) || news.authorName.lowercaseString.containsString(filter)
 			}
 		} else {
 			filteredNews = news
@@ -122,11 +122,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			cell = newsTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}
-
 		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("newsDescription") as? NewsDescriptionViewController else {
 			return nil
 		}
-		let selectedNews = news[indexPath.row]
+		let selectedNews = filteredNews[indexPath.row]
 		destinationViewController.iD = selectedNews.iD
 		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
 		previewingContext.sourceRect = cell.frame

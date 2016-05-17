@@ -44,7 +44,10 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 	}
 
 	func loadDescription() {
-		let assignment = schoolLoop.assignmentForID(iD)!
+		guard let assignment = schoolLoop.assignmentForID(iD) else {
+			assertionFailure("Could not get assignment for iD")
+			return
+		}
 		assignmentDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3>\(assignment.title)</h3>\(assignment.assignmentDescription)"
 		if !assignment.links.isEmpty {
 			assignmentDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"

@@ -76,7 +76,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return assignments.keys.count
+		return filteredAssignments.keys.count
 	}
 
 	func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -86,7 +86,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return assignments[assignments.keys.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })[section]]!.count
+		return filteredAssignments[filteredAssignmentDueDates[section]]?.count ?? 0
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -111,8 +111,9 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	func updateSearchResultsForSearchController(searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercaseString ?? ""
 		if filter != "" {
+			filteredAssignments.removeAll()
 			for assignment in Array(assignments.values).flatMap({ $0 }) {
-				if assignment.title.lowercaseString.containsString(filter) {
+				if assignment.title.lowercaseString.containsString(filter) || assignment.courseName.lowercaseString.containsString(filter) {
 					var assignments = filteredAssignments[assignment.dueDate] ?? []
 					assignments.append(assignment)
 					filteredAssignments[assignment.dueDate] = assignments
@@ -121,7 +122,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		} else {
 			filteredAssignments = assignments
 		}
-		filteredAssignmentDueDates = Array(self.assignments.keys)
+		filteredAssignmentDueDates = Array(filteredAssignments.keys)
 		filteredAssignmentDueDates.sortInPlace() {
 			$0.compare($1) == NSComparisonResult.OrderedAscending
 		}
@@ -137,7 +138,6 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 			cell = assignmentsTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}
-
 		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("assignmentDescription") as? AssignmentDescriptionViewController else {
 			return nil
 		}
