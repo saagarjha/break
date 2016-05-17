@@ -45,7 +45,7 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 		super.willActivate()
 		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID], replyHandler: { response in
 			if let data = response["grades"] as? NSData,
-				let grades = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopGrade] {
+				grades = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopGrade] {
 					self.grades = grades
 					self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
 					for (index, grade) in grades.enumerate() {

@@ -58,7 +58,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 	func refresh(sender: AnyObject) {
 		dispatch_async(dispatch_get_main_queue()) {
-			self.schoolLoop.getAssignments() { (_, error) in
+			self.schoolLoop.getAssignments { (_, error) in
 				dispatch_async(dispatch_get_main_queue()) {
 					if error == .NoError {
 						self.assignments = self.schoolLoop.assignmentsWithDueDates
@@ -123,7 +123,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 			filteredAssignments = assignments
 		}
 		filteredAssignmentDueDates = Array(filteredAssignments.keys)
-		filteredAssignmentDueDates.sortInPlace() {
+		filteredAssignmentDueDates.sortInPlace {
 			$0.compare($1) == NSComparisonResult.OrderedAscending
 		}
 		dispatch_async(dispatch_get_main_queue()) {

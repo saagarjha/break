@@ -56,7 +56,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	func refresh(sender: AnyObject) {
-		schoolLoop.getLoopMail() { (_, error) in
+		schoolLoop.getLoopMail { (_, error) in
 			dispatch_async(dispatch_get_main_queue()) {
 				if error == .NoError {
 					self.loopMail = self.schoolLoop.loopMail
@@ -105,7 +105,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		let filter = searchController.searchBar.text?.lowercaseString ?? ""
 		if filter != "" {
 			filteredLoopMail.removeAll()
-			filteredLoopMail = loopMail.filter() { loopMail in
+			filteredLoopMail = loopMail.filter { loopMail in
 				return loopMail.subject.lowercaseString.containsString(filter) || loopMail.sender.lowercaseString.containsString(filter)
 			}
 		} else {

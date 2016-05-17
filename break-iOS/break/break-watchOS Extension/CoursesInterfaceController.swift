@@ -27,10 +27,9 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 	override func willActivate() {
 		// This method is called when watch view controller is about to be visible to user
 		super.willActivate()
-
 		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["courses": ""], replyHandler: { response in
 			if let data = response["courses"] as? NSData,
-				let courses = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopCourse] {
+				courses = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopCourse] {
 					self.courses = courses
 					self.coursesTable.setNumberOfRows(courses.count, withRowType: self.rowType)
 					for (index, course) in courses.enumerate() {

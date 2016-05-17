@@ -83,10 +83,10 @@ class SecurityTableViewController: UITableViewController {
 			}
 			alertController.addAction(cancelAction)
 			alertController.addAction(doneAction)
-			alertController.addTextFieldWithConfigurationHandler({ textField in
+			alertController.addTextFieldWithConfigurationHandler { textField in
 				textField.placeholder = "Enter a password"
 				textField.secureTextEntry = true
-			})
+			}
 			presentViewController(alertController, animated: true, completion: nil)
 		} else {
 			let alertController = UIAlertController(title: "Enter your password", message: "Please enter your current password to disable it. If you've forgotten your password, you can log out of your SchoolLoop account and log back in to clear it.", preferredStyle: .Alert)
@@ -110,10 +110,10 @@ class SecurityTableViewController: UITableViewController {
 			}
 			alertController.addAction(cancelAction)
 			alertController.addAction(doneAction)
-			alertController.addTextFieldWithConfigurationHandler({ textField in
+			alertController.addTextFieldWithConfigurationHandler { textField in
 				textField.placeholder = "Enter a password"
 				textField.secureTextEntry = true
-			})
+			}
 			presentViewController(alertController, animated: true, completion: nil)
 		}
 	}

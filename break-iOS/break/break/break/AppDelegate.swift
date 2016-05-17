@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
-		if (UIApplication.instancesRespondToSelector(#selector(UIApplication.registerUserNotificationSettings(_:)))) {
+		if UIApplication.instancesRespondToSelector(#selector(UIApplication.registerUserNotificationSettings(_:))) {
 			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
 		}
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
@@ -293,10 +293,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			}
 			alertController.addAction(forgotAction)
 			alertController.addAction(okAction)
-			alertController.addTextFieldWithConfigurationHandler({ textField in
+			alertController.addTextFieldWithConfigurationHandler { textField in
 				textField.placeholder = "Password"
 				textField.secureTextEntry = true
-			})
+			}
 			dispatch_async(dispatch_get_main_queue()) {
 				tabBarController.presentViewController(alertController, animated: true, completion: nil)
 			}
@@ -312,7 +312,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 			if error == .NoError {
 				if message["courses"] != nil {
-					schoolLoop.getCourses() { _ in
+					schoolLoop.getCourses { _ in
 						replyHandler(["courses": NSKeyedArchiver.archivedDataWithRootObject(schoolLoop.courses)])
 					}
 				} else if let periodID = message["grades"] as? String {
@@ -322,9 +322,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						}
 					}
 				} else if message["assignments"] != nil {
-					schoolLoop.getAssignments({ _ in
+					schoolLoop.getAssignments { _ in
 						replyHandler(["assignments": NSKeyedArchiver.archivedDataWithRootObject(schoolLoop.assignmentsWithDueDates)])
-					})
+					}
 				} else {
 					print("Failure")
 					replyHandler(["error": ""])

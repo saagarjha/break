@@ -35,7 +35,7 @@ class LoggerViewController: UIViewController {
 
 	@IBAction func mark(sender: AnyObject) {
 		let alertController = UIAlertController(title: "Add a mark to the log", message: nil, preferredStyle: .Alert)
-		alertController.addTextFieldWithConfigurationHandler() { textField in
+		alertController.addTextFieldWithConfigurationHandler { textField in
 			textField.placeholder = "Mark"
 		}
 		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)

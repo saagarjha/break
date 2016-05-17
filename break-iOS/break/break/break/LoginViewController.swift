@@ -55,7 +55,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
 		schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.getSchools() { error in
+		schoolLoop.getSchools { error in
 			if error == .NoError {
 				self.schools = self.schoolLoop.schools
 				self.schools.sortInPlace()
@@ -191,9 +191,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				assertionFailure("Could not cast mutableCopy to NSMutableAttributedString")
 				return false
 			}
-			var attributedRange = NSMakeRange(0, 0)
+			var attributedRange = NSRange(location: 0, length: 0)
 			if attributedText.length > 0 {
-				attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, longestEffectiveRange: &attributedRange, inRange: NSMakeRange(0, attributedText.length))
+				attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, longestEffectiveRange: &attributedRange, inRange: NSRange(location: 0, length: attributedText.length))
 			}
 			var schoolName: String!
 			if range.location <= attributedRange.location + attributedRange.length && range.length <= attributedRange.length {
@@ -204,7 +204,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			schoolName = (schoolName as NSString).stringByReplacingCharactersInRange(range, withString: string)
 			let suggestion = getSchoolSuggestion(schoolName)
 			let attributedString = NSMutableAttributedString(string: suggestion)
-			attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSMakeRange(schoolName.characters.count, suggestion.characters.count - schoolName.characters.count))
+			attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
 			textField.attributedText = attributedString
 			textField.selectedTextRange = textField.textRangeFromPosition(textField.positionFromPosition(textField.beginningOfDocument, offset: range.location + string.characters.count)!, toPosition: textField.positionFromPosition(textField.beginningOfDocument, offset: range.location + string.characters.count)!)
 			return false

@@ -104,7 +104,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		let filter = searchController.searchBar.text?.lowercaseString ?? ""
 		if filter != "" {
 			filteredNews.removeAll()
-			filteredNews = news.filter() { news in
+			filteredNews = news.filter { news in
 				return news.title.lowercaseString.containsString(filter) || news.authorName.lowercaseString.containsString(filter)
 			}
 		} else {

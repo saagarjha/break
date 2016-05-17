@@ -149,7 +149,7 @@ class SchoolLoop: NSObject, NSCoding {
 		keychain.removePassword(account.username)
 		SchoolLoop.sharedInstance = SchoolLoop()
 		#if os(iOS)
-			let appDelegate = (UIApplication.sharedApplication().delegate as? AppDelegate)
+			let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
 			appDelegate?.clearCache()
 			appDelegate?.showLogout()
 		#endif

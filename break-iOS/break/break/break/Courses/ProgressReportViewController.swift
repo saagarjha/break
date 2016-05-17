@@ -82,7 +82,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		let filter = searchController.searchBar.text?.lowercaseString ?? ""
 		if filter != "" {
 			filteredGrades.removeAll()
-			filteredGrades = grades.filter() { grade in
+			filteredGrades = grades.filter { grade in
 				return grade.title.lowercaseString.containsString(filter) || grade.categoryName.lowercaseString.containsString(filter)
 			}
 		} else {

@@ -56,7 +56,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
 	func refresh(sender: AnyObject) {
 		dispatch_async(dispatch_get_main_queue()) {
-			self.schoolLoop.getCourses() { (_, error) in
+			self.schoolLoop.getCourses { (_, error) in
 				dispatch_async(dispatch_get_main_queue()) {
 					if error == .NoError {
 						self.courses = self.schoolLoop.courses
@@ -106,7 +106,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		let filter = searchController.searchBar.text?.lowercaseString ?? ""
 		if filter != "" {
 			filteredCourses.removeAll()
-			filteredCourses = courses.filter() { course in
+			filteredCourses = courses.filter { course in
 				return course.courseName.lowercaseString.containsString(filter) || course.teacherName.lowercaseString.containsString(filter)
 			}
 		} else {
