@@ -68,7 +68,7 @@ struct SchoolLoopConstants {
 	}
 
 	static func newsURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)?max=1000".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
 	}
 
 	static func lockerURL(path: String, domainName: String, username: String) -> NSURL {
