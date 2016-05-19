@@ -103,9 +103,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedCourse = filteredCourses[indexPath.row]
-		destinationViewController.title = selectedCourse.courseName
-		destinationViewController.periodID = selectedCourse.periodID
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}
 
@@ -154,10 +151,15 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? ProgressReportViewController else {
-			assertionFailure("Could not cast destinationViewController to ProgressReportViewController")
-			return
+		guard let destinationViewController = segue.destinationViewController as? ProgressReportViewController,
+			cell = sender as? CourseTableViewCell,
+			indexPath = coursesTableView.indexPathForCell(cell) else {
+				assertionFailure("Could not cast destinationViewController to ProgressReportViewController")
+				return
 		}
+		let selectedCourse = filteredCourses[indexPath.row]
+		destinationViewController.title = selectedCourse.courseName
+		destinationViewController.periodID = selectedCourse.periodID
 		self.destinationViewController = destinationViewController
 	}
 }

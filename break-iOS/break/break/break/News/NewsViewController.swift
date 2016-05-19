@@ -28,10 +28,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
-    
-    deinit {
-        searchController.loadViewIfNeeded()
-    }
+
+	deinit {
+		searchController.loadViewIfNeeded()
+	}
 
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
@@ -103,8 +103,6 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedNews = filteredNews[indexPath.row]
-		destinationViewController.iD = selectedNews.iD
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}
 
@@ -148,10 +146,14 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? NewsDescriptionViewController else {
-			assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")
-			return
+		guard let destinationViewController = segue.destinationViewController as? NewsDescriptionViewController,
+			cell = sender as? NewsTableViewCell,
+			indexPath = newsTableView.indexPathForCell(cell) else {
+				assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")
+				return
 		}
+		let selectedNews = filteredNews[indexPath.row]
+		destinationViewController.iD = selectedNews.iD
 		self.destinationViewController = destinationViewController
 	}
 }

@@ -110,8 +110,6 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
-		destinationViewController.iD = selectedAssignment.iD
 		tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}
 
@@ -163,10 +161,14 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? AssignmentDescriptionViewController else {
+		guard let destinationViewController = segue.destinationViewController as? AssignmentDescriptionViewController,
+            cell = sender as? AssignmentTableViewCell,
+            indexPath = assignmentsTableView.indexPathForCell(cell) else {
 			assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
 			return
 		}
+        let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
+        destinationViewController.iD = selectedAssignment.iD
 		self.destinationViewController = destinationViewController
 	}
 }

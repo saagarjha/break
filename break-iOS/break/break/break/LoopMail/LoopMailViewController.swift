@@ -102,9 +102,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let selectedLoopMail = filteredLoopMail[indexPath.row]
-		destinationViewController.ID = selectedLoopMail.ID
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
 	}
 
 	func updateSearchResultsForSearchController(searchController: UISearchController) {
@@ -146,10 +144,14 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? LoopMailMessageViewController else {
+		guard let destinationViewController = segue.destinationViewController as? LoopMailMessageViewController,
+            cell = sender as? LoopMailTableViewCell,
+            indexPath = loopMailTableView.indexPathForCell(cell) else {
 			assertionFailure("Could not cast destinationViewController to LoopMailMessageViewController")
 			return
 		}
+        let selectedLoopMail = filteredLoopMail[indexPath.row]
+        destinationViewController.ID = selectedLoopMail.ID
 		self.destinationViewController = destinationViewController
 	}
 }
