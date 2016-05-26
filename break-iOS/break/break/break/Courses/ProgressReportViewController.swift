@@ -68,8 +68,9 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 					self.categories = course.categories
 					let boldFont = UIFont(descriptor: self.titleLabel.font.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitBold), size: 20)
 					let normalFont = UIFont.systemFontOfSize(20)
-					self.titleLabel.text = course.courseName
+					self.titleLabel.text = "Total"
 					self.titleLabel.font = boldFont
+					self.titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.changeCategorySubtitle(_:))))
 					self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
 					self.categoryView.addSubview(self.titleLabel)
 					self.titleSubtitleLabel.text = course.score
@@ -192,6 +193,11 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func changeCategorySubtitle(sender: AnyObject) {
+		if !showScore {
+			titleLabel.text = "Score"
+		} else {
+			titleLabel.text = "Weight"
+		}
 		for (index, label) in categorySubtitleLabels.enumerate() {
 			var text = ""
 			if !showScore {
