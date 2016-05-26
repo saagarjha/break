@@ -20,6 +20,8 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	@IBOutlet weak var newsTableView: UITableView! {
 		didSet {
+            newsTableView.backgroundView = UIView()
+            newsTableView.backgroundView?.backgroundColor = UIColor.clearColor()
 			newsTableView.rowHeight = UITableViewAutomaticDimension
 			newsTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(NewsViewController.refresh(_:)), forControlEvents: .ValueChanged)
@@ -124,7 +126,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	// MARK: - Navigation
 
 	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = newsTableView.indexPathForRowAtPoint(location),
+		guard let indexPath = newsTableView.indexPathForRowAtPoint(newsTableView.convertPoint(location, toView: view)),
 			cell = newsTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}

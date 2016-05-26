@@ -242,11 +242,50 @@ class SchoolLoop: NSObject, NSCoding {
 				completion?(error: .DoesNotExistError)
 				return
 			}
+			course.categories.removeAll()
 			course.grades.removeAll()
+			course.trendScores.removeAll()
 			guard let data = data,
 				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
 					completion?(error: .ParseError)
 					return
+			}
+			guard let categoriesJSON = (dataJSON?.first as? [String: AnyObject])?["categories"] as? [AnyObject] else {
+				completion?(error: .ParseError)
+				return
+			}
+			for categoryJSON in categoriesJSON {
+				guard let categoryJSON = categoryJSON as? [String: AnyObject] else {
+					completion?(error: .ParseError)
+					return
+				}
+				guard let name = categoryJSON["name"] as? String,
+					score = categoryJSON["score"] as? String,
+					weight = categoryJSON["weight"] as? String else {
+						completion?(error: .ParseError)
+						return
+				}
+				let category = SchoolLoopCategory(name: name, score: score, weight: weight)
+				course.categories.append(category)
+
+			}
+            guard let GradingScaleJSON = (dataJSON?.first as? [String: AnyObject])?["GradingScale"] as? [String:AnyObject], CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [AnyObject] else {
+				completion?(error: .ParseError)
+				return
+			}
+			for CutoffJSON in CutoffsJSON {
+				guard let CutoffJSON = CutoffJSON as? [String: AnyObject] else {
+					completion?(error: .ParseError)
+					return
+				}
+				guard let Name = CutoffJSON["Name"] as? String,
+					Start = CutoffJSON["Start"] as? String else {
+						completion?(error: .ParseError)
+						return
+				}
+                let cutoff = SchoolLoopCutoff(Name: Name, Start: Start)
+                course.cutoffs.append(cutoff)
+                
 			}
 			guard let gradesJSON = (dataJSON?.first as? [String: AnyObject])?["grades"] as? [AnyObject] else {
 				completion?(error: .ParseError)
@@ -258,7 +297,9 @@ class SchoolLoop: NSObject, NSCoding {
 					return
 				}
 				guard let percentScore = gradeJSON["percentScore"] as? String,
-					score = gradeJSON["score"] as? String else {
+					score = gradeJSON["score"] as? String,
+					comment = gradeJSON["comment"] as? String,
+					changedDate = gradeJSON["changedDate"] as? String else {
 						completion?(error: .ParseError)
 						return
 				}
@@ -268,12 +309,31 @@ class SchoolLoop: NSObject, NSCoding {
 				}
 				guard let title = assignmentJSON["title"] as? String,
 					categoryName = assignmentJSON["categoryName"] as? String,
-					maxPoints = assignmentJSON["maxPoints"] as? String else {
+					maxPoints = assignmentJSON["maxPoints"] as? String,
+					systemID = assignmentJSON["systemID"] as? String,
+					dueDate = assignmentJSON["dueDate"] as? String else {
 						completion?(error: .ParseError)
 						return
 				}
-				let grade = SchoolLoopGrade(title: title, categoryName: categoryName, percentScore: percentScore, score: score, maxPoints: maxPoints)
+				let grade = SchoolLoopGrade(title: title, categoryName: categoryName, percentScore: percentScore, score: score, maxPoints: maxPoints, comment: comment, systemID: systemID, dueDate: dueDate, changedDate: changedDate)
 				course.grades.append(grade)
+			}
+			guard let trendScoresJSON = (dataJSON?.first as? [String: AnyObject])?["trendScores"] as? [AnyObject] else {
+				completion?(error: .ParseError)
+				return
+			}
+			for trendScoreJSON in trendScoresJSON {
+				guard let trendScoreJSON = trendScoreJSON as? [String: AnyObject] else {
+					completion?(error: .ParseError)
+					return
+				}
+				guard let score = trendScoreJSON["score"] as? String,
+					dayID = trendScoreJSON["dayID"] as? String else {
+						completion?(error: .ParseError)
+						return
+				}
+				let trendScore = SchoolLoopTrendScore(score: score, dayID: dayID)
+				course.trendScores.append(trendScore)
 			}
 			#if os(iOS)
 				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
@@ -582,7 +642,7 @@ class SchoolLoop: NSObject, NSCoding {
 	}
 
 	func courseForPeriodID(periodID: String) -> SchoolLoopCourse? {
-		for course in self.courses {
+		for course in courses {
 			if course.periodID == periodID {
 				return course
 			}

@@ -21,7 +21,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		self.title = title
 		self.assignmentDescription = assignmentDescription
 		self.courseName = courseName
-		self.dueDate = NSDate(timeIntervalSince1970: NSTimeInterval(dueDate)! / 1000)
+		self.dueDate = NSDate(timeIntervalSince1970: (NSTimeInterval(dueDate) ?? 0) / 1000)
 		self.links = links
 		self.iD = iD
 		super.init()

@@ -21,6 +21,8 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 	@IBOutlet weak var assignmentsTableView: UITableView! {
 		didSet {
+			assignmentsTableView.backgroundView = UIView()
+			assignmentsTableView.backgroundView?.backgroundColor = UIColor.clearColor()
 			assignmentsTableView.rowHeight = UITableViewAutomaticDimension
 			assignmentsTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), forControlEvents: .ValueChanged)
@@ -139,7 +141,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	// MARK: - Navigation
 
 	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = assignmentsTableView.indexPathForRowAtPoint(location),
+		guard let indexPath = assignmentsTableView.indexPathForRowAtPoint(assignmentsTableView.convertPoint(location, toView: view)),
 			cell = assignmentsTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}
@@ -162,13 +164,13 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destinationViewController as? AssignmentDescriptionViewController,
-            cell = sender as? AssignmentTableViewCell,
-            indexPath = assignmentsTableView.indexPathForCell(cell) else {
-			assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
-			return
+			cell = sender as? AssignmentTableViewCell,
+			indexPath = assignmentsTableView.indexPathForCell(cell) else {
+				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
+				return
 		}
-        let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
-        destinationViewController.iD = selectedAssignment.iD
+		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
+		destinationViewController.iD = selectedAssignment.iD
 		self.destinationViewController = destinationViewController
 	}
 }

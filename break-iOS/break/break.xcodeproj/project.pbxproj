@@ -44,6 +44,9 @@
 		493E179A1C63E95000AFC7A6 /* breakUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E17991C63E95000AFC7A6 /* breakUITests.swift */; };
 		495574871CA6081100193EE5 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574861CA6081100193EE5 /* Logger.swift */; };
 		495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574881CA6112000193EE5 /* LoggerViewController.swift */; };
+		4982807A1CEE4C34001A5000 /* SchoolLoopTrendScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */; };
+		4982807E1CEE4E95001A5000 /* TrendScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4982807D1CEE4E95001A5000 /* TrendScore.swift */; };
+		4982807F1CEE5037001A5000 /* SchoolLoopTrendScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */; };
 		4986658F1C8D24E9004BA249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665541C8D24E9004BA249 /* AppDelegate.swift */; };
 		498665901C8D24E9004BA249 /* AssignmentDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */; };
 		498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665571C8D24E9004BA249 /* AssignmentsViewController.swift */; };
@@ -68,13 +71,19 @@
 		498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */; };
 		498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 498665731C8D24E9004BA249 /* LaunchScreen.storyboard */; };
 		49CC70961CD1CF53000566D4 /* SecurityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */; };
+		49CEE9A91CF739B600440802 /* SchoolLoopCutoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */; };
+		49CEE9AA1CF7426000440802 /* SchoolLoopCutoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */; };
 		49D04A311CD58B7200CB6650 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D04A301CD58B7200CB6650 /* ComplicationController.swift */; };
 		49D04A331CD58B9300CB6650 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49D04A321CD58B9300CB6650 /* Assets.xcassets */; };
+		49D72F0D1CF016170054D8CE /* SchoolLoopCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */; };
 		49DC05BA1CCDEDDD0090578F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49DC05B91CCDEDDD0090578F /* Assets.xcassets */; };
 		49DC05BB1CCDEE860090578F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49DC05B91CCDEDDD0090578F /* Assets.xcassets */; };
 		49DC05CC1CCDF4910090578F /* CourseRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC05BD1CCDF29C0090578F /* CourseRowController.swift */; };
 		49DC05CE1CCFD7440090578F /* ProgressReportInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC05CD1CCFD7440090578F /* ProgressReportInterfaceController.swift */; };
 		49DC05D01CCFD9E80090578F /* GradeRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DC05CF1CCFD9E80090578F /* GradeRowController.swift */; };
+		49DF2B2A1CF3BDE200DC1EB7 /* GradeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF2B291CF3BDE200DC1EB7 /* GradeViewController.swift */; };
+		49DF2B2E1CF3BDF900DC1EB7 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */; };
+		49E1BD091CF006EE002E819D /* SchoolLoopCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +174,8 @@
 		493E179B1C63E95000AFC7A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		495574861CA6081100193EE5 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		495574881CA6112000193EE5 /* LoggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerViewController.swift; sourceTree = "<group>"; };
+		498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopTrendScore.swift; sourceTree = "<group>"; };
+		4982807D1CEE4E95001A5000 /* TrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendScore.swift; sourceTree = "<group>"; };
 		498665541C8D24E9004BA249 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentDescriptionViewController.swift; sourceTree = "<group>"; };
 		498665571C8D24E9004BA249 /* AssignmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentsViewController.swift; sourceTree = "<group>"; };
@@ -190,12 +201,16 @@
 		498665721C8D24E9004BA249 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		498665731C8D24E9004BA249 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityTableViewController.swift; sourceTree = "<group>"; };
+		49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCutoff.swift; sourceTree = "<group>"; };
 		49D04A301CD58B7200CB6650 /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		49D04A321CD58B9300CB6650 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49DC05B91CCDEDDD0090578F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49DC05BD1CCDF29C0090578F /* CourseRowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CourseRowController.swift; path = "break-watchOS Extension/CourseRowController.swift"; sourceTree = SOURCE_ROOT; };
 		49DC05CD1CCFD7440090578F /* ProgressReportInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportInterfaceController.swift; sourceTree = "<group>"; };
 		49DC05CF1CCFD9E80090578F /* GradeRowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradeRowController.swift; sourceTree = "<group>"; };
+		49DF2B291CF3BDE200DC1EB7 /* GradeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradeViewController.swift; sourceTree = "<group>"; };
+		49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
+		49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +253,8 @@
 				490529401CE58787006190C4 /* SchoolLoopAssignment.swift */,
 				490529411CE58787006190C4 /* SchoolLoopConstants.swift */,
 				490529421CE58787006190C4 /* SchoolLoopCourse.swift */,
+				49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */,
+				49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */,
 				490529431CE58787006190C4 /* SchoolLoopError.swift */,
 				490529441CE58787006190C4 /* SchoolLoopGrade.swift */,
 				490529451CE58787006190C4 /* SchoolLoopKeychain.swift */,
@@ -246,6 +263,7 @@
 				490529481CE58787006190C4 /* SchoolLoopLoopMail.swift */,
 				490529491CE58787006190C4 /* SchoolLoopNews.swift */,
 				4905294A1CE58787006190C4 /* SchoolLoopSchool.swift */,
+				498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */,
 			);
 			path = SchoolLoop;
 			sourceTree = "<group>";
@@ -358,9 +376,12 @@
 			isa = PBXGroup;
 			children = (
 				4986655A1C8D24E9004BA249 /* CoursesViewController.swift */,
+				49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */,
 				4986655B1C8D24E9004BA249 /* CourseTableViewCell.swift */,
 				4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */,
+				49DF2B291CF3BDE200DC1EB7 /* GradeViewController.swift */,
 				4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */,
+				4982807D1CEE4E95001A5000 /* TrendScore.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -625,6 +646,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49CEE9AA1CF7426000440802 /* SchoolLoopCutoff.swift in Sources */,
 				49DC05CE1CCFD7440090578F /* ProgressReportInterfaceController.swift in Sources */,
 				490529541CE58787006190C4 /* SchoolLoopCourse.swift in Sources */,
 				4905294E1CE58787006190C4 /* SchoolLoopAccount.swift in Sources */,
@@ -633,6 +655,7 @@
 				490529641CE58787006190C4 /* SchoolLoopSchool.swift in Sources */,
 				4906AB8D1CCDBFBB00610448 /* ExtensionDelegate.swift in Sources */,
 				49D04A311CD58B7200CB6650 /* ComplicationController.swift in Sources */,
+				4982807F1CEE5037001A5000 /* SchoolLoopTrendScore.swift in Sources */,
 				49DC05D01CCFD9E80090578F /* GradeRowController.swift in Sources */,
 				490529561CE58787006190C4 /* SchoolLoopError.swift in Sources */,
 				4905295A1CE58787006190C4 /* SchoolLoopKeychain.swift in Sources */,
@@ -641,6 +664,7 @@
 				4905295E1CE58787006190C4 /* SchoolLoopLockerItemType.swift in Sources */,
 				490529581CE58787006190C4 /* SchoolLoopGrade.swift in Sources */,
 				4905295C1CE58787006190C4 /* SchoolLoopLockerItem.swift in Sources */,
+				49D72F0D1CF016170054D8CE /* SchoolLoopCategory.swift in Sources */,
 				490529521CE58787006190C4 /* SchoolLoopConstants.swift in Sources */,
 				490529621CE58787006190C4 /* SchoolLoopNews.swift in Sources */,
 				490529601CE58787006190C4 /* SchoolLoopLoopMail.swift in Sources */,
@@ -654,6 +678,7 @@
 				4905290D1CE57B1C006190C4 /* PrivacyPolicyViewController.swift in Sources */,
 				490529591CE58787006190C4 /* SchoolLoopKeychain.swift in Sources */,
 				4986659D1C8D24E9004BA249 /* LoopMailViewController.swift in Sources */,
+				49E1BD091CF006EE002E819D /* SchoolLoopCategory.swift in Sources */,
 				4986659B1C8D24E9004BA249 /* LoopMailMessageViewController.swift in Sources */,
 				495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */,
 				4986659A1C8D24E9004BA249 /* LoginViewController.swift in Sources */,
@@ -665,12 +690,16 @@
 				490529631CE58787006190C4 /* SchoolLoopSchool.swift in Sources */,
 				498665971C8D24E9004BA249 /* LockerItemCollectionViewCell.swift in Sources */,
 				498665951C8D24E9004BA249 /* GradeTableViewCell.swift in Sources */,
+				4982807E1CEE4E95001A5000 /* TrendScore.swift in Sources */,
 				495574871CA6081100193EE5 /* Logger.swift in Sources */,
 				498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */,
+				4982807A1CEE4C34001A5000 /* SchoolLoopTrendScore.swift in Sources */,
 				498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */,
 				4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */,
+				49DF2B2A1CF3BDE200DC1EB7 /* GradeViewController.swift in Sources */,
 				498665A21C8D24E9004BA249 /* AccountTableViewController.swift in Sources */,
 				498665991C8D24E9004BA249 /* LockerViewController.swift in Sources */,
+				49CEE9A91CF739B600440802 /* SchoolLoopCutoff.swift in Sources */,
 				4905295D1CE58787006190C4 /* SchoolLoopLockerItemType.swift in Sources */,
 				498665901C8D24E9004BA249 /* AssignmentDescriptionViewController.swift in Sources */,
 				490529571CE58787006190C4 /* SchoolLoopGrade.swift in Sources */,
@@ -688,6 +717,7 @@
 				4905294D1CE58787006190C4 /* SchoolLoopAccount.swift in Sources */,
 				490529611CE58787006190C4 /* SchoolLoopNews.swift in Sources */,
 				490529511CE58787006190C4 /* SchoolLoopConstants.swift in Sources */,
+				49DF2B2E1CF3BDF900DC1EB7 /* CourseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

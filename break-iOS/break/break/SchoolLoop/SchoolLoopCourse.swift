@@ -18,7 +18,10 @@ class SchoolLoopCourse: NSObject, NSCoding {
 	var periodID: String
 	var lastUpdated: NSDate = NSDate.distantPast()
 
+	var cutoffs: [SchoolLoopCutoff] = []
+	var categories: [SchoolLoopCategory] = []
 	var grades: [SchoolLoopGrade] = []
+	var trendScores: [SchoolLoopTrendScore] = []
 
 	init(courseName: String, period: String, teacherName: String, grade: String, score: String, periodID: String) {
 		self.courseName = courseName
@@ -48,7 +51,10 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		score = aDecoder.decodeObjectForKey("score") as? String ?? ""
 		periodID = aDecoder.decodeObjectForKey("periodID") as? String ?? ""
 		lastUpdated = aDecoder.decodeObjectForKey("lastUpdated") as? NSDate ?? NSDate.distantPast()
+		cutoffs = aDecoder.decodeObjectForKey("cutoffs") as? [SchoolLoopCutoff] ?? []
+		categories = aDecoder.decodeObjectForKey("categories") as? [SchoolLoopCategory] ?? []
 		grades = aDecoder.decodeObjectForKey("grades") as? [SchoolLoopGrade] ?? []
+		trendScores = aDecoder.decodeObjectForKey("trendScores") as? [SchoolLoopTrendScore] ?? []
 		super.init()
 	}
 
@@ -60,6 +66,18 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		aCoder.encodeObject(score, forKey: "score")
 		aCoder.encodeObject(periodID, forKey: "periodID")
 		aCoder.encodeObject(lastUpdated, forKey: "lastUpdated")
+		aCoder.encodeObject("cutoffs", forKey: "cutoffs")
+		aCoder.encodeObject(categories, forKey: "categories")
 		aCoder.encodeObject(grades, forKey: "grades")
+		aCoder.encodeObject(trendScores, forKey: "trendScores")
+	}
+
+	func gradeForSystemID(systemID: String) -> SchoolLoopGrade? {
+		for grade in grades {
+			if grade.systemID == systemID {
+				return grade
+			}
+		}
+		return nil
 	}
 }

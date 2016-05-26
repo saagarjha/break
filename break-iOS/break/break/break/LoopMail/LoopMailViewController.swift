@@ -20,6 +20,8 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	@IBOutlet weak var loopMailTableView: UITableView! {
 		didSet {
+            loopMailTableView.backgroundView = UIView()
+            loopMailTableView.backgroundView?.backgroundColor = UIColor.clearColor()
 			loopMailTableView.rowHeight = UITableViewAutomaticDimension
 			loopMailTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(LoopMailViewController.refresh(_:)), forControlEvents: .ValueChanged)
@@ -122,7 +124,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	// MARK: - Navigation
 	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = loopMailTableView.indexPathForRowAtPoint(location),
+		guard let indexPath = loopMailTableView.indexPathForRowAtPoint(loopMailTableView.convertPoint(location, toView: view)),
 			cell = loopMailTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}

@@ -16,10 +16,12 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	var courses: [SchoolLoopCourse] = []
 	var filteredCourses: [SchoolLoopCourse] = []
 
-	var destinationViewController: ProgressReportViewController!
+//	var destinationViewController: ProgressReportViewController!
 
 	@IBOutlet weak var coursesTableView: UITableView! {
 		didSet {
+			coursesTableView.backgroundView = UIView()
+			coursesTableView.backgroundView?.backgroundColor = UIColor.clearColor()
 			coursesTableView.rowHeight = UITableViewAutomaticDimension
 			coursesTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(CoursesViewController.refresh(_:)), forControlEvents: .ValueChanged)
@@ -128,7 +130,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	// MARK: - Navigation
 
 	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = coursesTableView.indexPathForRowAtPoint(location),
+		guard let indexPath = coursesTableView.indexPathForRowAtPoint(coursesTableView.convertPoint(location, toView: view)),
 			cell = coursesTableView.cellForRowAtIndexPath(indexPath) else {
 				return nil
 		}
@@ -160,6 +162,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		let selectedCourse = filteredCourses[indexPath.row]
 		destinationViewController.title = selectedCourse.courseName
 		destinationViewController.periodID = selectedCourse.periodID
-		self.destinationViewController = destinationViewController
+//		self.destinationViewController = destinationViewController
 	}
 }

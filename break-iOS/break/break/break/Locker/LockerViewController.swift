@@ -45,7 +45,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			if items.indexOf(path.componentsSeparatedByString("/")[1]) == nil {
 				schoolLoop.getLocker(path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
-				title = items[0]
+				navigationItem.title = items[0]
 				path = path + items[0].stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 			}
 			segmentedControl.addTarget(self, action: #selector(LockerViewController.changePath(_:)), forControlEvents: .ValueChanged)
@@ -88,7 +88,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func changePath(sender: UISegmentedControl) {
-		title = sender.titleForSegmentAtIndex(sender.selectedSegmentIndex) ?? ""
+		navigationItem.title = sender.titleForSegmentAtIndex(sender.selectedSegmentIndex) ?? ""
 		path = "/" + (sender.titleForSegmentAtIndex(sender.selectedSegmentIndex) ?? "").stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())! + "/"
 		refresh(self)
 	}
@@ -145,7 +145,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	// MARK: - Navigation
 
 	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = lockerCollectionView.indexPathForItemAtPoint(location),
+		guard let indexPath = lockerCollectionView.indexPathForItemAtPoint(lockerCollectionView.convertPoint(location, toView: view)),
 			cell = lockerCollectionView.cellForItemAtIndexPath(indexPath) else {
 				return nil
 		}
