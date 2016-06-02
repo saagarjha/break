@@ -33,7 +33,6 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
 		grade = schoolLoop.courseForPeriodID(periodID)?.gradeForSystemID(systemID)
-//		commentsView.backgroundColor = UIColor.whiteColor()
 		commentsLabel.translatesAutoresizingMaskIntoConstraints = false
 		commentsLabel.text = grade.comment
 		commentsLabel.numberOfLines = 0
@@ -64,7 +63,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	}
 
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 3
+		return grade.comment.isEmpty ? 2 : 3
 	}
 
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

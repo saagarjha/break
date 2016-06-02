@@ -108,7 +108,7 @@ class SchoolLoop: NSObject, NSCoding {
 			return
 		}
 		self.school = school
-		self.account = SchoolLoopAccount(username: username, password: password, fullName: "", studentID: "")
+		self.account = SchoolLoopAccount(username: username, password: password, fullName: account?.fullName ?? "", studentID: account?.studentID ?? "")
 		let url = SchoolLoopConstants.logInURL(school.domainName)
 		let request = authenticatedRequest(url)
 		let session = NSURLSession.sharedSession()
@@ -269,7 +269,7 @@ class SchoolLoop: NSObject, NSCoding {
 				course.categories.append(category)
 
 			}
-            guard let GradingScaleJSON = (dataJSON?.first as? [String: AnyObject])?["GradingScale"] as? [String:AnyObject], CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [AnyObject] else {
+			guard let GradingScaleJSON = (dataJSON?.first as? [String: AnyObject])?["GradingScale"] as? [String: AnyObject], CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [AnyObject] else {
 				completion?(error: .ParseError)
 				return
 			}
@@ -283,9 +283,9 @@ class SchoolLoop: NSObject, NSCoding {
 						completion?(error: .ParseError)
 						return
 				}
-                let cutoff = SchoolLoopCutoff(Name: Name, Start: Start)
-                course.cutoffs.append(cutoff)
-                
+				let cutoff = SchoolLoopCutoff(Name: Name, Start: Start)
+				course.cutoffs.append(cutoff)
+
 			}
 			guard let gradesJSON = (dataJSON?.first as? [String: AnyObject])?["grades"] as? [AnyObject] else {
 				completion?(error: .ParseError)

@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	var securityView: UIView!
 
 	var archived = true
+	var index = 0
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
@@ -36,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
 			archived = false
 		}
+
+		index = indexForType((launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem)?.type.componentsSeparatedByString(".").last ?? "") ?? NSUserDefaults.standardUserDefaults().integerForKey("startup")
+
 		loginOnLaunch()
 
 		return true
@@ -138,6 +142,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+		let index = indexForType(shortcutItem.type) ?? -1
+		if index > 0 {
+			if let tabBarController = window?.rootViewController as? UITabBarController {
+				tabBarController.selectedIndex = index
+			}
+		}
 		completionHandler(true)
 	}
 
@@ -149,6 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					if error == .NoError {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
 						let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
+						(tabBarController as? UITabBarController)?.selectedIndex = self.index
 						let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
 						tabBarController.view.addSubview(oldView)
 						self.window?.rootViewController = tabBarController
@@ -222,6 +233,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		do {
 			try NSFileManager.defaultManager().removeItemAtPath(file)
 		} catch _ {
+		}
+	}
+
+	func indexForType(type: String) -> Int? {
+		switch type {
+		case "Course":
+			return 0
+		case "Assignments":
+			return 1
+		case "LoopMail":
+			return 2
+		case "News":
+			return 3
+		case "Locker":
+			return 4
+		default:
+			return nil
 		}
 	}
 

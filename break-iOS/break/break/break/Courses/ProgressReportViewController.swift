@@ -70,6 +70,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 					let normalFont = UIFont.systemFontOfSize(20)
 					self.titleLabel.text = "Total"
 					self.titleLabel.font = boldFont
+					self.titleLabel.userInteractionEnabled = true
 					self.titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.changeCategorySubtitle(_:))))
 					self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
 					self.categoryView.addSubview(self.titleLabel)
