@@ -183,6 +183,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		} else if textField === usernameTextField {
 			passwordTextField.becomeFirstResponder()
 		} else {
+			view.endEditing(true)
 			logIn(logInButton)
 			return false
 		}
