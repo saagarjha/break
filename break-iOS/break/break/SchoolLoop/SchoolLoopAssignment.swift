@@ -13,7 +13,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 	var title: String
 	var assignmentDescription: String
 	var courseName: String
-	var dueDate: NSDate
+	var dueDate: Date
 	var links: [(title: String, URL: String)]
 	var iD: String
 
@@ -21,32 +21,32 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		self.title = title
 		self.assignmentDescription = assignmentDescription
 		self.courseName = courseName
-		self.dueDate = NSDate(timeIntervalSince1970: (NSTimeInterval(dueDate) ?? 0) / 1000)
+		self.dueDate = Date(timeIntervalSince1970: (TimeInterval(dueDate) ?? 0) / 1000)
 		self.links = links
 		self.iD = iD
 		super.init()
 	}
 
-	func setNewDueDate(dueDate: String) {
-		self.dueDate = NSDate(timeIntervalSince1970: NSTimeInterval(dueDate)! / 1000)
+	func set(newDueDate dueDate: String) {
+		self.dueDate = Date(timeIntervalSince1970: TimeInterval(dueDate)! / 1000)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		title = aDecoder.decodeObjectForKey("title") as? String ?? ""
-		assignmentDescription = aDecoder.decodeObjectForKey("assignmentDescription") as? String ?? ""
-		courseName = aDecoder.decodeObjectForKey("courseName") as? String ?? ""
-		dueDate = aDecoder.decodeObjectForKey("dueDate") as? NSDate ?? NSDate.distantPast()
-		links = aDecoder.decodeObjectForKey("links") as? [(title: String, URL: String)] ?? []
-		iD = aDecoder.decodeObjectForKey("iD") as? String ?? ""
+		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
+		assignmentDescription = aDecoder.decodeObject(forKey: "assignmentDescription") as? String ?? ""
+		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
+		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
+		links = aDecoder.decodeObject(forKey: "links") as? [(title: String, URL: String)] ?? []
+		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
 		super.init()
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(title, forKey: "title")
-		aCoder.encodeObject(description, forKey: "assignmentDescription")
-		aCoder.encodeObject(courseName, forKey: "courseName")
-		aCoder.encodeObject(dueDate, forKey: "dueDate")
-		aCoder.encodeObject(links as? AnyObject, forKey: "links")
-		aCoder.encodeObject(iD, forKey: "iD")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(title, forKey: "title")
+		aCoder.encode(description, forKey: "assignmentDescription")
+		aCoder.encode(courseName, forKey: "courseName")
+		aCoder.encode(dueDate, forKey: "dueDate")
+		aCoder.encode(links as? AnyObject, forKey: "links")
+		aCoder.encode(iD, forKey: "iD")
 	}
 }

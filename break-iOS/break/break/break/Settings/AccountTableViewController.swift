@@ -89,11 +89,11 @@ class AccountTableViewController: UITableViewController {
 	 }
 	 */
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.row == 1 {
 			schoolLoop.logOut()
 		}
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
 	/*

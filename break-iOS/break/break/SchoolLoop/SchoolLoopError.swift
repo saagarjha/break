@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum SchoolLoopError: ErrorType {
-    case NoError
-	case UnknownError
-    case DoesNotExistError
-	case AuthenticationError
-	case NetworkError
-	case ParseError
+enum SchoolLoopError: ErrorProtocol {
+    case noError
+	case unknownError
+    case doesNotExistError
+	case authenticationError
+	case networkError
+	case parseError
 }

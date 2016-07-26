@@ -15,11 +15,11 @@ class SettingsTableViewController: UITableViewController {
 	@IBOutlet weak var accountNameLabel: UILabel!
 	@IBOutlet weak var securityEnabledLabel: UILabel!
 
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		schoolLoop = SchoolLoop.sharedInstance
 		accountNameLabel.text = schoolLoop.account.fullName
-		securityEnabledLabel.text = NSUserDefaults.standardUserDefaults().boolForKey("password") ? "Enabled" : "Disabled"
+		securityEnabledLabel.text = UserDefaults.standard.bool(forKey: "password") ? "Enabled" : "Disabled"
 	}
 
 	override func viewDidLoad() {
@@ -39,8 +39,8 @@ class SettingsTableViewController: UITableViewController {
 
 	// MARK: - Table view data source
 
-	@IBAction func closeSettings(sender: AnyObject) {
-		navigationController?.dismissViewControllerAnimated(true, completion: nil)
+	@IBAction func closeSettings(_ sender: AnyObject) {
+		navigationController?.dismiss(animated: true, completion: nil)
 	}
 	/*
 	 override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

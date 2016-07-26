@@ -13,26 +13,26 @@ class SchoolLoopKeychain {
 
 	static let sharedInstance = SchoolLoopKeychain()
 
-	func setPassword(password: String, forUsername username: String) -> Bool {
-		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username.dataUsingEncoding(NSUTF8StringEncoding)!, kSecValueData as String: password.dataUsingEncoding(NSUTF8StringEncoding)!]
+	func set(password: String, forUsername username: String) -> Bool {
+		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username.data(using: String.Encoding.utf8)!, kSecValueData as String: password.data(using: String.Encoding.utf8)!]
 		SecItemDelete(item)
 		return SecItemAdd(item, nil) == noErr
 	}
 
-	func getPasswordForUsername(username: String) -> String? {
+	func getPassword(forUsername username: String) -> String? {
 		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username, kSecReturnData as String: kCFBooleanTrue, kSecMatchLimit as String: kSecMatchLimitOne]
 		var reference: AnyObject?
 		if SecItemCopyMatching(item, &reference) == noErr {
-			guard let reference = reference as? NSData else {
+			guard let reference = reference as? Data else {
 				return nil
 			}
-			return String(data: reference, encoding: NSUTF8StringEncoding)
+			return String(data: reference, encoding: String.Encoding.utf8)
 		} else {
 			return nil
 		}
 	}
 
-	func removePassword(username: String) -> Bool {
+	func removePassword(forUsername username: String) -> Bool {
 		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: username]
 		return SecItemDelete(item) == noErr
 	}

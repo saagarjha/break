@@ -9,7 +9,7 @@
 import Foundation
 
 enum SchoolLoopLockerItemType {
-    case Directory
-    case PDF
-    case Unknown
+    case directory
+    case pdf
+    case unknown
 }

@@ -21,9 +21,9 @@ class StartupTableViewController: UITableViewController {
 
 	}
 
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		tableView.cellForRowAtIndexPath(NSIndexPath(forRow: NSUserDefaults.standardUserDefaults().integerForKey("startup"), inSection: 0))?.accessoryType = .Checkmark
+		tableView.cellForRow(at: IndexPath(row: UserDefaults.standard.integer(forKey: "startup"), section: 0))?.accessoryType = .checkmark
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -33,12 +33,12 @@ class StartupTableViewController: UITableViewController {
 
 	// MARK: - Table view data source
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		// #warning Incomplete implementation, return the number of sections
 		return 1
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		// #warning Incomplete implementation, return the number of rows
 		return 5
 	}
@@ -88,17 +88,17 @@ class StartupTableViewController: UITableViewController {
 	 }
 	 */
 
-	override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-		for i in 0..<tableView.numberOfRowsInSection(0) {
-			tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0))?.accessoryType = .None
+	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+		for i in 0..<tableView.numberOfRows(inSection: 0) {
+			tableView.cellForRow(at: IndexPath(row: i, section: 0))?.accessoryType = .none
 		}
-		tableView.cellForRowAtIndexPath(indexPath)?.accessoryType = .Checkmark
-		NSUserDefaults.standardUserDefaults().setInteger(indexPath.row, forKey: "startup")
+		tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+		UserDefaults.standard.set(indexPath.row, forKey: "startup")
 		return indexPath
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
 	/*

@@ -12,7 +12,7 @@ import WatchConnectivity
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
-	let file = NSURL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!).URLByAppendingPathComponent("schoolLoop").path ?? ""
+	let file = (try? URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!).appendingPathComponent("schoolLoop").path ?? "") ?? ""
 
 	var window: UIWindow?
 	var splashView: UIImageView!
@@ -21,60 +21,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	var archived = true
 	var index = 0
 
-	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
-		if UIApplication.instancesRespondToSelector(#selector(UIApplication.registerUserNotificationSettings(_:))) {
-			application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
+		if UIApplication.instancesRespond(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
+			application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
 		}
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 		if WCSession.isSupported() {
-			let session = WCSession.defaultSession()
+			let session = WCSession.default()
 			session.delegate = self
-			session.activateSession()
+			session.activate()
 		}
 
 		if archived {
-			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
+			NSKeyedUnarchiver.unarchiveObject(withFile: file)
 			archived = false
 		}
 
-		index = indexForType((launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem)?.type.componentsSeparatedByString(".").last ?? "") ?? NSUserDefaults.standardUserDefaults().integerForKey("startup")
+		index = index(forType: (launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? UserDefaults.standard.integer(forKey: "startup")
 
 		loginOnLaunch()
 
 		return true
 	}
 
-	func applicationWillResignActive(application: UIApplication) {
+	func applicationWillResignActive(_ application: UIApplication) {
 		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
 		// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 	}
 
-	func applicationDidEnterBackground(application: UIApplication) {
+	func applicationDidEnterBackground(_ application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-		if NSUserDefaults.standardUserDefaults().boolForKey("password") {
+		if UserDefaults.standard.bool(forKey: "password") {
 			if let tabBarController = self.window?.rootViewController as? UITabBarController {
 				let view: UIView
 				if !UIAccessibilityIsReduceTransparencyEnabled() {
-					let effect = UIBlurEffect(style: .Light)
+					let effect = UIBlurEffect(style: .light)
 					view = UIVisualEffectView(effect: effect)
 					view.frame = tabBarController.view.bounds
 				} else {
 					view = UIView(frame: tabBarController.view.bounds)
-					view.backgroundColor = UIColor.whiteColor()
+					view.backgroundColor = .white()
 				}
-				view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+				view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 				tabBarController.view.addSubview(view)
 				securityView = view
 			}
 		}
 	}
 
-	func applicationWillEnterForeground(application: UIApplication) {
+	func applicationWillEnterForeground(_ application: UIApplication) {
 		// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-		if NSUserDefaults.standardUserDefaults().boolForKey("password") {
-			if NSUserDefaults.standardUserDefaults().boolForKey("touchID") {
+		if UserDefaults.standard.bool(forKey: "password") {
+			if UserDefaults.standard.bool(forKey: "touchID") {
 				self.showAuthententication()
 			} else {
 				self.showPassword()
@@ -82,67 +82,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
-	func applicationDidBecomeActive(application: UIApplication) {
+	func applicationDidBecomeActive(_ application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 		application.applicationIconBadgeNumber = 0
 	}
 
-	func applicationWillTerminate(application: UIApplication) {
+	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 		guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
 			return
 		}
 		do {
-			try NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionCompleteUntilFirstUserAuthentication], ofItemAtPath: file)
+			try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)
 		} catch _ {
 		}
-		guard (try? NSFileManager.defaultManager().setAttributes([NSFileProtectionKey: NSFileProtectionCompleteUntilFirstUserAuthentication], ofItemAtPath: file)) != nil else {
+		guard (try? FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)) != nil else {
 			return
 		}
 	}
 
-	func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+	func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
 
 		if archived {
-			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
+			NSKeyedUnarchiver.unarchiveObject(withFile: file)
 			archived = false
 		}
 		let schoolLoop = SchoolLoop.sharedInstance
-		var updated = UIBackgroundFetchResult.Failed
+		var updated = UIBackgroundFetchResult.failed
 		if schoolLoop.school != nil && schoolLoop.account != nil {
-			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-				if error == .NoError {
-					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-						let group = dispatch_group_create()
+			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
+				if error == .noError {
+					DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosUserInitiated).async {
+						let group = DispatchGroup()
 						let completion: (Bool, SchoolLoopError) -> Void = {
-							if $0.1 == .NoError {
-								updated = updated == .Failed ? .NoData : updated
-								updated = $0.0 ? .NewData : updated
+							if $0.1 == .noError {
+								updated = updated == .failed ? .noData : updated
+								updated = $0.0 ? .newData : updated
 							}
-							dispatch_group_leave(group)
+							group.leave()
 						}
-						dispatch_group_enter(group)
-						schoolLoop.getCourses(completion)
-						dispatch_group_enter(group)
-						schoolLoop.getAssignments(completion)
-						dispatch_group_enter(group)
-						schoolLoop.getLoopMail(completion)
-						dispatch_group_enter(group)
-						schoolLoop.getNews(completion)
-						dispatch_group_wait(group, dispatch_time(DISPATCH_TIME_NOW, Int64(30 * NSEC_PER_SEC)))
+						group.enter()
+						schoolLoop.getCourses(withCompletionHandler: completion)
+						group.enter()
+						schoolLoop.getAssignments(withCompletionHandler: completion)
+						group.enter()
+						schoolLoop.getLoopMail(withCompletionHandler: completion)
+						group.enter()
+						schoolLoop.getNews(withCompletionHandler: completion)
+						_ = group.wait(timeout: .now() + Double(Int64(30 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC))
 						completionHandler(updated)
 					}
 				} else {
-					completionHandler(.Failed)
+					completionHandler(.failed)
 				}
 			}
 		} else {
-			completionHandler(.Failed)
+			completionHandler(.failed)
 		}
 	}
 
-	func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
-		let index = indexForType(shortcutItem.type) ?? -1
+	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+		let index = self.index(forType: shortcutItem.type) ?? -1
 		if index > 0 {
 			if let tabBarController = window?.rootViewController as? UITabBarController {
 				tabBarController.selectedIndex = index
@@ -154,50 +154,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func loginOnLaunch() {
 		let schoolLoop = SchoolLoop.sharedInstance
 		if schoolLoop.school != nil && schoolLoop.account != nil {
-			schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-				dispatch_async(dispatch_get_main_queue()) {
-					if error == .NoError {
+			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
+				DispatchQueue.main.async {
+					if error == .noError {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
-						let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
+						let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
 						(tabBarController as? UITabBarController)?.selectedIndex = self.index
-						let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+						let oldView = UIScreen.main().snapshotView(afterScreenUpdates: false)
 						tabBarController.view.addSubview(oldView)
 						self.window?.rootViewController = tabBarController
-						if UIApplication.sharedApplication().applicationState == .Active && NSUserDefaults.standardUserDefaults().boolForKey("password") {
+						if UIApplication.shared().applicationState == .active && UserDefaults.standard.bool(forKey: "password") {
 							let view: UIView
 							if let viewController = self.window?.rootViewController {
 								if !UIAccessibilityIsReduceTransparencyEnabled() {
-									let effect = UIBlurEffect(style: .Light)
+									let effect = UIBlurEffect(style: .light)
 									view = UIVisualEffectView(effect: effect)
 									view.frame = viewController.view.bounds
 								} else {
 									view = UIView(frame: viewController.view.bounds)
-									view.backgroundColor = UIColor.whiteColor()
+									view.backgroundColor = .white()
 								}
-								view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+								view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 								viewController.view.addSubview(view)
 								self.securityView = view
 							}
-							if NSUserDefaults.standardUserDefaults().boolForKey("touchID") {
+							if UserDefaults.standard.bool(forKey: "touchID") {
 								self.showAuthententication()
 							} else {
 								self.showPassword()
 							}
 						}
-						UIView.animateWithDuration(0.25, animations: {
+						UIView.animate(withDuration: 0.25, animations: {
 							oldView.alpha = 0
 							}, completion: { _ in
 							oldView.removeFromSuperview()
 						})
-					} else if error == .AuthenticationError {
-						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
-						let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
-							dispatch_async(dispatch_get_main_queue()) {
+					} else if error == .authenticationError {
+						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
+						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+							DispatchQueue.main.async {
 								self.showLogin()
 							}
 						}
 						alertController.addAction(okAction)
-						UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+						UIApplication.shared().keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
 					} else {
 						self.loginOnLaunch()
 					}
@@ -210,18 +210,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showLogin() {
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			let storyboard = UIStoryboard(name: "Main", bundle: nil)
-			let loginViewController = storyboard.instantiateViewControllerWithIdentifier("login")
+			let loginViewController = storyboard.instantiateViewController(withIdentifier: "login")
 			self.window?.makeKeyAndVisible()
-			self.window?.rootViewController?.presentViewController(loginViewController, animated: false, completion: nil)
+			self.window?.rootViewController?.present(loginViewController, animated: false, completion: nil)
 		}
 	}
 
 	func showLogout() {
-		UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
+		UIApplication.shared().setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		let loginViewController = storyboard.instantiateViewControllerWithIdentifier("login")
+		let loginViewController = storyboard.instantiateViewController(withIdentifier: "login")
 		window?.rootViewController = loginViewController
 	}
 
@@ -231,12 +231,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func clearCache() {
 		do {
-			try NSFileManager.defaultManager().removeItemAtPath(file)
+			try FileManager.default.removeItem(atPath: file)
 		} catch _ {
 		}
 	}
 
-	func indexForType(type: String) -> Int? {
+	func index(forType type: String) -> Int? {
 		switch type {
 		case "Course":
 			return 0
@@ -254,10 +254,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showAuthententication() {
-		LAContext().evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { (success, error) in
+		LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { (success, error) in
 			if success {
-				dispatch_async(dispatch_get_main_queue()) {
-					UIView.animateWithDuration(0.25, animations: {
+				DispatchQueue.main.async {
+					UIView.animate(withDuration: 0.25, animations: {
 						if let view = self.securityView as? UIVisualEffectView {
 							view.effect = nil
 						} else {
@@ -276,11 +276,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func showPassword() {
 		if let tabBarController = self.window?.rootViewController as? UITabBarController {
-			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your SchoolLoop account.", preferredStyle: .Alert)
-			let forgotAction = UIAlertAction(title: "Forgot", style: .Default) { _ in
+			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your SchoolLoop account.", preferredStyle: .alert)
+			let forgotAction = UIAlertAction(title: "Forgot", style: .default) { _ in
 				SchoolLoop.sharedInstance.logOut()
-				dispatch_async(dispatch_get_main_queue()) {
-					UIView.animateWithDuration(0.25, animations: {
+				DispatchQueue.main.async {
+					UIView.animate(withDuration: 0.25, animations: {
 						if let view = self.securityView as? UIVisualEffectView {
 							view.effect = nil
 						} else {
@@ -291,11 +291,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					})
 				}
 			}
-			let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
+			let okAction = UIAlertAction(title: "OK", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
-				if alertController.textFields![0].text == schoolLoop.keychain.getPasswordForUsername("\(schoolLoop.account.username)appPassword") {
-					dispatch_async(dispatch_get_main_queue()) {
-						UIView.animateWithDuration(0.25, animations: {
+				if alertController.textFields![0].text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
+					DispatchQueue.main.async {
+						UIView.animate(withDuration: 0.25, animations: {
 							if let view = self.securityView as? UIVisualEffectView {
 								view.effect = nil
 							} else {
@@ -306,52 +306,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						})
 					}
 				} else {
-					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .Alert)
-					let okAction = UIAlertAction(title: "OK", style: .Default) { _ in
-						dispatch_async(dispatch_get_main_queue()) {
+					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
+					let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+						DispatchQueue.main.async {
 							self.showPassword()
 						}
 					}
 					alertController.addAction(okAction)
-					dispatch_async(dispatch_get_main_queue()) {
-						tabBarController.presentViewController(alertController, animated: true, completion: nil)
+					DispatchQueue.main.async {
+						tabBarController.present(alertController, animated: true, completion: nil)
 					}
 				}
 
 			}
 			alertController.addAction(forgotAction)
 			alertController.addAction(okAction)
-			alertController.addTextFieldWithConfigurationHandler { textField in
+			alertController.addTextField { textField in
 				textField.placeholder = "Password"
-				textField.secureTextEntry = true
+				textField.isSecureTextEntry = true
 			}
-			dispatch_async(dispatch_get_main_queue()) {
-				tabBarController.presentViewController(alertController, animated: true, completion: nil)
+			DispatchQueue.main.async {
+				tabBarController.present(alertController, animated: true, completion: nil)
 			}
 		}
 	}
 
-	func session(session: WCSession, didReceiveMessage message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void) {
+	func session(_ session: WCSession, didReceiveMessage message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void) {
 		if archived {
-			NSKeyedUnarchiver.unarchiveObjectWithFile(file)
+			NSKeyedUnarchiver.unarchiveObject(withFile: file)
 			archived = false
 		}
 		let schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.logIn(schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-			if error == .NoError {
+		schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
+			if error == .noError {
 				if message["courses"] != nil {
 					schoolLoop.getCourses { _ in
-						replyHandler(["courses": NSKeyedArchiver.archivedDataWithRootObject(schoolLoop.courses)])
+						replyHandler(["courses": NSKeyedArchiver.archivedData(withRootObject: schoolLoop.courses)])
 					}
 				} else if let periodID = message["grades"] as? String {
-					if let course = schoolLoop.courseForPeriodID(periodID) {
-						schoolLoop.getGrades(periodID) { _ in
-							replyHandler(["grades": NSKeyedArchiver.archivedDataWithRootObject(course.grades)])
+					if let course = schoolLoop.course(forPeriodID: periodID) {
+						schoolLoop.getGrades(withPeriodID: periodID) { _ in
+							replyHandler(["grades": NSKeyedArchiver.archivedData(withRootObject: course.grades)])
 						}
 					}
 				} else if message["assignments"] != nil {
 					schoolLoop.getAssignments { _ in
-						replyHandler(["assignments": NSKeyedArchiver.archivedDataWithRootObject(schoolLoop.assignmentsWithDueDates)])
+						replyHandler(["assignments": NSKeyedArchiver.archivedData(withRootObject: schoolLoop.assignmentsWithDueDates)])
 					}
 				} else {
 					print("Failure")
@@ -362,5 +362,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				replyHandler(["error": ""])
 			}
 		}
+	}
+	
+	@available(iOS 9.3, *)
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: NSError?) {
+		
+	}
+	
+	func sessionDidBecomeInactive(_ session: WCSession) {
+		
+	}
+	
+	func sessionDidDeactivate(_ session: WCSession) {
+		
 	}
 }

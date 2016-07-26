@@ -17,8 +17,8 @@ class SchoolLoopGrade: NSObject, NSCoding {
 	var maxPoints: String
 	var comment: String
 	var systemID: String
-	var dueDate: NSDate
-	var changedDate: NSDate
+	var dueDate: Date
+	var changedDate: Date
 
 	init(title: String, categoryName: String, percentScore: String, score: String, maxPoints: String, comment: String, systemID: String, dueDate: String, changedDate: String) {
 		self.title = title
@@ -28,34 +28,34 @@ class SchoolLoopGrade: NSObject, NSCoding {
 		self.maxPoints = maxPoints
 		self.comment = comment
 		self.systemID = systemID
-		let dateFormatter = NSDateFormatter()
+		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-		self.dueDate = dateFormatter.dateFromString(dueDate) ?? NSDate.distantPast()
-		self.changedDate = dateFormatter.dateFromString(changedDate) ?? NSDate.distantPast()
+		self.dueDate = dateFormatter.date(from: dueDate) ?? Date.distantPast
+		self.changedDate = dateFormatter.date(from: changedDate) ?? Date.distantPast
 		super.init()
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		title = aDecoder.decodeObjectForKey("title") as? String ?? ""
-		categoryName = aDecoder.decodeObjectForKey("categoryName") as? String ?? ""
-		percentScore = aDecoder.decodeObjectForKey("percentScore") as? String ?? ""
-		score = aDecoder.decodeObjectForKey("score") as? String ?? ""
-		maxPoints = aDecoder.decodeObjectForKey("maxPoints") as? String ?? ""
-		comment = aDecoder.decodeObjectForKey("comment") as? String ?? ""
-		systemID = aDecoder.decodeObjectForKey("systemID") as? String ?? ""
-		dueDate = aDecoder.decodeObjectForKey("dueDate") as? NSDate ?? NSDate.distantPast()
-		changedDate = aDecoder.decodeObjectForKey("changedDate") as? NSDate ?? NSDate.distantPast()
+		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
+		categoryName = aDecoder.decodeObject(forKey: "categoryName") as? String ?? ""
+		percentScore = aDecoder.decodeObject(forKey: "percentScore") as? String ?? ""
+		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
+		maxPoints = aDecoder.decodeObject(forKey: "maxPoints") as? String ?? ""
+		comment = aDecoder.decodeObject(forKey: "comment") as? String ?? ""
+		systemID = aDecoder.decodeObject(forKey: "systemID") as? String ?? ""
+		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
+		changedDate = aDecoder.decodeObject(forKey: "changedDate") as? Date ?? Date.distantPast
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(title, forKey: "title")
-		aCoder.encodeObject(categoryName, forKey: "categoryName")
-		aCoder.encodeObject(percentScore, forKey: "percentScore")
-		aCoder.encodeObject(score, forKey: "score")
-		aCoder.encodeObject(maxPoints, forKey: "maxPoints")
-		aCoder.encodeObject(comment, forKey: "comment")
-		aCoder.encodeObject(systemID, forKey: "systemID")
-		aCoder.encodeObject(dueDate, forKey: "dueDate")
-		aCoder.encodeObject(changedDate, forKey: "changedDate")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(title, forKey: "title")
+		aCoder.encode(categoryName, forKey: "categoryName")
+		aCoder.encode(percentScore, forKey: "percentScore")
+		aCoder.encode(score, forKey: "score")
+		aCoder.encode(maxPoints, forKey: "maxPoints")
+		aCoder.encode(comment, forKey: "comment")
+		aCoder.encode(systemID, forKey: "systemID")
+		aCoder.encode(dueDate, forKey: "dueDate")
+		aCoder.encode(changedDate, forKey: "changedDate")
 	}
 }

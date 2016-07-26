@@ -9,33 +9,33 @@
 import Foundation
 
 class Logger {
-	static let filePath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString).stringByAppendingPathComponent("log.txt")
+	static let filePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("log.txt")
 
-	class func log(string: String) {
-		if !NSFileManager.defaultManager().fileExistsAtPath(filePath) {
-			NSFileManager.defaultManager().createFileAtPath(filePath, contents: nil, attributes: nil)
+	class func log(_ string: String) {
+		if !FileManager.default.fileExists(atPath: filePath) {
+			FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
 		}
-		let formatter = NSDateFormatter()
+		let formatter = DateFormatter()
 		formatter.dateFormat = "M/d H:mm:ss.SSS"
-		let file = NSFileHandle(forUpdatingAtPath: filePath)
+		let file = FileHandle(forUpdatingAtPath: filePath)
 		file?.seekToEndOfFile()
 //		#if arch(i386) || arch(x86_64)
-		print("\(formatter.stringFromDate(NSDate())): \(string)\n")
+		print("\(formatter.string(from: Date())): \(string)\n")
 //		#else
-		file?.writeData("\(formatter.stringFromDate(NSDate())): \(string)\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+		file?.write("\(formatter.string(from: Date())): \(string)\n".data(using: String.Encoding.utf8)!)
 //		#endif
 		file?.closeFile()
 	}
 
 	class func readLog() -> String {
 		do {
-			return try String(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
+			return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
 		} catch _ {
 			return ""
 		}
 	}
 
 	class func clearLog() {
-		NSFileManager.defaultManager().createFileAtPath(filePath, contents: nil, attributes: nil)
+		FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
 	}
 }

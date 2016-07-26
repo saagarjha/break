@@ -13,19 +13,19 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	let cellIdentifier = "assignment"
 
 	var schoolLoop: SchoolLoop!
-	var assignments: [NSDate: [SchoolLoopAssignment]] = [:]
-	var filteredAssignments: [NSDate: [SchoolLoopAssignment]] = [:]
-	var filteredAssignmentDueDates: [NSDate] = []
+	var assignments: [Date: [SchoolLoopAssignment]] = [:]
+	var filteredAssignments: [Date: [SchoolLoopAssignment]] = [:]
+	var filteredAssignmentDueDates: [Date] = []
 
 	var destinationViewController: AssignmentDescriptionViewController!
 
 	@IBOutlet weak var assignmentsTableView: UITableView! {
 		didSet {
 			assignmentsTableView.backgroundView = UIView()
-			assignmentsTableView.backgroundView?.backgroundColor = UIColor.clearColor()
+			assignmentsTableView.backgroundView?.backgroundColor = .clear()
 			assignmentsTableView.rowHeight = UITableViewAutomaticDimension
 			assignmentsTableView.estimatedRowHeight = 80.0
-			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), forControlEvents: .ValueChanged)
+			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), for: .valueChanged)
 			assignmentsTableView.addSubview(refreshControl)
 		}
 	}
@@ -36,10 +36,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		searchController.loadViewIfNeeded()
 	}
 
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		assignments = SchoolLoop.sharedInstance.assignmentsWithDueDates
-		updateSearchResultsForSearchController(searchController)
+		updateSearchResults(for: searchController)
 		navigationController?.hidesBarsOnSwipe = false
 	}
 
@@ -53,8 +53,8 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		searchController.dimsBackgroundDuringPresentation = false
 		assignmentsTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
-		if traitCollection.forceTouchCapability == .Available {
-			registerForPreviewingWithDelegate(self, sourceView: view)
+		if traitCollection.forceTouchCapability == .available {
+			registerForPreviewing(with: self, sourceView: view)
 		}
 		refresh(self)
 	}
@@ -64,44 +64,44 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(sender: AnyObject) {
-		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+	func refresh(_ sender: AnyObject) {
+		UIApplication.shared().isNetworkActivityIndicatorVisible = true
 		schoolLoop.getAssignments { (_, error) in
-			dispatch_async(dispatch_get_main_queue()) {
-				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-				if error == .NoError {
+			DispatchQueue.main.async {
+				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				if error == .noError {
 					self.assignments = self.schoolLoop.assignmentsWithDueDates
-					self.updateSearchResultsForSearchController(self.searchController)
+					self.updateSearchResults(for: self.searchController)
 				}
-				self.refreshControl.performSelector(#selector(UIRefreshControl.endRefreshing), withObject: nil, afterDelay: 0)
+				self.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 
 	}
 
-	@IBAction func openSettings(sender: AnyObject) {
-		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewControllerWithIdentifier("settings")
-		navigationController?.presentViewController(viewController, animated: true, completion: nil)
+	@IBAction func openSettings(_ sender: AnyObject) {
+		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "settings")
+		navigationController?.present(viewController, animated: true, completion: nil)
 	}
 
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return filteredAssignments.keys.count
 	}
 
-	func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		let dateFormatter = NSDateFormatter()
+	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "EEEE, MMMM d"
-		return dateFormatter.stringFromDate(filteredAssignmentDueDates[section])
+		return dateFormatter.string(from: filteredAssignmentDueDates[section])
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filteredAssignments[filteredAssignmentDueDates[section]]?.count ?? 0
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as? AssignmentTableViewCell else {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? AssignmentTableViewCell else {
 			assertionFailure("Could not deque AssignmentTableViewCell")
-			return tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
 		}
 		let section = indexPath.section
 		let row = indexPath.row
@@ -111,16 +111,16 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		return cell
 	}
 
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		tableView.deselectRowAtIndexPath(indexPath, animated: true)
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
-	func updateSearchResultsForSearchController(searchController: UISearchController) {
-		let filter = searchController.searchBar.text?.lowercaseString ?? ""
+	func updateSearchResults(for searchController: UISearchController) {
+		let filter = searchController.searchBar.text?.lowercased() ?? ""
 		if filter != "" {
 			filteredAssignments.removeAll()
 			for assignment in Array(assignments.values).flatMap({ $0 }) {
-				if assignment.title.lowercaseString.containsString(filter) || assignment.courseName.lowercaseString.containsString(filter) {
+				if assignment.title.lowercased().contains(filter) || assignment.courseName.lowercased().contains(filter) {
 					var assignments = filteredAssignments[assignment.dueDate] ?? []
 					assignments.append(assignment)
 					filteredAssignments[assignment.dueDate] = assignments
@@ -130,22 +130,22 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 			filteredAssignments = assignments
 		}
 		filteredAssignmentDueDates = Array(filteredAssignments.keys)
-		filteredAssignmentDueDates.sortInPlace {
-			$0.compare($1) == NSComparisonResult.OrderedAscending
+		filteredAssignmentDueDates.sort {
+			$0.compare($1) == .orderedAscending
 		}
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			self.assignmentsTableView.reloadData()
 		}
 	}
 
 	// MARK: - Navigation
 
-	func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = assignmentsTableView.indexPathForRowAtPoint(assignmentsTableView.convertPoint(location, toView: view)),
-			cell = assignmentsTableView.cellForRowAtIndexPath(indexPath) else {
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+		guard let indexPath = assignmentsTableView.indexPathForRow(at: assignmentsTableView.convert(location, to: view)),
+			let cell = assignmentsTableView.cellForRow(at: indexPath) else {
 				return nil
 		}
-		guard let destinationViewController = storyboard?.instantiateViewControllerWithIdentifier("assignmentDescription") as? AssignmentDescriptionViewController else {
+		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
 			return nil
 		}
 		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
@@ -155,17 +155,17 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		return destinationViewController
 	}
 
-	func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
 		navigationController?.pushViewController(viewControllerToCommit, animated: true)
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destinationViewController as? AssignmentDescriptionViewController,
-			cell = sender as? AssignmentTableViewCell,
-			indexPath = assignmentsTableView.indexPathForCell(cell) else {
+			let cell = sender as? AssignmentTableViewCell,
+			let indexPath = assignmentsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
 				return
 		}

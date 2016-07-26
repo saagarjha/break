@@ -12,7 +12,7 @@ import Foundation
 class SchoolLoopNews: NSObject, NSCoding {
 	var title: String
 	var authorName: String
-	var createdDate: NSDate
+	var createdDate: Date
 	var newsDescription: String
 	var links: [(title: String, URL: String)]
 	var iD: String
@@ -20,33 +20,33 @@ class SchoolLoopNews: NSObject, NSCoding {
 	init(title: String, authorName: String, createdDate: String, newsDescription: String, links: [(title: String, URL: String)], iD: String) {
 		self.title = title
 		self.authorName = authorName
-		self.createdDate = NSDate(timeIntervalSince1970: NSTimeInterval(createdDate)! / 1000)
+		self.createdDate = Date(timeIntervalSince1970: TimeInterval(createdDate)! / 1000)
 		self.newsDescription = newsDescription
 		self.links = links
 		self.iD = iD
 		super.init()
 	}
 
-	func setNewCreatedDate(createdDate: String) {
-		self.createdDate = NSDate(timeIntervalSince1970: NSTimeInterval(createdDate)! / 1000)
+	func set(newCreatedDate createdDate: String) {
+		self.createdDate = Date(timeIntervalSince1970: TimeInterval(createdDate)! / 1000)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		title = aDecoder.decodeObjectForKey("title") as? String ?? ""
-		authorName = aDecoder.decodeObjectForKey("authorName") as? String ?? ""
-		createdDate = aDecoder.decodeObjectForKey("createdDate") as? NSDate ?? NSDate.distantPast()
-		newsDescription = aDecoder.decodeObjectForKey("newsDescription") as? String ?? ""
-		links = aDecoder.decodeObjectForKey("links") as? [(title: String, URL: String)] ?? []
-		iD = aDecoder.decodeObjectForKey("iD") as? String ?? ""
+		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
+		authorName = aDecoder.decodeObject(forKey: "authorName") as? String ?? ""
+		createdDate = aDecoder.decodeObject(forKey: "createdDate") as? Date ?? Date.distantPast
+		newsDescription = aDecoder.decodeObject(forKey: "newsDescription") as? String ?? ""
+		links = aDecoder.decodeObject(forKey: "links") as? [(title: String, URL: String)] ?? []
+		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
 		super.init()
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(title, forKey: "title")
-		aCoder.encodeObject(authorName, forKey: "authorName")
-		aCoder.encodeObject(createdDate, forKey: "createdDate")
-		aCoder.encodeObject(newsDescription, forKey: "newsDescription")
-		aCoder.encodeObject(links as? AnyObject, forKey: "links")
-		aCoder.encodeObject(iD, forKey: "iD")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(title, forKey: "title")
+		aCoder.encode(authorName, forKey: "authorName")
+		aCoder.encode(createdDate, forKey: "createdDate")
+		aCoder.encode(newsDescription, forKey: "newsDescription")
+		aCoder.encode(links as? AnyObject, forKey: "links")
+		aCoder.encode(iD, forKey: "iD")
 	}
 }

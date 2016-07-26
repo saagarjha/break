@@ -12,7 +12,7 @@ import UIKit
 struct SchoolLoopConstants {
 	static let version = "2"
 	#if os(iOS)
-		static let devToken = UIDevice.currentDevice().identifierForVendor!.UUIDString
+		static let devToken = UIDevice.current().identifierForVendor?.uuidString ?? ""
 	#else
 		static let devToken = ""
 	#endif
@@ -22,7 +22,7 @@ struct SchoolLoopConstants {
 			uname(&systemInfo)
 			let machineMirror = Mirror(reflecting: systemInfo.machine)
 			return machineMirror.children.reduce("") { identifier, element in
-				guard let value = element.value as? Int8 where value != 0 else {
+				guard let value = element.value as? Int8, value != 0 else {
 					return identifier
 				}
 				return identifier + String(UnicodeScalar(UInt8(value)))
@@ -31,47 +31,47 @@ struct SchoolLoopConstants {
 	}
 	static var year: String {
 		get {
-			let dateFormatter = NSDateFormatter()
+			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "yyyy"
-			return dateFormatter.stringFromDate(NSDate())
+			return dateFormatter.string(from: Date())
 		}
 	}
 	static let max = "10000"
-	static let forgotURL = NSURL(string: "https://montavista.schoolloop.com/portal/forgot_password")!
+	static let forgotURL = URL(string: "https://montavista.schoolloop.com/portal/forgot_password")!
 
-	static func schoolURL() -> NSURL {
-		return NSURL(string: "https://lol.schoolloop.com/mapi/schools".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func schoolURL() -> URL {
+		return URL(string: "https://lol.schoolloop.com/mapi/schools".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func logInURL(domainName: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func logInURL(withDomainName domainName: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func courseURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/report_card?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func courseURL(withDomainName domainName: String, studentID: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/report_card?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func gradeURL(domainName: String, studentID: String, periodID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/progress_report?studentID=\(studentID)&periodID=\(periodID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func gradeURL(withDomainName domainName: String, studentID: String, periodID: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/progress_report?studentID=\(studentID)&periodID=\(periodID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func assignmentURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/assignments?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func assignmentURL(withDomainName domainName: String, studentID: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/assignments?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func loopMailURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func loopMailURL(withDomainName domainName: String, studentID: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func loopMailMessageURL(domainName: String, studentID: String, ID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func loopMailMessageURL(withDomainName domainName: String, studentID: String, ID: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func newsURL(domainName: String, studentID: String) -> NSURL {
-		return NSURL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!)!
+	static func newsURL(withDomainName domainName: String, studentID: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func lockerURL(path: String, domainName: String, username: String) -> NSURL {
-		return NSURL(string: "https://webdav-\(domainName)/users/\(username)\(path)")!
+	static func lockerURL(withPath path: String, domainName: String, username: String) -> URL {
+		return URL(string: "https://webdav-\(domainName)/users/\(username)\(path)")!
 	}
 }

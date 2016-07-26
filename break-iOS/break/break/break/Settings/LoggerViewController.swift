@@ -23,28 +23,28 @@ class LoggerViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func clear(sender: AnyObject) {
+	@IBAction func clear(_ sender: AnyObject) {
 		Logger.clearLog()
 		logTextView.text = Logger.readLog()
 	}
 
-	@IBAction func share(sender: AnyObject) {
+	@IBAction func share(_ sender: AnyObject) {
 		let activityViewController = UIActivityViewController(activityItems: [logTextView.text], applicationActivities: nil)
-		presentViewController(activityViewController, animated: true, completion: nil)
+		present(activityViewController, animated: true, completion: nil)
 	}
 
-	@IBAction func mark(sender: AnyObject) {
-		let alertController = UIAlertController(title: "Add a mark to the log", message: nil, preferredStyle: .Alert)
-		alertController.addTextFieldWithConfigurationHandler { textField in
+	@IBAction func mark(_ sender: AnyObject) {
+		let alertController = UIAlertController(title: "Add a mark to the log", message: nil, preferredStyle: .alert)
+		alertController.addTextField { textField in
 			textField.placeholder = "Mark"
 		}
-		let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-		let doneAction = UIAlertAction(title: "Done", style: .Default) { action in
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+		let doneAction = UIAlertAction(title: "Done", style: .default) { action in
 			self.logTextView.text = Logger.readLog()
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
-		presentViewController(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 	}
 
 	/*

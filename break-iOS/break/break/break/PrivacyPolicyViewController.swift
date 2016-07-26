@@ -15,7 +15,7 @@ class PrivacyPolicyViewController: UIViewController {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		let privacyPolicy = (try? String(contentsOfFile: NSBundle.mainBundle().pathForResource("PrivacyPolicy", ofType: "html")!)) ?? ""
+		let privacyPolicy = (try? String(contentsOfFile: Bundle.main.pathForResource("PrivacyPolicy", ofType: "html")!)) ?? ""
 		let privacyPolicyWebView = WKWebView()
 		privacyPolicyWebView.allowsBackForwardNavigationGestures = true
 		privacyPolicyWebView.loadHTMLString("<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style>\(privacyPolicy)", baseURL: nil)
@@ -27,8 +27,8 @@ class PrivacyPolicyViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func done(sender: AnyObject) {
-		dismissViewControllerAnimated(true, completion: nil)
+	@IBAction func done(_ sender: AnyObject) {
+		dismiss(animated: true, completion: nil)
 	}
 
 	/*

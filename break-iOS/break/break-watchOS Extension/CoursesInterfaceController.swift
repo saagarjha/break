@@ -18,8 +18,8 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 
 	@IBOutlet var coursesTable: WKInterfaceTable!
 
-	override func awakeWithContext(context: AnyObject?) {
-		super.awakeWithContext(context)
+	override func awake(withContext context: AnyObject?) {
+		super.awake(withContext: context)
 
 		// Configure interface objects here.
 	}
@@ -27,13 +27,13 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 	override func willActivate() {
 		// This method is called when watch view controller is about to be visible to user
 		super.willActivate()
-		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["courses": ""], replyHandler: { response in
-			if let data = response["courses"] as? NSData,
-				courses = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopCourse] {
+		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["courses": ""], replyHandler: { response in
+			if let data = response["courses"] as? Data,
+				let courses = NSKeyedUnarchiver.unarchiveObject(with: data) as? [SchoolLoopCourse] {
 					self.courses = courses
 					self.coursesTable.setNumberOfRows(courses.count, withRowType: self.rowType)
-					for (index, course) in courses.enumerate() {
-						if let controller = self.coursesTable.rowControllerAtIndex(index) as? CourseRowController {
+					for (index, course) in courses.enumerated() {
+						if let controller = self.coursesTable.rowController(at: index) as? CourseRowController {
 							controller.courseNameLabel.setText(course.courseName)
 							controller.teacherNameLabel.setText(course.teacherName)
 							controller.gradeLabel.setText(course.grade)
@@ -51,7 +51,11 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 		super.didDeactivate()
 	}
 
-	override func contextForSegueWithIdentifier(segueIdentifier: String, inTable table: WKInterfaceTable, rowIndex: Int) -> AnyObject? {
+	override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> AnyObject? {
 		return courses[rowIndex]
+	}
+	
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: NSError?) {
+		
 	}
 }

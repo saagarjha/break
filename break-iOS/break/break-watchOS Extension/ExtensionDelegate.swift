@@ -19,9 +19,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 	func applicationDidBecomeActive() {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 		if WCSession.isSupported() {
-			session = WCSession.defaultSession()
+			session = WCSession.default()
 			session?.delegate = self
-			session?.activateSession()
+			session?.activate()
 		}
 	}
 
@@ -30,12 +30,15 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 		// Use this method to pause ongoing tasks, disable timers, etc.
 	}
 
-	func sendMessage(message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void, errorHandler: (NSError) -> Void) {
+	func sendMessage(_ message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void, errorHandler: (NSError) -> Void) {
 		if let session = session {
 			session.sendMessage(message, replyHandler: replyHandler, errorHandler: errorHandler)
 		} else {
-			errorHandler(NSError(domain: WCErrorDomain, code: WCErrorCode.GenericError.rawValue, userInfo: nil))
+			errorHandler(NSError(domain: WCErrorDomain, code: WCErrorCode.genericError.rawValue, userInfo: nil))
 		}
 	}
-
+	
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: NSError?) {
+		
+	}
 }

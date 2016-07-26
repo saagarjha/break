@@ -12,7 +12,7 @@ import Foundation
 class SchoolLoopLoopMail: NSObject, NSCoding {
 	var subject: String
 	var sender: String
-	var date: NSDate
+	var date: Date
 	var ID: String
 
 	var message: String = ""
@@ -21,31 +21,31 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 	init(subject: String, sender: String, date: String, ID: String) {
 		self.subject = subject
 		self.sender = sender
-		self.date = NSDate(timeIntervalSince1970: NSTimeInterval(date)! / 1000)
+		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
 		self.ID = ID
         super.init()
 	}
     
-    func setNewDate(date: String) {
-        self.date = NSDate(timeIntervalSince1970: NSTimeInterval(date)! / 1000)
+    func set(newDate date: String) {
+        self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
     }
     
     required init?(coder aDecoder: NSCoder) {
-		subject = aDecoder.decodeObjectForKey("subject") as? String ?? ""
-		sender = aDecoder.decodeObjectForKey("sender") as? String ?? ""
-		date = aDecoder.decodeObjectForKey("date") as? NSDate ?? NSDate.distantPast()
-		ID = aDecoder.decodeObjectForKey("ID") as? String ?? ""
-		message = aDecoder.decodeObjectForKey("message") as? String ?? ""
-		links = aDecoder.decodeObjectForKey("links") as? [(title: String, URL: String)] ?? []
+		subject = aDecoder.decodeObject(forKey: "subject") as? String ?? ""
+		sender = aDecoder.decodeObject(forKey: "sender") as? String ?? ""
+		date = aDecoder.decodeObject(forKey: "date") as? Date ?? Date.distantPast
+		ID = aDecoder.decodeObject(forKey: "ID") as? String ?? ""
+		message = aDecoder.decodeObject(forKey: "message") as? String ?? ""
+		links = aDecoder.decodeObject(forKey: "links") as? [(title: String, URL: String)] ?? []
 		super.init()
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(subject, forKey: "subject")
-		aCoder.encodeObject(sender, forKey: "sender")
-		aCoder.encodeObject(date, forKey: "date")
-		aCoder.encodeObject(ID, forKey: "ID")
-		aCoder.encodeObject(message, forKey: "message")
-		aCoder.encodeObject(links as? AnyObject, forKey: "links")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(subject, forKey: "subject")
+		aCoder.encode(sender, forKey: "sender")
+		aCoder.encode(date, forKey: "date")
+		aCoder.encode(ID, forKey: "ID")
+		aCoder.encode(message, forKey: "message")
+		aCoder.encode(links as? AnyObject, forKey: "links")
 	}
 }

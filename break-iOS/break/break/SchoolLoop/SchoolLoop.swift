@@ -19,9 +19,9 @@ class SchoolLoop: NSObject, NSCoding {
 	var account: SchoolLoopAccount!
 	var courses: [SchoolLoopCourse] = []
 	var assignments: [SchoolLoopAssignment] = []
-	var assignmentsWithDueDates: [NSDate: [SchoolLoopAssignment]] {
+	var assignmentsWithDueDates: [Date: [SchoolLoopAssignment]] {
 		get {
-			var awdd: [NSDate: [SchoolLoopAssignment]] = [:]
+			var awdd: [Date: [SchoolLoopAssignment]] = [:]
 			for assigment in assignments {
 				var assignmentsForDate = awdd[assigment.dueDate] ?? []
 				assignmentsForDate.append(assigment)
@@ -37,7 +37,7 @@ class SchoolLoop: NSObject, NSCoding {
 	var currentTokens: [String] = []
 	var currentName = ""
 	var currentPath = ""
-	var currentType = SchoolLoopLockerItemType.Unknown
+	var currentType = SchoolLoopLockerItemType.unknown
 
 	private override init() {
 		super.init()
@@ -45,362 +45,332 @@ class SchoolLoop: NSObject, NSCoding {
 
 	required init?(coder aDecoder: NSCoder) {
 		let schoolLoop = SchoolLoop.sharedInstance
-		schoolLoop.school = aDecoder.decodeObjectForKey("school") as? SchoolLoopSchool
-		schoolLoop.schools = aDecoder.decodeObjectForKey("schools") as? [SchoolLoopSchool] ?? []
-		schoolLoop.account = aDecoder.decodeObjectForKey("account") as? SchoolLoopAccount
-		schoolLoop.courses = aDecoder.decodeObjectForKey("courses") as? [SchoolLoopCourse] ?? []
-		schoolLoop.assignments = aDecoder.decodeObjectForKey("assignments") as? [SchoolLoopAssignment] ?? []
-		schoolLoop.loopMail = aDecoder.decodeObjectForKey("loopMail") as? [SchoolLoopLoopMail] ?? []
-		schoolLoop.news = aDecoder.decodeObjectForKey("news") as? [SchoolLoopNews] ?? []
+		schoolLoop.school = aDecoder.decodeObject(forKey: "school") as? SchoolLoopSchool
+		schoolLoop.schools = aDecoder.decodeObject(forKey: "schools") as? [SchoolLoopSchool] ?? []
+		schoolLoop.account = aDecoder.decodeObject(forKey: "account") as? SchoolLoopAccount
+		schoolLoop.courses = aDecoder.decodeObject(forKey: "courses") as? [SchoolLoopCourse] ?? []
+		schoolLoop.assignments = aDecoder.decodeObject(forKey: "assignments") as? [SchoolLoopAssignment] ?? []
+		schoolLoop.loopMail = aDecoder.decodeObject(forKey: "loopMail") as? [SchoolLoopLoopMail] ?? []
+		schoolLoop.news = aDecoder.decodeObject(forKey: "news") as? [SchoolLoopNews] ?? []
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(school, forKey: "school")
-		aCoder.encodeObject(schools, forKey: "schools")
-		aCoder.encodeObject(account, forKey: "account")
-		aCoder.encodeObject(courses, forKey: "courses")
-		aCoder.encodeObject(assignments, forKey: "assignments")
-		aCoder.encodeObject(loopMail, forKey: "loopMail")
-		aCoder.encodeObject(news, forKey: "news")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(school, forKey: "school")
+		aCoder.encode(schools, forKey: "schools")
+		aCoder.encode(account, forKey: "account")
+		aCoder.encode(courses, forKey: "courses")
+		aCoder.encode(assignments, forKey: "assignments")
+		aCoder.encode(loopMail, forKey: "loopMail")
+		aCoder.encode(news, forKey: "news")
 	}
 
-	func getSchools(completion: ((error: SchoolLoopError) -> Void)?) {
+	func getSchools(withCompletionHandler completionHandler: ((error: SchoolLoopError) -> Void)?) {
 		let url = SchoolLoopConstants.schoolURL()
-		let request = NSMutableURLRequest(URL: url)
-		request.HTTPMethod = "GET"
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		var request = URLRequest(url: url)
+		request.httpMethod = "GET"
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			var newSchools: [SchoolLoopSchool] = []
 			guard error == nil else {
-				completion?(error: .NetworkError)
+				completionHandler?(error: .networkError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-					completion?(error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
+					completionHandler?(error: .parseError)
 					return
 			}
 			guard let schoolsJSON = dataJSON else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
 			for schoolJSON in schoolsJSON {
 				guard let schoolJSON = schoolJSON as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+					completionHandler?(error: .parseError)
 					return
 				}
-				guard let name = schoolJSON["name"] as? String,
-					domainName = schoolJSON["domainName"] as? String else {
-						completion?(error: .ParseError)
-						return
-				}
+				let name = schoolJSON["name"] as? String ?? ""
+				let domainName = schoolJSON["domainName"] as? String ?? ""
 				let school = SchoolLoopSchool(name: name, domainName: domainName)
 				newSchools.append(school)
 			}
 			self.schools = newSchools
-			completion?(error: .NoError)
+			completionHandler?(error: .noError)
 		}.resume()
 	}
 
-	func logIn(schoolName: String, username: String, password: String, completion: ((error: SchoolLoopError) -> Void)?) {
-		guard let school = schoolForName(schoolName) else {
-			completion?(error: .DoesNotExistError)
+	func logIn(withSchoolName schoolName: String, username: String, password: String, completionHandler: ((error: SchoolLoopError) -> Void)?) {
+		guard let school = school(forName: schoolName) else {
+			completionHandler?(error: .doesNotExistError)
 			return
 		}
 		self.school = school
 		self.account = SchoolLoopAccount(username: username, password: password, fullName: account?.fullName ?? "", studentID: account?.studentID ?? "")
-		let url = SchoolLoopConstants.logInURL(school.domainName)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		let url = SchoolLoopConstants.logInURL(withDomainName: school.domainName)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			guard error == nil else {
-				completion?(error: .NetworkError)
+				completionHandler?(error: .networkError)
 				return
 			}
-			let httpResponse = response as? NSHTTPURLResponse
+			let httpResponse = response as? HTTPURLResponse
 			if httpResponse?.statusCode != 200 {
-				completion?(error: .UnknownError)
+				completionHandler?(error: .unknownError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject] else {
+					completionHandler?(error: .parseError)
 					return
 			}
 			guard let loginJSON = dataJSON else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
-			guard let fullName = loginJSON["fullName"] as? String,
-				studentID = loginJSON["userID"] as? String else {
-					completion?(error: .ParseError)
-					return
-			}
+			let fullName = loginJSON["fullName"] as? String ?? ""
+			let studentID = loginJSON["userID"] as? String ?? ""
 			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID)
 			self.account.loggedIn = true
 			#if os(iOS)
-				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
 			#endif
-			completion?(error: .NoError)
+			completionHandler?(error: .noError)
 		}.resume()
 	}
 
 	func logOut() {
-		keychain.removePassword(account.username)
+		_ = keychain.removePassword(forUsername: account.username)
 		SchoolLoop.sharedInstance = SchoolLoop()
 		#if os(iOS)
-			let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+			let appDelegate = UIApplication.shared().delegate as? AppDelegate
 			appDelegate?.clearCache()
 			appDelegate?.showLogout()
 		#endif
 	}
 
-	func getCourses(completion: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
+	func getCourses(withCompletionHandler completionHandler: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
 		var updated = false
-		let url = SchoolLoopConstants.courseURL(school.domainName, studentID: account.studentID)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		let url = SchoolLoopConstants.courseURL(withDomainName: school.domainName, studentID: account.studentID)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			var newCourses: [SchoolLoopCourse] = []
 			guard error == nil else {
-				completion?(updated: updated, error: .NetworkError)
+				completionHandler?(updated: updated, error: .networkError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
+					completionHandler?(updated: updated, error: .parseError)
 					return
 			}
 			guard let coursesJSON = dataJSON else {
-				completion?(updated: updated, error: .ParseError)
+				completionHandler?(updated: updated, error: .parseError)
 				return
 			}
 			for courseJSON in coursesJSON {
 				guard let courseJSON = courseJSON as? [String: AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+					completionHandler?(updated: updated, error: .parseError)
 					return
 				}
-				guard let courseName = courseJSON["courseName"] as? String,
-					period = courseJSON["period"] as? String,
-					teacherName = courseJSON["teacherName"] as? String,
-					grade = courseJSON["grade"] as? String,
-					score = courseJSON["score"] as? String,
-					periodID = courseJSON["periodID"] as? String,
-					lastUpdated = courseJSON["lastUpdated"] as? String else {
-						completion?(updated: updated, error: .ParseError)
-						return
-				}
-				if let course = self.courseForPeriodID(periodID) {
-					if course.setNewLastUpdated(lastUpdated) {
+				let courseName = courseJSON["courseName"] as? String ?? ""
+				let period = courseJSON["period"] as? String ?? ""
+				let teacherName = courseJSON["teacherName"] as? String ?? ""
+				let grade = courseJSON["grade"] as? String ?? ""
+				let score = courseJSON["score"] as? String ?? ""
+				let periodID = courseJSON["periodID"] as? String ?? ""
+				let lastUpdated = courseJSON["lastUpdated"] as? String ?? ""
+				if let course = self.course(forPeriodID: periodID) {
+					if course.set(newLastUpdated: lastUpdated) {
 						updated = true
 						#if os(iOS)
-							if UIApplication.sharedApplication().applicationState != .Active {
+							if UIApplication.shared().applicationState != .active {
 								let notification = UILocalNotification()
-								notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+								notification.fireDate = Date(timeIntervalSinceNow: 1)
 								notification.alertBody = "Your grade in \(courseName) has changed"
 								notification.applicationIconBadgeNumber = 1
 								notification.soundName = UILocalNotificationDefaultSoundName
-								UIApplication.sharedApplication().scheduleLocalNotification(notification)
+								UIApplication.shared().scheduleLocalNotification(notification)
 							}
 						#endif
 					}
 				} else {
 					updated = true
 					#if os(iOS)
-						if UIApplication.sharedApplication().applicationState != .Active {
+						if UIApplication.shared().applicationState != .active {
 							let notification = UILocalNotification()
-							notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "Your grade in \(courseName) has changed"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.sharedApplication().scheduleLocalNotification(notification)
+							UIApplication.shared().scheduleLocalNotification(notification)
 						}
 					#endif
 				}
 				let course = SchoolLoopCourse(courseName: courseName, period: period, teacherName: teacherName, grade: grade, score: score, periodID: periodID)
-				course.setNewLastUpdated(lastUpdated)
+				_ = course.set(newLastUpdated: lastUpdated)
 				newCourses.append(course)
 			}
 			self.courses = newCourses
 			#if os(iOS)
-				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
 			#endif
-			completion?(updated: updated, error: .NoError)
+			completionHandler?(updated: updated, error: .noError)
 		}.resume()
 	}
 
-	func getGrades(periodID: String, completion: ((error: SchoolLoopError) -> Void)?) {
-		let url = SchoolLoopConstants.gradeURL(school.domainName, studentID: account.studentID, periodID: periodID)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+	func getGrades(withPeriodID periodID: String, completionHandler: ((error: SchoolLoopError) -> Void)?) {
+		let url = SchoolLoopConstants.gradeURL(withDomainName: school.domainName, studentID: account.studentID, periodID: periodID)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			guard error == nil else {
-				completion?(error: .NetworkError)
+				completionHandler?(error: .networkError)
 				return
 			}
-			guard let course = self.courseForPeriodID(periodID) else {
-				completion?(error: .DoesNotExistError)
+			guard let course = self.course(forPeriodID: periodID) else {
+				completionHandler?(error: .doesNotExistError)
 				return
 			}
 			course.categories.removeAll()
 			course.grades.removeAll()
 			course.trendScores.removeAll()
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-					completion?(error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
+					completionHandler?(error: .parseError)
 					return
 			}
 			guard let categoriesJSON = (dataJSON?.first as? [String: AnyObject])?["categories"] as? [AnyObject] else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
 			for categoryJSON in categoriesJSON {
 				guard let categoryJSON = categoryJSON as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+					completionHandler?(error: .parseError)
 					return
 				}
-				guard let name = categoryJSON["name"] as? String,
-					score = categoryJSON["score"] as? String,
-					weight = categoryJSON["weight"] as? String else {
-						completion?(error: .ParseError)
-						return
-				}
+				let name = categoryJSON["name"] as? String ?? ""
+				let score = categoryJSON["score"] as? String ?? ""
+				let weight = categoryJSON["weight"] as? String ?? ""
 				let category = SchoolLoopCategory(name: name, score: score, weight: weight)
 				course.categories.append(category)
 
 			}
-			guard let GradingScaleJSON = (dataJSON?.first as? [String: AnyObject])?["GradingScale"] as? [String: AnyObject], CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [AnyObject] else {
-				completion?(error: .ParseError)
+			guard let GradingScaleJSON = (dataJSON?.first as? [String: AnyObject])?["GradingScale"] as? [String: AnyObject], let CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [AnyObject] else {
+				completionHandler?(error: .parseError)
 				return
 			}
 			for CutoffJSON in CutoffsJSON {
 				guard let CutoffJSON = CutoffJSON as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+					completionHandler?(error: .parseError)
 					return
 				}
-				guard let Name = CutoffJSON["Name"] as? String,
-					Start = CutoffJSON["Start"] as? String else {
-						completion?(error: .ParseError)
-						return
-				}
+				let Name = CutoffJSON["Name"] as? String ?? ""
+				let Start = CutoffJSON["Start"] as? String ?? ""
 				let cutoff = SchoolLoopCutoff(Name: Name, Start: Start)
 				course.cutoffs.append(cutoff)
 
 			}
 			guard let gradesJSON = (dataJSON?.first as? [String: AnyObject])?["grades"] as? [AnyObject] else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
 			for gradeJSON in gradesJSON {
 				guard let gradeJSON = gradeJSON as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+					completionHandler?(error: .parseError)
 					return
 				}
-				guard let percentScore = gradeJSON["percentScore"] as? String,
-					score = gradeJSON["score"] as? String,
-					comment = gradeJSON["comment"] as? String,
-					changedDate = gradeJSON["changedDate"] as? String else {
-						completion?(error: .ParseError)
-						return
-				}
+				let percentScore = gradeJSON["percentScore"] as? String ?? ""
+				let score = gradeJSON["score"] as? String ?? ""
+				let comment = gradeJSON["comment"] as? String  ?? ""
+				let changedDate = gradeJSON["changedDate"] as? String ?? ""
 				guard let assignmentJSON = gradeJSON["assignment"] as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+					completionHandler?(error: .parseError)
 					return
 				}
-				guard let title = assignmentJSON["title"] as? String,
-					categoryName = assignmentJSON["categoryName"] as? String,
-					maxPoints = assignmentJSON["maxPoints"] as? String,
-					systemID = assignmentJSON["systemID"] as? String,
-					dueDate = assignmentJSON["dueDate"] as? String else {
-						completion?(error: .ParseError)
-						return
-				}
+				let title = assignmentJSON["title"] as? String ?? ""
+				let categoryName = assignmentJSON["categoryName"] as? String ?? ""
+				let maxPoints = assignmentJSON["maxPoints"] as? String ?? ""
+				let systemID = assignmentJSON["systemID"] as? String ?? ""
+				let dueDate = assignmentJSON["dueDate"] as? String ?? ""
 				let grade = SchoolLoopGrade(title: title, categoryName: categoryName, percentScore: percentScore, score: score, maxPoints: maxPoints, comment: comment, systemID: systemID, dueDate: dueDate, changedDate: changedDate)
 				course.grades.append(grade)
 			}
 			guard let trendScoresJSON = (dataJSON?.first as? [String: AnyObject])?["trendScores"] as? [AnyObject] else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
 			for trendScoreJSON in trendScoresJSON {
 				guard let trendScoreJSON = trendScoreJSON as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+					completionHandler?(error: .parseError)
 					return
 				}
-				guard let score = trendScoreJSON["score"] as? String,
-					dayID = trendScoreJSON["dayID"] as? String else {
-						completion?(error: .ParseError)
-						return
-				}
+				let score = trendScoreJSON["score"] as? String ?? ""
+				let dayID = trendScoreJSON["dayID"] as? String ?? ""
 				let trendScore = SchoolLoopTrendScore(score: score, dayID: dayID)
 				course.trendScores.append(trendScore)
 			}
 			#if os(iOS)
-				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
 			#endif
-			completion?(error: .NoError)
+			completionHandler?(error: .noError)
 		}.resume()
 	}
 
-	func getAssignments(completion: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
+	func getAssignments(withCompletionHandler completionHandler: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
 		var updated = false
-		let url = SchoolLoopConstants.assignmentURL(school.domainName, studentID: account.studentID)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		let url = SchoolLoopConstants.assignmentURL(withDomainName: school.domainName, studentID: account.studentID)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			var newAssignments: [SchoolLoopAssignment] = []
 			guard error == nil else {
-				completion?(updated: updated, error: .NetworkError)
+				completionHandler?(updated: updated, error: .networkError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments
 			) as? [AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+					completionHandler?(updated: updated, error: .parseError)
 					return
 			}
 			guard let assignmentsJSON = dataJSON else {
-				completion?(updated: updated, error: .ParseError)
+				completionHandler?(updated: updated, error: .parseError)
 				return
 			}
 			for assignmentJSON in assignmentsJSON {
 				guard let assignmentJSON = assignmentJSON as? [String: AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+					completionHandler?(updated: updated, error: .parseError)
 					return
 				}
-				guard let title = assignmentJSON["title"] as? String,
-					description = assignmentJSON["description"] as? String,
-					courseName = assignmentJSON["courseName"] as? String,
-					dueDate = assignmentJSON["dueDate"] as? String,
-					iD = assignmentJSON["iD"] as? String else {
-						completion?(updated: updated, error: .ParseError)
-						return
-				}
+				let title = assignmentJSON["title"] as? String ?? ""
+				let description = assignmentJSON["description"] as? String ?? ""
+				let courseName = assignmentJSON["courseName"] as? String ?? ""
+				let dueDate = assignmentJSON["dueDate"] as? String ?? ""
+				let iD = assignmentJSON["iD"] as? String ?? ""
 				var links: [(title: String, URL: String)] = []
 				if let linksJSON = assignmentJSON["links"] as? [AnyObject] {
 					for linkJSON in linksJSON {
 						guard let linkJSON = linkJSON as? [String: AnyObject] else {
-							completion?(updated: updated, error: .ParseError)
+							completionHandler?(updated: updated, error: .parseError)
 							return
 						}
-						guard let title = linkJSON["Title"] as? String,
-							URL = linkJSON["URL"] as? String else {
-								completion?(updated: updated, error: .ParseError)
-								return
-						}
+						let title = linkJSON["Title"] as? String ?? ""
+						let URL = linkJSON["URL"] as? String ?? ""
 						links.append((title: title, URL: URL))
 					}
 				}
-				if self.assignmentForID(iD) == nil {
+				if self.assignment(foriD: iD) == nil {
 					updated = true
 					#if os(iOS)
-						if UIApplication.sharedApplication().applicationState != .Active {
+						if UIApplication.shared().applicationState != .active {
 							let notification = UILocalNotification()
-							notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "New assignment \(title) posted for \(courseName)"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.sharedApplication().scheduleLocalNotification(notification)
+							UIApplication.shared().scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -409,61 +379,55 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.assignments = newAssignments
 			#if os(iOS)
-				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
 			#endif
-			completion?(updated: updated, error: .NoError)
+			completionHandler?(updated: updated, error: .noError)
 		}.resume()
 	}
 
-	func getLoopMail(completion: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
+	func getLoopMail(withCompletionHandler completionHandler: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
 		var updated = false
-		let url = SchoolLoopConstants.loopMailURL(school.domainName, studentID: account.studentID)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		let url = SchoolLoopConstants.loopMailURL(withDomainName: school.domainName, studentID: account.studentID)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			var newLoopMail: [SchoolLoopLoopMail] = []
 			guard error == nil else {
-				completion?(updated: updated, error: .NetworkError)
+				completionHandler?(updated: updated, error: .networkError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
+					completionHandler?(updated: updated, error: .parseError)
 					return
 			}
 			guard let loopMailJSON = dataJSON else {
-				completion?(updated: updated, error: .ParseError)
+				completionHandler?(updated: updated, error: .parseError)
 				return
 			}
 			for loopMailJSON in loopMailJSON {
 				guard let loopMailJSON = loopMailJSON as? [String: AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+					completionHandler?(updated: updated, error: .parseError)
 					return
 				}
-				guard let subject = loopMailJSON["subject"] as? String,
-					date = loopMailJSON["date"] as? String,
-					ID = loopMailJSON["ID"] as? String else {
-						completion?(updated: updated, error: .ParseError)
-						return
-				}
+				let subject = loopMailJSON["subject"] as? String ?? ""
+				let date = loopMailJSON["date"] as? String ?? ""
+				let ID = loopMailJSON["ID"] as? String ?? ""
 				guard let senderJSON = loopMailJSON["sender"] as? [String: AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+					completionHandler?(updated: updated, error: .parseError)
 					return
 				}
-				guard let sender = senderJSON["name"] as? String else {
-					completion?(updated: updated, error: .ParseError)
-					return
-				}
-				if self.loopMailForID(ID) == nil {
+				let sender = senderJSON["name"] as? String ?? ""
+				if self.loopMail(forID: ID) == nil {
 					updated = true
 					#if os(iOS)
-						if UIApplication.sharedApplication().applicationState != .Active {
+						if UIApplication.shared().applicationState != .active {
 							let notification = UILocalNotification()
-							notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "From: \(sender)\n\(subject)\n"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.sharedApplication().scheduleLocalNotification(notification)
+							UIApplication.shared().scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -472,117 +436,105 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.loopMail = newLoopMail
 			#if os(iOS)
-				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
 			#endif
-			completion?(updated: updated, error: .NoError)
+			completionHandler?(updated: updated, error: .noError)
 		}.resume()
 	}
 
-	func getLoopMailMessage(ID: String, completion: ((error: SchoolLoopError) -> Void)?) {
-		let url = SchoolLoopConstants.loopMailMessageURL(school.domainName, studentID: account.studentID, ID: ID)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+	func getLoopMailMessage(withID ID: String, completionHandler: ((error: SchoolLoopError) -> Void)?) {
+		let url = SchoolLoopConstants.loopMailMessageURL(withDomainName: school.domainName, studentID: account.studentID, ID: ID)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			guard error == nil else {
-				completion?(error: .NetworkError)
+				completionHandler?(error: .networkError)
 				return
 			}
-			guard let loopMail = self.loopMailForID(ID) else {
-				completion?(error: .DoesNotExistError)
+			guard let loopMail = self.loopMail(forID: ID) else {
+				completionHandler?(error: .doesNotExistError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: AnyObject] else {
-					completion?(error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject] else {
+					completionHandler?(error: .parseError)
 					return
 			}
 			guard let messageJSON = dataJSON else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
-			guard let message = messageJSON["message"] as? String else {
-				completion?(error: .ParseError)
-				return
-			}
+			let message = messageJSON["message"] as? String ?? ""
 			var links: [(title: String, URL: String)] = []
 			if let linksJSON = messageJSON["links"] as? [AnyObject] {
 				for linkJSON in linksJSON {
 					guard let linkJSON = linkJSON as? [String: AnyObject] else {
-						completion?(error: .ParseError)
+						completionHandler?(error: .parseError)
 						return
 					}
-					guard let title = linkJSON["Title"] as? String,
-						URL = linkJSON["URL"] as? String else {
-							completion?(error: .ParseError)
-							return
-					}
+					let title = linkJSON["Title"] as? String ?? ""
+					let URL = linkJSON["URL"] as? String ?? ""
 					links.append((title: title, URL: URL))
 				}
 			}
 			loopMail.message = message
 			loopMail.links = links
-			completion?(error: .NoError)
+			completionHandler?(error: .noError)
 		}.resume()
 	}
 
-	func getNews(completion: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
+	func getNews(withCompletionHandler completionHandler: ((updated: Bool, error: SchoolLoopError) -> Void)?) {
 		var updated = false
-		let url = SchoolLoopConstants.newsURL(school.domainName, studentID: account.studentID)
-		let request = authenticatedRequest(url)
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+		let url = SchoolLoopConstants.newsURL(withDomainName: school.domainName, studentID: account.studentID)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			var newNews: [SchoolLoopNews] = []
 			guard error == nil else {
-				completion?(updated: updated, error: .NetworkError)
+				completionHandler?(updated: updated, error: .networkError)
 				return
 			}
 			guard let data = data,
-				dataJSON = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
+					completionHandler?(updated: updated, error: .parseError)
 					return
 			}
 			guard let newsJSON = dataJSON else {
-				completion?(updated: updated, error: .ParseError)
+				completionHandler?(updated: updated, error: .parseError)
 				return
 			}
 			for newsJSON in newsJSON {
 				guard let newsJSON = newsJSON as? [String: AnyObject] else {
-					completion?(updated: updated, error: .ParseError)
+					completionHandler?(updated: updated, error: .parseError)
 					return
 				}
-				guard let title = newsJSON["title"] as? String,
-					authorName = newsJSON["authorName"] as? String,
-					createdDate = newsJSON["createdDate"] as? String,
-					description = newsJSON["description"] as? String,
-					iD = newsJSON["iD"] as? String else {
-						completion?(updated: updated, error: .ParseError)
-						return
-				}
+				let title = newsJSON["title"] as? String ?? ""
+				let authorName = newsJSON["authorName"] as? String ?? ""
+				let createdDate = newsJSON["createdDate"] as? String ?? ""
+				let description = newsJSON["description"] as? String ?? ""
+				let iD = newsJSON["iD"] as? String ?? ""
 				var links: [(title: String, URL: String)] = []
 				if let linksJSON = newsJSON["links"] as? [AnyObject] {
 					for linkJSON in linksJSON {
 						guard let linkJSON = linkJSON as? [String: AnyObject] else {
-							completion?(updated: updated, error: .ParseError)
+							completionHandler?(updated: updated, error: .parseError)
 							return
 						}
-						guard let title = linkJSON["Title"] as? String,
-							URL = linkJSON["URL"] as? String else {
-								completion?(updated: updated, error: .ParseError)
-								return
-						}
+						let title = linkJSON["Title"] as? String ?? ""
+						let URL = linkJSON["URL"] as? String ?? ""
 						links.append((title: title, URL: URL))
 					}
 				}
-				if self.newsForID(iD) == nil {
+				if self.news(foriD: iD) == nil {
 					updated = true
 					#if os(iOS)
-						if UIApplication.sharedApplication().applicationState != .Active {
+						if UIApplication.shared().applicationState != .active {
 							let notification = UILocalNotification()
-							notification.fireDate = NSDate(timeIntervalSinceNow: 1)
+							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "\(title)\n\(authorName)"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.sharedApplication().scheduleLocalNotification(notification)
+							UIApplication.shared().scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -591,48 +543,48 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.news = newNews
 			#if os(iOS)
-				(UIApplication.sharedApplication().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
 			#endif
-			completion?(updated: updated, error: .NoError)
+			completionHandler?(updated: updated, error: .noError)
 		}.resume()
 	}
 
-	func getLocker(path: String, completion: ((error: SchoolLoopError) -> Void)?) {
-		let url = SchoolLoopConstants.lockerURL(path, domainName: school.domainName, username: account.username)
-		let request = authenticatedRequest(url)
-		request.HTTPMethod = "PROPFIND"
-		let session = NSURLSession.sharedSession()
-		session.dataTaskWithRequest(request) { (data, response, error) in
+	func getLocker(withPath path: String, completionHandler: ((error: SchoolLoopError) -> Void)?) {
+		let url = SchoolLoopConstants.lockerURL(withPath: path, domainName: school.domainName, username: account.username)
+		var request = authenticatedRequest(withURL: url)
+		request.httpMethod = "PROPFIND"
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
 			guard let data = data else {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			}
-			let parser = NSXMLParser(data: data)
+			let parser = XMLParser(data: data)
 			parser.delegate = self
 			if !parser.parse() {
-				completion?(error: .ParseError)
+				completionHandler?(error: .parseError)
 				return
 			} else {
-				completion?(error: .NoError)
+				completionHandler?(error: .noError)
 			}
 		}.resume()
 	}
 
-	func authenticatedRequest(url: NSURL) -> NSMutableURLRequest {
-		let request = NSMutableURLRequest(URL: url)
-		request.HTTPMethod = "GET"
+	func authenticatedRequest(withURL url: URL) -> URLRequest {
+		let request = NSMutableURLRequest(url: url)
+		request.httpMethod = "GET"
 
 		let plainString = "\(account.username):\(account.password)"
-		guard let base64Data = (plainString as NSString).dataUsingEncoding(NSUTF8StringEncoding) else {
+		guard let base64Data = (plainString as NSString).data(using: String.Encoding.utf8.rawValue) else {
 			assertionFailure("Could not encode plainString")
-			return request
+			return request as URLRequest
 		}
-		let base64String = base64Data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+		let base64String = base64Data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
-		return request
+		return request as URLRequest
 	}
 
-	func schoolForName(name: String) -> SchoolLoopSchool? {
+	func school(forName name: String) -> SchoolLoopSchool? {
 		for school in schools {
 			if school.name == name {
 				return school
@@ -641,7 +593,7 @@ class SchoolLoop: NSObject, NSCoding {
 		return nil
 	}
 
-	func courseForPeriodID(periodID: String) -> SchoolLoopCourse? {
+	func course(forPeriodID periodID: String) -> SchoolLoopCourse? {
 		for course in courses {
 			if course.periodID == periodID {
 				return course
@@ -650,7 +602,7 @@ class SchoolLoop: NSObject, NSCoding {
 		return nil
 	}
 
-	func assignmentForID(iD: String) -> SchoolLoopAssignment? {
+	func assignment(foriD iD: String) -> SchoolLoopAssignment? {
 		for assignment in assignments {
 			if assignment.iD == iD {
 				return assignment
@@ -659,7 +611,7 @@ class SchoolLoop: NSObject, NSCoding {
 		return nil
 	}
 
-	func loopMailForID(ID: String) -> SchoolLoopLoopMail? {
+	func loopMail(forID ID: String) -> SchoolLoopLoopMail? {
 		for loopMail in self.loopMail {
 			if loopMail.ID == ID {
 				return loopMail
@@ -668,7 +620,7 @@ class SchoolLoop: NSObject, NSCoding {
 		return nil
 	}
 
-	func newsForID(iD: String) -> SchoolLoopNews? {
+	func news(foriD iD: String) -> SchoolLoopNews? {
 		for news in self.news {
 			if news.iD == iD {
 				return news
@@ -677,13 +629,13 @@ class SchoolLoop: NSObject, NSCoding {
 		return nil
 	}
 
-	func lockerItemParentForPath(path: String) -> SchoolLoopLockerItem? {
-		let cleanPath = path.hasSuffix("/") ? path.substringToIndex((path.rangeOfString("/", options: .BackwardsSearch)?.startIndex)!) : path
+	func lockerItemParent(forPath path: String) -> SchoolLoopLockerItem? {
+		let cleanPath = path.hasSuffix("/") ? path.substring(to: (path.range(of: "/", options: .backwards)?.lowerBound)!) : path
 		var currentLockerItem: SchoolLoopLockerItem? = locker
 		var currentDirectoryContents: [SchoolLoopLockerItem] = locker?.lockerItems ?? []
-		for (index, pathComponent) in cleanPath.componentsSeparatedByString("/").enumerate().dropFirst().dropLast() {
+		for (index, pathComponent) in cleanPath.components(separatedBy: "/").enumerated().dropFirst().dropLast() {
 			for lockerItem in currentDirectoryContents {
-				if lockerItem.path.componentsSeparatedByString("/").dropFirst()[index] == pathComponent {
+				if lockerItem.path.components(separatedBy: "/").dropFirst()[index] == pathComponent {
 					currentLockerItem = lockerItem
 					currentDirectoryContents = lockerItem.lockerItems
 					break
@@ -694,8 +646,8 @@ class SchoolLoop: NSObject, NSCoding {
 		return currentLockerItem
 	}
 
-	func lockerItemForPath(path: String) -> SchoolLoopLockerItem? {
-		guard let parent = lockerItemParentForPath(path) else {
+	func lockerItem(forPath path: String) -> SchoolLoopLockerItem? {
+		guard let parent = lockerItemParent(forPath: path) else {
 			return nil
 		}
 		for lockerItem in parent.lockerItems {
@@ -706,22 +658,22 @@ class SchoolLoop: NSObject, NSCoding {
 		return nil
 	}
 
-	func requestForLockerItemPath(path: String) -> NSURLRequest {
-		return authenticatedRequest(SchoolLoopConstants.lockerURL(path, domainName: school.domainName, username: account.username))
+	func request(forLockerItemPath path: String) -> URLRequest {
+		return authenticatedRequest(withURL: SchoolLoopConstants.lockerURL(withPath: path, domainName: school.domainName, username: account.username))
 	}
 }
 
-extension SchoolLoop: NSXMLParserDelegate {
-	func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
+extension SchoolLoop: XMLParserDelegate {
+	func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
 		currentTokens.append(elementName)
 	}
 
-	func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+	func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
 		if currentTokens.last == "d:collection" {
-			currentType = .Directory
+			currentType = .directory
 		} else if currentTokens.last == "d:response" {
 			let lockerItem = SchoolLoopLockerItem(name: currentName, path: currentPath, type: currentType)
-			if let parent = lockerItemParentForPath(lockerItem.path) {
+			if let parent = lockerItemParent(forPath: lockerItem.path) {
 				if !parent.lockerItems.contains({ $0 == lockerItem }) {
 					parent.lockerItems.append(lockerItem)
 				}
@@ -730,41 +682,41 @@ extension SchoolLoop: NSXMLParserDelegate {
 			}
 			currentName = ""
 			currentPath = ""
-			currentType = .Unknown
+			currentType = .unknown
 		}
-		currentTokens.popLast()
+		_ = currentTokens.popLast()
 	}
 
-	func parser(parser: NSXMLParser, foundCharacters string: String) {
+	func parser(_ parser: XMLParser, foundCharacters string: String) {
 		if currentTokens.last == "d:href" {
-			currentPath = string.substringFromIndex(string.characters.indexOf("/")!.advancedBy(1))
-			currentPath = currentPath.substringFromIndex(currentPath.characters.indexOf("/")!.advancedBy(1))
-			currentPath = currentPath.substringFromIndex(currentPath.characters.indexOf("/")!)
+			currentPath = string.substring(from: string.index(string.characters.index(of: "/")!, offsetBy: 1))
+			currentPath = currentPath.substring(from: currentPath.index(currentPath.characters.index(of: "/")!, offsetBy: 1))
+			currentPath = currentPath.substring(from: currentPath.characters.index(of: "/")!)
 		} else if currentTokens.last == "d:displayname" {
 			currentName += string
 		} else if currentTokens.last == "d:getcontenttype" {
-			if currentType != .Directory {
+			if currentType != .directory {
 				if string == "application/pdf" {
-					currentType = .PDF
+					currentType = .pdf
 				} else {
-					currentType = .Unknown
+					currentType = .unknown
 				}
 			}
 		}
 	}
 }
 
-extension NSURLSession {
-	func synchronousDataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
-		var data: NSData?, response: NSURLResponse?, error: NSError?
-		let semaphore = dispatch_semaphore_create(0)
-		dataTaskWithRequest(request) {
+extension URLSession {
+	func synchronousDataTask(withRequest request: URLRequest, completionHandler: (Data?, URLResponse?, NSError?) -> Void) {
+		var data: Data?, response: URLResponse?, error: NSError?
+		let semaphore = DispatchSemaphore(value: 0)
+		dataTask(with: request) {
 			data = $0
 			response = $1
 			error = $2
-			dispatch_semaphore_signal(semaphore)
+			semaphore.signal()
 		}.resume()
-		dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+		_ = semaphore.wait(timeout: DispatchTime.distantFuture)
 		completionHandler(data, response, error)
 	}
 }

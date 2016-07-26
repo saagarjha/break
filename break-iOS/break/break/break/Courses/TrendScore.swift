@@ -30,43 +30,43 @@ class TrendScore: UIView {
 			return Double(max($0, Double($1.score) ?? 0))
 		}
 		let scoreDifference = maximum - minimum
-		let startDate = trendScores.first?.dayID ?? NSDate()
-		let endDate = trendScores.last?.dayID ?? NSDate()
-		let dateDifference = endDate.timeIntervalSinceDate(startDate)
-		let dateFormatter = NSDateFormatter()
+		let startDate = trendScores.first?.dayID ?? Date()
+		let endDate = trendScores.last?.dayID ?? Date()
+		let dateDifference = endDate.timeIntervalSince(startDate)
+		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/d"
 		let graphFrame = CGRect(x: leftInset, y: 0, width: layer.frame.width - leftInset, height: layer.frame.height - bottomInset)
 		let path = UIBezierPath()
-		path.moveToPoint(graphFrame.topLeftCorner)
-		path.addLineToPoint(graphFrame.bottomLeftCorner)
-		path.addLineToPoint(graphFrame.bottomRightCorner)
+		path.move(to: graphFrame.topLeftCorner)
+		path.addLine(to: graphFrame.bottomLeftCorner)
+		path.addLine(to: graphFrame.bottomRightCorner)
 		let shapeLayer = CAShapeLayer()
 		shapeLayer.frame = self.layer.frame
-		shapeLayer.path = path.CGPath
-		shapeLayer.strokeColor = UIColor.blackColor().CGColor
+		shapeLayer.path = path.cgPath
+		shapeLayer.strokeColor = UIColor.black().cgColor
 		shapeLayer.fillColor = nil
 		shapeLayer.lineWidth = 1
 		layer.addSublayer(shapeLayer)
 		for i in 0..<dateLabels {
-			let date = NSDate(timeInterval: endDate.timeIntervalSinceDate(startDate) * NSTimeInterval(i) / NSTimeInterval(dateLabels), sinceDate: startDate)
+			let date = Date(timeInterval: endDate.timeIntervalSince(startDate ) * TimeInterval(i) / TimeInterval(dateLabels), since: startDate)
 			let textLayer = CATextLayer()
-			textLayer.contentsScale = UIScreen.mainScreen().scale
-			textLayer.string = dateFormatter.stringFromDate(date)
+			textLayer.contentsScale = UIScreen.main().scale
+			textLayer.string = dateFormatter.string(from: date)
 			textLayer.fontSize = 12
-			textLayer.foregroundColor = UIColor.blackColor().CGColor
+			textLayer.foregroundColor = UIColor.black().cgColor
 			textLayer.alignmentMode = kCAAlignmentCenter
-			let textFrame = textLayer.string?.boundingRectWithSize(textLayer.frame.size, options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(12)], context: nil) ?? CGRectZero
+			let textFrame = textLayer.string?.boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) ?? CGRect.zero
 			textLayer.frame = CGRect(x: leftInset + graphFrame.width * CGFloat(i) / CGFloat(dateLabels) - textFrame.width / 2, y: graphFrame.height + bottomInset / 2 - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}
 		for i in 0..<gradeLabels {
 			let grade = minimum + (maximum - minimum) * Double(i) / Double(gradeLabels)
 			let textLayer = CATextLayer()
-			textLayer.contentsScale = UIScreen.mainScreen().scale
+			textLayer.contentsScale = UIScreen.main().scale
 			textLayer.string = String(format: "%.2f%%", grade * 100)
 			textLayer.fontSize = 12
-			textLayer.foregroundColor = UIColor.blackColor().CGColor
-			let textFrame = textLayer.string?.boundingRectWithSize(textLayer.frame.size, options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(12)], context: nil) ?? CGRectZero
+			textLayer.foregroundColor = UIColor.black().cgColor
+			let textFrame = textLayer.string?.boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) ?? CGRect.zero
 			textLayer.frame = CGRect(x: leftInset / 2 - textFrame.width / 2, y: graphFrame.height - graphFrame.height * CGFloat(i) / CGFloat(gradeLabels) - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}
@@ -74,14 +74,14 @@ class TrendScore: UIView {
 			return
 		}
 		let trendLine = UIBezierPath()
-		trendLine.moveToPoint(graphFrame.bottomLeftCorner)
+		trendLine.move(to: graphFrame.bottomLeftCorner)
 		for trendScore in trendScores {
-			trendLine.addLineToPoint(CGPoint(x: leftInset + graphFrame.width * CGFloat(trendScore.dayID.timeIntervalSinceDate(startDate) / dateDifference), y: graphFrame.height - graphFrame.height * CGFloat(((Double(trendScore.score) ?? 0) - minimum) / scoreDifference)))
+			trendLine.addLine(to: CGPoint(x: leftInset + graphFrame.width * CGFloat(trendScore.dayID.timeIntervalSince(startDate) / dateDifference), y: graphFrame.height - graphFrame.height * CGFloat(((Double(trendScore.score) ?? 0) - minimum) / scoreDifference)))
 		}
 		let trendLineShapeLayer = CAShapeLayer()
 		trendLineShapeLayer.frame = self.layer.frame
-		trendLineShapeLayer.path = trendLine.CGPath
-		trendLineShapeLayer.strokeColor = UIColor.blackColor().CGColor
+		trendLineShapeLayer.path = trendLine.cgPath
+		trendLineShapeLayer.strokeColor = UIColor.black().cgColor
 		trendLineShapeLayer.fillColor = nil
 		trendLineShapeLayer.lineWidth = 1
 		layer.addSublayer(trendLineShapeLayer)

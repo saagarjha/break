@@ -20,14 +20,14 @@ class SchoolLoopSchool: NSObject, NSCoding {
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		name = aDecoder.decodeObjectForKey("name") as? String ?? ""
-		domainName = aDecoder.decodeObjectForKey("domainName") as? String ?? ""
+		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
+		domainName = aDecoder.decodeObject(forKey: "domainName") as? String ?? ""
 		super.init()
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(name, forKey: "name")
-		aCoder.encodeObject(domainName, forKey: "domainName")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(name, forKey: "name")
+		aCoder.encode(domainName, forKey: "domainName")
 	}
 }
 

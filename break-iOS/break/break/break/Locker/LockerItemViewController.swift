@@ -14,7 +14,7 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 	var path: String!
 
 	var schoolLoop: SchoolLoop!
-	var request: NSURLRequest!
+	var request: URLRequest!
 
 	var lockerItemWebView: WKWebView!
 
@@ -44,8 +44,8 @@ class LockerItemViewController: UIViewController, WKNavigationDelegate {
 	}
 
 	func loadLockerItem() {
-		request = schoolLoop.requestForLockerItemPath(path)
-		lockerItemWebView.loadRequest(request)
+		request = schoolLoop.request(forLockerItemPath: path)
+		lockerItemWebView.load(request)
 	}
 
 //	override func prefersStatusBarHidden() -> Bool {

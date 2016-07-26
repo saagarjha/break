@@ -24,7 +24,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 			gradeTableView.estimatedSectionFooterHeight = 80
 		}
 	}
-	var commentsView = UIView(frame: UIScreen.mainScreen().bounds)
+	var commentsView = UIView(frame: UIScreen.main().bounds)
 	var commentsLabel = UILabel()
 
 	override func viewDidLoad() {
@@ -32,13 +32,13 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-		grade = schoolLoop.courseForPeriodID(periodID)?.gradeForSystemID(systemID)
+		grade = schoolLoop.course(forPeriodID: periodID)?.grade(forSystemID: systemID)
 		commentsLabel.translatesAutoresizingMaskIntoConstraints = false
 		commentsLabel.text = grade.comment
 		commentsLabel.numberOfLines = 0
 		commentsView.addSubview(commentsLabel)
-		let constraints = NSLayoutConstraint.constraintsWithVisualFormat("|-[commentsLabel]-|", options: [], metrics: nil, views: ["commentsLabel": commentsLabel]) + NSLayoutConstraint.constraintsWithVisualFormat("V:|[commentsLabel]|", options: [], metrics: nil, views: ["commentsLabel": commentsLabel])
-		NSLayoutConstraint.activateConstraints(constraints)
+		let constraints = NSLayoutConstraint.constraints(withVisualFormat: "|-[commentsLabel]-|", options: [], metrics: nil, views: ["commentsLabel": commentsLabel]) + NSLayoutConstraint.constraints(withVisualFormat: "V:|[commentsLabel]|", options: [], metrics: nil, views: ["commentsLabel": commentsLabel])
+		NSLayoutConstraint.activate(constraints)
 		commentsView.setNeedsLayout()
 		commentsView.layoutIfNeeded()
 		gradeTableView.beginUpdates()
@@ -50,36 +50,36 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 		// Dispose of any resources that can be recreated.
 	}
 
-	func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		return commentsView
 	}
 
-	func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return commentsView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return commentsView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
 	}
 
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return grade.comment.isEmpty ? 2 : 3
 	}
 
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) else {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) else {
 			assertionFailure("Could not deque UITableViewCell")
-			return tableView.dequeueReusableCellWithIdentifier(cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
 		}
-		let dateFormatter = NSDateFormatter()
+		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/dd"
 		switch indexPath.row {
 		case 0:
 			cell.textLabel?.text = "Due Date"
-			cell.detailTextLabel?.text = dateFormatter.stringFromDate(grade.dueDate)
+			cell.detailTextLabel?.text = dateFormatter.string(from: grade.dueDate)
 		case 1:
 			cell.textLabel?.text = "Changed Date"
-			cell.detailTextLabel?.text = dateFormatter.stringFromDate(grade.changedDate)
+			cell.detailTextLabel?.text = dateFormatter.string(from: grade.changedDate)
 		case 2:
 			cell.textLabel?.text = "Comments:"
 			cell.detailTextLabel?.text = ""

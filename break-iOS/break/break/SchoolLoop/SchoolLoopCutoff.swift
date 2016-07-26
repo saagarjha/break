@@ -19,12 +19,12 @@ class SchoolLoopCutoff: NSObject, NSCoding {
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		self.Name = aDecoder.decodeObjectForKey("Name") as? String ?? ""
-		self.Start = aDecoder.decodeObjectForKey("Start") as? String ?? ""
+		self.Name = aDecoder.decodeObject(forKey: "Name") as? String ?? ""
+		self.Start = aDecoder.decodeObject(forKey: "Start") as? String ?? ""
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(Name, forKey: "Name")
-		aCoder.encodeObject(Start, forKey: "Start")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(Name, forKey: "Name")
+		aCoder.encode(Start, forKey: "Start")
 	}
 }

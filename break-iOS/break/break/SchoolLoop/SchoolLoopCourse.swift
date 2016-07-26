@@ -16,7 +16,7 @@ class SchoolLoopCourse: NSObject, NSCoding {
 	var grade: String
 	var score: String
 	var periodID: String
-	var lastUpdated: NSDate = NSDate.distantPast()
+	var lastUpdated: Date = Date.distantPast
 
 	var cutoffs: [SchoolLoopCutoff] = []
 	var categories: [SchoolLoopCategory] = []
@@ -33,46 +33,46 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		super.init()
 	}
 
-	func setNewLastUpdated(lastUpdated: String) -> Bool {
-		let dateFormatter = NSDateFormatter()
+	func set(newLastUpdated lastUpdated: String) -> Bool {
+		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/d/yy h:mm a"
-		dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-		let newLastUpdated = dateFormatter.dateFromString(lastUpdated) ?? NSDate.distantPast()
-		let updated = self.lastUpdated.compare(newLastUpdated) == .OrderedAscending
+		dateFormatter.locale = Locale(localeIdentifier: "en_US_POSIX")
+		let newLastUpdated = dateFormatter.date(from: lastUpdated) ?? Date.distantPast
+		let updated = self.lastUpdated.compare(newLastUpdated) == .orderedAscending
 		self.lastUpdated = newLastUpdated
 		return updated
 	}
 
 	required init?(coder aDecoder: NSCoder) {
-		courseName = aDecoder.decodeObjectForKey("courseName") as? String ?? ""
-		period = aDecoder.decodeObjectForKey("period") as? String ?? ""
-		teacherName = aDecoder.decodeObjectForKey("teacherName") as? String ?? ""
-		grade = aDecoder.decodeObjectForKey("grade") as? String ?? ""
-		score = aDecoder.decodeObjectForKey("score") as? String ?? ""
-		periodID = aDecoder.decodeObjectForKey("periodID") as? String ?? ""
-		lastUpdated = aDecoder.decodeObjectForKey("lastUpdated") as? NSDate ?? NSDate.distantPast()
-		cutoffs = aDecoder.decodeObjectForKey("cutoffs") as? [SchoolLoopCutoff] ?? []
-		categories = aDecoder.decodeObjectForKey("categories") as? [SchoolLoopCategory] ?? []
-		grades = aDecoder.decodeObjectForKey("grades") as? [SchoolLoopGrade] ?? []
-		trendScores = aDecoder.decodeObjectForKey("trendScores") as? [SchoolLoopTrendScore] ?? []
+		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
+		period = aDecoder.decodeObject(forKey: "period") as? String ?? ""
+		teacherName = aDecoder.decodeObject(forKey: "teacherName") as? String ?? ""
+		grade = aDecoder.decodeObject(forKey: "grade") as? String ?? ""
+		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
+		periodID = aDecoder.decodeObject(forKey: "periodID") as? String ?? ""
+		lastUpdated = aDecoder.decodeObject(forKey: "lastUpdated") as? Date ?? Date.distantPast
+		cutoffs = aDecoder.decodeObject(forKey: "cutoffs") as? [SchoolLoopCutoff] ?? []
+		categories = aDecoder.decodeObject(forKey: "categories") as? [SchoolLoopCategory] ?? []
+		grades = aDecoder.decodeObject(forKey: "grades") as? [SchoolLoopGrade] ?? []
+		trendScores = aDecoder.decodeObject(forKey: "trendScores") as? [SchoolLoopTrendScore] ?? []
 		super.init()
 	}
 
-	func encodeWithCoder(aCoder: NSCoder) {
-		aCoder.encodeObject(courseName, forKey: "courseName")
-		aCoder.encodeObject(period, forKey: "period")
-		aCoder.encodeObject(teacherName, forKey: "teacherName")
-		aCoder.encodeObject(grade, forKey: "grade")
-		aCoder.encodeObject(score, forKey: "score")
-		aCoder.encodeObject(periodID, forKey: "periodID")
-		aCoder.encodeObject(lastUpdated, forKey: "lastUpdated")
-		aCoder.encodeObject("cutoffs", forKey: "cutoffs")
-		aCoder.encodeObject(categories, forKey: "categories")
-		aCoder.encodeObject(grades, forKey: "grades")
-		aCoder.encodeObject(trendScores, forKey: "trendScores")
+	func encode(with aCoder: NSCoder) {
+		aCoder.encode(courseName, forKey: "courseName")
+		aCoder.encode(period, forKey: "period")
+		aCoder.encode(teacherName, forKey: "teacherName")
+		aCoder.encode(grade, forKey: "grade")
+		aCoder.encode(score, forKey: "score")
+		aCoder.encode(periodID, forKey: "periodID")
+		aCoder.encode(lastUpdated, forKey: "lastUpdated")
+		aCoder.encode("cutoffs", forKey: "cutoffs")
+		aCoder.encode(categories, forKey: "categories")
+		aCoder.encode(grades, forKey: "grades")
+		aCoder.encode(trendScores, forKey: "trendScores")
 	}
 
-	func gradeForSystemID(systemID: String) -> SchoolLoopGrade? {
+	func grade(forSystemID systemID: String) -> SchoolLoopGrade? {
 		for grade in grades {
 			if grade.systemID == systemID {
 				return grade

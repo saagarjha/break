@@ -11,17 +11,17 @@ import WatchKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
 
-	var assignments: [NSDate: [SchoolLoopAssignment]]?
+	var assignments: [Date: [SchoolLoopAssignment]]?
 
 	override init() {
 		super.init()
-		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["assignments": ""], replyHandler: { reply in
-			if let data = reply["assignments"] as? NSData {
-				if let assignments = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [NSDate: [SchoolLoopAssignment]] {
+		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["assignments": ""], replyHandler: { reply in
+			if let data = reply["assignments"] as? Data {
+				if let assignments = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Date: [SchoolLoopAssignment]] {
 					self.assignments = assignments
 					let server = CLKComplicationServer.sharedInstance()
 					for complication in server.activeComplications! {
-						server.reloadTimelineForComplication(complication)
+						server.reloadTimeline(for: complication)
 					}
 				}
 			}
@@ -32,45 +32,45 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
 	// MARK: - Timeline Configuration
 
-	func getSupportedTimeTravelDirectionsForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
-		handler([.Forward])
+	func getSupportedTimeTravelDirections(for complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
+		handler([.forward])
 	}
 
-	func getTimelineStartDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
-		handler(NSDate())
+	func getTimelineStartDate(for complication: CLKComplication, withHandler handler: (Date?) -> Void) {
+		handler(Date())
 	}
 
-	func getTimelineEndDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
-		handler(NSDate(timeIntervalSinceNow: 60 * 60 * 24 * 7))
+	func getTimelineEndDate(for complication: CLKComplication, withHandler handler: (Date?) -> Void) {
+		handler(Date(timeIntervalSinceNow: 60 * 60 * 24 * 7))
 	}
 
-	func getPrivacyBehaviorForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
-		handler(.ShowOnLockScreen)
+	func getPrivacyBehavior(for complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
+		handler(.showOnLockScreen)
 	}
 
 	// MARK: - Timeline Population
 
-	func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
+	func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
 		// Call the handler with the current timeline entry
 		guard let assignments = assignments else {
 			handler(nil)
 			return
 		}
-		let today = NSDate()
-		let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
-		var dateComponents = NSDateComponents()
+		let today = Date()
+		let calendar = Calendar(calendarIdentifier: Calendar.Identifier.gregorian)
+		var dateComponents = DateComponents()
 		dateComponents.day = 1
-		let tomorrow = calendar?.dateByAddingComponents(dateComponents, toDate: today, options: NSCalendarOptions(rawValue: 0))
-		dateComponents = (calendar?.components([.Year, .Month, .Day], fromDate: tomorrow!))!
+		let tomorrow = calendar?.date(byAdding: dateComponents, to: today, options: Calendar.Options(rawValue: 0))
+		dateComponents = (calendar?.components([.year, .month, .day], from: tomorrow!))!
 		dateComponents.hour = 0
 		dateComponents.minute = 0
-		let tomorrowMidnight = (calendar?.dateFromComponents(dateComponents))!
+		let tomorrowMidnight = (calendar?.date(from: dateComponents))!
 		let dueTomorrow = assignments[tomorrowMidnight] ?? []
-		if complication.family == .CircularSmall {
+		if complication.family == .circularSmall {
 			let template = CLKComplicationTemplateCircularSmallSimpleText()
 			template.textProvider = CLKSimpleTextProvider(text: "\(dueTomorrow.count)")
-			handler(CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template))
-		} else if complication.family == .ModularLarge {
+			handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template))
+		} else if complication.family == .modularLarge {
 			let template = CLKComplicationTemplateModularLargeTable()
 			template.headerTextProvider = CLKSimpleTextProvider(text: "Nothing due")
 			if dueTomorrow.count > 0 {
@@ -82,52 +82,52 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 				template.row2Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].courseName.characters.last!)")
 				template.row2Column2TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].title)")
 			}
-			handler(CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template))
-		} else if complication.family == .ModularSmall {
+			handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template))
+		} else if complication.family == .modularSmall {
 			let template = CLKComplicationTemplateModularSmallStackText()
 			template.line1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow.count)")
 			template.line2TextProvider = CLKSimpleTextProvider(text: "DUE")
-			handler(CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template))
-		} else if complication.family == .UtilitarianLarge {
+			handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template))
+		} else if complication.family == .utilitarianLarge {
 			let template = CLKComplicationTemplateUtilitarianLargeFlat()
 			template.textProvider = CLKSimpleTextProvider(text: "\(dueTomorrow.count) Due Tomorrow", shortText: "\(dueTomorrow.count) Due")
-			handler(CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template))
-		} else if complication.family == .UtilitarianSmall {
+			handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template))
+		} else if complication.family == .utilitarianSmall {
 			let template = CLKComplicationTemplateUtilitarianSmallFlat()
 			template.textProvider = CLKSimpleTextProvider(text: "\(dueTomorrow.count) Due", shortText: "\(dueTomorrow.count)")
-			handler(CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template))
+			handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template))
 		}
 		handler(nil)
 	}
 
-	func getTimelineEntriesForComplication(complication: CLKComplication, beforeDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
+	func getTimelineEntries(for complication: CLKComplication, before date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
 		// Call the handler with the timeline entries prior to the given date
 		handler(nil)
 	}
 
-	func getTimelineEntriesForComplication(complication: CLKComplication, afterDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
+	func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
 		// Call the handler with the timeline entries after to the given date
-		let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+		let calendar = Calendar(calendarIdentifier: Calendar.Identifier.gregorian)
 		guard let assignments = assignments else {
 			handler(nil)
 			return
 		}
-		var dateComponents = NSDateComponents()
+		var dateComponents = DateComponents()
 		dateComponents.day = 1
-		let tomorrow = calendar?.dateByAddingComponents(dateComponents, toDate: date, options: NSCalendarOptions(rawValue: 0))
-		dateComponents = (calendar?.components([.Year, .Month, .Day], fromDate: tomorrow!))!
+		let tomorrow = calendar?.date(byAdding: dateComponents, to: date, options: Calendar.Options(rawValue: 0))
+		dateComponents = (calendar?.components([.year, .month, .day], from: tomorrow!))!
 		dateComponents.hour = 0
 		dateComponents.minute = 0
-		let tomorrowMidnight = (calendar?.dateFromComponents(dateComponents))!
-		var futureDates: [NSDate] = []
+		let tomorrowMidnight = (calendar?.date(from: dateComponents))!
+		var futureDates: [Date] = []
 		var futureDate = tomorrowMidnight
 		for _ in 0 ... 7 {
 			futureDates.append(futureDate)
-			let dateComponents = NSDateComponents()
+			var dateComponents = DateComponents()
 			dateComponents.day = 1
-			futureDate = (calendar?.dateByAddingComponents(dateComponents, toDate: date, options: NSCalendarOptions(rawValue: 0)))!
+			futureDate = (calendar?.date(byAdding: dateComponents, to: date, options: Calendar.Options(rawValue: 0)))!
 		}
-		if complication.family == .CircularSmall {
+		if complication.family == .circularSmall {
 			var entries: [CLKComplicationTimelineEntry] = []
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
@@ -137,7 +137,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
 			}
 			handler(entries)
-		} else if complication.family == .ModularLarge {
+		} else if complication.family == .modularLarge {
 			var entries: [CLKComplicationTimelineEntry] = []
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
@@ -155,7 +155,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 				entries.append(CLKComplicationTimelineEntry(date: futureDate, complicationTemplate: template))
 			}
 			handler(entries)
-		} else if complication.family == .ModularSmall {
+		} else if complication.family == .modularSmall {
 			var entries: [CLKComplicationTimelineEntry] = []
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
@@ -165,7 +165,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 				entries.append(CLKComplicationTimelineEntry(date: futureDate, complicationTemplate: template))
 			}
 			handler(entries)
-		} else if complication.family == .UtilitarianLarge {
+		} else if complication.family == .utilitarianLarge {
 			var entries: [CLKComplicationTimelineEntry] = []
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
@@ -174,7 +174,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 				entries.append(CLKComplicationTimelineEntry(date: futureDate, complicationTemplate: template))
 			}
 			handler(entries)
-		} else if complication.family == .UtilitarianSmall {
+		} else if complication.family == .utilitarianSmall {
 			var entries: [CLKComplicationTimelineEntry] = []
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
@@ -189,20 +189,20 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
 	// MARK: - Update Scheduling
 
-	func getNextRequestedUpdateDateWithHandler(handler: (NSDate?) -> Void) {
+	func getNextRequestedUpdateDate(handler: (Date?) -> Void) {
 		// Call the handler with the date when you would next like to be given the opportunity to update your complication content
-		handler(NSDate(timeIntervalSinceNow: 60 * 60))
+		handler(Date(timeIntervalSinceNow: 60 * 60))
 	}
 
 	// MARK: - Placeholder Templates
 
-	func getPlaceholderTemplateForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
+	func getPlaceholderTemplate(for complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
 		// This method will be called once per supported complication, and the results will be cached
-		if complication.family == .CircularSmall {
+		if complication.family == .circularSmall {
 			let template = CLKComplicationTemplateCircularSmallSimpleText()
 			template.textProvider = CLKSimpleTextProvider(text: "--")
 			handler(template)
-		} else if complication.family == .ModularLarge {
+		} else if complication.family == .modularLarge {
 			let template = CLKComplicationTemplateModularLargeTable()
 			template.headerTextProvider = CLKSimpleTextProvider(text: "Due tomorrow", shortText: "Due")
 			template.row1Column1TextProvider = CLKSimpleTextProvider(text: "--")
@@ -210,16 +210,16 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			template.row2Column1TextProvider = CLKSimpleTextProvider(text: "--")
 			template.row2Column2TextProvider = CLKSimpleTextProvider(text: "Assignment 2")
 			handler(template)
-		} else if complication.family == .ModularSmall {
+		} else if complication.family == .modularSmall {
 			let template = CLKComplicationTemplateModularSmallStackText()
 			template.line1TextProvider = CLKSimpleTextProvider(text: "--")
 			template.line2TextProvider = CLKSimpleTextProvider(text: "DUE")
 			handler(template)
-		} else if complication.family == .UtilitarianLarge {
+		} else if complication.family == .utilitarianLarge {
 			let template = CLKComplicationTemplateUtilitarianLargeFlat()
 			template.textProvider = CLKSimpleTextProvider(text: "-- Due Tomorrow", shortText: "-- Due")
 			handler(template)
-		} else if complication.family == .UtilitarianSmall {
+		} else if complication.family == .utilitarianSmall {
 			let template = CLKComplicationTemplateUtilitarianSmallFlat()
 			template.textProvider = CLKSimpleTextProvider(text: "-- Due", shortText: "--")
 			handler(template)
@@ -228,13 +228,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 	}
 
 	func requestedUpdateDidBegin() {
-		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["assignments": ""], replyHandler: { reply in
-			if let data = reply["assignments"] as? NSData {
-				if let assignments = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [NSDate: [SchoolLoopAssignment]] {
+		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["assignments": ""], replyHandler: { reply in
+			if let data = reply["assignments"] as? Data {
+				if let assignments = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Date: [SchoolLoopAssignment]] {
 					self.assignments = assignments
 					let server = CLKComplicationServer.sharedInstance()
 					for complication in server.activeComplications! {
-						server.reloadTimelineForComplication(complication)
+						server.reloadTimeline(for: complication)
 					}
 				}
 			}

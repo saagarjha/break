@@ -19,26 +19,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	@IBOutlet weak var schoolNameTextField: UITextField! {
 		didSet {
 			schoolNameTextField.delegate = self
-			schoolNameTextField.autocorrectionType = .No
-			schoolNameTextField.autocapitalizationType = .Words
-			schoolNameTextField.returnKeyType = .Next
+			schoolNameTextField.autocorrectionType = .no
+			schoolNameTextField.autocapitalizationType = .words
+			schoolNameTextField.returnKeyType = .next
 		}
 	}
 	@IBOutlet weak var usernameTextField: UITextField! {
 		didSet {
 			usernameTextField.delegate = self
-			schoolNameTextField.autocorrectionType = .No
-			schoolNameTextField.autocapitalizationType = .None
-			schoolNameTextField.returnKeyType = .Next
+			schoolNameTextField.autocorrectionType = .no
+			schoolNameTextField.autocapitalizationType = .none
+			schoolNameTextField.returnKeyType = .next
 		}
 	}
 	@IBOutlet weak var passwordTextField: UITextField! {
 		didSet {
 			passwordTextField.delegate = self
-			passwordTextField.secureTextEntry = true
-			passwordTextField.autocorrectionType = .No
-			passwordTextField.autocapitalizationType = .None
-			passwordTextField.returnKeyType = .Go
+			passwordTextField.isSecureTextEntry = true
+			passwordTextField.autocorrectionType = .no
+			passwordTextField.autocapitalizationType = .none
+			passwordTextField.returnKeyType = .go
 		}
 	}
 	@IBOutlet weak var logInButton: UIButton! {
@@ -55,12 +55,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
 		schoolLoop = SchoolLoop.sharedInstance
-		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+		UIApplication.shared().isNetworkActivityIndicatorVisible = true
 		schoolLoop.getSchools { error in
-			UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-			if error == .NoError {
+			UIApplication.shared().isNetworkActivityIndicatorVisible = false
+			if error == .noError {
 				self.schools = self.schoolLoop.schools
-				self.schools.sortInPlace()
+				self.schools.sort()
 			}
 		}
 		breakStackView.alpha = 0
@@ -72,7 +72,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		privacyPolicyButton.alpha = 0
 	}
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		breakStackView.alpha = 0
 		schoolNameTextField.alpha = 0
@@ -86,24 +86,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		usernameTextField.frame = usernameTextField.frame.offsetBy(dx: 0, dy: dy)
 		passwordTextField.frame = passwordTextField.frame.offsetBy(dx: 0, dy: dy)
 		logInButton.frame = logInButton.frame.offsetBy(dx: 0, dy: dy)
-		UIView.animateWithDuration(1, delay: 0, options: .CurveEaseInOut, animations: {
+		UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut, animations: {
 			self.breakStackView.alpha = 1
 			self.forgotButton.alpha = 1
 			self.privacyPolicyButton.alpha = 1
 			}, completion: nil)
-		UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseInOut, animations: {
+		UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
 			self.schoolNameTextField.frame = self.schoolNameTextField.frame.offsetBy(dx: 0, dy: -dy)
 			self.schoolNameTextField.alpha = 1
 			}, completion: nil)
-		UIView.animateWithDuration(0.5, delay: 0.1, options: .CurveEaseInOut, animations: {
+		UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
 			self.usernameTextField.frame = self.usernameTextField.frame.offsetBy(dx: 0, dy: -dy)
 			self.usernameTextField.alpha = 1
 			}, completion: nil)
-		UIView.animateWithDuration(0.5, delay: 0.2, options: .CurveEaseInOut, animations: {
+		UIView.animate(withDuration: 0.5, delay: 0.2, options: .curveEaseInOut, animations: {
 			self.passwordTextField.frame = self.passwordTextField.frame.offsetBy(dx: 0, dy: -dy)
 			self.passwordTextField.alpha = 1
 			}, completion: nil)
-		UIView.animateWithDuration(0.5, delay: 0.3, options: .CurveEaseInOut, animations: {
+		UIView.animate(withDuration: 0.5, delay: 0.3, options: .curveEaseInOut, animations: {
 			self.logInButton.frame = self.logInButton.frame.offsetBy(dx: 0, dy: -dy)
 			self.logInButton.alpha = 1
 			}, completion: nil)
@@ -114,27 +114,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func logIn(sender: AnyObject) {
-		UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-		logInButton.enabled = false
+	@IBAction func logIn(_ sender: AnyObject) {
+		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		logInButton.isEnabled = false
 		logInButton.alpha = 0.5
-		self.schoolLoop.logIn(self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
-			dispatch_async(dispatch_get_main_queue()) {
-				UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-				if error == .NoError {
+		self.schoolLoop.logIn(withSchoolName: self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
+			DispatchQueue.main.async {
+				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				if error == .noError {
 					let storybard = UIStoryboard(name: "Main", bundle: nil)
-					let tabBarController = storybard.instantiateViewControllerWithIdentifier("tab")
-					let oldView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+					let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
+					let oldView = UIScreen.main().snapshotView(afterScreenUpdates: false)
 					tabBarController.view.addSubview(oldView)
-					UIApplication.sharedApplication().keyWindow?.rootViewController = tabBarController
-					UIView.animateWithDuration(0.25, animations: {
+					UIApplication.shared().keyWindow?.rootViewController = tabBarController
+					UIView.animate(withDuration: 0.25, animations: {
 						oldView.alpha = 0
 						}, completion: { _ in
 						oldView.removeFromSuperview()
 					})
 					var view: UIView?
-					if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController,
-						viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
+					if let tabBarController = UIApplication.shared().delegate?.window??.rootViewController as? UITabBarController,
+						let viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
 							for viewController in viewControllers {
 								if let coursesViewController = viewController as? CoursesViewController {
 									view = coursesViewController.view
@@ -153,30 +153,30 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					if let _ = view as? AnyObject {
 						return
 					}
-				} else if error == .NetworkError {
-					let alertController = UIAlertController(title: "Network error", message: "There was an issue accessing SchoolLoop. Please try again.", preferredStyle: .Alert)
-					let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+				} else if error == .networkError {
+					let alertController = UIAlertController(title: "Network error", message: "There was an issue accessing SchoolLoop. Please try again.", preferredStyle: .alert)
+					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
-					self.presentViewController(alertController, animated: true, completion: nil)
+					self.present(alertController, animated: true, completion: nil)
 
 				} else {
-					let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .Alert)
-					let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+					let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
+					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
-					self.presentViewController(alertController, animated: true, completion: nil)
+					self.present(alertController, animated: true, completion: nil)
 				}
-				self.logInButton.enabled = true
+				self.logInButton.isEnabled = true
 				self.logInButton.alpha = 1
 			}
 		}
 	}
 
-	@IBAction func forgot(sender: AnyObject) {
-		let safariViewController = SFSafariViewController(URL: SchoolLoopConstants.forgotURL)
-		presentViewController(safariViewController, animated: true, completion: nil)
+	@IBAction func forgot(_ sender: AnyObject) {
+		let safariViewController = SFSafariViewController(url: SchoolLoopConstants.forgotURL)
+		present(safariViewController, animated: true, completion: nil)
 	}
 
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		if textField === schoolNameTextField {
 			textFieldDidEndEditing(textField)
 			usernameTextField.becomeFirstResponder()
@@ -190,17 +190,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		return true
 	}
 
-	func textFieldDidBeginEditing(textField: UITextField) {
-		textField.selectedTextRange = textField.textRangeFromPosition(textField.beginningOfDocument, toPosition: textField.endOfDocument)
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
 	}
 
-	func textFieldDidEndEditing(textField: UITextField) {
+	func textFieldDidEndEditing(_ textField: UITextField) {
 		if textField === schoolNameTextField {
 			textField.textColor = nil
 		}
 	}
 
-	func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		if textField === schoolNameTextField {
 			guard let attributedText = textField.attributedText?.mutableCopy() as? NSMutableAttributedString else {
 				assertionFailure("Could not cast mutableCopy to NSMutableAttributedString")
@@ -208,51 +208,51 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			}
 			var attributedRange = NSRange(location: 0, length: 0)
 			if attributedText.length > 0 {
-				attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, longestEffectiveRange: &attributedRange, inRange: NSRange(location: 0, length: attributedText.length))
+				attributedText.attribute(NSForegroundColorAttributeName, at: 0, longestEffectiveRange: &attributedRange, in: NSRange(location: 0, length: attributedText.length))
 			}
 			var schoolName: String!
 			if range.location <= attributedRange.location + attributedRange.length && range.length <= attributedRange.length {
-				schoolName = (attributedText.string as NSString).substringWithRange(attributedRange)
+				schoolName = (attributedText.string as NSString).substring(with: attributedRange)
 			} else {
 				schoolName = attributedText.string
 			}
-			schoolName = (schoolName as NSString).stringByReplacingCharactersInRange(range, withString: string)
+			schoolName = (schoolName as NSString).replacingCharacters(in: range, with: string)
 			let suggestion = getSchoolSuggestion(schoolName)
 			let attributedString = NSMutableAttributedString(string: suggestion)
-			attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
+			attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray(), range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
 			textField.attributedText = attributedString
-			textField.selectedTextRange = textField.textRangeFromPosition(textField.positionFromPosition(textField.beginningOfDocument, offset: range.location + string.characters.count)!, toPosition: textField.positionFromPosition(textField.beginningOfDocument, offset: range.location + string.characters.count)!)
+			textField.selectedTextRange = textField.textRange(from: textField.position(from: textField.beginningOfDocument, offset: range.location + string.characters.count)!, to: textField.position(from: textField.beginningOfDocument, offset: range.location + string.characters.count)!)
 			return false
 		}
 		return true
 	}
 
-	func getSchoolSuggestion(schoolName: String) -> String {
+	func getSchoolSuggestion(_ schoolName: String) -> String {
 		var low = schools.startIndex
 		var high = schools.endIndex
 		var mid: Int
 		while low < high {
-			mid = low.advancedBy(low.distanceTo(high) / 2)
-			let name = schools[mid].name
-			if name.lowercaseString.hasPrefix(schoolName.lowercaseString) {
+			mid = low.advanced(by: low.distance(to: high) / 2)
+			let name = schools[mid].name ?? ""
+			if ((name.lowercased().hasPrefix(schoolName.lowercased()))) {
 				return name
 			} else if name > schoolName {
 				high = mid
 			} else if name < schoolName {
-				low = mid.advancedBy(1)
+				low = mid.advanced(by: 1)
 			}
 		}
 		return schoolName
 	}
 
-	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		view.endEditing(true)
 	}
 
 	// MARK: - Navigation
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		view.endEditing(true)

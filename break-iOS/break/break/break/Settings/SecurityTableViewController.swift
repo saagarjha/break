@@ -18,32 +18,32 @@ class SecurityTableViewController: UITableViewController {
 
 	var error: String = ""
 
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		passwordSwitch.on = NSUserDefaults.standardUserDefaults().boolForKey("password")
-		touchIDSwitch.on = NSUserDefaults.standardUserDefaults().boolForKey("touchID")
-		if passwordSwitch.on {
-			touchIDCell.userInteractionEnabled = true
-			touchIDLabel.enabled = true
-			touchIDSwitch.enabled = true
+		passwordSwitch.isOn = UserDefaults.standard.bool(forKey: "password")
+		touchIDSwitch.isOn = UserDefaults.standard.bool(forKey: "touchID")
+		if passwordSwitch.isOn {
+			touchIDCell.isUserInteractionEnabled = true
+			touchIDLabel.isEnabled = true
+			touchIDSwitch.isEnabled = true
 		} else {
-			touchIDCell.userInteractionEnabled = false
-			touchIDLabel.enabled = false
-			touchIDSwitch.enabled = false
+			touchIDCell.isUserInteractionEnabled = false
+			touchIDLabel.isEnabled = false
+			touchIDSwitch.isEnabled = false
 		}
 		var error: NSError?
-		LAContext().canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, error: &error)
+		LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
 		if let error = error {
-			if error.code == LAError.TouchIDNotEnrolled.rawValue {
+			if error.code == LAError.touchIDNotEnrolled.rawValue {
 				self.error = "You don't have an fingers set for TouchID. Please set one in Settings."
-				touchIDCell.userInteractionEnabled = false
-				touchIDLabel.enabled = false
-				touchIDSwitch.on = false
-			} else if error.code == LAError.PasscodeNotSet.rawValue {
+				touchIDCell.isUserInteractionEnabled = false
+				touchIDLabel.isEnabled = false
+				touchIDSwitch.isOn = false
+			} else if error.code == LAError.passcodeNotSet.rawValue {
 				self.error = "Your phone doesn't have a passcode or TouchID enabled. Please set one in Settings."
-				touchIDCell.userInteractionEnabled = false
-				touchIDLabel.enabled = false
-				touchIDSwitch.on = false
+				touchIDCell.isUserInteractionEnabled = false
+				touchIDLabel.isEnabled = false
+				touchIDSwitch.isOn = false
 			} else {
 				self.error = "Unsupported"
 			}
@@ -66,76 +66,74 @@ class SecurityTableViewController: UITableViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func usePassword(sender: UISwitch) {
-		if sender.on {
-			let alertController = UIAlertController(title: "Set Password", message: "Please enter a password.", preferredStyle: .Alert)
-			let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in
-				sender.on = false
+	@IBAction func usePassword(_ sender: UISwitch) {
+		if sender.isOn {
+			let alertController = UIAlertController(title: "Set Password", message: "Please enter a password.", preferredStyle: .alert)
+			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+				sender.isOn = false
 			}
-			let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
+			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
-				schoolLoop.keychain.setPassword(alertController.textFields![0].text!, forUsername: "\(schoolLoop.account.username)appPassword")
-				self.touchIDCell.userInteractionEnabled = true
-				self.touchIDLabel.enabled = true
-				self.touchIDSwitch.enabled = true
-				NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: "password")
-				NSUserDefaults.standardUserDefaults().synchronize()
+				_ = schoolLoop.keychain.set(password: alertController.textFields![0].text!, forUsername: "\(schoolLoop.account.username)appPassword")
+				self.touchIDCell.isUserInteractionEnabled = true
+				self.touchIDLabel.isEnabled = true
+				self.touchIDSwitch.isEnabled = true
+				UserDefaults.standard.set(sender.isOn, forKey: "password")
+				UserDefaults.standard.synchronize()
 			}
 			alertController.addAction(cancelAction)
 			alertController.addAction(doneAction)
-			alertController.addTextFieldWithConfigurationHandler { textField in
+			alertController.addTextField { textField in
 				textField.placeholder = "Enter a password"
-				textField.secureTextEntry = true
+				textField.isSecureTextEntry = true
 			}
-			presentViewController(alertController, animated: true, completion: nil)
+			present(alertController, animated: true, completion: nil)
 		} else {
-			let alertController = UIAlertController(title: "Enter your password", message: "Please enter your current password to disable it. If you've forgotten your password, you can log out of your SchoolLoop account and log back in to clear it.", preferredStyle: .Alert)
-			let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in
-				sender.on = true
+			let alertController = UIAlertController(title: "Enter your password", message: "Please enter your current password to disable it. If you've forgotten your password, you can log out of your SchoolLoop account and log back in to clear it.", preferredStyle: .alert)
+			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+				sender.isOn = true
 			}
-			let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
+			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
-				if alertController.textFields![0].text == schoolLoop.keychain.getPasswordForUsername("\(schoolLoop.account.username)appPassword") {
-					self.touchIDCell.userInteractionEnabled = false
-					self.touchIDLabel.enabled = false
-					self.touchIDSwitch.enabled = false
-					NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: "password")
-					NSUserDefaults.standardUserDefaults().synchronize()
+				if alertController.textFields![0].text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
+					self.touchIDCell.isUserInteractionEnabled = false
+					self.touchIDLabel.isEnabled = false
+					self.touchIDSwitch.isEnabled = false
+					UserDefaults.standard.set(sender.isOn, forKey: "password")
+					UserDefaults.standard.synchronize()
 				} else {
-					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .Alert)
-					let okAction = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
+					let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
 					alertController.addAction(okAction)
-					self.presentViewController(alertController, animated: true, completion: nil)
+					self.present(alertController, animated: true, completion: nil)
 				}
 			}
 			alertController.addAction(cancelAction)
 			alertController.addAction(doneAction)
-			alertController.addTextFieldWithConfigurationHandler { textField in
+			alertController.addTextField { textField in
 				textField.placeholder = "Enter a password"
-				textField.secureTextEntry = true
+				textField.isSecureTextEntry = true
 			}
-			presentViewController(alertController, animated: true, completion: nil)
+			present(alertController, animated: true, completion: nil)
 		}
 	}
 
-	@IBAction func useTouchID(sender: UISwitch) {
-		NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: "touchID")
-		NSUserDefaults.standardUserDefaults().synchronize()
+	@IBAction func useTouchID(_ sender: UISwitch) {
+		UserDefaults.standard.set(sender.isOn, forKey: "touchID")
+		UserDefaults.standard.synchronize()
 	}
 
 	// MARK: - Table view data source
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		// #warning Incomplete implementation, return the number of sections
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return error == "Unsupported" ? 1 : 2
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		// #warning Incomplete implementation, return the number of rows
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return 1
 	}
 
-	override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		if section != 1 {
 			return super.tableView(tableView, titleForFooterInSection: section)
 		} else {

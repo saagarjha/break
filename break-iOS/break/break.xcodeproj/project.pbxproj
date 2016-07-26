@@ -175,6 +175,7 @@
 		493E179B1C63E95000AFC7A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		495574861CA6081100193EE5 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		495574881CA6112000193EE5 /* LoggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerViewController.swift; sourceTree = "<group>"; };
+		4957CF051D46909800487039 /* break.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = break.entitlements; sourceTree = "<group>"; };
 		495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTableViewController.swift; sourceTree = "<group>"; };
 		498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopTrendScore.swift; sourceTree = "<group>"; };
 		4982807D1CEE4E95001A5000 /* TrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendScore.swift; sourceTree = "<group>"; };
@@ -321,6 +322,7 @@
 		493E17781C63E95000AFC7A6 /* break */ = {
 			isa = PBXGroup;
 			children = (
+				4957CF051D46909800487039 /* break.entitlements */,
 				498665531C8D24E9004BA249 /* break */,
 				498665671C8D24E9004BA249 /* Main.storyboard */,
 				498665701C8D24E9004BA249 /* Resources */,
@@ -541,20 +543,23 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Saagar Jha";
 				TargetAttributes = {
 					4906AB781CCDBFB800610448 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 3493UDPWAK;
+						LastSwiftMigration = 0800;
 					};
 					4906AB841CCDBFBA00610448 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 3493UDPWAK;
+						LastSwiftMigration = 0800;
 					};
 					493E17751C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 3493UDPWAK;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -567,11 +572,13 @@
 					493E17891C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = X4A9GH5NN2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 493E17751C63E95000AFC7A6;
 					};
 					493E17941C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = X4A9GH5NN2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 493E17751C63E95000AFC7A6;
 					};
 				};
@@ -781,16 +788,17 @@
 		4906AB941CCDBFBB00610448 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -799,16 +807,17 @@
 		4906AB951CCDBFBB00610448 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -826,6 +835,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -843,6 +853,8 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -936,6 +948,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = break/break.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -943,6 +956,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -951,12 +965,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = break/break.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -968,6 +985,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/break.app/break";
 			};
 			name = Debug;
@@ -980,6 +998,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/break.app/break";
 			};
 			name = Release;
@@ -991,6 +1011,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = break;
 				USES_XCTRUNNER = YES;
 			};
@@ -1003,6 +1024,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = break;
 				USES_XCTRUNNER = YES;
 			};

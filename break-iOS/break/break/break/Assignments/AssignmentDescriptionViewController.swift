@@ -44,7 +44,7 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 	}
 
 	func loadDescription() {
-		guard let assignment = schoolLoop.assignmentForID(iD) else {
+		guard let assignment = schoolLoop.assignment(foriD: iD) else {
 			assertionFailure("Could not get assignment for iD")
 			return
 		}

@@ -21,14 +21,14 @@ class SchoolLoopCategory: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        name = aDecoder.decodeObjectForKey("name") as? String ?? ""
-        score = aDecoder.decodeObjectForKey("score") as? String ?? ""
-        weight = aDecoder.decodeObjectForKey("weight") as? String ?? ""
+        name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
+        score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
+        weight = aDecoder.decodeObject(forKey: "weight") as? String ?? ""
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeObject(score, forKey: "score")
-        aCoder.encodeObject(weight, forKey: "weight")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(score, forKey: "score")
+        aCoder.encode(weight, forKey: "weight")
     }
 }

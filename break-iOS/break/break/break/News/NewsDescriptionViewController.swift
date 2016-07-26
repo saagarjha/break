@@ -44,7 +44,7 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 	}
 
 	func loadDescription() {
-		guard let news = schoolLoop.newsForID(iD) else {
+		guard let news = schoolLoop.news(foriD: iD) else {
 			assertionFailure("Could not get news for iD")
 			return
 		}

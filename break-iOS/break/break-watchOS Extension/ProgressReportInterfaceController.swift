@@ -18,8 +18,8 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 	var grades: [SchoolLoopGrade] = []
 
 	@IBOutlet var gradesTable: WKInterfaceTable!
-	override func awakeWithContext(context: AnyObject?) {
-		super.awakeWithContext(context)
+	override func awake(withContext context: AnyObject?) {
+		super.awake(withContext: context)
 
 		// Configure interface objects here.
 		guard let course = context as? SchoolLoopCourse else {
@@ -43,13 +43,13 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 	override func willActivate() {
 		// This method is called when watch view controller is about to be visible to user
 		super.willActivate()
-		(WKExtension.sharedExtension().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID], replyHandler: { response in
-			if let data = response["grades"] as? NSData,
-				grades = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [SchoolLoopGrade] {
+		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID], replyHandler: { response in
+			if let data = response["grades"] as? Data,
+				let grades = NSKeyedUnarchiver.unarchiveObject(with: data) as? [SchoolLoopGrade] {
 					self.grades = grades
 					self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
-					for (index, grade) in grades.enumerate() {
-						if let controller = self.gradesTable.rowControllerAtIndex(index) as? GradeRowController {
+					for (index, grade) in grades.enumerated() {
+						if let controller = self.gradesTable.rowController(at: index) as? GradeRowController {
 							controller.titleLabel.setText(grade.title)
 							controller.categoryName.setText(grade.categoryName)
 							controller.scoreLabel.setText("\(grade.score)/\(grade.maxPoints)")
@@ -66,5 +66,8 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 		// This method is called when watch view controller is no longer visible
 		super.didDeactivate()
 	}
-
+	
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: NSError?) {
+		
+	}
 }
