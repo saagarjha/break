@@ -64,10 +64,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func refresh(_ sender: AnyObject) {
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getNews() { (_, error) in
 			DispatchQueue.main.async {
-				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					self.news = self.schoolLoop.news
 					self.updateSearchResults(for: self.searchController)
@@ -148,7 +148,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? NewsDescriptionViewController,
+		guard let destinationViewController = segue.destination as? NewsDescriptionViewController,
 			let cell = sender as? NewsTableViewCell,
 			let indexPath = newsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")

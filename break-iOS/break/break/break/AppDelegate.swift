@@ -160,10 +160,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
 						let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
 						(tabBarController as? UITabBarController)?.selectedIndex = self.index
-						let oldView = UIScreen.main().snapshotView(afterScreenUpdates: false)
+						let oldView = UIScreen.main.snapshotView(afterScreenUpdates: false)
 						tabBarController.view.addSubview(oldView)
 						self.window?.rootViewController = tabBarController
-						if UIApplication.shared().applicationState == .active && UserDefaults.standard.bool(forKey: "password") {
+						if UIApplication.shared.applicationState == .active && UserDefaults.standard.bool(forKey: "password") {
 							let view: UIView
 							if let viewController = self.window?.rootViewController {
 								if !UIAccessibilityIsReduceTransparencyEnabled() {
@@ -197,7 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 							}
 						}
 						alertController.addAction(okAction)
-						UIApplication.shared().keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+						UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
 					} else {
 						self.loginOnLaunch()
 					}
@@ -219,7 +219,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showLogout() {
-		UIApplication.shared().setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
+		UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let loginViewController = storyboard.instantiateViewController(withIdentifier: "login")
 		window?.rootViewController = loginViewController

@@ -146,7 +146,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? LoopMailMessageViewController,
+		guard let destinationViewController = segue.destination as? LoopMailMessageViewController,
             let cell = sender as? LoopMailTableViewCell,
             let indexPath = loopMailTableView.indexPath(for: cell) else {
 			assertionFailure("Could not cast destinationViewController to LoopMailMessageViewController")

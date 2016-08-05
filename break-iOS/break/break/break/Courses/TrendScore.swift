@@ -43,17 +43,17 @@ class TrendScore: UIView {
 		let shapeLayer = CAShapeLayer()
 		shapeLayer.frame = self.layer.frame
 		shapeLayer.path = path.cgPath
-		shapeLayer.strokeColor = UIColor.black().cgColor
+		shapeLayer.strokeColor = UIColor.black.cgColor
 		shapeLayer.fillColor = nil
 		shapeLayer.lineWidth = 1
 		layer.addSublayer(shapeLayer)
 		for i in 0..<dateLabels {
 			let date = Date(timeInterval: endDate.timeIntervalSince(startDate ) * TimeInterval(i) / TimeInterval(dateLabels), since: startDate)
 			let textLayer = CATextLayer()
-			textLayer.contentsScale = UIScreen.main().scale
+			textLayer.contentsScale = UIScreen.main.scale
 			textLayer.string = dateFormatter.string(from: date)
 			textLayer.fontSize = 12
-			textLayer.foregroundColor = UIColor.black().cgColor
+			textLayer.foregroundColor = UIColor.black.cgColor
 			textLayer.alignmentMode = kCAAlignmentCenter
 			let textFrame = textLayer.string?.boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) ?? CGRect.zero
 			textLayer.frame = CGRect(x: leftInset + graphFrame.width * CGFloat(i) / CGFloat(dateLabels) - textFrame.width / 2, y: graphFrame.height + bottomInset / 2 - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
@@ -62,10 +62,10 @@ class TrendScore: UIView {
 		for i in 0..<gradeLabels {
 			let grade = minimum + (maximum - minimum) * Double(i) / Double(gradeLabels)
 			let textLayer = CATextLayer()
-			textLayer.contentsScale = UIScreen.main().scale
+			textLayer.contentsScale = UIScreen.main.scale
 			textLayer.string = String(format: "%.2f%%", grade * 100)
 			textLayer.fontSize = 12
-			textLayer.foregroundColor = UIColor.black().cgColor
+			textLayer.foregroundColor = UIColor.black.cgColor
 			let textFrame = textLayer.string?.boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) ?? CGRect.zero
 			textLayer.frame = CGRect(x: leftInset / 2 - textFrame.width / 2, y: graphFrame.height - graphFrame.height * CGFloat(i) / CGFloat(gradeLabels) - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
@@ -81,7 +81,7 @@ class TrendScore: UIView {
 		let trendLineShapeLayer = CAShapeLayer()
 		trendLineShapeLayer.frame = self.layer.frame
 		trendLineShapeLayer.path = trendLine.cgPath
-		trendLineShapeLayer.strokeColor = UIColor.black().cgColor
+		trendLineShapeLayer.strokeColor = UIColor.black.cgColor
 		trendLineShapeLayer.fillColor = nil
 		trendLineShapeLayer.lineWidth = 1
 		layer.addSublayer(trendLineShapeLayer)

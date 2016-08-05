@@ -15,7 +15,7 @@ class PrivacyPolicyViewController: UIViewController {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		let privacyPolicy = (try? String(contentsOfFile: Bundle.main.pathForResource("PrivacyPolicy", ofType: "html")!)) ?? ""
+		let privacyPolicy = (try? String(contentsOfFile: Bundle.main.path(forResource: "PrivacyPolicy", ofType: "html")!)) ?? ""
 		let privacyPolicyWebView = WKWebView()
 		privacyPolicyWebView.allowsBackForwardNavigationGestures = true
 		privacyPolicyWebView.loadHTMLString("<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style>\(privacyPolicy)", baseURL: nil)

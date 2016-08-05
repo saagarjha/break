@@ -13,7 +13,7 @@ class SchoolLoopKeychain {
 
 	static let sharedInstance = SchoolLoopKeychain()
 
-	func set(password: String, forUsername username: String) -> Bool {
+	func set(_ password: String, forUsername username: String) -> Bool {
 		let item: [String: AnyObject] = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username.data(using: String.Encoding.utf8)!, kSecValueData as String: password.data(using: String.Encoding.utf8)!]
 		SecItemDelete(item)
 		return SecItemAdd(item, nil) == noErr

@@ -24,7 +24,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 			gradeTableView.estimatedSectionFooterHeight = 80
 		}
 	}
-	var commentsView = UIView(frame: UIScreen.main().bounds)
+	var commentsView = UIView(frame: UIScreen.main.bounds)
 	var commentsLabel = UILabel()
 
 	override func viewDidLoad() {

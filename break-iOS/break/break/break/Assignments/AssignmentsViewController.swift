@@ -65,10 +65,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func refresh(_ sender: AnyObject) {
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getAssignments { (_, error) in
 			DispatchQueue.main.async {
-				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					self.assignments = self.schoolLoop.assignmentsWithDueDates
 					self.updateSearchResults(for: self.searchController)
@@ -163,7 +163,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? AssignmentDescriptionViewController,
+		guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,
 			let cell = sender as? AssignmentTableViewCell,
 			let indexPath = assignmentsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")

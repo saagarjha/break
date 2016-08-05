@@ -65,10 +65,10 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func refresh(_ sender: AnyObject) {
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getLocker(withPath: path) { error in
 			DispatchQueue.main.async {
-				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					guard let lockerItem = self.schoolLoop.lockerItem(forPath: self.path) else {
 						return
@@ -136,7 +136,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	override func shouldPerformSegue(withIdentifier identifier: String, sender: AnyObject?) -> Bool {
-		if lockerItems[lockerCollectionView.indexPathsForSelectedItems()![0].row].type == SchoolLoopLockerItemType.directory {
+		if lockerItems[lockerCollectionView.indexPathsForSelectedItems![0].row].type == SchoolLoopLockerItemType.directory {
 			return false
 		}
 		return true
@@ -168,7 +168,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? LockerItemViewController else {
+		guard let destinationViewController = segue.destination as? LockerItemViewController else {
 			assertionFailure("Could not cast destinationViewController to LockerItemViewController")
 			return
 		}

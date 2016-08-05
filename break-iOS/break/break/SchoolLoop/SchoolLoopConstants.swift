@@ -12,7 +12,7 @@ import UIKit
 struct SchoolLoopConstants {
 	static let version = "2"
 	#if os(iOS)
-		static let devToken = UIDevice.current().identifierForVendor?.uuidString ?? ""
+		static let devToken = UIDevice.current.identifierForVendor?.uuidString ?? ""
 	#else
 		static let devToken = ""
 	#endif

@@ -133,7 +133,7 @@ class SchoolLoop: NSObject, NSCoding {
 			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID)
 			self.account.loggedIn = true
 			#if os(iOS)
-				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 			#endif
 			completionHandler?(error: .noError)
 		}.resume()
@@ -143,7 +143,7 @@ class SchoolLoop: NSObject, NSCoding {
 		_ = keychain.removePassword(forUsername: account.username)
 		SchoolLoop.sharedInstance = SchoolLoop()
 		#if os(iOS)
-			let appDelegate = UIApplication.shared().delegate as? AppDelegate
+			let appDelegate = UIApplication.shared.delegate as? AppDelegate
 			appDelegate?.clearCache()
 			appDelegate?.showLogout()
 		#endif
@@ -185,26 +185,26 @@ class SchoolLoop: NSObject, NSCoding {
 					if course.set(newLastUpdated: lastUpdated) {
 						updated = true
 						#if os(iOS)
-							if UIApplication.shared().applicationState != .active {
+							if UIApplication.shared.applicationState != .active {
 								let notification = UILocalNotification()
 								notification.fireDate = Date(timeIntervalSinceNow: 1)
 								notification.alertBody = "Your grade in \(courseName) has changed"
 								notification.applicationIconBadgeNumber = 1
 								notification.soundName = UILocalNotificationDefaultSoundName
-								UIApplication.shared().scheduleLocalNotification(notification)
+								UIApplication.shared.scheduleLocalNotification(notification)
 							}
 						#endif
 					}
 				} else {
 					updated = true
 					#if os(iOS)
-						if UIApplication.shared().applicationState != .active {
+						if UIApplication.shared.applicationState != .active {
 							let notification = UILocalNotification()
 							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "Your grade in \(courseName) has changed"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.shared().scheduleLocalNotification(notification)
+							UIApplication.shared.scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -214,7 +214,7 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.courses = newCourses
 			#if os(iOS)
-				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 			#endif
 			completionHandler?(updated: updated, error: .noError)
 		}.resume()
@@ -312,7 +312,7 @@ class SchoolLoop: NSObject, NSCoding {
 				course.trendScores.append(trendScore)
 			}
 			#if os(iOS)
-				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 			#endif
 			completionHandler?(error: .noError)
 		}.resume()
@@ -364,13 +364,13 @@ class SchoolLoop: NSObject, NSCoding {
 				if self.assignment(foriD: iD) == nil {
 					updated = true
 					#if os(iOS)
-						if UIApplication.shared().applicationState != .active {
+						if UIApplication.shared.applicationState != .active {
 							let notification = UILocalNotification()
 							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "New assignment \(title) posted for \(courseName)"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.shared().scheduleLocalNotification(notification)
+							UIApplication.shared.scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -379,7 +379,7 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.assignments = newAssignments
 			#if os(iOS)
-				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 			#endif
 			completionHandler?(updated: updated, error: .noError)
 		}.resume()
@@ -421,13 +421,13 @@ class SchoolLoop: NSObject, NSCoding {
 				if self.loopMail(forID: ID) == nil {
 					updated = true
 					#if os(iOS)
-						if UIApplication.shared().applicationState != .active {
+						if UIApplication.shared.applicationState != .active {
 							let notification = UILocalNotification()
 							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "From: \(sender)\n\(subject)\n"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.shared().scheduleLocalNotification(notification)
+							UIApplication.shared.scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -436,7 +436,7 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.loopMail = newLoopMail
 			#if os(iOS)
-				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 			#endif
 			completionHandler?(updated: updated, error: .noError)
 		}.resume()
@@ -528,13 +528,13 @@ class SchoolLoop: NSObject, NSCoding {
 				if self.news(foriD: iD) == nil {
 					updated = true
 					#if os(iOS)
-						if UIApplication.shared().applicationState != .active {
+						if UIApplication.shared.applicationState != .active {
 							let notification = UILocalNotification()
 							notification.fireDate = Date(timeIntervalSinceNow: 1)
 							notification.alertBody = "\(title)\n\(authorName)"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
-							UIApplication.shared().scheduleLocalNotification(notification)
+							UIApplication.shared.scheduleLocalNotification(notification)
 						}
 					#endif
 				}
@@ -543,7 +543,7 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			self.news = newNews
 			#if os(iOS)
-				(UIApplication.shared().delegate as? AppDelegate)?.saveCache()
+				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 			#endif
 			completionHandler?(updated: updated, error: .noError)
 		}.resume()
@@ -579,7 +579,7 @@ class SchoolLoop: NSObject, NSCoding {
 			assertionFailure("Could not encode plainString")
 			return request as URLRequest
 		}
-		let base64String = base64Data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+		let base64String = base64Data.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
 		return request as URLRequest
 	}
@@ -674,7 +674,7 @@ extension SchoolLoop: XMLParserDelegate {
 		} else if currentTokens.last == "d:response" {
 			let lockerItem = SchoolLoopLockerItem(name: currentName, path: currentPath, type: currentType)
 			if let parent = lockerItemParent(forPath: lockerItem.path) {
-				if !parent.lockerItems.contains({ $0 == lockerItem }) {
+				if !parent.lockerItems.contains(where: { $0 == lockerItem }) {
 					parent.lockerItems.append(lockerItem)
 				}
 			} else {
@@ -707,8 +707,8 @@ extension SchoolLoop: XMLParserDelegate {
 }
 
 extension URLSession {
-	func synchronousDataTask(withRequest request: URLRequest, completionHandler: (Data?, URLResponse?, NSError?) -> Void) {
-		var data: Data?, response: URLResponse?, error: NSError?
+	func synchronousDataTask(withRequest request: URLRequest, completionHandler: (Data?, URLResponse?, Error?) -> Void) {
+		var data: Data?, response: URLResponse?, error: Error?
 		let semaphore = DispatchSemaphore(value: 0)
 		dataTask(with: request) {
 			data = $0

@@ -31,7 +31,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 	let searchController = UISearchController(searchResultsController: nil)
-	let categoryView = UIView(frame: UIScreen.main().bounds)
+	let categoryView = UIView(frame: UIScreen.main.bounds)
 	var titleLabel = UILabel()
 	var titleSubtitleLabel = UILabel()
 	var categoryNameLabels: [UILabel] = []
@@ -56,17 +56,17 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: view)
 		}
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getGrades(withPeriodID: periodID) { error in
 			DispatchQueue.main.async {
-				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					guard let course = self.schoolLoop.course(forPeriodID: self.periodID) else {
 						assertionFailure("Could not get grades for periodID")
 						return
 					}
 					self.categories = course.categories
-					let boldFont = UIFont(descriptor: self.titleLabel.font.fontDescriptor().withSymbolicTraits(.traitBold)!, size: 20)
+					let boldFont = UIFont(descriptor: self.titleLabel.font.fontDescriptor.withSymbolicTraits(.traitBold)!, size: 20)
 					let normalFont = UIFont.systemFont(ofSize: 20)
 					self.titleLabel.text = "Total"
 					self.titleLabel.font = boldFont
@@ -124,7 +124,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 					self.categoryView.frame = CGRect(origin: self.categoryView.frame.origin, size: self.categoryView.systemLayoutSizeFitting(UILayoutFittingCompressedSize))
 					let layer = CALayer()
 					layer.frame = CGRect(x: 0, y: self.categoryView.frame.height - 1, width: self.gradesTableView.frame.width, height: 1)
-					layer.backgroundColor = UIColor.black().cgColor
+					layer.backgroundColor = UIColor.black.cgColor
 					self.categoryView.layer.addSublayer(layer)
 					self.grades = course.grades
 					self.trendScores = course.trendScores
@@ -250,7 +250,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? GradeViewController,
+		guard let destinationViewController = segue.destination as? GradeViewController,
 			let cell = sender as? GradeTableViewCell,
 			let indexPath = gradesTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to GradeViewController")

@@ -55,9 +55,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
 		schoolLoop = SchoolLoop.sharedInstance
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getSchools { error in
-			UIApplication.shared().isNetworkActivityIndicatorVisible = false
+			UIApplication.shared.isNetworkActivityIndicatorVisible = false
 			if error == .noError {
 				self.schools = self.schoolLoop.schools
 				self.schools.sort()
@@ -115,25 +115,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 	@IBAction func logIn(_ sender: AnyObject) {
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		logInButton.isEnabled = false
 		logInButton.alpha = 0.5
 		self.schoolLoop.logIn(withSchoolName: self.schoolNameTextField.text ?? "", username: self.usernameTextField.text ?? "", password: self.passwordTextField.text ?? "") { error in
 			DispatchQueue.main.async {
-				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					let storybard = UIStoryboard(name: "Main", bundle: nil)
 					let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
-					let oldView = UIScreen.main().snapshotView(afterScreenUpdates: false)
+					let oldView = UIScreen.main.snapshotView(afterScreenUpdates: false)
 					tabBarController.view.addSubview(oldView)
-					UIApplication.shared().keyWindow?.rootViewController = tabBarController
+					UIApplication.shared.keyWindow?.rootViewController = tabBarController
 					UIView.animate(withDuration: 0.25, animations: {
 						oldView.alpha = 0
 						}, completion: { _ in
 						oldView.removeFromSuperview()
 					})
 					var view: UIView?
-					if let tabBarController = UIApplication.shared().delegate?.window??.rootViewController as? UITabBarController,
+					if let tabBarController = UIApplication.shared.delegate?.window??.rootViewController as? UITabBarController,
 						let viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
 							for viewController in viewControllers {
 								if let coursesViewController = viewController as? CoursesViewController {
@@ -219,7 +219,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			schoolName = (schoolName as NSString).replacingCharacters(in: range, with: string)
 			let suggestion = getSchoolSuggestion(schoolName)
 			let attributedString = NSMutableAttributedString(string: suggestion)
-			attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray(), range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
+			attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
 			textField.attributedText = attributedString
 			textField.selectedTextRange = textField.textRange(from: textField.position(from: textField.beginningOfDocument, offset: range.location + string.characters.count)!, to: textField.position(from: textField.beginningOfDocument, offset: range.location + string.characters.count)!)
 			return false

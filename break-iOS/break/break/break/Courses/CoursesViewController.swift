@@ -63,10 +63,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	func refresh(_ sender: AnyObject) {
-		UIApplication.shared().isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getCourses { (_, error) in
 			DispatchQueue.main.async {
-				UIApplication.shared().isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					self.courses = self.schoolLoop.courses
 					self.updateSearchResults(for: self.searchController)
@@ -153,7 +153,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destinationViewController as? ProgressReportViewController,
+		guard let destinationViewController = segue.destination as? ProgressReportViewController,
 			let cell = sender as? CourseTableViewCell,
 			let indexPath = coursesTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to ProgressReportViewController")

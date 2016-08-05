@@ -34,7 +34,7 @@ class SchoolLoopAccount: NSObject, NSCoding {
 
 	func encode(with aCoder: NSCoder) {
 		aCoder.encode(username, forKey: "username")
-		_ = SchoolLoop.sharedInstance.keychain.set(password: password, forUsername: username)
+		_ = SchoolLoop.sharedInstance.keychain.set(password, forUsername: username)
 		aCoder.encode(fullName, forKey: "fullName")
 		aCoder.encode(studentID, forKey: "studentID")
 	}

@@ -57,14 +57,14 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			return
 		}
 		let today = Date()
-		let calendar = Calendar(calendarIdentifier: Calendar.Identifier.gregorian)
+		let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
 		var dateComponents = DateComponents()
 		dateComponents.day = 1
-		let tomorrow = calendar?.date(byAdding: dateComponents, to: today, options: Calendar.Options(rawValue: 0))
-		dateComponents = (calendar?.components([.year, .month, .day], from: tomorrow!))!
+		let tomorrow = calendar.date(byAdding: dateComponents, to: today, wrappingComponents: true)
+		dateComponents = (calendar.dateComponents([.year, .month, .day], from: tomorrow!))
 		dateComponents.hour = 0
 		dateComponents.minute = 0
-		let tomorrowMidnight = (calendar?.date(from: dateComponents))!
+		let tomorrowMidnight = (calendar.date(from: dateComponents))!
 		let dueTomorrow = assignments[tomorrowMidnight] ?? []
 		if complication.family == .circularSmall {
 			let template = CLKComplicationTemplateCircularSmallSimpleText()
@@ -107,25 +107,25 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
 	func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
 		// Call the handler with the timeline entries after to the given date
-		let calendar = Calendar(calendarIdentifier: Calendar.Identifier.gregorian)
+		let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
 		guard let assignments = assignments else {
 			handler(nil)
 			return
 		}
 		var dateComponents = DateComponents()
 		dateComponents.day = 1
-		let tomorrow = calendar?.date(byAdding: dateComponents, to: date, options: Calendar.Options(rawValue: 0))
-		dateComponents = (calendar?.components([.year, .month, .day], from: tomorrow!))!
+		let tomorrow = calendar.date(byAdding: dateComponents, to: date, wrappingComponents: true)
+		dateComponents = (calendar.dateComponents([.year, .month, .day], from: tomorrow!))
 		dateComponents.hour = 0
 		dateComponents.minute = 0
-		let tomorrowMidnight = (calendar?.date(from: dateComponents))!
+		let tomorrowMidnight = (calendar.date(from: dateComponents))!
 		var futureDates: [Date] = []
 		var futureDate = tomorrowMidnight
 		for _ in 0 ... 7 {
 			futureDates.append(futureDate)
 			var dateComponents = DateComponents()
 			dateComponents.day = 1
-			futureDate = (calendar?.date(byAdding: dateComponents, to: date, options: Calendar.Options(rawValue: 0)))!
+			futureDate = (calendar.date(byAdding: dateComponents, to: date, wrappingComponents: true))!
 		}
 		if complication.family == .circularSmall {
 			var entries: [CLKComplicationTimelineEntry] = []

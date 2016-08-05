@@ -35,10 +35,10 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-        UIApplication.shared().isNetworkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getLoopMailMessage(withID: ID) { error in
 			DispatchQueue.main.async {
-                UIApplication.shared().isNetworkActivityIndicatorVisible = false
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					guard let loopMail = self.schoolLoop.loopMail(forID: self.ID) else {
 						assertionFailure("Could not get LoopMail for ID")

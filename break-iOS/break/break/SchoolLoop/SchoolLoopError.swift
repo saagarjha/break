@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum SchoolLoopError: ErrorProtocol {
+enum SchoolLoopError: Error {
     case noError
 	case unknownError
     case doesNotExistError
