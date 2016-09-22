@@ -21,7 +21,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	@IBOutlet weak var newsTableView: UITableView! {
 		didSet {
             newsTableView.backgroundView = UIView()
-            newsTableView.backgroundView?.backgroundColor = .clear()
+            newsTableView.backgroundView?.backgroundColor = .clear
 			newsTableView.rowHeight = UITableViewAutomaticDimension
 			newsTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(NewsViewController.refresh(_:)), for: .valueChanged)
@@ -145,7 +145,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? NewsDescriptionViewController,

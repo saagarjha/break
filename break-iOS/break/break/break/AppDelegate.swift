@@ -12,20 +12,20 @@ import WatchConnectivity
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
-	let file = (try? URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!).appendingPathComponent("schoolLoop").path ?? "") ?? ""
+	let file = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!).appendingPathComponent("schoolLoop").path
 
 	var window: UIWindow?
 	var splashView: UIImageView!
 	var securityView: UIView!
 
 	var archived = true
-	var index = 0
+	var launchIndex = 0
 
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-		if UIApplication.instancesRespond(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
-			application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
-		}
+			if UIApplication.instancesRespond(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
+				application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
+			}
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 		if WCSession.isSupported() {
 			let session = WCSession.default()
@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			archived = false
 		}
 
-		index = index(forType: (launchOptions?[UIApplicationLaunchOptionsShortcutItemKey] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? UserDefaults.standard.integer(forKey: "startup")
+		launchIndex = index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? UserDefaults.standard.integer(forKey: "startup")
 
 		loginOnLaunch()
 
@@ -47,51 +47,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func applicationWillResignActive(_ application: UIApplication) {
 		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-		// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+			// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 	}
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-		if UserDefaults.standard.bool(forKey: "password") {
-			if let tabBarController = self.window?.rootViewController as? UITabBarController {
-				let view: UIView
-				if !UIAccessibilityIsReduceTransparencyEnabled() {
-					let effect = UIBlurEffect(style: .light)
-					view = UIVisualEffectView(effect: effect)
-					view.frame = tabBarController.view.bounds
-				} else {
-					view = UIView(frame: tabBarController.view.bounds)
-					view.backgroundColor = .white()
+			// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+			if UserDefaults.standard.bool(forKey: "password") {
+				if let tabBarController = self.window?.rootViewController as? UITabBarController {
+					let view: UIView
+					if !UIAccessibilityIsReduceTransparencyEnabled() {
+						let effect = UIBlurEffect(style: .light)
+						view = UIVisualEffectView(effect: effect)
+						view.frame = tabBarController.view.bounds
+					} else {
+						view = UIView(frame: tabBarController.view.bounds)
+						view.backgroundColor = .white
+					}
+					view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+					tabBarController.view.addSubview(view)
+					securityView = view
 				}
-				view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-				tabBarController.view.addSubview(view)
-				securityView = view
 			}
-		}
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-		if UserDefaults.standard.bool(forKey: "password") {
-			if UserDefaults.standard.bool(forKey: "touchID") {
-				self.showAuthententication()
-			} else {
-				self.showPassword()
+			if UserDefaults.standard.bool(forKey: "password") {
+				if UserDefaults.standard.bool(forKey: "touchID") {
+					self.showAuthententication()
+				} else {
+					self.showPassword()
+				}
 			}
-		}
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-		application.applicationIconBadgeNumber = 0
+			application.applicationIconBadgeNumber = 0
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-		guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
-			return
-		}
+			guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
+				return
+			}
 		do {
 			try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)
 		} catch _ {
@@ -101,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
-	func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+	func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
 		if archived {
 			NSKeyedUnarchiver.unarchiveObject(withFile: file)
@@ -112,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		if schoolLoop.school != nil && schoolLoop.account != nil {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				if error == .noError {
-					DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosUserInitiated).async {
+					DispatchQueue.global(qos: .userInitiated).async {
 						let group = DispatchGroup()
 						let completion: (Bool, SchoolLoopError) -> Void = {
 							if $0.1 == .noError {
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						schoolLoop.getLoopMail(withCompletionHandler: completion)
 						group.enter()
 						schoolLoop.getNews(withCompletionHandler: completion)
-						_ = group.wait(timeout: .now() + Double(Int64(30 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC))
+						_ = group.wait(timeout: .now() + Double(30 * NSEC_PER_SEC) / Double(NSEC_PER_SEC))
 						completionHandler(updated)
 					}
 				} else {
@@ -141,11 +141,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
-	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
-		let index = self.index(forType: shortcutItem.type) ?? -1
-		if index > 0 {
+	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+		let launchIndex = self.index(forType: shortcutItem.type) ?? -1
+		if launchIndex > 0 {
 			if let tabBarController = window?.rootViewController as? UITabBarController {
-				tabBarController.selectedIndex = index
+				tabBarController.selectedIndex = launchIndex
 			}
 		}
 		completionHandler(true)
@@ -159,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					if error == .noError {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
 						let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
-						(tabBarController as? UITabBarController)?.selectedIndex = self.index
+						(tabBarController as? UITabBarController)?.selectedIndex = self.launchIndex
 						let oldView = UIScreen.main.snapshotView(afterScreenUpdates: false)
 						tabBarController.view.addSubview(oldView)
 						self.window?.rootViewController = tabBarController
@@ -172,7 +172,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 									view.frame = viewController.view.bounds
 								} else {
 									view = UIView(frame: viewController.view.bounds)
-									view.backgroundColor = .white()
+									view.backgroundColor = .white
 								}
 								view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 								viewController.view.addSubview(view)
@@ -186,9 +186,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						}
 						UIView.animate(withDuration: 0.25, animations: {
 							oldView.alpha = 0
-							}, completion: { _ in
+						               }, completion: { _ in
 							oldView.removeFromSuperview()
-						})
+						               })
 					} else if error == .authenticationError {
 						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
 						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -263,9 +263,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						} else {
 							self.securityView.alpha = 0
 						}
-						}, completion: { _ in
+					               }, completion: { _ in
 						self.securityView.removeFromSuperview()
-					})
+					               })
 				}
 			} else {
 				self.showPassword()
@@ -286,9 +286,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						} else {
 							self.securityView.alpha = 0
 						}
-						}, completion: { _ in
+					               }, completion: { _ in
 						self.securityView.removeFromSuperview()
-					})
+					               })
 				}
 			}
 			let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -301,9 +301,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 							} else {
 								self.securityView.alpha = 0
 							}
-							}, completion: { _ in
+						               }, completion: { _ in
 							self.securityView.removeFromSuperview()
-						})
+						               })
 					}
 				} else {
 					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
@@ -331,7 +331,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
-	func session(_ session: WCSession, didReceiveMessage message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void) {
+	func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
 		if archived {
 			NSKeyedUnarchiver.unarchiveObject(withFile: file)
 			archived = false
@@ -363,17 +363,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			}
 		}
 	}
-	
+
 	@available(iOS 9.3, *)
-	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: NSError?) {
-		
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+
 	}
-	
+
 	func sessionDidBecomeInactive(_ session: WCSession) {
-		
+
 	}
-	
+
 	func sessionDidDeactivate(_ session: WCSession) {
-		
+
 	}
 }

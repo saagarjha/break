@@ -21,7 +21,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	@IBOutlet weak var loopMailTableView: UITableView! {
 		didSet {
             loopMailTableView.backgroundView = UIView()
-            loopMailTableView.backgroundView?.backgroundColor = .clear()
+            loopMailTableView.backgroundView?.backgroundColor = .clear
 			loopMailTableView.rowHeight = UITableViewAutomaticDimension
 			loopMailTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(LoopMailViewController.refresh(_:)), for: .valueChanged)
@@ -143,7 +143,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? LoopMailMessageViewController,

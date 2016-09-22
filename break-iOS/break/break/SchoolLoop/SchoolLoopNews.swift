@@ -46,7 +46,7 @@ class SchoolLoopNews: NSObject, NSCoding {
 		aCoder.encode(authorName, forKey: "authorName")
 		aCoder.encode(createdDate, forKey: "createdDate")
 		aCoder.encode(newsDescription, forKey: "newsDescription")
-		aCoder.encode(links as? AnyObject, forKey: "links")
+		aCoder.encode(links, forKey: "links")
 		aCoder.encode(iD, forKey: "iD")
 	}
 }

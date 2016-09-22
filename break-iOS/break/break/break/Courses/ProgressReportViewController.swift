@@ -23,7 +23,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	@IBOutlet weak var gradesTableView: UITableView! {
 		didSet {
 			gradesTableView.backgroundView = UIView()
-			gradesTableView.backgroundView?.backgroundColor = .clear()
+			gradesTableView.backgroundView?.backgroundColor = .clear
 			gradesTableView.rowHeight = UITableViewAutomaticDimension
 			gradesTableView.estimatedRowHeight = 80.0
 			gradesTableView.sectionHeaderHeight = UITableViewAutomaticDimension
@@ -247,7 +247,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? GradeViewController,

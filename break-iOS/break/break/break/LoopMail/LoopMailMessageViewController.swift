@@ -48,7 +48,7 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 					if !loopMail.links.isEmpty {
 						self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 					}
-					for link in loopMail.links ?? [] {
+					for link in loopMail.links {
 						self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
 					}
 					self.messageWebView.loadHTMLString(self.message, baseURL: nil)

@@ -52,7 +52,7 @@ class NewsDescriptionViewController: UIViewController, WKNavigationDelegate {
 		if !news.links.isEmpty {
 			newsDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 		}
-		for link in news.links ?? [] {
+		for link in news.links {
 			newsDescription += "<a href=\(link.URL)>\(link.title)</a><br>"
 		}
 		descriptionWebView.loadHTMLString(newsDescription, baseURL: nil)

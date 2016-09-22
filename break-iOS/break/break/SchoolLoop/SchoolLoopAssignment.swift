@@ -46,7 +46,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		aCoder.encode(description, forKey: "assignmentDescription")
 		aCoder.encode(courseName, forKey: "courseName")
 		aCoder.encode(dueDate, forKey: "dueDate")
-		aCoder.encode(links as? AnyObject, forKey: "links")
+		aCoder.encode(links, forKey: "links")
 		aCoder.encode(iD, forKey: "iD")
 	}
 }

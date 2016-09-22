@@ -55,7 +55,7 @@ class TrendScore: UIView {
 			textLayer.fontSize = 12
 			textLayer.foregroundColor = UIColor.black.cgColor
 			textLayer.alignmentMode = kCAAlignmentCenter
-			let textFrame = textLayer.string?.boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) ?? CGRect.zero
+			let textFrame = (textLayer.string as? NSString ?? "").boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
 			textLayer.frame = CGRect(x: leftInset + graphFrame.width * CGFloat(i) / CGFloat(dateLabels) - textFrame.width / 2, y: graphFrame.height + bottomInset / 2 - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}
@@ -66,7 +66,7 @@ class TrendScore: UIView {
 			textLayer.string = String(format: "%.2f%%", grade * 100)
 			textLayer.fontSize = 12
 			textLayer.foregroundColor = UIColor.black.cgColor
-			let textFrame = textLayer.string?.boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) ?? CGRect.zero
+			let textFrame = (textLayer.string as? NSString ?? "").boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) 
 			textLayer.frame = CGRect(x: leftInset / 2 - textFrame.width / 2, y: graphFrame.height - graphFrame.height * CGFloat(i) / CGFloat(gradeLabels) - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}

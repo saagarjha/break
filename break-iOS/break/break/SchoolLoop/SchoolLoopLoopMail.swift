@@ -46,6 +46,6 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 		aCoder.encode(date, forKey: "date")
 		aCoder.encode(ID, forKey: "ID")
 		aCoder.encode(message, forKey: "message")
-		aCoder.encode(links as? AnyObject, forKey: "links")
+		aCoder.encode(links, forKey: "links")
 	}
 }

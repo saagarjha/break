@@ -18,7 +18,7 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 
 	@IBOutlet var coursesTable: WKInterfaceTable!
 
-	override func awake(withContext context: AnyObject?) {
+	override func awake(withContext context: Any?) {
 		super.awake(withContext: context)
 
 		// Configure interface objects here.
@@ -51,7 +51,7 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 		super.didDeactivate()
 	}
 
-	override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> AnyObject? {
+	override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
 		return courses[rowIndex]
 	}
 	

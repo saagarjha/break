@@ -150,7 +150,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 								}
 							}
 					}
-					if let _ = view as? AnyObject {
+					if let _ = view {
 						return
 					}
 				} else if error == .networkError {
@@ -252,7 +252,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	// MARK: - Navigation
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		view.endEditing(true)

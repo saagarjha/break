@@ -21,7 +21,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	@IBOutlet weak var coursesTableView: UITableView! {
 		didSet {
 			coursesTableView.backgroundView = UIView()
-			coursesTableView.backgroundView?.backgroundColor = .clear()
+			coursesTableView.backgroundView?.backgroundColor = .clear
 			coursesTableView.rowHeight = UITableViewAutomaticDimension
 			coursesTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(CoursesViewController.refresh(_:)), for: .valueChanged)
@@ -150,7 +150,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? ProgressReportViewController,

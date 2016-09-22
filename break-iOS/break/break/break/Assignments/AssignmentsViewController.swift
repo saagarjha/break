@@ -22,7 +22,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	@IBOutlet weak var assignmentsTableView: UITableView! {
 		didSet {
 			assignmentsTableView.backgroundView = UIView()
-			assignmentsTableView.backgroundView?.backgroundColor = .clear()
+			assignmentsTableView.backgroundView?.backgroundColor = .clear
 			assignmentsTableView.rowHeight = UITableViewAutomaticDimension
 			assignmentsTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), for: .valueChanged)
@@ -160,7 +160,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,

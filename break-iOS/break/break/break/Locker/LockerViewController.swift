@@ -135,7 +135,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 	}
 
-	override func shouldPerformSegue(withIdentifier identifier: String, sender: AnyObject?) -> Bool {
+	override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
 		if lockerItems[lockerCollectionView.indexPathsForSelectedItems![0].row].type == SchoolLoopLockerItemType.directory {
 			return false
 		}
@@ -165,7 +165,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? LockerItemViewController else {

@@ -30,7 +30,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 		// Use this method to pause ongoing tasks, disable timers, etc.
 	}
 
-	func sendMessage(_ message: [String: AnyObject], replyHandler: ([String: AnyObject]) -> Void, errorHandler: (Error) -> Void) {
+	func sendMessage(_ message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void, errorHandler: @escaping (Error) -> Void) {
 		if let session = session {
 			session.sendMessage(message, replyHandler: replyHandler, errorHandler: errorHandler)
 		} else {
