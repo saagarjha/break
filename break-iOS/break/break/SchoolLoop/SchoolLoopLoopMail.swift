@@ -36,7 +36,7 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 		date = aDecoder.decodeObject(forKey: "date") as? Date ?? Date.distantPast
 		ID = aDecoder.decodeObject(forKey: "ID") as? String ?? ""
 		message = aDecoder.decodeObject(forKey: "message") as? String ?? ""
-		links = aDecoder.decodeObject(forKey: "links") as? [(title: String, URL: String)] ?? []
+		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
 		super.init()
 	}
 
@@ -46,6 +46,6 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 		aCoder.encode(date, forKey: "date")
 		aCoder.encode(ID, forKey: "ID")
 		aCoder.encode(message, forKey: "message")
-		aCoder.encode(links, forKey: "links")
+		aCoder.encode(links.map { [$0.title, $0.URL] }, forKey: "links")
 	}
 }

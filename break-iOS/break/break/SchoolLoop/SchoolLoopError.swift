@@ -15,4 +15,5 @@ enum SchoolLoopError: Error {
 	case authenticationError
 	case networkError
 	case parseError
+	case trendScoreError
 }

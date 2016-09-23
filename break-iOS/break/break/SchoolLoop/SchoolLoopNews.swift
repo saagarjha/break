@@ -36,7 +36,7 @@ class SchoolLoopNews: NSObject, NSCoding {
 		authorName = aDecoder.decodeObject(forKey: "authorName") as? String ?? ""
 		createdDate = aDecoder.decodeObject(forKey: "createdDate") as? Date ?? Date.distantPast
 		newsDescription = aDecoder.decodeObject(forKey: "newsDescription") as? String ?? ""
-		links = aDecoder.decodeObject(forKey: "links") as? [(title: String, URL: String)] ?? []
+		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
 		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
 		super.init()
 	}
@@ -46,7 +46,7 @@ class SchoolLoopNews: NSObject, NSCoding {
 		aCoder.encode(authorName, forKey: "authorName")
 		aCoder.encode(createdDate, forKey: "createdDate")
 		aCoder.encode(newsDescription, forKey: "newsDescription")
-		aCoder.encode(links, forKey: "links")
+		aCoder.encode(links.map { [$0.title, $0.URL] }, forKey: "links")
 		aCoder.encode(iD, forKey: "iD")
 	}
 }

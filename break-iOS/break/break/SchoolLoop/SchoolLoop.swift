@@ -298,7 +298,7 @@ class SchoolLoop: NSObject, NSCoding {
 				course.grades.append(grade)
 			}
 			guard let trendScoresJSON = (dataJSON?.first as? [String: AnyObject])?["trendScores"] as? [AnyObject] else {
-				completionHandler?(.parseError)
+				completionHandler?(.trendScoreError)
 				return
 			}
 			for trendScoreJSON in trendScoresJSON {

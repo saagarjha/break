@@ -36,7 +36,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		assignmentDescription = aDecoder.decodeObject(forKey: "assignmentDescription") as? String ?? ""
 		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
 		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
-		links = aDecoder.decodeObject(forKey: "links") as? [(title: String, URL: String)] ?? []
+		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
 		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
 		super.init()
 	}
@@ -46,7 +46,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		aCoder.encode(description, forKey: "assignmentDescription")
 		aCoder.encode(courseName, forKey: "courseName")
 		aCoder.encode(dueDate, forKey: "dueDate")
-		aCoder.encode(links, forKey: "links")
+		aCoder.encode(links.map { [$0.title, $0.URL] }, forKey: "links")
 		aCoder.encode(iD, forKey: "iD")
 	}
 }

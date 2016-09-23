@@ -60,7 +60,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		schoolLoop.getGrades(withPeriodID: periodID) { error in
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
-				if error == .noError {
+				if error == .noError || error == .trendScoreError {
 					guard let course = self.schoolLoop.course(forPeriodID: self.periodID) else {
 						assertionFailure("Could not get grades for periodID")
 						return
