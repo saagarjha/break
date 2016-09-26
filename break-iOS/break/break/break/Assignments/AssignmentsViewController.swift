@@ -106,13 +106,32 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		let section = indexPath.section
 		let row = indexPath.row
 		let assignment = filteredAssignments[filteredAssignmentDueDates[section]]?[row]
-		cell.titleLabel.text = assignment?.title
-		cell.courseNameLabel.text = assignment?.courseName
+		if assignment?.isCompleted ?? false {
+			let titleText = NSAttributedString(string: assignment?.title ?? "", attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+			let courseNameText = NSAttributedString(string: assignment?.courseName ?? "", attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+			cell.titleLabel.attributedText = titleText
+			cell.courseNameLabel.attributedText = courseNameText
+		} else {
+			cell.titleLabel.text = assignment?.title
+			cell.courseNameLabel.text = assignment?.courseName
+		}
 		return cell
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
+	}
+
+	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+		let completeAction = UITableViewRowAction(style: .normal, title: "Mark\nDone") { _, indexPath in
+			let assignment = self.filteredAssignments[self.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]
+			assignment?.isCompleted = !(assignment?.isCompleted ?? false)
+			DispatchQueue.main.async {
+				tableView.reloadData()
+			}
+		}
+		completeAction.backgroundColor = view.tintColor
+		return [completeAction]
 	}
 
 	func updateSearchResults(for searchController: UISearchController) {
@@ -144,7 +163,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		guard let indexPath = assignmentsTableView.indexPathForRow(at: assignmentsTableView.convert(location, to: view)),
 			let cell = assignmentsTableView.cellForRow(at: indexPath) else {
 				return nil
-		}
+			}
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
 			return nil
 		}
@@ -162,13 +181,13 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
-		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,
+			// Pass the selected object to the new view controller.
+			guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,
 			let cell = sender as? AssignmentTableViewCell,
 			let indexPath = assignmentsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
 				return
-		}
+			}
 		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
 		destinationViewController.iD = selectedAssignment.iD
 		self.destinationViewController = destinationViewController

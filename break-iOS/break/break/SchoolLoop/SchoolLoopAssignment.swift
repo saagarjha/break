@@ -16,6 +16,8 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 	var dueDate: Date
 	var links: [(title: String, URL: String)]
 	var iD: String
+	
+	var isCompleted: Bool
 
 	init(title: String, assignmentDescription: String, courseName: String, dueDate: String, links: [(title: String, URL: String)], iD: String) {
 		self.title = title
@@ -24,6 +26,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		self.dueDate = Date(timeIntervalSince1970: (TimeInterval(dueDate) ?? 0) / 1000)
 		self.links = links
 		self.iD = iD
+		isCompleted = false
 		super.init()
 	}
 
@@ -38,6 +41,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
 		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
 		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
+		isCompleted = aDecoder.decodeObject(forKey: "isCompleted") as? Bool ?? false
 		super.init()
 	}
 
@@ -48,5 +52,6 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		aCoder.encode(dueDate, forKey: "dueDate")
 		aCoder.encode(links.map { [$0.title, $0.URL] }, forKey: "links")
 		aCoder.encode(iD, forKey: "iD")
+		aCoder.encode(isCompleted as Any, forKey: "isCompleted")
 	}
 }

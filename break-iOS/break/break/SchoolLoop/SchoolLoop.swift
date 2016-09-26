@@ -79,7 +79,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(.parseError)
 					return
-			}
+				}
 			guard let schoolsJSON = dataJSON else {
 				completionHandler?(.parseError)
 				return
@@ -123,7 +123,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject] else {
 					completionHandler?(.parseError)
 					return
-			}
+				}
 			guard let loginJSON = dataJSON else {
 				completionHandler?(.parseError)
 				return
@@ -164,7 +164,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-			}
+				}
 			guard let coursesJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -240,7 +240,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(.parseError)
 					return
-			}
+				}
 			guard let categoriesJSON = (dataJSON?.first as? [String: AnyObject])?["categories"] as? [AnyObject] else {
 				completionHandler?(.parseError)
 				return
@@ -283,7 +283,7 @@ class SchoolLoop: NSObject, NSCoding {
 				}
 				let percentScore = gradeJSON["percentScore"] as? String ?? ""
 				let score = gradeJSON["score"] as? String ?? ""
-				let comment = gradeJSON["comment"] as? String  ?? ""
+				let comment = gradeJSON["comment"] as? String ?? ""
 				let changedDate = gradeJSON["changedDate"] as? String ?? ""
 				guard let assignmentJSON = gradeJSON["assignment"] as? [String: AnyObject] else {
 					completionHandler?(.parseError)
@@ -331,10 +331,10 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			guard let data = data,
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments
-			) as? [AnyObject] else {
+				) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-			}
+				}
 			guard let assignmentsJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -361,7 +361,10 @@ class SchoolLoop: NSObject, NSCoding {
 						links.append((title: title, URL: URL))
 					}
 				}
-				if self.assignment(foriD: iD) == nil {
+				let assignment = SchoolLoopAssignment(title: title, assignmentDescription: description, courseName: courseName, dueDate: dueDate, links: links, iD: iD)
+				if let oldAssignment = self.assignment(foriD: iD) {
+					assignment.isCompleted = oldAssignment.isCompleted
+				} else {
 					updated = true
 					#if os(iOS)
 						if UIApplication.shared.applicationState != .active {
@@ -373,8 +376,8 @@ class SchoolLoop: NSObject, NSCoding {
 							UIApplication.shared.scheduleLocalNotification(notification)
 						}
 					#endif
+
 				}
-				let assignment = SchoolLoopAssignment(title: title, assignmentDescription: description, courseName: courseName, dueDate: dueDate, links: links, iD: iD)
 				newAssignments.append(assignment)
 			}
 			self.assignments = newAssignments
@@ -400,7 +403,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-			}
+				}
 			guard let loopMailJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -459,7 +462,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject] else {
 					completionHandler?(.parseError)
 					return
-			}
+				}
 			guard let messageJSON = dataJSON else {
 				completionHandler?(.parseError)
 				return
@@ -498,7 +501,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-			}
+				}
 			guard let newsJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
