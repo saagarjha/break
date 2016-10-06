@@ -47,7 +47,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		definesPresentationContext = true
+			definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
 		searchController.dimsBackgroundDuringPresentation = false
@@ -158,7 +158,6 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
-
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = assignmentsTableView.indexPathForRow(at: assignmentsTableView.convert(location, to: view)),
 			let cell = assignmentsTableView.cellForRow(at: indexPath) else {
