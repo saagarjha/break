@@ -158,6 +158,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
+	
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = assignmentsTableView.indexPathForRow(at: assignmentsTableView.convert(location, to: view)),
 			let cell = assignmentsTableView.cellForRow(at: indexPath) else {

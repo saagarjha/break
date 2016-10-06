@@ -79,7 +79,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(.parseError)
 					return
-				}
+			}
 			guard let schoolsJSON = dataJSON else {
 				completionHandler?(.parseError)
 				return
@@ -123,7 +123,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject] else {
 					completionHandler?(.parseError)
 					return
-				}
+			}
 			guard let loginJSON = dataJSON else {
 				completionHandler?(.parseError)
 				return
@@ -164,7 +164,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-				}
+			}
 			guard let coursesJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -240,7 +240,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(.parseError)
 					return
-				}
+			}
 			guard let categoriesJSON = (dataJSON?.first as? [String: AnyObject])?["categories"] as? [AnyObject] else {
 				completionHandler?(.parseError)
 				return
@@ -334,7 +334,7 @@ class SchoolLoop: NSObject, NSCoding {
 				) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-				}
+			}
 			guard let assignmentsJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -403,7 +403,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-				}
+			}
 			guard let loopMailJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -462,7 +462,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: AnyObject] else {
 					completionHandler?(.parseError)
 					return
-				}
+			}
 			guard let messageJSON = dataJSON else {
 				completionHandler?(.parseError)
 				return
@@ -501,7 +501,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
 					completionHandler?(updated, .parseError)
 					return
-				}
+			}
 			guard let newsJSON = dataJSON else {
 				completionHandler?(updated, .parseError)
 				return
@@ -659,6 +659,16 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 		}
 		return nil
+	}
+
+	func file(forLockerItem lockerItem: SchoolLoopLockerItem) -> URL {
+		let session = URLSession.shared
+		let file = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(lockerItem.name)
+		session.synchronousDataTask(withRequest: request(forLockerItemPath: lockerItem.path)
+		) { (data, response, error) in
+			try? data?.write(to: file)
+		}
+		return file
 	}
 
 	func request(forLockerItemPath path: String) -> URLRequest {

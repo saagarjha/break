@@ -56,7 +56,6 @@
 		498665951C8D24E9004BA249 /* GradeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */; };
 		498665961C8D24E9004BA249 /* ProgressReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */; };
 		498665971C8D24E9004BA249 /* LockerItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986655F1C8D24E9004BA249 /* LockerItemCollectionViewCell.swift */; };
-		498665981C8D24E9004BA249 /* LockerItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665601C8D24E9004BA249 /* LockerItemViewController.swift */; };
 		498665991C8D24E9004BA249 /* LockerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665611C8D24E9004BA249 /* LockerViewController.swift */; };
 		4986659A1C8D24E9004BA249 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665621C8D24E9004BA249 /* LoginViewController.swift */; };
 		4986659B1C8D24E9004BA249 /* LoopMailMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */; };
@@ -186,7 +185,6 @@
 		4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradeTableViewCell.swift; sourceTree = "<group>"; };
 		4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportViewController.swift; sourceTree = "<group>"; };
 		4986655F1C8D24E9004BA249 /* LockerItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemCollectionViewCell.swift; sourceTree = "<group>"; };
-		498665601C8D24E9004BA249 /* LockerItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerItemViewController.swift; sourceTree = "<group>"; };
 		498665611C8D24E9004BA249 /* LockerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerViewController.swift; sourceTree = "<group>"; };
 		498665621C8D24E9004BA249 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailMessageViewController.swift; sourceTree = "<group>"; };
@@ -392,7 +390,6 @@
 			isa = PBXGroup;
 			children = (
 				4986655F1C8D24E9004BA249 /* LockerItemCollectionViewCell.swift */,
-				498665601C8D24E9004BA249 /* LockerItemViewController.swift */,
 				498665611C8D24E9004BA249 /* LockerViewController.swift */,
 			);
 			path = Locker;
@@ -718,7 +715,6 @@
 				4905295B1CE58787006190C4 /* SchoolLoopLockerItem.swift in Sources */,
 				4905294B1CE58787006190C4 /* SchoolLoop.swift in Sources */,
 				4986659F1C8D24E9004BA249 /* NewsDescriptionViewController.swift in Sources */,
-				498665981C8D24E9004BA249 /* LockerItemViewController.swift in Sources */,
 				4905294F1CE58787006190C4 /* SchoolLoopAssignment.swift in Sources */,
 				490529531CE58787006190C4 /* SchoolLoopCourse.swift in Sources */,
 				4905294D1CE58787006190C4 /* SchoolLoopAccount.swift in Sources */,

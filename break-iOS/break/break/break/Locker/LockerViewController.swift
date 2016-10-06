@@ -6,10 +6,11 @@
 //  Copyright © 2016 Saagar Jha. All rights reserved.
 //
 
+import MobileCoreServices
 import SafariServices
 import UIKit
 
-class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerPreviewingDelegate {
+class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerPreviewingDelegate, UIDocumentInteractionControllerDelegate {
 
 	let cellIdentifier = "lockerItem"
 
@@ -17,8 +18,6 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	var schoolLoop: SchoolLoop!
 	var lockerItems: [SchoolLoopLockerItem] = []
-
-	var destinationViewController: LockerItemViewController!
 
 	@IBOutlet weak var lockerCollectionView: UICollectionView! {
 		didSet {
@@ -122,8 +121,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let lockerItem = lockerItems[indexPath.row]
 		if lockerItem.type != .directory {
-			destinationViewController.title = lockerItem.name
-			destinationViewController.path = lockerItem.path
+			presentLockerItemViewController(withLockerItem: lockerItem)
 		} else {
 			guard let newLockerViewController = navigationController?.storyboard?.instantiateViewController(withIdentifier: "locker") as? LockerViewController else {
 				assertionFailure("Could not open LockerViewController")
@@ -135,14 +133,32 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 	}
 
+	func presentLockerItemViewController(withLockerItem lockerItem: SchoolLoopLockerItem) {
+		let file = schoolLoop.file(forLockerItem: lockerItem)
+		let documentInteractionController = UIDocumentInteractionController(url: file)
+		documentInteractionController.delegate = self
+		documentInteractionController.presentPreview(animated: true)
+	}
+
+	func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+		return self
+	}
+
+	func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
+		guard let url = controller.url else {
+			return
+		}
+		try? FileManager.default.removeItem(at: url)
+	}
+
+	// MARK: - Navigation
+
 	override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
 		if lockerItems[lockerCollectionView.indexPathsForSelectedItems![0].row].type == SchoolLoopLockerItemType.directory {
 			return false
 		}
-		return true
+		return false
 	}
-
-	// MARK: - Navigation
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = lockerCollectionView.indexPathForItem(at: lockerCollectionView.convert(location, to: view)),
@@ -164,14 +180,11 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		navigationController?.pushViewController(viewControllerToCommit, animated: true)
 	}
 
+	/*
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destination as? LockerItemViewController else {
-			assertionFailure("Could not cast destinationViewController to LockerItemViewController")
-			return
-		}
-		self.destinationViewController = destinationViewController
 	}
+	*/
 }
