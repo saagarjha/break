@@ -54,7 +54,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		categoryView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.showCourse(_:))))
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: view)
+			registerForPreviewing(with: self, sourceView: gradesTableView)
 		}
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getGrades(withPeriodID: periodID) { error in
@@ -226,7 +226,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	// MARK: - Navigation
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = gradesTableView.indexPathForRow(at: gradesTableView.convert(location, to: view)),
+		guard let indexPath = gradesTableView.indexPathForRow(at: location),
 			let cell = gradesTableView.cellForRow(at: indexPath) else {
 				return nil
 		}

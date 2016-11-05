@@ -53,7 +53,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		newsTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: view)
+			registerForPreviewing(with: self, sourceView: newsTableView)
 		}
 		refresh(self)
 	}
@@ -126,7 +126,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	// MARK: - Navigation
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = newsTableView.indexPathForRow(at: newsTableView.convert(location, to: view)),
+		guard let indexPath = newsTableView.indexPathForRow(at: location),
 			let cell = newsTableView.cellForRow(at: indexPath) else {
 				return nil
 		}

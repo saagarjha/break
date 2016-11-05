@@ -53,7 +53,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		loopMailTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: view)
+			registerForPreviewing(with: self, sourceView: loopMailTableView)
 		}
 		refresh(self)
 	}
@@ -124,7 +124,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	// MARK: - Navigation
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = loopMailTableView.indexPathForRow(at: loopMailTableView.convert(location, to: view)),
+		guard let indexPath = loopMailTableView.indexPathForRow(at: location),
 			let cell = loopMailTableView.cellForRow(at: indexPath) else {
 				return nil
 		}

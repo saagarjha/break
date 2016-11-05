@@ -52,7 +52,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		coursesTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: view)
+			registerForPreviewing(with: self, sourceView: coursesTableView)
 		}
 		refresh(self)
 	}
@@ -130,7 +130,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	// MARK: - Navigation
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = coursesTableView.indexPathForRow(at: coursesTableView.convert(location, to: view)),
+		guard let indexPath = coursesTableView.indexPathForRow(at: location),
 			let cell = coursesTableView.cellForRow(at: indexPath) else {
 				return nil
 		}

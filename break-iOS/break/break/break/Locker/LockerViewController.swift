@@ -53,7 +53,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			navigationItem.leftBarButtonItem = nil
 		}
 		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: view)
+			registerForPreviewing(with: self, sourceView: lockerCollectionView)
 		}
 		refresh(self)
 	}
@@ -134,7 +134,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func presentLockerItemViewController(withLockerItem lockerItem: SchoolLoopLockerItem) {
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		let file = schoolLoop.file(forLockerItem: lockerItem)
+		UIApplication.shared.isNetworkActivityIndicatorVisible = false
 		let documentInteractionController = UIDocumentInteractionController(url: file)
 		documentInteractionController.delegate = self
 		documentInteractionController.presentPreview(animated: true)
@@ -161,7 +163,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = lockerCollectionView.indexPathForItem(at: lockerCollectionView.convert(location, to: view)),
+		guard let indexPath = lockerCollectionView.indexPathForItem(at: location),
 			let cell = lockerCollectionView.cellForItem(at: indexPath) else {
 				return nil
 		}
@@ -169,6 +171,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			return nil
 		}
 		let selectedItem = lockerItems[indexPath.row]
+		guard selectedItem.type == .directory else {
+			return nil
+		}
 		destinationViewController.title = selectedItem.name
 		destinationViewController.path = selectedItem.path
 		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)

@@ -54,7 +54,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		assignmentsTableView.tableHeaderView = searchController.searchBar
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: view)
+			registerForPreviewing(with: self, sourceView: assignmentsTableView)
 		}
 		refresh(self)
 	}
@@ -160,7 +160,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	// MARK: - Navigation
 	
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = assignmentsTableView.indexPathForRow(at: assignmentsTableView.convert(location, to: view)),
+		guard let indexPath = assignmentsTableView.indexPathForRow(at: location),
 			let cell = assignmentsTableView.cellForRow(at: indexPath) else {
 				return nil
 			}
