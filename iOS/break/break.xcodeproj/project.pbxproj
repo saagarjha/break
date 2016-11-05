@@ -190,7 +190,7 @@
 		498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailMessageViewController.swift; sourceTree = "<group>"; };
 		498665651C8D24E9004BA249 /* LoopMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailTableViewCell.swift; sourceTree = "<group>"; };
 		498665661C8D24E9004BA249 /* LoopMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopMailViewController.swift; sourceTree = "<group>"; };
-		498665671C8D24E9004BA249 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = break/Main.storyboard; sourceTree = "<group>"; };
+		498665671C8D24E9004BA249 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = ../break/Main.storyboard; sourceTree = "<group>"; };
 		498665691C8D24E9004BA249 /* NewsDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsDescriptionViewController.swift; sourceTree = "<group>"; };
 		4986656A1C8D24E9004BA249 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		4986656B1C8D24E9004BA249 /* NewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
@@ -320,7 +320,6 @@
 			children = (
 				4957CF051D46909800487039 /* break.entitlements */,
 				498665531C8D24E9004BA249 /* break */,
-				498665671C8D24E9004BA249 /* Main.storyboard */,
 				498665701C8D24E9004BA249 /* Resources */,
 				4905293D1CE58787006190C4 /* SchoolLoop */,
 			);
@@ -431,6 +430,7 @@
 		498665701C8D24E9004BA249 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				498665671C8D24E9004BA249 /* Main.storyboard */,
 				498665721C8D24E9004BA249 /* Info.plist */,
 				49DC05B91CCDEDDD0090578F /* Assets.xcassets */,
 				498665731C8D24E9004BA249 /* LaunchScreen.storyboard */,

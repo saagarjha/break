@@ -22,7 +22,7 @@ break is a lightweight, native app for accessing [SchoolLoop](http://www.schooll
 ## Installation
 ### iOS
 * TestFlight: **OPEN!** Sign up [here](http://goo.gl/forms/SvYR80ZqIy).
-* Manual installation: Sign the app with your developer license, then build and deploy `break-iOS` using Xcode. See the [iOS README](./break-iOS) for more details.
+* Manual installation: Sign the app with your developer license, then build and deploy `iOS` using Xcode. See the [iOS README](./iOS) for more details.
 <br>
 
 <sup>"SchoolLoop" is a registered trademark of SchoolLoop, Inc., which is not affiliated with or endorse this app. All other trademarks belong to their respective owners.</sup>
