@@ -11,7 +11,7 @@ import Foundation
 class Logger {
 	static let filePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("log.txt")
 
-	class func log(_ string: String) {
+	class func log(_ string: String = "") {
 		if !FileManager.default.fileExists(atPath: filePath) {
 			FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
 		}

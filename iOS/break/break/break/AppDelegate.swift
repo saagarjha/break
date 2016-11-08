@@ -204,6 +204,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				}
 			}
 		} else {
+			Logger.log("Login Failed!\nSchool: \(schoolLoop.school.name)\nAccount: \(schoolLoop.account.username)\n")
 			showLogin()
 		}
 
@@ -327,6 +328,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			alertController.addTextField { textField in
 				textField.placeholder = "Password"
 				textField.isSecureTextEntry = true
+				let schoolLoop = SchoolLoop.sharedInstance
+				if Int(schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") ?? "") != nil {
+					textField.keyboardType = .numberPad
+				}
 			}
 			DispatchQueue.main.async {
 				tabBarController.present(alertController, animated: true, completion: nil)
