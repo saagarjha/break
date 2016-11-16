@@ -91,9 +91,9 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? NewsTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? NewsTableViewCell else {
 			assertionFailure("Could not deque NewsTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		}
 		let news = filteredNews[indexPath.row]
 		cell.titleLabel.text = news.title

@@ -69,10 +69,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) else {
-			assertionFailure("Could not deque UITableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		switch indexPath.section {
 		case 0:
 			cell.textLabel?.text = "Last Updated"

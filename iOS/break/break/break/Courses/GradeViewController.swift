@@ -67,10 +67,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) else {
-			assertionFailure("Could not deque UITableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/dd"
 		switch indexPath.row {

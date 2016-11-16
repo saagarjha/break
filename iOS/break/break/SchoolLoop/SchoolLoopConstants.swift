@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct SchoolLoopConstants {
-	static let version = "2"
+	static let version = "3"
 	#if os(iOS)
 		static let devToken = UIDevice.current.identifierForVendor?.uuidString ?? ""
 	#else
@@ -36,7 +36,7 @@ struct SchoolLoopConstants {
 			return dateFormatter.string(from: Date())
 		}
 	}
-	static let max = "10000"
+	static let max = "25"
 	static let forgotURL = URL(string: "https://montavista.schoolloop.com/portal/forgot_password")!
 
 	static func schoolURL() -> URL {
@@ -65,6 +65,14 @@ struct SchoolLoopConstants {
 
 	static func loopMailMessageURL(withDomainName domainName: String, studentID: String, ID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+	}
+	
+	static func loopMailContactsURL(withDomainName domainName: String, studentID: String, query: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/contacts?studentID=\(studentID)&q=\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+	}
+	
+	static func loopMailSendURL(withDomainName domainName: String) -> URL {
+		return URL(string: "https://\(domainName)/mapi/mail_messages".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
 	static func newsURL(withDomainName domainName: String, studentID: String) -> URL {

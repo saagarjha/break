@@ -105,7 +105,7 @@ class SchoolLoop: NSObject, NSCoding {
 			return
 		}
 		self.school = school
-		self.account = SchoolLoopAccount(username: username, password: password, fullName: account?.fullName ?? "", studentID: account?.studentID ?? "")
+		self.account = SchoolLoopAccount(username: username, password: password, fullName: account?.fullName ?? "", studentID: account?.studentID ?? "", hashedPassword: account?.hashedPassword ?? "")
 		let url = SchoolLoopConstants.logInURL(withDomainName: school.domainName)
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
@@ -130,7 +130,8 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			let fullName = loginJSON["fullName"] as? String ?? ""
 			let studentID = loginJSON["userID"] as? String ?? ""
-			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID)
+			let hashedPassword = loginJSON["hashedPassword"] as? String ?? ""
+			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID, hashedPassword: hashedPassword)
 			self.account.loggedIn = true
 			#if os(iOS)
 				(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
@@ -420,14 +421,16 @@ class SchoolLoop: NSObject, NSCoding {
 					completionHandler?(updated, .parseError)
 					return
 				}
-				let sender = senderJSON["name"] as? String ?? ""
+				let name = senderJSON["name"] as? String ?? ""
+				let id = senderJSON["userID"] as? String ?? ""
+				let sender = SchoolLoopContact(id: id, name: name, role: "", desc: "")
 				if self.loopMail(forID: ID) == nil {
 					updated = true
 					#if os(iOS)
 						if UIApplication.shared.applicationState != .active {
 							let notification = UILocalNotification()
 							notification.fireDate = Date(timeIntervalSinceNow: 1)
-							notification.alertBody = "From: \(sender)\n\(subject)\n"
+							notification.alertBody = "From: \(name)\n\(subject)\n"
 							notification.applicationIconBadgeNumber = 1
 							notification.soundName = UILocalNotificationDefaultSoundName
 							UIApplication.shared.scheduleLocalNotification(notification)
@@ -482,6 +485,55 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			loopMail.message = message
 			loopMail.links = links
+			completionHandler?(.noError)
+		}.resume()
+	}
+	
+	func getLoopMailContacts(withQuery query: String, completionHandler: ((_ contacts: [SchoolLoopContact]?, _ error: SchoolLoopError) -> Void)?) {
+		let url = SchoolLoopConstants.loopMailContactsURL(withDomainName: school.domainName, studentID: account.studentID, query: query)
+		let request = authenticatedRequest(withURL: url)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
+			var contacts: [SchoolLoopContact] = []
+			guard error == nil else {
+				completionHandler?(nil, .networkError)
+				return
+			}
+			guard let data = data,
+				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [AnyObject] else {
+					completionHandler?(nil, .parseError)
+					return
+			}
+			guard let contactsJSON = dataJSON else {
+				completionHandler?(nil, .parseError)
+				return
+			}
+			for contactJSON in contactsJSON {
+				guard let contactJSON = contactJSON as? [String: AnyObject] else {
+					completionHandler?(nil, .parseError)
+					return
+				}
+				let id = contactJSON["id"] as? String ?? ""
+				let name = contactJSON["name"] as? String ?? ""
+				let role = contactJSON["role"] as? String ?? ""
+				let desc = contactJSON["desc"] as? String ?? ""
+				let contact = SchoolLoopContact(id: id, name: name, role: role, desc: desc)
+				contacts.append(contact)
+			}
+			completionHandler?(contacts, .noError)
+			}.resume()
+	}
+	
+	func sendLoopMail(withComposedLoopMail composedLoopMail: SchoolLoopComposedLoopMail, completionHandler: ((_ error: SchoolLoopError) -> Void)?) {
+		let url = SchoolLoopConstants.loopMailSendURL(withDomainName: school.domainName)
+		var request = hashedAuthenticatedRequest(withURL: url)
+		modifyForSending(&request, withComposedLoopMail: composedLoopMail)
+		let session = URLSession.shared
+		session.dataTask(with: request) { (data, response, error) in
+			guard error == nil else {
+				completionHandler?(.networkError)
+				return
+			}
 			completionHandler?(.noError)
 		}.resume()
 	}
@@ -554,8 +606,7 @@ class SchoolLoop: NSObject, NSCoding {
 
 	func getLocker(withPath path: String, completionHandler: ((_ error: SchoolLoopError) -> Void)?) {
 		let url = SchoolLoopConstants.lockerURL(withPath: path, domainName: school.domainName, username: account.username)
-		var request = authenticatedRequest(withURL: url)
-		request.httpMethod = "PROPFIND"
+		let request = authenticatedRequest(withURL: url, httpMethod: "PROPFIND")
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
 			guard let data = data else {
@@ -573,9 +624,9 @@ class SchoolLoop: NSObject, NSCoding {
 		}.resume()
 	}
 
-	func authenticatedRequest(withURL url: URL) -> URLRequest {
+	func authenticatedRequest(withURL url: URL, httpMethod: String = "GET") -> URLRequest {
 		let request = NSMutableURLRequest(url: url)
-		request.httpMethod = "GET"
+		request.httpMethod = httpMethod
 
 		let plainString = "\(account.username):\(account.password)"
 		guard let base64Data = (plainString as NSString).data(using: String.Encoding.utf8.rawValue) else {
@@ -585,6 +636,27 @@ class SchoolLoop: NSObject, NSCoding {
 		let base64String = base64Data.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
 		return request as URLRequest
+	}
+	
+	func hashedAuthenticatedRequest(withURL url: URL, httpMethod: String = "POST") -> URLRequest {
+		let request = NSMutableURLRequest(url: url)
+		request.httpMethod = httpMethod
+		
+		let plainString = "\(account.username):\(account.hashedPassword)"
+		guard let base64Data = (plainString as NSString).data(using: String.Encoding.utf8.rawValue) else {
+			assertionFailure("Could not encode plainString")
+			return request as URLRequest
+		}
+		let base64String = base64Data.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
+		request.addValue("true", forHTTPHeaderField: "SL-HASH")
+		request.addValue(SchoolLoopConstants.devToken, forHTTPHeaderField: "SL-UUID")
+		return request as URLRequest
+	}
+	
+	func modifyForSending(_ request: inout URLRequest, withComposedLoopMail composedLoopMail: SchoolLoopComposedLoopMail) {
+		request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
+		request.httpBody = try? JSONSerialization.data(withJSONObject: ["to": composedLoopMail.to.map({ $0.id }).joined(separator: " "), "cc": composedLoopMail.cc.map({ $0.id }).joined(separator: " "), "subject": composedLoopMail.subject, "message": composedLoopMail.message], options: [])
 	}
 
 	func school(forName name: String) -> SchoolLoopSchool? {

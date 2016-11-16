@@ -153,7 +153,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func loginOnLaunch() {
 		let schoolLoop = SchoolLoop.sharedInstance
+		Logger.log("School: \(schoolLoop.school?.name)\nAccount: \(schoolLoop.account?.username)")
 		if schoolLoop.school != nil && schoolLoop.account != nil {
+			Logger.log("Login succeeded!")
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				DispatchQueue.main.async {
 					if error == .noError {
@@ -204,7 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				}
 			}
 		} else {
-			Logger.log("Login Failed!\nSchool: \(schoolLoop.school.name)\nAccount: \(schoolLoop.account.username)\n")
+			Logger.log("Login Failed!")
 			showLogin()
 		}
 

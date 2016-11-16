@@ -11,14 +11,14 @@ import Foundation
 @objc(SchoolLoopLoopMail)
 class SchoolLoopLoopMail: NSObject, NSCoding {
 	var subject: String
-	var sender: String
+	var sender: SchoolLoopContact
 	var date: Date
 	var ID: String
 
 	var message: String = ""
     var links: [(title: String, URL: String)] = []
 
-	init(subject: String, sender: String, date: String, ID: String) {
+	init(subject: String, sender: SchoolLoopContact, date: String, ID: String) {
 		self.subject = subject
 		self.sender = sender
 		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
@@ -32,7 +32,7 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
 		subject = aDecoder.decodeObject(forKey: "subject") as? String ?? ""
-		sender = aDecoder.decodeObject(forKey: "sender") as? String ?? ""
+		sender = aDecoder.decodeObject(forKey: "sender") as? SchoolLoopContact ?? SchoolLoopContact(id: "", name: "", role: "", desc: "")
 		date = aDecoder.decodeObject(forKey: "date") as? Date ?? Date.distantPast
 		ID = aDecoder.decodeObject(forKey: "ID") as? String ?? ""
 		message = aDecoder.decodeObject(forKey: "message") as? String ?? ""

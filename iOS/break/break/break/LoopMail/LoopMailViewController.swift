@@ -30,6 +30,27 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
+	override var previewActionItems: [UIPreviewActionItem] {
+		get {
+			return [UIPreviewAction(title: "Reply", style: .default, handler: { _, viewController in
+				guard let selectedLoopMail = (viewController as? LoopMailMessageViewController)?.loopMail,
+					let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
+					return
+				}
+				self.schoolLoop.getLoopMailMessage(withID: selectedLoopMail.ID) { error in
+					guard let loopMail = self.schoolLoop.loopMail(forID: selectedLoopMail.ID) else {
+						assertionFailure("Could not get LoopMail for ID")
+						return
+					}
+					DispatchQueue.main.async {
+						destinationViewController.loopMail = loopMail
+						destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
+						self.navigationController?.pushViewController(destinationViewController, animated: true)
+					}
+				}
+			})]
+		}
+	}
     
     deinit {
         searchController.loadViewIfNeeded()
@@ -89,13 +110,13 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? LoopMailTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LoopMailTableViewCell else {
 			assertionFailure("Could not deque LoopMailTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		}
 		let loopMail = filteredLoopMail[indexPath.row]
 		cell.subjectLabel.text = loopMail.subject
-		cell.senderLabel.text = loopMail.sender
+		cell.senderLabel.text = loopMail.sender.name
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateStyle = .long
 		dateFormatter.timeStyle = .short
@@ -106,13 +127,35 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 	}
+	
+	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+		let replyAction = UITableViewRowAction(style: .default, title: "Reply") { _, indexPath in
+			guard let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
+				return
+			}
+			let selectedLoopMail = self.filteredLoopMail[indexPath.row]
+			self.schoolLoop.getLoopMailMessage(withID: selectedLoopMail.ID) { error in
+				guard let loopMail = self.schoolLoop.loopMail(forID: selectedLoopMail.ID) else {
+					assertionFailure("Could not get LoopMail for ID")
+					return
+				}
+				DispatchQueue.main.async {
+					destinationViewController.loopMail = loopMail
+					destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
+					self.navigationController?.pushViewController(destinationViewController, animated: true)
+				}
+			}
+		}
+		replyAction.backgroundColor = view.tintColor
+		return [replyAction]
+	}
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
 		if filter != "" {
 			filteredLoopMail.removeAll()
 			filteredLoopMail = loopMail.filter { loopMail in
-				return loopMail.subject.lowercased().contains(filter) || loopMail.sender.lowercased().contains(filter)
+				return loopMail.subject.lowercased().contains(filter) || loopMail.sender.name.lowercased().contains(filter)
 			}
 		} else {
 			filteredLoopMail = loopMail
@@ -149,7 +192,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		guard let destinationViewController = segue.destination as? LoopMailMessageViewController,
             let cell = sender as? LoopMailTableViewCell,
             let indexPath = loopMailTableView.indexPath(for: cell) else {
-			assertionFailure("Could not cast destinationViewController to LoopMailMessageViewController")
+//			assertionFailure("Could not cast destinationViewController to LoopMailMessageViewController")
 			return
 		}
         let selectedLoopMail = filteredLoopMail[indexPath.row]

@@ -15,6 +15,7 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 
 	var schoolLoop: SchoolLoop!
 	var message: String = ""
+	var loopMail: SchoolLoopLoopMail?
 
 	var messageWebView: WKWebView!
 
@@ -44,6 +45,7 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 						assertionFailure("Could not get LoopMail for ID")
 						return
 					}
+					self.loopMail = loopMail
 					self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
 					if !loopMail.links.isEmpty {
 						self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
@@ -66,13 +68,17 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 //		return navigationController?.navigationBarHidden ?? false
 //	}
 
-	/*
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
+		guard let loopMailComposeViewController = segue.destination as? LoopMailComposeViewController,
+			let loopMail = loopMail else {
+			return
+		}
+		loopMailComposeViewController.loopMail = loopMail
+		loopMailComposeViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
 	 }
-	 */
 }

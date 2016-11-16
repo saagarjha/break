@@ -99,9 +99,9 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? AssignmentTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AssignmentTableViewCell else {
 			assertionFailure("Could not deque AssignmentTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		}
 		let section = indexPath.section
 		let row = indexPath.row

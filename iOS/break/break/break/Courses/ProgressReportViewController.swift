@@ -162,9 +162,9 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? GradeTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? GradeTableViewCell else {
 			assertionFailure("Could not deque GradeTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		}
 		let grade = filteredGrades[indexPath.row]
 		cell.titleLabel.text = grade.title

@@ -91,9 +91,9 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CourseTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CourseTableViewCell else {
 			assertionFailure("Could not deque CourseTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier)!
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		}
 		let course = filteredCourses[indexPath.row]
 		cell.periodLabel.text = course.period
