@@ -37,8 +37,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
 			errorHandler(NSError(domain: WCErrorDomain, code: WCError.Code.genericError.rawValue, userInfo: nil))
 		}
 	}
-	
+
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		
+
 	}
 }

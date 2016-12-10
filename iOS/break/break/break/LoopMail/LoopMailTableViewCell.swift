@@ -9,7 +9,7 @@
 import UIKit
 
 class LoopMailTableViewCell: UITableViewCell {
-	
+
 	@IBOutlet weak var subjectLabel: UILabel!
 	@IBOutlet weak var senderLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!

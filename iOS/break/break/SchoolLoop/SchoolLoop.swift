@@ -488,7 +488,7 @@ class SchoolLoop: NSObject, NSCoding {
 			completionHandler?(.noError)
 		}.resume()
 	}
-	
+
 	func getLoopMailContacts(withQuery query: String, completionHandler: ((_ contacts: [SchoolLoopContact]?, _ error: SchoolLoopError) -> Void)?) {
 		let url = SchoolLoopConstants.loopMailContactsURL(withDomainName: school.domainName, studentID: account.studentID, query: query)
 		let request = authenticatedRequest(withURL: url)
@@ -521,9 +521,9 @@ class SchoolLoop: NSObject, NSCoding {
 				contacts.append(contact)
 			}
 			completionHandler?(contacts, .noError)
-			}.resume()
+		}.resume()
 	}
-	
+
 	func sendLoopMail(withComposedLoopMail composedLoopMail: SchoolLoopComposedLoopMail, completionHandler: ((_ error: SchoolLoopError) -> Void)?) {
 		let url = SchoolLoopConstants.loopMailSendURL(withDomainName: school.domainName)
 		var request = hashedAuthenticatedRequest(withURL: url)
@@ -637,11 +637,11 @@ class SchoolLoop: NSObject, NSCoding {
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
 		return request as URLRequest
 	}
-	
+
 	func hashedAuthenticatedRequest(withURL url: URL, httpMethod: String = "POST") -> URLRequest {
 		let request = NSMutableURLRequest(url: url)
 		request.httpMethod = httpMethod
-		
+
 		let plainString = "\(account.username):\(account.hashedPassword)"
 		guard let base64Data = (plainString as NSString).data(using: String.Encoding.utf8.rawValue) else {
 			assertionFailure("Could not encode plainString")
@@ -653,7 +653,7 @@ class SchoolLoop: NSObject, NSCoding {
 		request.addValue(SchoolLoopConstants.devToken, forHTTPHeaderField: "SL-UUID")
 		return request as URLRequest
 	}
-	
+
 	func modifyForSending(_ request: inout URLRequest, withComposedLoopMail composedLoopMail: SchoolLoopComposedLoopMail) {
 		request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
 		request.httpBody = try? JSONSerialization.data(withJSONObject: ["to": composedLoopMail.to.map({ $0.id }).joined(separator: " "), "cc": composedLoopMail.cc.map({ $0.id }).joined(separator: " "), "subject": composedLoopMail.subject, "message": composedLoopMail.message], options: [])

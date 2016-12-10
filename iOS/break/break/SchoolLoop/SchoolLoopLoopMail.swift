@@ -16,21 +16,21 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 	var ID: String
 
 	var message: String = ""
-    var links: [(title: String, URL: String)] = []
+	var links: [(title: String, URL: String)] = []
 
 	init(subject: String, sender: SchoolLoopContact, date: String, ID: String) {
 		self.subject = subject
 		self.sender = sender
 		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
 		self.ID = ID
-        super.init()
+		super.init()
 	}
-    
-    func set(newDate date: String) {
-        self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+	func set(newDate date: String) {
+		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
+	}
+
+	required init?(coder aDecoder: NSCoder) {
 		subject = aDecoder.decodeObject(forKey: "subject") as? String ?? ""
 		sender = aDecoder.decodeObject(forKey: "sender") as? SchoolLoopContact ?? SchoolLoopContact(id: "", name: "", role: "", desc: "")
 		date = aDecoder.decodeObject(forKey: "date") as? Date ?? Date.distantPast

@@ -7,22 +7,39 @@
 //
 
 import UIKit
+import WebKit
 
-class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
-	
+class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, WKNavigationDelegate {
+
 	let cellIdentifier = "compose"
+
+	let leftQuoteInset: CGFloat = 20
 
 	@IBOutlet weak var composeTableView: UITableView!
 	var subjectTextField: UITextField!
-	@IBOutlet weak var composeTextView: UITextView! {
+	let composeView = UIView(frame: UIScreen.main.bounds)
+	var composeTextView: UITextView! {
 		didSet {
+			composeTextView.translatesAutoresizingMaskIntoConstraints = false
 			composeTextView.isScrollEnabled = false
-			composeTextView.delegate = self
-			composeTextView.text = message
+			composeTextView.font = UIFont.systemFont(ofSize: 16)
+			composeTextView.becomeFirstResponder()
 		}
 	}
-	@IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
-	
+	var messageTextView: UITextView! {
+		didSet {
+			messageTextView.translatesAutoresizingMaskIntoConstraints = false
+			messageTextView.isScrollEnabled = false
+			messageTextView.isEditable = false
+			guard let message = message else {
+				return
+			}
+			messageTextView.attributedText = try? NSAttributedString(data: (message.data(using: .utf8)) ?? Data(), options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil)
+			messageTextView.textContainerInset = UIEdgeInsets(top: messageTextView.textContainerInset.top, left: leftQuoteInset, bottom: messageTextView.textContainerInset.bottom, right: messageTextView.textContainerInset.right)
+			composeTextView.font = UIFont.systemFont(ofSize: messageTextView.font?.pointSize ?? 0)
+		}
+	}
+
 	var schoolLoop: SchoolLoop!
 	var loopMail: SchoolLoopLoopMail?
 	var composedLoopMail: SchoolLoopComposedLoopMail? {
@@ -41,7 +58,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 			}
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "MMM d, yyyy @ HH:mm"
-			message = "<p>\n<!-- Type right after this line -->\n\n\n<!-- Ignore everything below this line -->\n</p>\n\n\n<p>On " + dateFormatter.string(from: loopMail?.date ?? .distantPast) + ", <b>\(loopMail?.sender.name ?? "")</b>  wrote:</p><blockquote>\(m)</blockquote>"
+			message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\"><p>On " + dateFormatter.string(from: loopMail?.date ?? .distantPast) + ", <b>\(loopMail?.sender.name ?? "")</b>  wrote:</p><blockquote>\(m)</blockquote>"
 		}
 	}
 	var contactHeader: Int?
@@ -49,37 +66,76 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	var message: String?
 	var to: Set<SchoolLoopContact> = []
 	var cc: Set<SchoolLoopContact> = []
-	
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		// Do any additional setup after loading the view.
+		composeTextView = UITextView()
+		messageTextView = UITextView()
+
+		addComposeView()
+		drawBorders()
+
+
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
 		schoolLoop = SchoolLoop.sharedInstance
-    }
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-	
+	func addComposeView() {
+		composeView.addSubview(composeTextView)
+		composeView.addSubview(messageTextView)
+		let views: [String: Any] = ["compose": composeTextView, "message": messageTextView] // Stopgap for SR-2921
+		var constraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[compose][message]-|", options: [], metrics: nil, views: views)
+		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[compose]|", options: [], metrics: nil, views: views)
+		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[message]|", options: [], metrics: nil, views: views)
+		NSLayoutConstraint.activate(constraints)
+		if message == nil {
+			messageTextView.removeFromSuperview()
+		}
+		composeView.setNeedsLayout()
+		composeView.layoutIfNeeded()
+		composeView.frame = CGRect(origin: composeView.frame.origin, size: composeView.systemLayoutSizeFitting(UILayoutFittingCompressedSize))
+		composeTableView.tableFooterView = composeView
+	}
+
+	func drawBorders() {
+		let topBorder: CALayer = CALayer()
+		topBorder.frame = CGRect(x: 0, y: 0, width: composeTextView.frame.width, height: 1 / UIScreen.main.scale)
+		topBorder.backgroundColor = composeTableView.separatorColor?.cgColor
+		composeView.layer.addSublayer(topBorder)
+
+		messageTextView.textColor = .gray
+		messageTextView.sizeToFit()
+
+		let leftBorder: CALayer = CALayer()
+		leftBorder.frame = CGRect(x: leftQuoteInset / 2, y: 0, width: 1 / UIScreen.main.scale, height: messageTextView.contentSize.height)
+		leftBorder.backgroundColor = UIColor.gray.cgColor
+		messageTextView.layer.addSublayer(leftBorder)
+	}
+
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+		// Dispose of any resources that can be recreated.
+	}
+
 	@IBAction func send(_ sender: Any) {
-		schoolLoop.sendLoopMail(withComposedLoopMail: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: composeTextView.text, to: Array(to), cc: Array(cc))) { error in
+		schoolLoop.sendLoopMail(withComposedLoopMail: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: "<p>\(composeTextView.text ?? "")</p>\n\n\n\(message ?? "")", to: Array(to), cc: Array(cc))) { error in
 			DispatchQueue.main.async {
 				_ = self.navigationController?.popViewController(animated: true)
 			}
 		}
 	}
-	
+
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
-	
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return 3
 	}
-	
+
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LoopMailComposeTableViewCell else {
 			assertionFailure("Could not deque LoopMailComposeTableViewCell")
@@ -108,7 +164,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		cell.selectionStyle = .none
 		return cell
 	}
-	
+
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.row {
 		case 1:
@@ -131,12 +187,12 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		}
 		tableView.deselectRow(at: indexPath, animated: false)
 	}
-	
+
 	func textViewDidChange(_ textView: UITextView) {
 		textView.frame = CGRect(origin: textView.frame.origin, size: CGSize(width: textView.frame.width, height: textView.sizeThatFits(CGSize(width: textView.frame.width, height: .greatestFiniteMagnitude)).height))
 		composeTableView.tableFooterView = textView
 	}
-	
+
 	func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
 			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
@@ -144,16 +200,18 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 				return
 		}
 		let convertedKeyboardEndFrame = composeTableView.convert(keyboardEndFrame, from: composeTableView.window)
-		let rawAnimationCurve = ((userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uint32Value ?? 0) << 16
+		let rawAnimationCurve = ((userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0)
 		let animationCurve = UIViewAnimationOptions(rawValue: UInt(rawAnimationCurve))
-		bottomLayoutConstraint.constant = composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY
+		composeTableView.contentInset = UIEdgeInsets(top: composeTableView.contentInset.top, left: composeTableView.contentInset.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.contentInset.right)
+		composeTableView.scrollIndicatorInsets = UIEdgeInsets(top: composeTableView.scrollIndicatorInsets.top, left: composeTableView.scrollIndicatorInsets.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.scrollIndicatorInsets.right)
+		composeTableView.flashScrollIndicators()
 		UIView.animate(withDuration: animationDuration, delay: 0.0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
 			self.composeTableView.layoutIfNeeded()
 		})
 		composeTableView.tableFooterView = composeTableView.tableFooterView
 	}
 
-    /*
+	/*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

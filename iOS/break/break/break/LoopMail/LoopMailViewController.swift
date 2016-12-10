@@ -20,8 +20,8 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	@IBOutlet weak var loopMailTableView: UITableView! {
 		didSet {
-            loopMailTableView.backgroundView = UIView()
-            loopMailTableView.backgroundView?.backgroundColor = .clear
+			loopMailTableView.backgroundView = UIView()
+			loopMailTableView.backgroundView?.backgroundColor = .clear
 			loopMailTableView.rowHeight = UITableViewAutomaticDimension
 			loopMailTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(LoopMailViewController.refresh(_:)), for: .valueChanged)
@@ -30,31 +30,10 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
-	override var previewActionItems: [UIPreviewActionItem] {
-		get {
-			return [UIPreviewAction(title: "Reply", style: .default, handler: { _, viewController in
-				guard let selectedLoopMail = (viewController as? LoopMailMessageViewController)?.loopMail,
-					let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
-					return
-				}
-				self.schoolLoop.getLoopMailMessage(withID: selectedLoopMail.ID) { error in
-					guard let loopMail = self.schoolLoop.loopMail(forID: selectedLoopMail.ID) else {
-						assertionFailure("Could not get LoopMail for ID")
-						return
-					}
-					DispatchQueue.main.async {
-						destinationViewController.loopMail = loopMail
-						destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
-						self.navigationController?.pushViewController(destinationViewController, animated: true)
-					}
-				}
-			})]
-		}
+
+	deinit {
+		searchController.loadViewIfNeeded()
 	}
-    
-    deinit {
-        searchController.loadViewIfNeeded()
-    }
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -125,9 +104,9 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
-	
+
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		let replyAction = UITableViewRowAction(style: .default, title: "Reply") { _, indexPath in
 			guard let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
@@ -176,7 +155,8 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		}
 		let selectedLoopMail = filteredLoopMail[indexPath.row]
 		destinationViewController.ID = selectedLoopMail.ID
-		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		destinationViewController.parentNavigationController = navigationController
+		destinationViewController.preferredContentSize = CGSize(width: 0, height: 0)
 		previewingContext.sourceRect = cell.frame
 		return destinationViewController
 	}
@@ -190,13 +170,14 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? LoopMailMessageViewController,
-            let cell = sender as? LoopMailTableViewCell,
-            let indexPath = loopMailTableView.indexPath(for: cell) else {
+			let cell = sender as? LoopMailTableViewCell,
+			let indexPath = loopMailTableView.indexPath(for: cell) else {
 //			assertionFailure("Could not cast destinationViewController to LoopMailMessageViewController")
-			return
+				return
 		}
-        let selectedLoopMail = filteredLoopMail[indexPath.row]
-        destinationViewController.ID = selectedLoopMail.ID
+		let selectedLoopMail = filteredLoopMail[indexPath.row]
+		destinationViewController.ID = selectedLoopMail.ID
 		self.destinationViewController = destinationViewController
+		destinationViewController.parentNavigationController = navigationController
 	}
 }

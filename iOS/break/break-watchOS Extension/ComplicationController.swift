@@ -25,7 +25,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 					}
 				}
 			}
-			}, errorHandler: { error in
+		}, errorHandler: { error in
 			print(error)
 		})
 	}
@@ -238,7 +238,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 					}
 				}
 			}
-			}, errorHandler: { error in
+		}, errorHandler: { error in
 			print(error)
 		})
 	}

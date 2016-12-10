@@ -10,8 +10,8 @@ import WatchKit
 
 class GradeRowController: NSObject {
 
-    @IBOutlet var titleLabel: WKInterfaceLabel!
-    @IBOutlet var categoryName: WKInterfaceLabel!
-    @IBOutlet var scoreLabel: WKInterfaceLabel!
-    @IBOutlet var percentScoreLabel: WKInterfaceLabel!
+	@IBOutlet var titleLabel: WKInterfaceLabel!
+	@IBOutlet var categoryName: WKInterfaceLabel!
+	@IBOutlet var scoreLabel: WKInterfaceLabel!
+	@IBOutlet var percentScoreLabel: WKInterfaceLabel!
 }

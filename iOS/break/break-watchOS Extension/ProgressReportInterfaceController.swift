@@ -57,7 +57,7 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 						}
 					}
 			}
-			}, errorHandler: { error in
+		}, errorHandler: { error in
 			print(error)
 		})
 	}
@@ -66,8 +66,8 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 		// This method is called when watch view controller is no longer visible
 		super.didDeactivate()
 	}
-	
+
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		
+
 	}
 }

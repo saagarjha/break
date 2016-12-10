@@ -10,20 +10,20 @@ import UIKit
 
 class GradeTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var categoryNameLabel: UILabel!
-    @IBOutlet weak var percentScoreLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var categoryNameLabel: UILabel!
+	@IBOutlet weak var percentScoreLabel: UILabel!
+	@IBOutlet weak var scoreLabel: UILabel!
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		// Initialization code
+	}
 
-        // Configure the view for the selected state
-    }
+	override func setSelected(_ selected: Bool, animated: Bool) {
+		super.setSelected(selected, animated: animated)
+
+		// Configure the view for the selected state
+	}
 
 }

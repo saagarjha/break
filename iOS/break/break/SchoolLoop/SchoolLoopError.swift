@@ -9,9 +9,9 @@
 import Foundation
 
 enum SchoolLoopError: Error {
-    case noError
+	case noError
 	case unknownError
-    case doesNotExistError
+	case doesNotExistError
 	case authenticationError
 	case networkError
 	case parseError

@@ -47,7 +47,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-			definesPresentationContext = true
+		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
 		searchController.dimsBackgroundDuringPresentation = false
@@ -158,12 +158,12 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
-	
+
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = assignmentsTableView.indexPathForRow(at: location),
 			let cell = assignmentsTableView.cellForRow(at: indexPath) else {
 				return nil
-			}
+		}
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
 			return nil
 		}
@@ -181,13 +181,13 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
-			// Pass the selected object to the new view controller.
-			guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,
+		// Pass the selected object to the new view controller.
+		guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,
 			let cell = sender as? AssignmentTableViewCell,
 			let indexPath = assignmentsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
 				return
-			}
+		}
 		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
 		destinationViewController.iD = selectedAssignment.iD
 		self.destinationViewController = destinationViewController

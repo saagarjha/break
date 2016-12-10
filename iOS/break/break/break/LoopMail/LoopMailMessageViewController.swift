@@ -17,7 +17,26 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 	var message: String = ""
 	var loopMail: SchoolLoopLoopMail?
 
+	var parentNavigationController: UINavigationController?
 	var messageWebView: WKWebView!
+	override var previewActionItems: [UIPreviewActionItem] {
+		get {
+			return loopMail != nil ? [UIPreviewAction(title: "Reply", style: .default, handler: { _, viewController in
+	guard let destinationViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
+		return
+	}
+	guard let loopMail = self.loopMail else {
+		assertionFailure("Could not get LoopMail")
+		return
+	}
+	DispatchQueue.main.async {
+		destinationViewController.loopMail = loopMail
+		destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
+		self.parentNavigationController?.pushViewController(destinationViewController, animated: true)
+	}
+	})] : []
+		}
+	}
 
 	override func loadView() {
 		messageWebView = WKWebView()
@@ -36,17 +55,17 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getLoopMailMessage(withID: ID) { error in
 			DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					guard let loopMail = self.schoolLoop.loopMail(forID: self.ID) else {
 						assertionFailure("Could not get LoopMail for ID")
 						return
 					}
 					self.loopMail = loopMail
-					self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
+					self.message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\">From: \(loopMail.sender.name)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
 					if !loopMail.links.isEmpty {
 						self.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 					}
@@ -68,17 +87,17 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 //		return navigationController?.navigationBarHidden ?? false
 //	}
 
-	 // MARK: - Navigation
+	// MARK: - Navigation
 
-	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-	 // Get the new view controller using segue.destinationViewController.
-	 // Pass the selected object to the new view controller.
+	// In a storyboard-based application, you will often want to do a little preparation before navigation
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		// Get the new view controller using segue.destinationViewController.
+		// Pass the selected object to the new view controller.
 		guard let loopMailComposeViewController = segue.destination as? LoopMailComposeViewController,
 			let loopMail = loopMail else {
-			return
+				return
 		}
 		loopMailComposeViewController.loopMail = loopMail
 		loopMailComposeViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
-	 }
+	}
 }

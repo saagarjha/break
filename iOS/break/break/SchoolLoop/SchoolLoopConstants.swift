@@ -66,11 +66,11 @@ struct SchoolLoopConstants {
 	static func loopMailMessageURL(withDomainName domainName: String, studentID: String, ID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
-	
+
 	static func loopMailContactsURL(withDomainName domainName: String, studentID: String, query: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/contacts?studentID=\(studentID)&q=\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
-	
+
 	static func loopMailSendURL(withDomainName domainName: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}

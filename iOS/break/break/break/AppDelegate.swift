@@ -23,9 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-			if UIApplication.instancesRespond(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
-				application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
-			}
+		if UIApplication.instancesRespond(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
+			application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
+		}
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 		if WCSession.isSupported() {
 			let session = WCSession.default()
@@ -47,51 +47,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func applicationWillResignActive(_ application: UIApplication) {
 		// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-			// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+		// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 	}
 
 	func applicationDidEnterBackground(_ application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-			// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-			if UserDefaults.standard.bool(forKey: "password") {
-				if let tabBarController = self.window?.rootViewController as? UITabBarController {
-					let view: UIView
-					if !UIAccessibilityIsReduceTransparencyEnabled() {
-						let effect = UIBlurEffect(style: .light)
-						view = UIVisualEffectView(effect: effect)
-						view.frame = tabBarController.view.bounds
-					} else {
-						view = UIView(frame: tabBarController.view.bounds)
-						view.backgroundColor = .white
-					}
-					view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-					tabBarController.view.addSubview(view)
-					securityView = view
+		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+		if UserDefaults.standard.bool(forKey: "password") {
+			if let tabBarController = self.window?.rootViewController as? UITabBarController {
+				let view: UIView
+				if !UIAccessibilityIsReduceTransparencyEnabled() {
+					let effect = UIBlurEffect(style: .light)
+					view = UIVisualEffectView(effect: effect)
+					view.frame = tabBarController.view.bounds
+				} else {
+					view = UIView(frame: tabBarController.view.bounds)
+					view.backgroundColor = .white
 				}
+				view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+				tabBarController.view.addSubview(view)
+				securityView = view
 			}
+		}
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-			if UserDefaults.standard.bool(forKey: "password") {
-				if UserDefaults.standard.bool(forKey: "touchID") {
-					self.showAuthententication()
-				} else {
-					self.showPassword()
-				}
+		if UserDefaults.standard.bool(forKey: "password") {
+			if UserDefaults.standard.bool(forKey: "touchID") {
+				self.showAuthententication()
+			} else {
+				self.showPassword()
 			}
+		}
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-			application.applicationIconBadgeNumber = 0
+		application.applicationIconBadgeNumber = 0
 	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-			guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
-				return
-			}
+		guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
+			return
+		}
 		do {
 			try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)
 		} catch _ {
@@ -188,9 +188,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						}
 						UIView.animate(withDuration: 0.25, animations: {
 							oldView.alpha = 0
-						               }, completion: { _ in
+						}, completion: { _ in
 							oldView.removeFromSuperview()
-						               })
+						})
 					} else if error == .authenticationError {
 						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
 						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -266,9 +266,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						} else {
 							self.securityView.alpha = 0
 						}
-					               }, completion: { _ in
+					}, completion: { _ in
 						self.securityView.removeFromSuperview()
-					               })
+					})
 				}
 			} else {
 				self.showPassword()
@@ -292,9 +292,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						} else {
 							self.securityView.alpha = 0
 						}
-					               }, completion: { _ in
+					}, completion: { _ in
 						self.securityView.removeFromSuperview()
-					               })
+					})
 				}
 			}
 			let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -307,9 +307,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 							} else {
 								self.securityView.alpha = 0
 							}
-						               }, completion: { _ in
+						}, completion: { _ in
 							self.securityView.removeFromSuperview()
-						               })
+						})
 					}
 				} else {
 					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)

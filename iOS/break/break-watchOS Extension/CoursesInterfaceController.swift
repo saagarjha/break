@@ -41,7 +41,7 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 						}
 					}
 			}
-			}, errorHandler: { error in
+		}, errorHandler: { error in
 			print(error)
 		})
 	}
@@ -54,8 +54,8 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 	override func contextForSegue(withIdentifier segueIdentifier: String, in table: WKInterfaceTable, rowIndex: Int) -> Any? {
 		return courses[rowIndex]
 	}
-	
+
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		
+
 	}
 }

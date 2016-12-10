@@ -16,7 +16,7 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 	var dueDate: Date
 	var links: [(title: String, URL: String)]
 	var iD: String
-	
+
 	var isCompleted: Bool
 
 	init(title: String, assignmentDescription: String, courseName: String, dueDate: String, links: [(title: String, URL: String)], iD: String) {

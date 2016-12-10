@@ -90,23 +90,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			self.breakStackView.alpha = 1
 			self.forgotButton.alpha = 1
 			self.privacyPolicyButton.alpha = 1
-			}, completion: nil)
+		}, completion: nil)
 		UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
 			self.schoolNameTextField.frame = self.schoolNameTextField.frame.offsetBy(dx: 0, dy: -dy)
 			self.schoolNameTextField.alpha = 1
-			}, completion: nil)
+		}, completion: nil)
 		UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
 			self.usernameTextField.frame = self.usernameTextField.frame.offsetBy(dx: 0, dy: -dy)
 			self.usernameTextField.alpha = 1
-			}, completion: nil)
+		}, completion: nil)
 		UIView.animate(withDuration: 0.5, delay: 0.2, options: .curveEaseInOut, animations: {
 			self.passwordTextField.frame = self.passwordTextField.frame.offsetBy(dx: 0, dy: -dy)
 			self.passwordTextField.alpha = 1
-			}, completion: nil)
+		}, completion: nil)
 		UIView.animate(withDuration: 0.5, delay: 0.3, options: .curveEaseInOut, animations: {
 			self.logInButton.frame = self.logInButton.frame.offsetBy(dx: 0, dy: -dy)
 			self.logInButton.alpha = 1
-			}, completion: nil)
+		}, completion: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -129,7 +129,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					UIApplication.shared.keyWindow?.rootViewController = tabBarController
 					UIView.animate(withDuration: 0.25, animations: {
 						oldView.alpha = 0
-						}, completion: { _ in
+					}, completion: { _ in
 						oldView.removeFromSuperview()
 					})
 					var view: UIView?

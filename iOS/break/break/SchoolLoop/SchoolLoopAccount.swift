@@ -15,7 +15,7 @@ class SchoolLoopAccount: NSObject, NSCoding {
 	var fullName: String
 	var studentID: String
 	var hashedPassword: String
-    var loggedIn: Bool = false
+	var loggedIn: Bool = false
 
 	init(username: String, password: String, fullName: String, studentID: String, hashedPassword: String) {
 		self.username = username

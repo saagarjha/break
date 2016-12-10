@@ -48,7 +48,7 @@ class TrendScore: UIView {
 		shapeLayer.lineWidth = 1
 		layer.addSublayer(shapeLayer)
 		for i in 0..<dateLabels {
-			let date = Date(timeInterval: endDate.timeIntervalSince(startDate ) * TimeInterval(i) / TimeInterval(dateLabels), since: startDate)
+			let date = Date(timeInterval: endDate.timeIntervalSince(startDate) * TimeInterval(i) / TimeInterval(dateLabels), since: startDate)
 			let textLayer = CATextLayer()
 			textLayer.contentsScale = UIScreen.main.scale
 			textLayer.string = dateFormatter.string(from: date)
@@ -66,7 +66,7 @@ class TrendScore: UIView {
 			textLayer.string = String(format: "%.2f%%", grade * 100)
 			textLayer.fontSize = 12
 			textLayer.foregroundColor = UIColor.black.cgColor
-			let textFrame = (textLayer.string as? NSString ?? "").boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil) 
+			let textFrame = (textLayer.string as? NSString ?? "").boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
 			textLayer.frame = CGRect(x: leftInset / 2 - textFrame.width / 2, y: graphFrame.height - graphFrame.height * CGFloat(i) / CGFloat(gradeLabels) - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}

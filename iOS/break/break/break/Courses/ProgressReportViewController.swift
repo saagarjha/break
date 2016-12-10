@@ -146,11 +146,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		if section == 0 {
-			return categoryView
-		} else {
-			return UIView(frame: CGRect.zero)
-		}
+		return section == 0 ? categoryView : nil
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

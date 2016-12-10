@@ -14,27 +14,27 @@ class SchoolLoopContact: NSObject, NSCoding {
 	var name: String
 	var role: String
 	var desc: String
-	
+
 	override var hashValue: Int {
 		get {
 			return id.hashValue
 		}
 	}
-	
+
 	init(id: String, name: String, role: String, desc: String) {
 		self.id = id
 		self.name = name
 		self.role = role
 		self.desc = desc
 	}
-	
+
 	required init(coder aDecoder: NSCoder) {
 		id = aDecoder.decodeObject(forKey: "id") as? String ?? ""
 		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
 		role = aDecoder.decodeObject(forKey: "role") as? String ?? ""
 		desc = aDecoder.decodeObject(forKey: "desc") as? String ?? ""
 	}
-	
+
 	func encode(with aCoder: NSCoder) {
 		aCoder.encode(id, forKey: "id")
 		aCoder.encode(name, forKey: "name")
@@ -43,6 +43,6 @@ class SchoolLoopContact: NSObject, NSCoding {
 	}
 }
 
-func ==(left: SchoolLoopContact, right: SchoolLoopContact) -> Bool {
+func == (left: SchoolLoopContact, right: SchoolLoopContact) -> Bool {
 	return left.id == right.id
 }

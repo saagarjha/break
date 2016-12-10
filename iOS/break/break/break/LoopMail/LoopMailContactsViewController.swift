@@ -9,22 +9,22 @@
 import UIKit
 
 class LoopMailContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
-	
+
 	let cellIdentifier = "contact"
-	
+
 	var loopMailContactsDelegate: LoopMailContactsDelegate?
-	
+
 	var schoolLoop: SchoolLoop!
 	var contacts: [SchoolLoopContact] = []
 	var selectedContacts: [SchoolLoopContact] = []
-	
+
 	@IBOutlet weak var contactsTableView: UITableView!
 	let searchController = UISearchController(searchResultsController: nil)
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+		// Do any additional setup after loading the view.
 		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.delegate = self
@@ -33,23 +33,23 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		contactsTableView.tableHeaderView = searchController.searchBar
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(LoopMailContactsViewController.done(_:)))
 		schoolLoop = SchoolLoop.sharedInstance
-    }
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-	
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+		// Dispose of any resources that can be recreated.
+	}
+
 	func done(_ sender: Any?) {
 		loopMailContactsDelegate?.selected(contacts: selectedContacts)
 		_ = navigationController?.popViewController(animated: true)
 	}
-	
-	
+
+
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
-	
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch section {
 		case 0:
@@ -60,7 +60,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 			return 0
 		}
 	}
-	
+
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section {
 		case 0:
@@ -71,7 +71,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 			return ""
 		}
 	}
-	
+
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		let contact: SchoolLoopContact
@@ -89,7 +89,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		cell.detailTextLabel?.text = "\(contact.role)\(contact.desc)"
 		return cell
 	}
-	
+
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
 		schoolLoop.getLoopMailContacts(withQuery: filter) { contacts, error in
@@ -104,7 +104,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 			}
 		}
 	}
-	
+
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.section {
 		case 0:
@@ -118,7 +118,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		contactsTableView.reloadData()
 	}
 
-    /*
+	/*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
