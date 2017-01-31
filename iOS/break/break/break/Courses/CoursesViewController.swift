@@ -20,12 +20,16 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
 	@IBOutlet weak var coursesTableView: UITableView! {
 		didSet {
-			coursesTableView.backgroundView = UIView()
-			coursesTableView.backgroundView?.backgroundColor = .clear
 			coursesTableView.rowHeight = UITableViewAutomaticDimension
 			coursesTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(CoursesViewController.refresh(_:)), for: .valueChanged)
-			coursesTableView.addSubview(refreshControl)
+			if #available(iOS 10.0, *) {
+				coursesTableView.refreshControl = refreshControl
+			} else {
+				coursesTableView.addSubview(refreshControl)
+				coursesTableView.backgroundView = UIView()
+				coursesTableView.backgroundView?.backgroundColor = .clear
+			}
 		}
 	}
 	let refreshControl = UIRefreshControl()

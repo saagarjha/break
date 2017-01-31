@@ -10,6 +10,7 @@ import Foundation
 
 @objc(SchoolLoopCategory)
 class SchoolLoopCategory: NSObject, NSCoding {
+
 	var name: String
 	var score: String
 	var weight: String
@@ -18,12 +19,18 @@ class SchoolLoopCategory: NSObject, NSCoding {
 		self.name = name
 		self.score = score
 		self.weight = weight
+		super.init()
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	convenience init(category: SchoolLoopCategory) {
+		self.init(name: category.name, score: category.score, weight: category.weight)
+	}
+
+	required init(coder aDecoder: NSCoder) {
 		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
 		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
 		weight = aDecoder.decodeObject(forKey: "weight") as? String ?? ""
+		super.init()
 	}
 
 	func encode(with aCoder: NSCoder) {

@@ -19,33 +19,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	@IBOutlet weak var schoolNameTextField: UITextField! {
 		didSet {
 			schoolNameTextField.delegate = self
-			schoolNameTextField.autocorrectionType = .no
-			schoolNameTextField.autocapitalizationType = .words
-			schoolNameTextField.returnKeyType = .next
 		}
 	}
 	@IBOutlet weak var usernameTextField: UITextField! {
 		didSet {
 			usernameTextField.delegate = self
-			schoolNameTextField.autocorrectionType = .no
-			schoolNameTextField.autocapitalizationType = .none
-			schoolNameTextField.returnKeyType = .next
 		}
 	}
 	@IBOutlet weak var passwordTextField: UITextField! {
 		didSet {
 			passwordTextField.delegate = self
 			passwordTextField.isSecureTextEntry = true
-			passwordTextField.autocorrectionType = .no
-			passwordTextField.autocapitalizationType = .none
-			passwordTextField.returnKeyType = .go
 		}
 	}
-	@IBOutlet weak var logInButton: UIButton! {
-		didSet {
-			logInButton.layer.cornerRadius = 4
-		}
-	}
+	@IBOutlet weak var logInButton: UIButton!
 	@IBOutlet weak var forgotButton: UIButton!
 	@IBOutlet weak var privacyPolicyButton: UIButton!
 
@@ -258,4 +245,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		view.endEditing(true)
 	}
 
+}
+
+extension UIButton {
+	@IBInspectable var cornerRadius: CGFloat {
+		get {
+			return layer.cornerRadius
+		}
+		set {
+			layer.cornerRadius = newValue
+		}
+	}
 }

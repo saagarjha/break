@@ -18,6 +18,7 @@ class SchoolLoop: NSObject, NSCoding {
 	var schools: [SchoolLoopSchool] = []
 	var account: SchoolLoopAccount!
 	var courses: [SchoolLoopCourse] = []
+	var computableCourses: [SchoolLoopComputableCourse] = []
 	var assignments: [SchoolLoopAssignment] = []
 	var assignmentsWithDueDates: [Date: [SchoolLoopAssignment]] {
 		get {
@@ -39,7 +40,7 @@ class SchoolLoop: NSObject, NSCoding {
 	var currentPath = ""
 	var currentType = SchoolLoopLockerItemType.unknown
 
-	fileprivate override init() {
+	private override init() {
 		super.init()
 	}
 
@@ -52,6 +53,7 @@ class SchoolLoop: NSObject, NSCoding {
 		schoolLoop.assignments = aDecoder.decodeObject(forKey: "assignments") as? [SchoolLoopAssignment] ?? []
 		schoolLoop.loopMail = aDecoder.decodeObject(forKey: "loopMail") as? [SchoolLoopLoopMail] ?? []
 		schoolLoop.news = aDecoder.decodeObject(forKey: "news") as? [SchoolLoopNews] ?? []
+		super.init()
 	}
 
 	func encode(with aCoder: NSCoder) {
@@ -231,8 +233,8 @@ class SchoolLoop: NSObject, NSCoding {
 				return
 			}
 			guard let course = self.course(forPeriodID: periodID) else {
-				completionHandler?(.doesNotExistError)
-				return
+					completionHandler?(.doesNotExistError)
+					return
 			}
 			course.categories.removeAll()
 			course.grades.removeAll()
@@ -350,7 +352,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let courseName = assignmentJSON["courseName"] as? String ?? ""
 				let dueDate = assignmentJSON["dueDate"] as? String ?? ""
 				let iD = assignmentJSON["iD"] as? String ?? ""
-				var links: [(title: String, URL: String)] = []
+				var links = [(title: String, URL: String)]()
 				if let linksJSON = assignmentJSON["links"] as? [AnyObject] {
 					for linkJSON in linksJSON {
 						guard let linkJSON = linkJSON as? [String: AnyObject] else {
@@ -471,7 +473,7 @@ class SchoolLoop: NSObject, NSCoding {
 				return
 			}
 			let message = messageJSON["message"] as? String ?? ""
-			var links: [(title: String, URL: String)] = []
+			var links = [(title: String, URL: String)]()
 			if let linksJSON = messageJSON["links"] as? [AnyObject] {
 				for linkJSON in linksJSON {
 					guard let linkJSON = linkJSON as? [String: AnyObject] else {
@@ -568,7 +570,7 @@ class SchoolLoop: NSObject, NSCoding {
 				let createdDate = newsJSON["createdDate"] as? String ?? ""
 				let description = newsJSON["description"] as? String ?? ""
 				let iD = newsJSON["iD"] as? String ?? ""
-				var links: [(title: String, URL: String)] = []
+				var links = [(title: String, URL: String)]()
 				if let linksJSON = newsJSON["links"] as? [AnyObject] {
 					for linkJSON in linksJSON {
 						guard let linkJSON = linkJSON as? [String: AnyObject] else {

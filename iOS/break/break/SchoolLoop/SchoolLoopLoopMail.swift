@@ -16,7 +16,7 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 	var ID: String
 
 	var message: String = ""
-	var links: [(title: String, URL: String)] = []
+	var links = [(title: String, URL: String)]()
 
 	init(subject: String, sender: SchoolLoopContact, date: String, ID: String) {
 		self.subject = subject

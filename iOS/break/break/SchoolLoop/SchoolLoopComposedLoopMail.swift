@@ -20,5 +20,6 @@ class SchoolLoopComposedLoopMail: NSObject {
 		self.message = message
 		self.to = to
 		self.cc = cc
+		super.init()
 	}
 }

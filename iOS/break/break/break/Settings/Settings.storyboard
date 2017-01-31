@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16C32f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D25a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,7 +39,7 @@
                         <sections>
                             <tableViewSection id="MK9-Zp-lJ5">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="9hk-Od-XUQ" detailTextLabel="6DZ-UV-byd" style="IBUITableViewCellStyleValue1" id="7sF-9b-qye">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="9hk-Od-XUQ" detailTextLabel="6DZ-UV-byd" style="IBUITableViewCellStyleValue1" id="7sF-9b-qye">
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7sF-9b-qye" id="H1w-Px-zGh">
@@ -68,7 +68,7 @@
                                             </segue>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="l80-ES-Lbu" detailTextLabel="Kcr-RG-xBb" style="IBUITableViewCellStyleValue1" id="wrZ-s5-xqQ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="l80-ES-Lbu" detailTextLabel="Kcr-RG-xBb" style="IBUITableViewCellStyleValue1" id="wrZ-s5-xqQ">
                                         <rect key="frame" x="0.0" y="79" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wrZ-s5-xqQ" id="oNu-wf-7ns">
@@ -99,7 +99,7 @@
                             </tableViewSection>
                             <tableViewSection id="Gje-nO-ESm">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="g4f-Oi-Sze" style="IBUITableViewCellStyleDefault" id="8sm-hi-3XV">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="g4f-Oi-Sze" style="IBUITableViewCellStyleDefault" id="8sm-hi-3XV">
                                         <rect key="frame" x="0.0" y="159" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8sm-hi-3XV" id="VEE-IV-zWG">
@@ -123,7 +123,7 @@
                             </tableViewSection>
                             <tableViewSection id="mhL-dK-APw">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="VUL-xt-xi1" style="IBUITableViewCellStyleDefault" id="Zk8-Cz-cf8">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="VUL-xt-xi1" style="IBUITableViewCellStyleDefault" id="Zk8-Cz-cf8">
                                         <rect key="frame" x="0.0" y="239" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zk8-Cz-cf8" id="dpC-Hi-pb6">
@@ -165,7 +165,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x1G-OB-gZj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4978" y="322"/>
+            <point key="canvasLocation" x="4976.8000000000002" y="321.58920539730138"/>
         </scene>
         <!--Account-->
         <scene sceneID="2h7-CP-eeI">
@@ -263,7 +263,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Bpr-Hv-6ou">
-                                                    <rect key="frame" x="311" y="11" width="51" height="31"/>
+                                                    <rect key="frame" x="311" y="8" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="usePassword:" destination="3Xs-ap-SmM" eventType="valueChanged" id="10y-Cu-Vrs"/>
                                                     </connections>
@@ -273,7 +273,7 @@
                                                 <constraint firstItem="Ec6-Bo-dDm" firstAttribute="leading" secondItem="Wsj-Ub-UpI" secondAttribute="leadingMargin" id="E73-vd-T1H"/>
                                                 <constraint firstItem="Ec6-Bo-dDm" firstAttribute="centerY" secondItem="Wsj-Ub-UpI" secondAttribute="centerY" id="LNW-I1-c5g"/>
                                                 <constraint firstItem="Bpr-Hv-6ou" firstAttribute="trailing" secondItem="Wsj-Ub-UpI" secondAttribute="trailingMargin" id="XMC-hN-yFl"/>
-                                                <constraint firstItem="Bpr-Hv-6ou" firstAttribute="top" secondItem="Wsj-Ub-UpI" secondAttribute="topMargin" id="jYa-Jc-dXB"/>
+                                                <constraint firstItem="Bpr-Hv-6ou" firstAttribute="centerY" secondItem="Wsj-Ub-UpI" secondAttribute="centerY" id="pHp-ps-RPs"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -289,7 +289,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aGV-s8-9U6">
-                                                    <rect key="frame" x="311" y="11" width="51" height="31"/>
+                                                    <rect key="frame" x="311" y="8.5" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="useTouchID:" destination="3Xs-ap-SmM" eventType="valueChanged" id="GTP-bQ-Liz"/>
                                                     </connections>
@@ -304,8 +304,8 @@
                                             <constraints>
                                                 <constraint firstItem="q1M-tJ-dFT" firstAttribute="centerY" secondItem="hGq-xf-Hzi" secondAttribute="centerY" id="X0N-x3-RaY"/>
                                                 <constraint firstItem="q1M-tJ-dFT" firstAttribute="leading" secondItem="hGq-xf-Hzi" secondAttribute="leadingMargin" id="hkB-hh-HjD"/>
-                                                <constraint firstItem="aGV-s8-9U6" firstAttribute="top" secondItem="hGq-xf-Hzi" secondAttribute="topMargin" id="pc1-Qm-QTB"/>
                                                 <constraint firstItem="aGV-s8-9U6" firstAttribute="trailing" secondItem="hGq-xf-Hzi" secondAttribute="trailingMargin" id="sg9-Sl-MmP"/>
+                                                <constraint firstItem="aGV-s8-9U6" firstAttribute="centerY" secondItem="hGq-xf-Hzi" secondAttribute="centerY" id="sll-Ib-kRc"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

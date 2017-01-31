@@ -27,17 +27,6 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 		}
 		self.periodID = course.periodID
 		setTitle(course.courseName)
-//		grades = course.grades
-//		self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
-//		for (index, grade) in grades.enumerate() {
-//			if let controller = gradesTable.rowControllerAtIndex(index) as? GradeRowController {
-//				controller.titleLabel.setText(grade.title)
-//				controller.categoryName.setText(grade.categoryName)
-//				controller.scoreLabel.setText("\(grade.score)/\(grade.maxPoints)")
-//				controller.percentScoreLabel.setText(grade.percentScore)
-//			}
-//		}
-
 	}
 
 	override func willActivate() {

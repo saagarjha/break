@@ -10,6 +10,12 @@ import Foundation
 
 @objc(SchoolLoopGrade)
 class SchoolLoopGrade: NSObject, NSCoding {
+	static var dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+		return dateFormatter
+	}()
+
 	var title: String
 	var categoryName: String
 	var percentScore: String
@@ -28,11 +34,13 @@ class SchoolLoopGrade: NSObject, NSCoding {
 		self.maxPoints = maxPoints
 		self.comment = comment
 		self.systemID = systemID
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-		self.dueDate = dateFormatter.date(from: dueDate) ?? Date.distantPast
-		self.changedDate = dateFormatter.date(from: changedDate) ?? Date.distantPast
+		self.dueDate = SchoolLoopGrade.dateFormatter.date(from: dueDate) ?? Date.distantPast
+		self.changedDate = SchoolLoopGrade.dateFormatter.date(from: changedDate) ?? Date.distantPast
 		super.init()
+	}
+
+	convenience init(grade: SchoolLoopGrade) {
+		self.init(title: grade.title, categoryName: grade.categoryName, percentScore: grade.percentScore, score: grade.score, maxPoints: grade.maxPoints, comment: grade.comment, systemID: grade.systemID, dueDate: SchoolLoopGrade.dateFormatter.string(from: grade.dueDate), changedDate: SchoolLoopGrade.dateFormatter.string(from: grade.dueDate))
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -45,6 +53,7 @@ class SchoolLoopGrade: NSObject, NSCoding {
 		systemID = aDecoder.decodeObject(forKey: "systemID") as? String ?? ""
 		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
 		changedDate = aDecoder.decodeObject(forKey: "changedDate") as? Date ?? Date.distantPast
+		super.init()
 	}
 
 	func encode(with aCoder: NSCoder) {

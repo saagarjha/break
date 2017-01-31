@@ -64,8 +64,8 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	var contactHeader: Int?
 	var subject: String?
 	var message: String?
-	var to: Set<SchoolLoopContact> = []
-	var cc: Set<SchoolLoopContact> = []
+	var to = Set<SchoolLoopContact>()
+	var cc = Set<SchoolLoopContact>()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -80,13 +80,14 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.deviceOrientationDidChange(notification:)), name: .UIDeviceOrientationDidChange, object: nil)
 		schoolLoop = SchoolLoop.sharedInstance
 	}
 
 	func addComposeView() {
 		composeView.addSubview(composeTextView)
 		composeView.addSubview(messageTextView)
-		let views: [String: Any] = ["compose": composeTextView, "message": messageTextView] // Stopgap for SR-2921
+		let views: [String: Any] = ["compose": composeTextView, "message": messageTextView]
 		var constraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[compose][message]-|", options: [], metrics: nil, views: views)
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[compose]|", options: [], metrics: nil, views: views)
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[message]|", options: [], metrics: nil, views: views)
@@ -209,6 +210,10 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 			self.composeTableView.layoutIfNeeded()
 		})
 		composeTableView.tableFooterView = composeTableView.tableFooterView
+	}
+	
+	func deviceOrientationDidChange(notification: NSNotification) {
+		drawBorders()
 	}
 
 	/*

@@ -20,12 +20,16 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	@IBOutlet weak var newsTableView: UITableView! {
 		didSet {
-			newsTableView.backgroundView = UIView()
-			newsTableView.backgroundView?.backgroundColor = .clear
 			newsTableView.rowHeight = UITableViewAutomaticDimension
 			newsTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(NewsViewController.refresh(_:)), for: .valueChanged)
-			newsTableView.addSubview(refreshControl)
+			if #available(iOS 10.0, *) {
+				newsTableView.refreshControl = refreshControl
+			} else {
+				newsTableView.addSubview(refreshControl)
+				newsTableView.backgroundView = UIView()
+				newsTableView.backgroundView?.backgroundColor = .clear
+			}
 		}
 	}
 	let refreshControl = UIRefreshControl()

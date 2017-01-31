@@ -23,7 +23,13 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		didSet {
 			lockerCollectionView.alwaysBounceVertical = true
 			refreshControl.addTarget(self, action: #selector(LockerViewController.refresh(_:)), for: .valueChanged)
-			lockerCollectionView.addSubview(refreshControl)
+			if #available(iOS 10.0, *) {
+				lockerCollectionView.refreshControl = refreshControl
+			} else {
+				lockerCollectionView.addSubview(refreshControl)
+				lockerCollectionView.backgroundView = UIView()
+				lockerCollectionView.backgroundView?.backgroundColor = .clear
+			}
 		}
 	}
 	let refreshControl = UIRefreshControl()

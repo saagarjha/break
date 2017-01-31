@@ -13,20 +13,24 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	let cellIdentifier = "assignment"
 
 	var schoolLoop: SchoolLoop!
-	var assignments: [Date: [SchoolLoopAssignment]] = [:]
-	var filteredAssignments: [Date: [SchoolLoopAssignment]] = [:]
+	var assignments = [Date: [SchoolLoopAssignment]]()
+	var filteredAssignments = [Date: [SchoolLoopAssignment]]()
 	var filteredAssignmentDueDates: [Date] = []
 
 	var destinationViewController: AssignmentDescriptionViewController!
 
 	@IBOutlet weak var assignmentsTableView: UITableView! {
 		didSet {
-			assignmentsTableView.backgroundView = UIView()
-			assignmentsTableView.backgroundView?.backgroundColor = .clear
 			assignmentsTableView.rowHeight = UITableViewAutomaticDimension
 			assignmentsTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), for: .valueChanged)
-			assignmentsTableView.addSubview(refreshControl)
+			if #available(iOS 10.0, *) {
+				assignmentsTableView.refreshControl = refreshControl
+			} else {
+				assignmentsTableView.addSubview(refreshControl)
+				assignmentsTableView.backgroundView = UIView()
+				assignmentsTableView.backgroundView?.backgroundColor = .clear
+			}
 		}
 	}
 	let refreshControl = UIRefreshControl()

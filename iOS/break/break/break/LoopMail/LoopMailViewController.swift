@@ -20,12 +20,16 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	@IBOutlet weak var loopMailTableView: UITableView! {
 		didSet {
-			loopMailTableView.backgroundView = UIView()
-			loopMailTableView.backgroundView?.backgroundColor = .clear
 			loopMailTableView.rowHeight = UITableViewAutomaticDimension
 			loopMailTableView.estimatedRowHeight = 80.0
 			refreshControl.addTarget(self, action: #selector(LoopMailViewController.refresh(_:)), for: .valueChanged)
-			loopMailTableView.addSubview(refreshControl)
+			if #available(iOS 10.0, *) {
+				loopMailTableView.refreshControl = refreshControl
+			} else {
+				loopMailTableView.addSubview(refreshControl)
+				loopMailTableView.backgroundView = UIView()
+				loopMailTableView.backgroundView?.backgroundColor = .clear
+			}
 		}
 	}
 	let refreshControl = UIRefreshControl()
@@ -172,7 +176,6 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		guard let destinationViewController = segue.destination as? LoopMailMessageViewController,
 			let cell = sender as? LoopMailTableViewCell,
 			let indexPath = loopMailTableView.indexPath(for: cell) else {
-//			assertionFailure("Could not cast destinationViewController to LoopMailMessageViewController")
 				return
 		}
 		let selectedLoopMail = filteredLoopMail[indexPath.row]

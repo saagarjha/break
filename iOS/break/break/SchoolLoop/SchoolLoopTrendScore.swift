@@ -16,11 +16,13 @@ class SchoolLoopTrendScore: NSObject, NSCoding {
 	init(score: String, dayID: String) {
 		self.score = score
 		self.dayID = Date(timeIntervalSince1970: (TimeInterval(dayID) ?? 0) / 1000)
+		super.init()
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
 		dayID = aDecoder.decodeObject(forKey: "dayID") as? Date ?? Date.distantPast
+		super.init()
 	}
 
 	func encode(with aCoder: NSCoder) {

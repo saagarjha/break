@@ -102,7 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
 		if archived {
 			NSKeyedUnarchiver.unarchiveObject(withFile: file)
 			archived = false
@@ -115,9 +114,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					DispatchQueue.global(qos: .userInitiated).async {
 						let group = DispatchGroup()
 						let completion: (Bool, SchoolLoopError) -> Void = {
-							if $0.1 == .noError {
+							if $1 == .noError {
 								updated = updated == .failed ? .noData : updated
-								updated = $0.0 ? .newData : updated
+								updated = $0 ? .newData : updated
 							}
 							group.leave()
 						}
@@ -129,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						schoolLoop.getLoopMail(withCompletionHandler: completion)
 						group.enter()
 						schoolLoop.getNews(withCompletionHandler: completion)
-						_ = group.wait(timeout: .now() + Double(30 * NSEC_PER_SEC) / Double(NSEC_PER_SEC))
+						_ = group.wait(timeout: .now() + 30)
 						completionHandler(updated)
 					}
 				} else {
@@ -153,9 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func loginOnLaunch() {
 		let schoolLoop = SchoolLoop.sharedInstance
-		Logger.log("School: \(schoolLoop.school?.name)\nAccount: \(schoolLoop.account?.username)")
-		if schoolLoop.school != nil && schoolLoop.account != nil {
-			Logger.log("Login succeeded!")
+		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				DispatchQueue.main.async {
 					if error == .noError {
@@ -206,7 +203,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				}
 			}
 		} else {
-			Logger.log("Login Failed!")
 			showLogin()
 		}
 

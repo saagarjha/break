@@ -10,6 +10,32 @@ import Foundation
 
 @objc(SchoolLoopCourse)
 class SchoolLoopCourse: NSObject, NSCoding {
+	static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "M/d/yy h:mm a"
+		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+		return dateFormatter
+	}()
+
+	var computableCourse: SchoolLoopComputableCourse {
+		get {
+			let computableCourse = SchoolLoopComputableCourse(course: self)
+			computableCourse.computableCategories = self.categories.map {
+				let category = SchoolLoopComputableCategory(category: $0)
+				category.isUserCreated = false
+				category.computableCourse = computableCourse
+				return category
+			}
+			computableCourse.computableGrades = self.grades.map {
+				let grade = SchoolLoopComputableGrade(grade: $0)
+				grade.isUserCreated = false
+				grade.computableCourse = computableCourse
+				return grade
+			}
+			return computableCourse
+		}
+	}
+
 	var courseName: String
 	var period: String
 	var teacherName: String
@@ -33,11 +59,12 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		super.init()
 	}
 
+	convenience init(course: SchoolLoopCourse) {
+		self.init(courseName: course.courseName, period: course.period, teacherName: course.teacherName, grade: course.grade, score: course.score, periodID: course.periodID)
+	}
+
 	func set(newLastUpdated lastUpdated: String) -> Bool {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "M/d/yy h:mm a"
-		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-		let newLastUpdated = dateFormatter.date(from: lastUpdated) ?? Date.distantPast
+		let newLastUpdated = SchoolLoopCourse.dateFormatter.date(from: lastUpdated) ?? Date.distantPast
 		let updated = self.lastUpdated.compare(newLastUpdated) == .orderedAscending
 		self.lastUpdated = newLastUpdated
 		return updated
@@ -66,7 +93,7 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		aCoder.encode(score, forKey: "score")
 		aCoder.encode(periodID, forKey: "periodID")
 		aCoder.encode(lastUpdated, forKey: "lastUpdated")
-		aCoder.encode("cutoffs", forKey: "cutoffs")
+		aCoder.encode(cutoffs, forKey: "cutoffs")
 		aCoder.encode(categories, forKey: "categories")
 		aCoder.encode(grades, forKey: "grades")
 		aCoder.encode(trendScores, forKey: "trendScores")

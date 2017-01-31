@@ -121,7 +121,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 		let tomorrowMidnight = (calendar.date(from: dateComponents))!
 		var futureDates: [Date] = []
 		var futureDate = tomorrowMidnight
-		for _ in 0 ... 7 {
+		for _ in 0...7 {
 			futureDates.append(futureDate)
 			var dateComponents = DateComponents()
 			dateComponents.day = 1

@@ -26,6 +26,7 @@ class SchoolLoopContact: NSObject, NSCoding {
 		self.name = name
 		self.role = role
 		self.desc = desc
+		super.init()
 	}
 
 	required init(coder aDecoder: NSCoder) {
@@ -33,6 +34,7 @@ class SchoolLoopContact: NSObject, NSCoding {
 		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
 		role = aDecoder.decodeObject(forKey: "role") as? String ?? ""
 		desc = aDecoder.decodeObject(forKey: "desc") as? String ?? ""
+		super.init()
 	}
 
 	func encode(with aCoder: NSCoder) {
