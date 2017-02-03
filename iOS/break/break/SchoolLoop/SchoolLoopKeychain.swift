@@ -15,8 +15,13 @@ class SchoolLoopKeychain {
 
 	func set(_ password: String, forUsername username: String) -> Bool {
 		let item: CFDictionary = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username.data(using: String.Encoding.utf8)!, kSecValueData as String: password.data(using: String.Encoding.utf8)!] as CFDictionary
-		SecItemDelete(item)
-		let status = SecItemAdd(item, nil)
+		var status = SecItemDelete(item)
+		if status != noErr {
+			#if os(iOS)
+				Logger.log("Deleted?: \(status)")
+			#endif
+		}
+		status = SecItemAdd(item, nil)
 		if status != noErr {
 		#if os(iOS)
 			Logger.log("Added?: \(status)")
@@ -31,6 +36,9 @@ class SchoolLoopKeychain {
 		let error = SecItemCopyMatching(item, &reference)
 		if error == noErr {
 			guard let reference = reference as? Data else {
+				#if os(iOS)
+					Logger.log("Failed to read password")
+				#endif
 				return nil
 			}
 			return String(data: reference, encoding: String.Encoding.utf8)

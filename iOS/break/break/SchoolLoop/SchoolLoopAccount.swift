@@ -29,6 +29,11 @@ class SchoolLoopAccount: NSObject, NSCoding {
 	required init?(coder aDecoder: NSCoder) {
 		username = aDecoder.decodeObject(forKey: "username") as? String ?? ""
 		password = SchoolLoop.sharedInstance.keychain.getPassword(forUsername: username) ?? ""
+		if password.isEmpty {
+			#if os(iOS)
+				Logger.log("Failed to get password")
+			#endif
+		}
 		fullName = aDecoder.decodeObject(forKey: "fullName") as? String ?? ""
 		studentID = aDecoder.decodeObject(forKey: "studentID") as? String ?? ""
 		hashedPassword = aDecoder.decodeObject(forKey: "hashedPassword") as? String ?? ""
@@ -37,7 +42,12 @@ class SchoolLoopAccount: NSObject, NSCoding {
 
 	func encode(with aCoder: NSCoder) {
 		aCoder.encode(username, forKey: "username")
-		_ = SchoolLoop.sharedInstance.keychain.set(password, forUsername: username)
+		let set = SchoolLoop.sharedInstance.keychain.set(password, forUsername: username)
+		if !set {
+			#if os(iOS)
+				Logger.log("Failed to set password")
+			#endif
+		}
 		aCoder.encode(fullName, forKey: "fullName")
 		aCoder.encode(studentID, forKey: "studentID")
 		aCoder.encode(hashedPassword, forKey: "hashedPassword")
