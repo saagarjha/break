@@ -39,7 +39,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 			percentScoreLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(GradeTableViewCell.changePercentScore(_:))))
 		}
 	}
-	
+
 	var categoryTextField: UITextField!
 
 	override func awakeFromNib() {
@@ -130,12 +130,14 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		alertController.addAction(doneAction)
 		alertController.addTextField { textField in
 			self.categoryTextField = textField
+			textField.tintColor = .clear
 			textField.text = self.categoryNameLabel.text ?? ""
 			let pickerView = UIPickerView()
 			pickerView.dataSource = self
 			pickerView.delegate = self
 			pickerView.selectRow(self.categories.index(of: textField.text ?? "") ?? 0, inComponent: 0, animated: false)
 			textField.inputView = pickerView
+			textField.delegate = self
 		}
 		progressReportViewController.present(alertController, animated: true, completion: nil)
 	}
@@ -170,6 +172,16 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 			textField.delegate = self
 		}
 		progressReportViewController.present(alertController, animated: true, completion: nil)
+	}
+
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		if textField !== categoryTextField {
+			textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+		}
+	}
+	
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		return textField !== categoryTextField
 	}
 
 	func numberOfComponents(in pickerView: UIPickerView) -> Int {
