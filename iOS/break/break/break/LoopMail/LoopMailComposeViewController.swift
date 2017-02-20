@@ -23,7 +23,6 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 			composeTextView.translatesAutoresizingMaskIntoConstraints = false
 			composeTextView.isScrollEnabled = false
 			composeTextView.font = UIFont.systemFont(ofSize: 16)
-			composeTextView.becomeFirstResponder()
 		}
 	}
 	var messageTextView: UITextView! {
@@ -57,7 +56,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 				return
 			}
 			let dateFormatter = DateFormatter()
-			dateFormatter.dateFormat = "MMM d, yyyy @ HH:mm"
+			dateFormatter.dateFormat = "MMM d, y @ HH:mm"
 			message = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h4><span style=\"font-weight:normal\"><p>On " + dateFormatter.string(from: loopMail?.date ?? .distantPast) + ", <b>\(loopMail?.sender.name ?? "")</b>  wrote:</p><blockquote>\(m)</blockquote>"
 		}
 	}
@@ -77,11 +76,15 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		addComposeView()
 		drawBorders()
 
-
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.deviceOrientationDidChange(notification:)), name: .UIDeviceOrientationDidChange, object: nil)
 		schoolLoop = SchoolLoop.sharedInstance
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		composeTextView.becomeFirstResponder()
 	}
 
 	func addComposeView() {
@@ -124,7 +127,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	@IBAction func send(_ sender: Any) {
 		schoolLoop.sendLoopMail(withComposedLoopMail: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: "<p>\(composeTextView.text ?? "")</p>\n\n\n\(message ?? "")", to: Array(to), cc: Array(cc))) { error in
 			DispatchQueue.main.async {
-				_ = self.navigationController?.popViewController(animated: true)
+				self.navigationController?.popViewController(animated: true)
 			}
 		}
 	}

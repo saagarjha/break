@@ -42,9 +42,8 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 
 	func done(_ sender: Any?) {
 		loopMailContactsDelegate?.selected(contacts: selectedContacts)
-		_ = navigationController?.popViewController(animated: true)
+		navigationController?.popViewController(animated: true)
 	}
-
 
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 2

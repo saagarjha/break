@@ -32,7 +32,7 @@ struct SchoolLoopConstants {
 	static var year: String {
 		get {
 			let dateFormatter = DateFormatter()
-			dateFormatter.dateFormat = "yyyy"
+			dateFormatter.dateFormat = "y"
 			return dateFormatter.string(from: Date())
 		}
 	}
