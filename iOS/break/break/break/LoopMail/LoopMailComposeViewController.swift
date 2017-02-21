@@ -204,8 +204,8 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 				return
 		}
 		let convertedKeyboardEndFrame = composeTableView.convert(keyboardEndFrame, from: composeTableView.window)
-		let rawAnimationCurve = ((userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0)
-		let animationCurve = UIViewAnimationOptions(rawValue: UInt(rawAnimationCurve))
+		let rawAnimationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
+		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
 		composeTableView.contentInset = UIEdgeInsets(top: composeTableView.contentInset.top, left: composeTableView.contentInset.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.contentInset.right)
 		composeTableView.scrollIndicatorInsets = UIEdgeInsets(top: composeTableView.scrollIndicatorInsets.top, left: composeTableView.scrollIndicatorInsets.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.scrollIndicatorInsets.right)
 		composeTableView.flashScrollIndicators()

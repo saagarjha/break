@@ -203,6 +203,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				}
 			}
 		} else {
+			Logger.log("School: \(String(describing: schoolLoop.school))")
+			Logger.log("Account: \(String(describing: schoolLoop.account?.username))")
 			showLogin()
 		}
 
@@ -225,7 +227,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func saveCache() {
-		NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file)
+		if !NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) {
+			Logger.log("Could not save cache")
+		}
 	}
 
 	func clearCache() {

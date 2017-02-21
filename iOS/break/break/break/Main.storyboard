@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12100" systemVersion="16E144f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VA0-KO-lQk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12106.1" systemVersion="16E154a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VA0-KO-lQk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12072"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12074.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -1054,7 +1054,17 @@
                             <constraint firstItem="lFc-e7-zUx" firstAttribute="leading" secondItem="jhk-Sn-SAt" secondAttribute="leading" id="w6L-gA-uL1"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Progress Report" id="vAK-QN-Nqk">
+                    <navigationItem key="navigationItem" id="vAK-QN-Nqk">
+                        <nil key="title"/>
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nGb-Hk-vR7">
+                            <rect key="frame" x="117" y="6" width="130" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <state key="normal" title="Progress Report"/>
+                            <connections>
+                                <action selector="changeView:" destination="y9r-Jb-Tkn" eventType="touchUpInside" id="h76-ib-9rJ"/>
+                            </connections>
+                        </button>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="1fx-RK-L0B">
                             <connections>
                                 <action selector="addGrade:" destination="y9r-Jb-Tkn" id="N4a-Ag-xbM"/>
@@ -1064,6 +1074,7 @@
                     <connections>
                         <outlet property="addGradeButtonItem" destination="1fx-RK-L0B" id="ecs-iA-rBB"/>
                         <outlet property="gradesTableView" destination="lFc-e7-zUx" id="lYj-am-4Ra"/>
+                        <outlet property="titleButton" destination="nGb-Hk-vR7" id="Bhy-dn-ov1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ACy-4z-oGj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1313,10 +1324,10 @@
         <image name="SettingsBarButtonIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="kce-Tu-qVK"/>
         <segue reference="scF-83-yyF"/>
-        <segue reference="Stw-yl-fg9"/>
-        <segue reference="K8J-pN-Epk"/>
+        <segue reference="kce-Tu-qVK"/>
         <segue reference="MTy-Je-66Y"/>
+        <segue reference="HQd-0d-6Op"/>
+        <segue reference="K8J-pN-Epk"/>
     </inferredMetricsTieBreakers>
 </document>

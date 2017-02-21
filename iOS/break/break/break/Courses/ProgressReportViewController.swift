@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
+class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate {
 
 	let cellIdentifier = "grade"
 	static let normalFont = UIFont.preferredFont(forTextStyle: .title3)
@@ -24,6 +24,74 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	var filteredGrades: [SchoolLoopGrade] = []
 	var trendScores: [SchoolLoopTrendScore] = []
 
+	var viewMode = ViewMode.calculated {
+		didSet {
+			let title = viewMode.description
+			switch viewMode {
+			case .calculated:
+				categories = computableCourse.computableCategories
+				grades = computableCourse.computableGrades
+				addGradeButtonItem.isEnabled = true
+
+				header.title = (title: title, subtitle: String(format: "%.2f%%", computableCourse.average * 100))
+				header.headers = categories.flatMap {
+					$0 as? SchoolLoopComputableCategory
+				}.map { category in
+					guard let score = category.computedScore else {
+						return (title: category.name, subtitle: "")
+					}
+					return (title: category.name, subtitle: String(format: "%.2f%%", score * 100))
+				}
+			case .original:
+				categories = course.categories
+				grades = course.grades
+				addGradeButtonItem.isEnabled = false
+
+				header.title = (title: title, subtitle: course.score)
+				header.headers = categories.map { category in
+					guard let score = Double(category.score) else {
+						return (category.name, subtitle: category.score)
+					}
+					return (title: category.name, subtitle: String(format: "%.2f%%", score * 100))
+				}
+			case .weights:
+				categories = computableCourse.computableCategories
+				grades = computableCourse.computableGrades
+				addGradeButtonItem.isEnabled = true
+
+				header.title = (title: title, subtitle: "")
+				header.headers = categories.flatMap {
+					$0 as? SchoolLoopComputableCategory
+				}.map { category in
+					guard let weight = category.computedWeight else {
+						return (title: category.name, subtitle: "")
+					}
+					return (title: category.name, subtitle: String(format: "%.2f%%", weight * 100))
+				}
+			case .totals:
+				categories = computableCourse.computableCategories
+				grades = computableCourse.computableGrades
+				addGradeButtonItem.isEnabled = true
+
+				header.title = (title: title, subtitle: "")
+				header.headers = categories.flatMap {
+					$0 as? SchoolLoopComputableCategory
+				}.map { category in
+					let (score, maxPoints) = category.computedTotals
+					return (title: category.name, subtitle: String(format: "%.1f/%.1f", score, maxPoints))
+				}
+			default:
+				assertionFailure("ViewMode set to invalid value")
+			}
+			UIView.setAnimationsEnabled(false)
+			gradesTableView.beginUpdates()
+			gradesTableView.endUpdates()
+			UIView.setAnimationsEnabled(true)
+			updateSearchResults(for: searchController)
+		}
+	}
+
+	@IBOutlet weak var titleButton: UIButton!
 	@IBOutlet weak var addGradeButtonItem: UIBarButtonItem! {
 		didSet {
 			addGradeButtonItem.isEnabled = false
@@ -40,12 +108,9 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 	let searchController = UISearchController(searchResultsController: nil)
-	var headerView = UIView()
-	var titleLabel: UILabel!
-	var titleSubtitleLabel: UILabel!
-	var categoryNameLabels: [UILabel] = []
-	var categorySubtitleLabels: [UILabel] = []
-	var viewingState = ViewingState.weight
+	var header: ProgressReportHeader!
+
+	var viewModesViewController: ViewModesViewController!
 
 	deinit {
 		searchController.loadViewIfNeeded()
@@ -60,11 +125,12 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		searchController.delegate = self
 		searchController.dimsBackgroundDuringPresentation = false
 		gradesTableView.tableHeaderView = searchController.searchBar
+		header = ProgressReportHeader()
+		header.headerTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.showCourse(_:))))
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: gradesTableView)
 		}
-		NotificationCenter.default.addObserver(self, selector: #selector(ProgressReportViewController.deviceOrientationDidChange(notification:)), name: .UIDeviceOrientationDidChange, object: nil)
 		schoolLoop.getGrades(withPeriodID: periodID) { error in
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -75,7 +141,10 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 					}
 					self.course = course
 					self.computableCourse = course.computableCourse
-					self.changeViewingState(self)
+					self.categories = self.computableCourse.computableCategories
+					self.grades = self.computableCourse.computableGrades
+					self.viewMode = .calculated
+					self.updateSearchResults(for: self.searchController)
 					self.trendScores = self.course.trendScores
 				}
 			}
@@ -85,6 +154,16 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
+	}
+
+	@IBAction func changeView(_ sender: Any) {
+		viewModesViewController = ViewModesViewController()
+		viewModesViewController.viewMode = viewMode
+		viewModesViewController.viewModeDelegate = self
+
+		viewModesViewController.modalPresentationStyle = .popover
+		viewModesViewController.popoverPresentationController?.delegate = self
+		present(viewModesViewController, animated: true, completion: nil)
 	}
 
 	@IBAction func addGrade(_ sender: Any) {
@@ -102,11 +181,12 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		return section == 0 ? headerView : nil
+		return section == 0 ? header?.headerTableView : nil
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return section == 0 ? headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height : 0
+		header.headerTableView.layoutIfNeeded()
+		return section == 0 && header != nil ? header.headerTableView.contentSize.height : 0
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,7 +202,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		cell.progressReportViewController = self
 		cell.indexPath = indexPath
 		cell.categories = ["¯\\_(ツ)_/¯"] + categories.map { $0.name }
-		if viewingState == .original {
+		if viewMode == .original {
 			cell.titleLabel.text = grade.title
 			cell.titleLabel.isUserInteractionEnabled = false
 
@@ -182,7 +262,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-		if viewingState == .original {
+		if viewMode == .original {
 			return indexPath
 		} else {
 			return (grades[indexPath.row] as? SchoolLoopComputableGrade)?.isUserCreated ?? false ? nil : indexPath
@@ -194,7 +274,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		return viewingState != .original
+		return viewMode != .original
 	}
 
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -202,7 +282,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
 		tableView.deleteRows(at: [indexPath], with: .fade)
-		redrawHeaderView(reloadTableView: false)
+		viewMode = { viewMode }()
 	}
 
 	func updateSearchResults(for searchController: UISearchController) {
@@ -220,159 +300,13 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 
-	func changeViewingState(_ sender: AnyObject) {
-		switch viewingState {
-		case .calculated:
-			viewingState = .original
-			categories = computableCourse.computableCategories
-			grades = course.grades
-			addGradeButtonItem.isEnabled = false
-			updateSearchResults(for: searchController)
-		case .original:
-			viewingState = .weight
-			categories = computableCourse.computableCategories
-			grades = computableCourse.computableGrades
-			addGradeButtonItem.isEnabled = true
-			updateSearchResults(for: searchController)
-		case .weight:
-			viewingState = .calculated
-			categories = computableCourse.computableCategories
-			grades = computableCourse.computableGrades
-			addGradeButtonItem.isEnabled = true
-			updateSearchResults(for: searchController)
-		}
-		redrawHeaderView(reloadTableView: true)
-	}
-
-	func redrawHeaderView(reloadTableView reload: Bool) {
-		headerView = UIView(frame: UIScreen.main.bounds)
-		headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.showCourse(_:))))
-		updateTitleLabels()
-		headerView.addSubview(self.titleLabel)
-		headerView.addSubview(self.titleSubtitleLabel)
-		let labels = updateCategoryLabels()
-		for label in labels.values {
-			headerView.addSubview(label)
-		}
-		headerView.setNeedsLayout()
-		headerView.layoutIfNeeded()
-		headerView.frame = CGRect(origin: headerView.frame.origin, size: headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize))
-		layoutHeaderView(labels: labels)
-		if reload {
-			gradesTableView.reloadData()
-		}
-		UIView.setAnimationsEnabled(false)
-		gradesTableView.beginUpdates()
-		gradesTableView.endUpdates()
-		UIView.setAnimationsEnabled(true)
-		let layer = CALayer()
-		layer.frame = CGRect(x: 0, y: headerView.frame.height - 1, width: gradesTableView.frame.width, height: 1 / UIScreen.main.scale)
-		layer.backgroundColor = self.gradesTableView.separatorColor?.cgColor
-		headerView.layer.addSublayer(layer)
-	}
-
-	func updateTitleLabels() {
-		switch viewingState {
-		case .calculated:
-			titleLabel = createTitleLabel(withText: "Calculated")
-			titleSubtitleLabel = createTitleLabel(withText: String(format: "%.2f%%", computableCourse.average * 100))
-		case .original:
-			titleLabel = createTitleLabel(withText: "Original")
-			titleSubtitleLabel = createTitleLabel(withText: course.score)
-		case .weight:
-			titleLabel = createTitleLabel(withText: "Weight")
-			titleSubtitleLabel = createTitleLabel(withText: " ")
-		}
-		titleSubtitleLabel.setContentCompressionResistancePriority(999, for: .horizontal)
-	}
-
-	func createTitleLabel(withText text: String) -> UILabel {
-		let titleLabel = UILabel()
-		titleLabel.text = text
-		titleLabel.font = ProgressReportViewController.boldFont
-		titleLabel.isUserInteractionEnabled = true
-		titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.changeViewingState(_:))))
-		titleLabel.translatesAutoresizingMaskIntoConstraints = false
-		return titleLabel
-	}
-
-	func updateCategoryLabels() -> [String: UIView] {
-		var labels: [String: UIView] = [:]
-		categoryNameLabels = []
-		categorySubtitleLabels = []
-		for (index, category) in categories.enumerated() {
-			let nameLabel = createNormalLabel(withText: category.name)
-			labels["nameLabel\(index)"] = nameLabel
-			self.categoryNameLabels.append(nameLabel)
-			var text = ""
-			switch viewingState {
-			case .calculated:
-				if let score = (category as? SchoolLoopComputableCategory)?.computedScore {
-					text = String(format: "%.2f%%", score * 100)
-				}
-			case .weight:
-				if let weight = (category as? SchoolLoopComputableCategory)?.computedWeight {
-					text = String(format: "%.2f%%", weight * 100)
-				}
-			case .original:
-				if let score = Double(category.score) {
-					text = String(format: "%.2f%%", score * 100)
-				} else {
-					text = category.score
-				}
-			}
-			let subtitleLabel = createNormalLabel(withText: text, selector: #selector(ProgressReportViewController.changeViewingState(_:)))
-			subtitleLabel.setContentCompressionResistancePriority(999, for: .horizontal)
-			labels["subtitleLabel\(index)"] = subtitleLabel
-			self.categorySubtitleLabels.append(subtitleLabel)
-		}
-		return labels
-	}
-
-	func createNormalLabel(withText text: String, selector: Selector? = nil) -> UILabel {
-		let label = UILabel()
-		label.font = ProgressReportViewController.normalFont
-		label.text = !text.isEmpty ? text : " "
-		if let selector = selector {
-			label.isUserInteractionEnabled = true
-			label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: selector))
-		}
-		label.translatesAutoresizingMaskIntoConstraints = false
-		return label
-	}
-
-	func layoutHeaderView(labels: [String: UIView]) {
-		var labels = labels
-		var constraints = NSLayoutConstraint.constraints(withVisualFormat: "|-\(gradesTableView.layoutMargins.left)-[titleLabel]-(>=8)-[titleSubtitleLabel]-\(gradesTableView.layoutMargins.right)-|", options: [], metrics: nil, views: ["titleLabel": self.titleLabel, "titleSubtitleLabel": titleSubtitleLabel])
-		for i in 0..<labels.count / 2 {
-			constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-\(gradesTableView.layoutMargins.left)-[nameLabel\(i)]-(>=8)-[subtitleLabel\(i)]-\(gradesTableView.layoutMargins.right)-|", options: [], metrics: nil, views: labels)
-		}
-		labels["titleLabel"] = titleLabel
-		labels["titleSubtitleLabel"] = titleSubtitleLabel
-		for i in 0..<self.categoryNameLabels.count {
-			constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[\(i == 0 ? "titleLabel" : "nameLabel\(i - 1)")]-[nameLabel\(i)]", options: [], metrics: nil, views: labels)
-		}
-		for i in 0..<self.categorySubtitleLabels.count {
-			constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[\(i == 0 ? "titleSubtitleLabel" : "subtitleLabel\(i - 1)")]-[subtitleLabel\(i)]", options: [], metrics: nil, views: labels)
-		}
-		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[titleLabel]", options: [], metrics: nil, views: labels)
-		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[nameLabel\(categoryNameLabels.count - 1)]-|", options: [], metrics: nil, views: labels)
-		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[titleSubtitleLabel]", options: [], metrics: nil, views: labels)
-		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[subtitleLabel\(categoryNameLabels.count - 1)]-|", options: [], metrics: nil, views: labels)
-		NSLayoutConstraint.activate(constraints)
-	}
-
-	func deviceOrientationDidChange(notification: NSNotification) {
-		redrawHeaderView(reloadTableView: false)
-	}
-
 	func changedTitle(to title: String, forIndexPath indexPath: IndexPath) {
 		guard let grade = grades[indexPath.row] as? SchoolLoopComputableGrade else {
 			assertionFailure("Could not cast SchoolLoopGrade to SchoolLoopComputableGrade")
 			return
 		}
 		grade.title = title
-		gradesTableView.reloadData()
+		viewMode = { viewMode }()
 	}
 
 	func changedScore(to score: String, forIndexPath indexPath: IndexPath) {
@@ -381,7 +315,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.score = score
-		redrawHeaderView(reloadTableView: true)
+		viewMode = { viewMode }()
 	}
 
 	func changedMaxPoints(to maxPoints: String, forIndexPath indexPath: IndexPath) {
@@ -390,7 +324,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.maxPoints = maxPoints
-		redrawHeaderView(reloadTableView: true)
+		viewMode = { viewMode }()
 	}
 
 	func changedCategoryName(to categoryName: String, forIndexPath indexPath: IndexPath) {
@@ -399,7 +333,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.categoryName = categoryName
-		redrawHeaderView(reloadTableView: true)
+		viewMode = { viewMode }()
 	}
 
 	func changedPercentScore(to percentScore: String, forIndexPath indexPath: IndexPath) {
@@ -408,7 +342,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.percentScore = percentScore
-		redrawHeaderView(reloadTableView: true)
+		viewMode = { viewMode }()
 	}
 
 	// MARK: - Navigation
@@ -425,13 +359,21 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = gradesTableView.indexPathForRow(at: location),
 			let cell = gradesTableView.cellForRow(at: indexPath) else {
-				return nil
+				guard header.headerTableView.frame.contains(location),
+					let courseViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "course") as? CourseViewController else {
+						assertionFailure("Could not create CourseViewController")
+						return nil
+				}
+				courseViewController.periodID = periodID
+				courseViewController.preferredContentSize = .zero
+				previewingContext.sourceRect = header.headerTableView.frame
+				return courseViewController
 		}
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "gradeDetail") as? GradeViewController else {
 			return nil
 		}
 		let selectedGrade = grades[indexPath.row]
-		if viewingState != .original {
+		if viewMode != .original {
 			guard let selectedGrade = selectedGrade as? SchoolLoopComputableGrade, !selectedGrade.isUserCreated else {
 				return nil
 			}
@@ -439,13 +381,25 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		destinationViewController.title = selectedGrade.title
 		destinationViewController.periodID = periodID
 		destinationViewController.systemID = selectedGrade.systemID
-		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		destinationViewController.preferredContentSize = .zero
 		previewingContext.sourceRect = cell.frame
 		return destinationViewController
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
 		navigationController?.pushViewController(viewControllerToCommit, animated: true)
+	}
+
+	func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+		viewModesViewController.viewModesTableView.layoutIfNeeded()
+		viewModesViewController.preferredContentSize = viewModesViewController.viewModesTableView.contentSize
+		popoverPresentationController.permittedArrowDirections = .up
+		popoverPresentationController.sourceView = titleButton
+		popoverPresentationController.sourceRect = titleButton.bounds
+	}
+
+	func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+		return .none
 	}
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -463,10 +417,14 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		destinationViewController.periodID = periodID
 		destinationViewController.systemID = selectedGrade.systemID
 	}
+}
 
-	enum ViewingState {
-		case calculated
-		case original
-		case weight
+protocol ViewModeDelegate {
+	func changedMode(to mode: ViewMode)
+}
+
+extension ProgressReportViewController: ViewModeDelegate {
+	func changedMode(to mode: ViewMode) {
+		viewMode = mode
 	}
 }

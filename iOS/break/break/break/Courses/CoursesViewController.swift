@@ -16,8 +16,6 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	var courses: [SchoolLoopCourse] = []
 	var filteredCourses: [SchoolLoopCourse] = []
 
-//	var destinationViewController: ProgressReportViewController!
-
 	@IBOutlet weak var coursesTableView: UITableView! {
 		didSet {
 			coursesTableView.rowHeight = UITableViewAutomaticDimension
@@ -165,7 +163,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		}
 		let selectedCourse = filteredCourses[indexPath.row]
 		destinationViewController.title = selectedCourse.courseName
+		destinationViewController.titleButton.setTitle(selectedCourse.courseName, for: .normal)
 		destinationViewController.periodID = selectedCourse.periodID
-//		self.destinationViewController = destinationViewController
 	}
 }

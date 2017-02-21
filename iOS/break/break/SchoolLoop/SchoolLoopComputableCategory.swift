@@ -14,9 +14,23 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 
 	var computedScore: Double? {
 		get {
+			let (score, maxPoints) = computedTotals
+			guard maxPoints != 0 else {
+				return nil
+			}
+			return score / maxPoints
+		}
+	}
+	var computedWeight: Double? {
+		get {
+			return Double(weight)
+		}
+	}
+	var computedTotals: (Double, Double) {
+		get {
 			guard let grades = computableCourse?.computableGrades(in: self),
 				!grades.isEmpty else {
-					return nil
+					return (0, 0)
 			}
 			var score = 0.0
 			var maxPoints = 0.0
@@ -27,15 +41,7 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 						maxPoints += computedMaxPoints
 				}
 			}
-			guard maxPoints != 0 else {
-				return nil
-			}
-			return score / maxPoints
-		}
-	}
-	var computedWeight: Double? {
-		get {
-			return Double(weight)
+			return (score, maxPoints)
 		}
 	}
 }
