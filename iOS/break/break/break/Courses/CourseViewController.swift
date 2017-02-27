@@ -12,20 +12,22 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 
 	let cellIdentifier = "courseDetail"
 
-	var periodID: String!
-
-	var schoolLoop: SchoolLoop!
-	var course: SchoolLoopCourse!
+	var course: SchoolLoopComputableCourse!
 
 	@IBOutlet weak var trendScore: TrendScore!
-	@IBOutlet weak var courseTableView: UITableView!
+	@IBOutlet weak var courseTableView: UITableView! {
+		didSet {
+			courseTableView.estimatedRowHeight = 80.0
+			courseTableView.rowHeight = UITableViewAutomaticDimension
+			courseTableView.register(CourseDetailTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+		}
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		schoolLoop = SchoolLoop.sharedInstance
-		course = schoolLoop.course(forPeriodID: periodID)
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(CourseViewController.addCategory(_:)))
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -36,6 +38,13 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
+	}
+
+	func addCategory(_ sender: Any) {
+		let category = SchoolLoopComputableCategory(name: "Category", score: "", weight: "0")
+		category.computableCourse = course
+		course.computableCategories.insert(category, at: 0)
+		courseTableView.reloadData()
 	}
 
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -60,37 +69,70 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 		case 0:
 			return 1
 		case 1:
-			return course.categories.count
+			return course.computableCategories.count
 		case 2:
 			return course.cutoffs.count
 		default:
+			assertionFailure("Invalid section for courseTableView")
 			return 0
 		}
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CourseDetailTableViewCell else {
+			assertionFailure("")
+			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+		}
 		switch indexPath.section {
 		case 0:
-			cell.textLabel?.text = "Last Updated"
+			cell.titleLabel.text = "Last Updated"
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateStyle = .short
 			dateFormatter.timeStyle = .short
-			cell.detailTextLabel?.text = dateFormatter.string(from: course.lastUpdated)
+			cell.subtitleLabel.text = dateFormatter.string(from: course.lastUpdated)
 		case 1:
-			cell.textLabel?.text = course.categories[indexPath.row].name
-			if let weightValue = Double(course.categories[indexPath.row].weight) {
-				cell.detailTextLabel?.text = String(format: "%.2f%%", weightValue * 100)
+			let category = course.computableCategories[indexPath.row]
+			cell.courseViewController = self
+			cell.indexPath = indexPath
+			cell.isTappable = true
+			cell.titleLabel.text = category.name
+			if let weightValue = category.computedWeight {
+				cell.subtitleLabel.text = String(format: "%.2f%%", weightValue * 100)
 			} else {
-				cell.detailTextLabel?.text = course.categories[indexPath.row].weight
+				cell.subtitleLabel.text = course.categories[indexPath.row].weight
 			}
 		case 2:
-			cell.textLabel?.text = "\(course.cutoffs[indexPath.row].Start)%"
-			cell.detailTextLabel?.text = course.cutoffs[indexPath.row].Name
+			cell.titleLabel.text = "\(course.cutoffs[indexPath.row].Start)%"
+			cell.subtitleLabel.text = course.cutoffs[indexPath.row].Name
 		default:
 			break
 		}
 		return cell
+	}
+
+	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		return indexPath.section == 1
+	}
+
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		course.computableCategories.remove(at: indexPath.row)
+		tableView.deleteRows(at: [indexPath], with: .fade)
+	}
+
+	func changedTitle(to title: String, forIndexPath indexPath: IndexPath) {
+		let category = course.computableCategories[indexPath.row]
+		category.name = title
+		courseTableView.reloadData()
+	}
+
+	func changedSubtitle(to subtitle: String, forIndexPath indexPath: IndexPath) {
+		let category = course.computableCategories[indexPath.row]
+		if !subtitle.hasSuffix("%") {
+			category.weight = subtitle.appending("%")
+		} else {
+			category.weight = subtitle
+		}
+		courseTableView.reloadData()
 	}
 
 	/*

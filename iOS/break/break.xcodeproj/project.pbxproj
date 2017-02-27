@@ -56,6 +56,7 @@
 		495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574881CA6112000193EE5 /* LoggerViewController.swift */; };
 		4956BB641E4A66FD00149FA9 /* ProgressReportHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4956BB631E4A66FD00149FA9 /* ProgressReportHeader.swift */; };
 		495D1D1A1CFE0B54006F55C2 /* StartupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */; };
+		496FA3941E5FCEE700822436 /* CourseDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496FA3931E5FCEE700822436 /* CourseDetailTableViewCell.swift */; };
 		4982807A1CEE4C34001A5000 /* SchoolLoopTrendScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */; };
 		4982807E1CEE4E95001A5000 /* TrendScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4982807D1CEE4E95001A5000 /* TrendScore.swift */; };
 		4982807F1CEE5037001A5000 /* SchoolLoopTrendScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */; };
@@ -201,6 +202,7 @@
 		4956BB631E4A66FD00149FA9 /* ProgressReportHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportHeader.swift; sourceTree = "<group>"; };
 		4957CF051D46909800487039 /* break.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = break.entitlements; sourceTree = "<group>"; };
 		495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTableViewController.swift; sourceTree = "<group>"; };
+		496FA3931E5FCEE700822436 /* CourseDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailTableViewCell.swift; sourceTree = "<group>"; };
 		498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopTrendScore.swift; sourceTree = "<group>"; };
 		4982807D1CEE4E95001A5000 /* TrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrendScore.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		498665541C8D24E9004BA249 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -277,23 +279,23 @@
 			isa = PBXGroup;
 			children = (
 				4905293E1CE58787006190C4 /* SchoolLoop.swift */,
-				49489F2A1DDA9EEE0039126D /* SchoolLoopContact.swift */,
 				4905293F1CE58787006190C4 /* SchoolLoopAccount.swift */,
 				490529401CE58787006190C4 /* SchoolLoopAssignment.swift */,
-				490529411CE58787006190C4 /* SchoolLoopConstants.swift */,
-				490529421CE58787006190C4 /* SchoolLoopCourse.swift */,
-				4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */,
-				49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */,
-				49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */,
-				49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */,
 				49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */,
+				49489F2D1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift */,
+				49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */,
+				4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */,
+				49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */,
+				490529411CE58787006190C4 /* SchoolLoopConstants.swift */,
+				49489F2A1DDA9EEE0039126D /* SchoolLoopContact.swift */,
+				490529421CE58787006190C4 /* SchoolLoopCourse.swift */,
+				49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */,
 				490529431CE58787006190C4 /* SchoolLoopError.swift */,
 				490529441CE58787006190C4 /* SchoolLoopGrade.swift */,
 				490529451CE58787006190C4 /* SchoolLoopKeychain.swift */,
 				490529461CE58787006190C4 /* SchoolLoopLockerItem.swift */,
 				490529471CE58787006190C4 /* SchoolLoopLockerItemType.swift */,
 				490529481CE58787006190C4 /* SchoolLoopLoopMail.swift */,
-				49489F2D1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift */,
 				490529491CE58787006190C4 /* SchoolLoopNews.swift */,
 				4905294A1CE58787006190C4 /* SchoolLoopSchool.swift */,
 				498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */,
@@ -382,8 +384,8 @@
 			isa = PBXGroup;
 			children = (
 				498665541C8D24E9004BA249 /* AppDelegate.swift */,
-				498665621C8D24E9004BA249 /* LoginViewController.swift */,
 				495574861CA6081100193EE5 /* Logger.swift */,
+				498665621C8D24E9004BA249 /* LoginViewController.swift */,
 				4905290C1CE57B1C006190C4 /* PrivacyPolicyViewController.swift */,
 				498665551C8D24E9004BA249 /* Assignments */,
 				498665591C8D24E9004BA249 /* Courses */,
@@ -408,17 +410,18 @@
 		498665591C8D24E9004BA249 /* Courses */ = {
 			isa = PBXGroup;
 			children = (
+				496FA3931E5FCEE700822436 /* CourseDetailTableViewCell.swift */,
 				4986655A1C8D24E9004BA249 /* CoursesViewController.swift */,
-				49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */,
 				4986655B1C8D24E9004BA249 /* CourseTableViewCell.swift */,
+				49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */,
 				4986655C1C8D24E9004BA249 /* GradeTableViewCell.swift */,
 				49DF2B291CF3BDE200DC1EB7 /* GradeViewController.swift */,
-				4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */,
-				4982807D1CEE4E95001A5000 /* TrendScore.swift */,
 				4956BB631E4A66FD00149FA9 /* ProgressReportHeader.swift */,
 				4901A5E41E5501E200CC2E41 /* ProgressReportHeaderTableViewCell.swift */,
-				4943D6FC1E5AB280005EBB15 /* ViewModesViewController.swift */,
+				4986655D1C8D24E9004BA249 /* ProgressReportViewController.swift */,
+				4982807D1CEE4E95001A5000 /* TrendScore.swift */,
 				4943D6FE1E5AB48E005EBB15 /* ViewMode.swift */,
+				4943D6FC1E5AB280005EBB15 /* ViewModesViewController.swift */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -435,12 +438,12 @@
 		498665631C8D24E9004BA249 /* LoopMail */ = {
 			isa = PBXGroup;
 			children = (
+				4931EAF41DDA9572001CBB1D /* LoopMailComposeTableViewCell.swift */,
+				4931EAF21DDA936F001CBB1D /* LoopMailComposeViewController.swift */,
+				49489F281DDA9D500039126D /* LoopMailContactsViewController.swift */,
 				498665641C8D24E9004BA249 /* LoopMailMessageViewController.swift */,
 				498665651C8D24E9004BA249 /* LoopMailTableViewCell.swift */,
 				498665661C8D24E9004BA249 /* LoopMailViewController.swift */,
-				4931EAF21DDA936F001CBB1D /* LoopMailComposeViewController.swift */,
-				4931EAF41DDA9572001CBB1D /* LoopMailComposeTableViewCell.swift */,
-				49489F281DDA9D500039126D /* LoopMailContactsViewController.swift */,
 			);
 			path = LoopMail;
 			sourceTree = "<group>";
@@ -458,12 +461,12 @@
 		4986656C1C8D24E9004BA249 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
 				4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */,
-				49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */,
 				495574881CA6112000193EE5 /* LoggerViewController.swift */,
+				49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */,
 				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 				495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */,
-				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -471,10 +474,10 @@
 		498665701C8D24E9004BA249 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				498665671C8D24E9004BA249 /* Main.storyboard */,
-				498665721C8D24E9004BA249 /* Info.plist */,
 				49DC05B91CCDEDDD0090578F /* Assets.xcassets */,
+				498665721C8D24E9004BA249 /* Info.plist */,
 				498665731C8D24E9004BA249 /* LaunchScreen.storyboard */,
+				498665671C8D24E9004BA249 /* Main.storyboard */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				4901A5E51E5501E200CC2E41 /* ProgressReportHeaderTableViewCell.swift in Sources */,
 				498665931C8D24E9004BA249 /* CoursesViewController.swift in Sources */,
 				49AC180D1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift in Sources */,
+				496FA3941E5FCEE700822436 /* CourseDetailTableViewCell.swift in Sources */,
 				498665A01C8D24E9004BA249 /* NewsTableViewCell.swift in Sources */,
 				49489F291DDA9D500039126D /* LoopMailContactsViewController.swift in Sources */,
 				498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */,

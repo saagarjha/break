@@ -61,6 +61,11 @@ class SchoolLoopCourse: NSObject, NSCoding {
 
 	convenience init(course: SchoolLoopCourse) {
 		self.init(courseName: course.courseName, period: course.period, teacherName: course.teacherName, grade: course.grade, score: course.score, periodID: course.periodID)
+		self.lastUpdated = course.lastUpdated
+		self.cutoffs = course.cutoffs
+		self.categories = course.categories
+		self.grades = course.grades
+		self.trendScores = course.trendScores
 	}
 
 	func set(newLastUpdated lastUpdated: String) -> Bool {

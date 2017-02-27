@@ -23,7 +23,12 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 	}
 	var computedWeight: Double? {
 		get {
-			return Double(weight)
+			if weight.hasSuffix("%"),
+				let w = SchoolLoopComputableCourse.double(forPercent: weight) { // Workaround for SR-4082
+					return w / 100
+			} else {
+					return Double(weight)
+			}
 		}
 	}
 	var computedTotals: (Double, Double) {

@@ -151,6 +151,13 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		if course != nil {
+			viewMode = { viewMode }()
+		}
+	}
+
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
@@ -172,7 +179,6 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		computableCourse.computableGrades.insert(grade, at: 0)
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
-		gradesTableView.reloadData()
 		gradesTableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .middle, animated: true)
 	}
 
@@ -352,7 +358,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			assertionFailure("Could not create CourseViewController")
 			return
 		}
-		courseViewController.periodID = periodID
+		courseViewController.course = computableCourse
 		navigationController?.pushViewController(courseViewController, animated: true)
 	}
 
@@ -364,7 +370,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 						assertionFailure("Could not create CourseViewController")
 						return nil
 				}
-				courseViewController.periodID = periodID
+				courseViewController.course = computableCourse
 				courseViewController.preferredContentSize = .zero
 				previewingContext.sourceRect = header.headerTableView.frame
 				return courseViewController
