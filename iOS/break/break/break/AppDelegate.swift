@@ -102,13 +102,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+		Logger.log("Starting background fetch")
 		if archived {
 			NSKeyedUnarchiver.unarchiveObject(withFile: file)
 			archived = false
 		}
 		let schoolLoop = SchoolLoop.sharedInstance
 		var updated = UIBackgroundFetchResult.failed
-		if schoolLoop.school != nil && schoolLoop.account != nil {
+		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				if error == .noError {
 					DispatchQueue.global(qos: .userInitiated).async {
@@ -128,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						schoolLoop.getLoopMail(withCompletionHandler: completion)
 						group.enter()
 						schoolLoop.getNews(withCompletionHandler: completion)
-						_ = group.wait(timeout: .now() + 30)
+						_ = group.wait(timeout: .now() + 25)
 						completionHandler(updated)
 					}
 				} else {
@@ -136,6 +137,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				}
 			}
 		} else {
+			Logger.log("Background fetch School: \(String(describing: schoolLoop.school))")
+			Logger.log("Background fetch Account: \(String(describing: schoolLoop.account?.username))")
+			Logger.log("Background fetch Password: \(schoolLoop.account.password.isEmpty)")
 			completionHandler(.failed)
 		}
 	}
@@ -151,10 +155,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func loginOnLaunch() {
+		Logger.log("Logging in at launch")
 		let schoolLoop = SchoolLoop.sharedInstance
 		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				DispatchQueue.main.async {
+					Logger.log("Login completed with error \(error)")
 					if error == .noError {
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
 						let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
@@ -205,6 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		} else {
 			Logger.log("School: \(String(describing: schoolLoop.school))")
 			Logger.log("Account: \(String(describing: schoolLoop.account?.username))")
+			Logger.log("Password: \(String(describing: schoolLoop.account?.password.isEmpty))")
 			showLogin()
 		}
 
@@ -236,6 +243,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		do {
 			try FileManager.default.removeItem(atPath: file)
 		} catch _ {
+			Logger.log("Could not clear cache")
 		}
 	}
 

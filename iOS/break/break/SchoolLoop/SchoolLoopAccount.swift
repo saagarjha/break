@@ -27,6 +27,9 @@ class SchoolLoopAccount: NSObject, NSCoding {
 	}
 
 	required init?(coder aDecoder: NSCoder) {
+		#if os(iOS)
+			Logger.log("Beginning account decoding")
+		#endif
 		username = aDecoder.decodeObject(forKey: "username") as? String ?? ""
 		password = SchoolLoop.sharedInstance.keychain.getPassword(forUsername: username) ?? ""
 		if password.isEmpty {
