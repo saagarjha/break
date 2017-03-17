@@ -91,7 +91,11 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 
-	@IBOutlet weak var titleButton: UIButton!
+	@IBOutlet weak var titleButton: UIButton! {
+		didSet {
+			titleButton.isEnabled = false
+		}
+	}
 	@IBOutlet weak var addGradeButtonItem: UIBarButtonItem! {
 		didSet {
 			addGradeButtonItem.isEnabled = false
@@ -146,6 +150,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 					self.viewMode = .calculated
 					self.updateSearchResults(for: self.searchController)
 					self.trendScores = self.course.trendScores
+					self.titleButton.isEnabled = true
 				}
 			}
 		}
