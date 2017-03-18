@@ -11,4 +11,9 @@ import UIKit
 class LockerItemCollectionViewCell: UICollectionViewCell {
 	@IBOutlet weak var typeImageView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet weak var typeImageViewWidthConstraint: NSLayoutConstraint! {
+		didSet {
+			nameLabel.preferredMaxLayoutWidth = typeImageViewWidthConstraint.constant
+		}
+	}
 }

@@ -30,8 +30,15 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 				lockerCollectionView.backgroundView = UIView()
 				lockerCollectionView.backgroundView?.backgroundColor = .clear
 			}
+			lockerCollectionViewFlowLayout?.estimatedItemSize = CGSize(width: cellWidth, height: cellWidth)
 		}
 	}
+	var lockerCollectionViewFlowLayout: UICollectionViewFlowLayout? {
+		get {
+			return lockerCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout
+		}
+	}
+	let cellWidth: CGFloat = 144
 	let refreshControl = UIRefreshControl()
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +88,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 					lockerItem.lockerItems.sort()
 					self.lockerItems = lockerItem.lockerItems
 					self.lockerCollectionView.reloadData()
+					self.lockerCollectionViewFlowLayout?.invalidateLayout()
 				}
 				self.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
@@ -99,7 +107,8 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsetsMake(0, 25, 0, 25)
+		let inset = lockerCollectionView.frame.width.truncatingRemainder(dividingBy: cellWidth) / (floor(lockerCollectionView.frame.width / cellWidth) + 1)
+		return UIEdgeInsets(inset: inset)
 	}
 
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -115,12 +124,9 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			assertionFailure("Could not deque LockerItemCollectionViewCell")
 			return collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
 		}
-		cell.nameLabel.text = lockerItems[indexPath.row].name
-		if lockerItems[indexPath.row].type == SchoolLoopLockerItemType.directory {
-			cell.typeImageView.image = UIImage(named: "FolderIcon")
-		} else {
-			cell.typeImageView.image = UIImage(named: "FileIcon")
-		}
+		let lockerItem = lockerItems[indexPath.row]
+		cell.nameLabel.text = lockerItem.name
+		cell.typeImageView.image = lockerItemImage(for: lockerItem)
 		return cell
 	}
 
@@ -136,6 +142,14 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			newLockerViewController.path = lockerItem.path
 			newLockerViewController.title = lockerItem.name
 			navigationController?.pushViewController(newLockerViewController, animated: true)
+		}
+	}
+
+	func lockerItemImage(for lockerItem: SchoolLoopLockerItem) -> UIImage? {
+		if lockerItem.type == SchoolLoopLockerItemType.directory {
+			return UIImage(named: "FolderIcon")
+		} else {
+			return UIImage(named: "FileIcon")
 		}
 	}
 
@@ -157,6 +171,13 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			return
 		}
 		try? FileManager.default.removeItem(at: url)
+	}
+
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		coordinator.animate(alongsideTransition: { _ in
+			self.lockerCollectionView?.collectionViewLayout.invalidateLayout()
+		}, completion: nil)
 	}
 
 	// MARK: - Navigation
@@ -198,4 +219,10 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		// Pass the selected object to the new view controller.
 	}
 	*/
+}
+
+extension UIEdgeInsets {
+	init(inset: CGFloat) {
+		self.init(top: inset, left: inset, bottom: inset, right: inset)
+	}
 }
