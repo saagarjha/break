@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4901A5E51E5501E200CC2E41 /* ProgressReportHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901A5E41E5501E200CC2E41 /* ProgressReportHeaderTableViewCell.swift */; };
-		4905290D1CE57B1C006190C4 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905290C1CE57B1C006190C4 /* PrivacyPolicyViewController.swift */; };
 		4905294B1CE58787006190C4 /* SchoolLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905293E1CE58787006190C4 /* SchoolLoop.swift */; };
 		4905294C1CE58787006190C4 /* SchoolLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905293E1CE58787006190C4 /* SchoolLoop.swift */; };
 		4905294D1CE58787006190C4 /* SchoolLoopAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905293F1CE58787006190C4 /* SchoolLoopAccount.swift */; };
@@ -161,7 +160,6 @@
 
 /* Begin PBXFileReference section */
 		4901A5E41E5501E200CC2E41 /* ProgressReportHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportHeaderTableViewCell.swift; sourceTree = "<group>"; };
-		4905290C1CE57B1C006190C4 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		4905293E1CE58787006190C4 /* SchoolLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoop.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4905293F1CE58787006190C4 /* SchoolLoopAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAccount.swift; sourceTree = "<group>"; };
 		490529401CE58787006190C4 /* SchoolLoopAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignment.swift; sourceTree = "<group>"; };
@@ -386,7 +384,6 @@
 				498665541C8D24E9004BA249 /* AppDelegate.swift */,
 				495574861CA6081100193EE5 /* Logger.swift */,
 				498665621C8D24E9004BA249 /* LoginViewController.swift */,
-				4905290C1CE57B1C006190C4 /* PrivacyPolicyViewController.swift */,
 				498665551C8D24E9004BA249 /* Assignments */,
 				498665591C8D24E9004BA249 /* Courses */,
 				4986655E1C8D24E9004BA249 /* Locker */,
@@ -727,7 +724,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4905290D1CE57B1C006190C4 /* PrivacyPolicyViewController.swift in Sources */,
 				490529591CE58787006190C4 /* SchoolLoopKeychain.swift in Sources */,
 				4986659D1C8D24E9004BA249 /* LoopMailViewController.swift in Sources */,
 				49E1BD091CF006EE002E819D /* SchoolLoopCategory.swift in Sources */,

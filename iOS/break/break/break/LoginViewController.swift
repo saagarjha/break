@@ -15,6 +15,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	var schoolLoop: SchoolLoop!
 	var schools: [SchoolLoopSchool] = []
 
+	@IBOutlet weak var loginScrollView: UIScrollView!
+	@IBOutlet weak var loginViewHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var breakStackView: UIStackView!
 	@IBOutlet weak var schoolNameTextField: UITextField! {
 		didSet {
@@ -35,6 +37,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	@IBOutlet weak var logInButton: UIButton!
 	@IBOutlet weak var forgotButton: UIButton!
 	@IBOutlet weak var privacyPolicyButton: UIButton!
+
+	var runAnimation = true
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -61,39 +65,50 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		breakStackView.alpha = 0
-		schoolNameTextField.alpha = 0
-		usernameTextField.alpha = 0
-		passwordTextField.alpha = 0
-		logInButton.alpha = 0
-		forgotButton.alpha = 0
-		privacyPolicyButton.alpha = 0
-		let dy = passwordTextField.frame.midY - schoolNameTextField.frame.midY
-		schoolNameTextField.frame = schoolNameTextField.frame.offsetBy(dx: 0, dy: dy)
-		usernameTextField.frame = usernameTextField.frame.offsetBy(dx: 0, dy: dy)
-		passwordTextField.frame = passwordTextField.frame.offsetBy(dx: 0, dy: dy)
-		logInButton.frame = logInButton.frame.offsetBy(dx: 0, dy: dy)
-		UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut, animations: {
-			self.breakStackView.alpha = 1
-			self.forgotButton.alpha = 1
-			self.privacyPolicyButton.alpha = 1
-		}, completion: nil)
-		UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
-			self.schoolNameTextField.frame = self.schoolNameTextField.frame.offsetBy(dx: 0, dy: -dy)
-			self.schoolNameTextField.alpha = 1
-		}, completion: nil)
-		UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
-			self.usernameTextField.frame = self.usernameTextField.frame.offsetBy(dx: 0, dy: -dy)
-			self.usernameTextField.alpha = 1
-		}, completion: nil)
-		UIView.animate(withDuration: 0.5, delay: 0.2, options: .curveEaseInOut, animations: {
-			self.passwordTextField.frame = self.passwordTextField.frame.offsetBy(dx: 0, dy: -dy)
-			self.passwordTextField.alpha = 1
-		}, completion: nil)
-		UIView.animate(withDuration: 0.5, delay: 0.3, options: .curveEaseInOut, animations: {
-			self.logInButton.frame = self.logInButton.frame.offsetBy(dx: 0, dy: -dy)
-			self.logInButton.alpha = 1
-		}, completion: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
+		if runAnimation {
+			breakStackView.alpha = 0
+			schoolNameTextField.alpha = 0
+			usernameTextField.alpha = 0
+			passwordTextField.alpha = 0
+			logInButton.alpha = 0
+			forgotButton.alpha = 0
+			privacyPolicyButton.alpha = 0
+			let dy = passwordTextField.frame.midY - schoolNameTextField.frame.midY
+			schoolNameTextField.frame = schoolNameTextField.frame.offsetBy(dx: 0, dy: dy)
+			usernameTextField.frame = usernameTextField.frame.offsetBy(dx: 0, dy: dy)
+			passwordTextField.frame = passwordTextField.frame.offsetBy(dx: 0, dy: dy)
+			logInButton.frame = logInButton.frame.offsetBy(dx: 0, dy: dy)
+			UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut, animations: {
+				self.breakStackView.alpha = 1
+				self.forgotButton.alpha = 1
+				self.privacyPolicyButton.alpha = 1
+			}, completion: nil)
+			UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+				self.schoolNameTextField.frame = self.schoolNameTextField.frame.offsetBy(dx: 0, dy: -dy)
+				self.schoolNameTextField.alpha = 1
+			}, completion: nil)
+			UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseInOut, animations: {
+				self.usernameTextField.frame = self.usernameTextField.frame.offsetBy(dx: 0, dy: -dy)
+				self.usernameTextField.alpha = 1
+			}, completion: nil)
+			UIView.animate(withDuration: 0.5, delay: 0.2, options: .curveEaseInOut, animations: {
+				self.passwordTextField.frame = self.passwordTextField.frame.offsetBy(dx: 0, dy: -dy)
+				self.passwordTextField.alpha = 1
+			}, completion: nil)
+			UIView.animate(withDuration: 0.5, delay: 0.3, options: .curveEaseInOut, animations: {
+				self.logInButton.frame = self.logInButton.frame.offsetBy(dx: 0, dy: -dy)
+				self.logInButton.alpha = 1
+			}, completion: nil)
+		}
+		runAnimation = false
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -122,20 +137,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					var view: UIView?
 					if let tabBarController = UIApplication.shared.delegate?.window??.rootViewController as? UITabBarController,
 						let viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
-							for viewController in viewControllers {
-								if let coursesViewController = viewController as? CoursesViewController {
-									view = coursesViewController.view
-								}
-								if let assignmentsViewController = viewController as? AssignmentsViewController {
-									view = assignmentsViewController.view
-								}
-								if let loopMailViewController = viewController as? LoopMailViewController {
-									view = loopMailViewController.view
-								}
-								if let newsViewController = viewController as? NewsViewController {
-									view = newsViewController.view
-								}
+						for viewController in viewControllers {
+							if let coursesViewController = viewController as? CoursesViewController {
+								view = coursesViewController.view
 							}
+							if let assignmentsViewController = viewController as? AssignmentsViewController {
+								view = assignmentsViewController.view
+							}
+							if let loopMailViewController = viewController as? LoopMailViewController {
+								view = loopMailViewController.view
+							}
+							if let newsViewController = viewController as? NewsViewController {
+								view = newsViewController.view
+							}
+						}
 					}
 					if let _ = view {
 						return
@@ -145,7 +160,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
 					self.present(alertController, animated: true, completion: nil)
-
 				} else {
 					let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
 					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -160,6 +174,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	@IBAction func forgot(_ sender: AnyObject) {
 		let safariViewController = SFSafariViewController(url: SchoolLoopConstants.forgotURL)
+		present(safariViewController, animated: true, completion: nil)
+	}
+
+	@IBAction func privacyPolicy(_ sender: Any) {
+		let safariViewController = SFSafariViewController(url: URL(string: "https://saagarjha.com/projects/break/privacy-policy/")!)
 		present(safariViewController, animated: true, completion: nil)
 	}
 
@@ -215,12 +234,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 	func getSchoolSuggestion(_ schoolName: String) -> String {
+		guard !schoolName.isEmpty else {
+			return schoolName
+		}
 		var low = schools.startIndex
 		var high = schools.endIndex
 		var mid: Int
 		while low < high {
 			mid = low.advanced(by: low.distance(to: high) / 2)
-			let name = schools[mid].name ?? ""
+			let name = schools[mid].name
 			if ((name.lowercased().hasPrefix(schoolName.lowercased()))) {
 				return name
 			} else if name > schoolName {
@@ -236,6 +258,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		view.endEditing(true)
 	}
 
+	func keyboardWillChange(notification: NSNotification) {
+		guard let userInfo = notification.userInfo,
+			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+				return
+		}
+		let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
+		let rawAnimationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
+		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
+		loginScrollView.contentInset = UIEdgeInsets(top: loginScrollView.contentInset.top, left: loginScrollView.contentInset.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.contentInset.right)
+		loginScrollView.scrollIndicatorInsets = UIEdgeInsets(top: loginScrollView.scrollIndicatorInsets.top, left: loginScrollView.scrollIndicatorInsets.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.scrollIndicatorInsets.right)
+		loginViewHeightConstraint.constant = -view.bounds.maxY + convertedKeyboardEndFrame.minY
+		UIView.animate(withDuration: animationDuration, delay: 0.0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
+			self.view.layoutIfNeeded()
+		})
+		if view.bounds.height + loginViewHeightConstraint.constant < loginScrollView.contentSize.height {
+			loginScrollView.flashScrollIndicators()
+		}
+	}
+
 	// MARK: - Navigation
 
 	// In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -247,7 +289,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 }
 
-extension UIButton {
+@IBDesignable extension UIButton {
 	@IBInspectable var cornerRadius: CGFloat {
 		get {
 			return layer.cornerRadius
