@@ -118,6 +118,11 @@ class SchoolLoop: NSObject, NSCoding {
 			}
 			let httpResponse = response as? HTTPURLResponse
 			if httpResponse?.statusCode != 200 {
+				#if os(iOS)
+					Logger.log("Login failed with status code \(String(describing: httpResponse?.statusCode)))")
+					Logger.log("Login username: \(username)")
+					Logger.log("Login password size: \(password.characters.count)")
+				#endif
 				completionHandler?(.unknownError)
 				return
 			}
@@ -233,8 +238,8 @@ class SchoolLoop: NSObject, NSCoding {
 				return
 			}
 			guard let course = self.course(forPeriodID: periodID) else {
-					completionHandler?(.doesNotExistError)
-					return
+				completionHandler?(.doesNotExistError)
+				return
 			}
 			course.categories.removeAll()
 			course.grades.removeAll()

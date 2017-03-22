@@ -372,7 +372,6 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			let cell = gradesTableView.cellForRow(at: indexPath) else {
 				guard header.headerTableView.frame.contains(location),
 					let courseViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "course") as? CourseViewController else {
-						assertionFailure("Could not create CourseViewController")
 						return nil
 				}
 				courseViewController.course = computableCourse
