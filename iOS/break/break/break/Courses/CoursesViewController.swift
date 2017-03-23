@@ -70,6 +70,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
+					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 					self.courses = self.schoolLoop.courses
 					self.updateSearchResults(for: self.searchController)
 				}

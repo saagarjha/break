@@ -92,7 +92,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
 		schoolLoop.getLoopMailContacts(withQuery: filter) { contacts, error in
-			guard error == .noError, let contacts = contacts else {
+			guard error == .noError else {
 				return
 			}
 			DispatchQueue.main.async {

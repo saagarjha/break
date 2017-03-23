@@ -23,9 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-		if UIApplication.instancesRespond(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
-			application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
-		}
+		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 		if WCSession.isSupported() {
 			let session = WCSession.default()
@@ -114,13 +112,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				if error == .noError {
 					DispatchQueue.global(qos: .userInitiated).async {
 						let group = DispatchGroup()
-						let completion: (Bool, SchoolLoopError) -> Void = {
-							if $1 == .noError {
-								updated = updated == .failed ? .noData : updated
-								updated = $0 ? .newData : updated
+
+						func completion<T>(updatedItems: [T], error: SchoolLoopError) where T: UpdatableItem {
+							defer {
+								group.leave()
 							}
-							group.leave()
+
+							guard error == .noError else {
+								return
+							}
+							
+							self.saveCache()
+
+							updated = updated == .failed ? .noData : updated
+							updated = updatedItems.isEmpty ? .newData : updated
+
+							for item in updatedItems {
+								item.postNotification()
+							}
 						}
+
 						group.enter()
 						schoolLoop.getCourses(withCompletionHandler: completion)
 						group.enter()
@@ -393,5 +404,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func sessionDidDeactivate(_ session: WCSession) {
 
+	}
+}
+
+protocol UpdatableItem {
+	func postNotification()
+}
+
+extension SchoolLoopCourse: UpdatableItem {
+	func postNotification() {
+		if UIApplication.shared.applicationState != .active {
+			let notification = UILocalNotification()
+			notification.userInfo?["updatedItem"] = self
+			notification.fireDate = Date(timeIntervalSinceNow: 1)
+			notification.alertBody = "Your grade in \(courseName) has changed"
+			notification.applicationIconBadgeNumber = 1
+			notification.soundName = UILocalNotificationDefaultSoundName
+			UIApplication.shared.scheduleLocalNotification(notification)
+		}
+	}
+}
+
+extension SchoolLoopAssignment: UpdatableItem {
+	func postNotification() {
+		if UIApplication.shared.applicationState != .active {
+			let notification = UILocalNotification()
+			notification.userInfo?["updatedItem"] = self
+			notification.fireDate = Date(timeIntervalSinceNow: 1)
+			notification.alertBody = "New assignment \(title) posted for \(courseName)"
+			notification.applicationIconBadgeNumber = 1
+			notification.soundName = UILocalNotificationDefaultSoundName
+			UIApplication.shared.scheduleLocalNotification(notification)
+		}
+	}
+}
+
+extension SchoolLoopLoopMail: UpdatableItem {
+	func postNotification() {
+		if UIApplication.shared.applicationState != .active {
+			let notification = UILocalNotification()
+			notification.userInfo?["updatedItem"] = self
+			notification.fireDate = Date(timeIntervalSinceNow: 1)
+			notification.alertBody = "From: \(sender.name)\n\(subject)\n"
+			notification.applicationIconBadgeNumber = 1
+			notification.soundName = UILocalNotificationDefaultSoundName
+			UIApplication.shared.scheduleLocalNotification(notification)
+		}
+	}
+}
+
+extension SchoolLoopNews: UpdatableItem {
+	func postNotification() {
+		if UIApplication.shared.applicationState != .active {
+			let notification = UILocalNotification()
+			notification.userInfo?["updatedItem"] = self
+			notification.fireDate = Date(timeIntervalSinceNow: 1)
+			notification.alertBody = "\(title)\n\(authorName)"
+			notification.applicationIconBadgeNumber = 1
+			notification.soundName = UILocalNotificationDefaultSoundName
+			UIApplication.shared.scheduleLocalNotification(notification)
+		}
 	}
 }

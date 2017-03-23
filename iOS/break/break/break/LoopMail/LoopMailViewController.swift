@@ -71,6 +71,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		schoolLoop.getLoopMail { (_, error) in
 			DispatchQueue.main.async {
 				if error == .noError {
+					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 					self.loopMail = self.schoolLoop.loopMail
 					self.updateSearchResults(for: self.searchController)
 				}

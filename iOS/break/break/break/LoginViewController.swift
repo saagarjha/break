@@ -124,6 +124,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
+					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 					let storybard = UIStoryboard(name: "Main", bundle: nil)
 					let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
 					let oldView = UIScreen.main.snapshotView(afterScreenUpdates: false)

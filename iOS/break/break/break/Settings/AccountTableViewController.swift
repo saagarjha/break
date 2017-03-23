@@ -92,6 +92,9 @@ class AccountTableViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.row == 1 {
 			schoolLoop.logOut()
+			let appDelegate = UIApplication.shared.delegate as? AppDelegate
+			appDelegate?.clearCache()
+			appDelegate?.showLogout()
 		}
 		tableView.deselectRow(at: indexPath, animated: true)
 	}

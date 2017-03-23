@@ -74,6 +74,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
+					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 					self.assignments = self.schoolLoop.assignmentsWithDueDates
 					self.updateSearchResults(for: self.searchController)
 				}

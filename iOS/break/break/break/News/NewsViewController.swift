@@ -73,6 +73,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			DispatchQueue.main.async {
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
+					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 					self.news = self.schoolLoop.news
 					self.updateSearchResults(for: self.searchController)
 				}
