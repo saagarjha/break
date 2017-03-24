@@ -129,6 +129,15 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	// MARK: - Navigation
+	
+	func openNewsDescription(for news: SchoolLoopNews) {
+		guard let newsDescriptionViewController = storyboard?.instantiateViewController(withIdentifier: "newsDescription") as? NewsDescriptionViewController else {
+			assertionFailure("Could not create NewsDescriptionViewController")
+			return
+		}
+		newsDescriptionViewController.iD = news.iD
+		navigationController?.pushViewController(newsDescriptionViewController, animated: true)
+	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = newsTableView.indexPathForRow(at: location),

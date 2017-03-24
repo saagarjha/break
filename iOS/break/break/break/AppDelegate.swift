@@ -20,10 +20,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	var archived = true
 	var launchIndex = 0
+	var launchNotification: UILocalNotification?
+	var completionHandler: (() -> Void)?
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
+		let replyNotificationAction = UIMutableUserNotificationAction()
+		replyNotificationAction.identifier = "Reply"
+		replyNotificationAction.title = "Reply"
+		replyNotificationAction.activationMode = .foreground
+
+		let replyNotificationCategory = UIMutableUserNotificationCategory()
+		replyNotificationCategory.identifier = "ReplyCategory"
+		replyNotificationCategory.setActions([replyNotificationAction], for: .default)
+		replyNotificationCategory.setActions([replyNotificationAction], for: .minimal)
+
+		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: [replyNotificationCategory]))
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 		if WCSession.isSupported() {
 			let session = WCSession.default()
@@ -37,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 
 		launchIndex = index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? UserDefaults.standard.integer(forKey: "startup")
+		launchNotification = launchOptions?[.localNotification] as? UILocalNotification
 
 		loginOnLaunch()
 
@@ -121,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 							guard error == .noError else {
 								return
 							}
-							
+
 							self.saveCache()
 
 							updated = updated == .failed ? .noData : updated
@@ -155,6 +168,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
+	func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
+		guard launchNotification == nil else {
+			return
+		}
+		openContextForNotification(notification)
+	}
+
+	func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
+		guard launchNotification == nil else {
+			return
+		}
+		DispatchQueue.main.async {
+			self.launchNotification = notification
+			self.completionHandler = completionHandler
+		}
+	}
+
+
 	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
 		let launchIndex = self.index(forType: shortcutItem.type) ?? -1
 		if launchIndex > 0 {
@@ -179,6 +210,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						let oldView = UIScreen.main.snapshotView(afterScreenUpdates: false)
 						tabBarController.view.addSubview(oldView)
 						self.window?.rootViewController = tabBarController
+						if let notification = self.launchNotification {
+							self.openContextForNotification(notification)
+						}
+						self.completionHandler?()
 						if UIApplication.shared.applicationState == .active && UserDefaults.standard.bool(forKey: "password") {
 							let view: UIView
 							if let viewController = self.window?.rootViewController {
@@ -360,6 +395,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
+	func openContextForNotification(_ notification: UILocalNotification) {
+		guard let data = notification.userInfo?["updatedItem"] as? Data,
+			let tabBarController = window?.rootViewController as? UITabBarController else {
+				assertionFailure("Could not retrieve updated item")
+				return
+		}
+		switch NSKeyedUnarchiver.unarchiveObject(with: data) {
+		case let course as SchoolLoopCourse:
+			tabBarController.selectedIndex = 0
+			tabBarController.viewControllerOfType(CoursesViewController.self)?.openProgressReport(for: course)
+		case let assignment as SchoolLoopAssignment:
+			tabBarController.selectedIndex = 1
+			tabBarController.viewControllerOfType(AssignmentsViewController.self)?.openAssignmentDescription(for: assignment)
+		case let loopMail as SchoolLoopLoopMail:
+			tabBarController.selectedIndex = 2
+			if notification.category != "ReplyCategory" {
+				tabBarController.viewControllerOfType(LoopMailViewController.self)?.openLoopMailMessage(for: loopMail)
+			} else {
+				tabBarController.viewControllerOfType(LoopMailViewController.self)?.openLoopMailCompose(for: loopMail)
+			}
+		case let news as SchoolLoopNews:
+			tabBarController.selectedIndex = 3
+			tabBarController.viewControllerOfType(NewsViewController.self)?.openNewsDescription(for: news)
+		default:
+			assertionFailure("Unrecognized updated item")
+		}
+	}
+
 	func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
 		if archived {
 			NSKeyedUnarchiver.unarchiveObject(withFile: file)
@@ -407,6 +470,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 }
 
+extension UITabBarController {
+	func viewControllerOfType<T>(_: T.Type) -> T? where T: UIViewController {
+		return (viewControllers ?? []).flatMap {
+			return $0 as? T ?? ($0 as? UINavigationController)?.viewControllers.first as? T
+		}.first
+	}
+}
+
 protocol UpdatableItem {
 	func postNotification()
 }
@@ -415,7 +486,7 @@ extension SchoolLoopCourse: UpdatableItem {
 	func postNotification() {
 		if UIApplication.shared.applicationState != .active {
 			let notification = UILocalNotification()
-			notification.userInfo?["updatedItem"] = self
+			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
 			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "Your grade in \(courseName) has changed"
 			notification.applicationIconBadgeNumber = 1
@@ -429,7 +500,7 @@ extension SchoolLoopAssignment: UpdatableItem {
 	func postNotification() {
 		if UIApplication.shared.applicationState != .active {
 			let notification = UILocalNotification()
-			notification.userInfo?["updatedItem"] = self
+			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
 			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "New assignment \(title) posted for \(courseName)"
 			notification.applicationIconBadgeNumber = 1
@@ -443,7 +514,8 @@ extension SchoolLoopLoopMail: UpdatableItem {
 	func postNotification() {
 		if UIApplication.shared.applicationState != .active {
 			let notification = UILocalNotification()
-			notification.userInfo?["updatedItem"] = self
+			notification.category = "ReplyCategory"
+			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
 			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "From: \(sender.name)\n\(subject)\n"
 			notification.applicationIconBadgeNumber = 1
@@ -457,7 +529,7 @@ extension SchoolLoopNews: UpdatableItem {
 	func postNotification() {
 		if UIApplication.shared.applicationState != .active {
 			let notification = UILocalNotification()
-			notification.userInfo?["updatedItem"] = self
+			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
 			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "\(title)\n\(authorName)"
 			notification.applicationIconBadgeNumber = 1

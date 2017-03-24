@@ -137,7 +137,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					})
 					var view: UIView?
 					if let tabBarController = UIApplication.shared.delegate?.window??.rootViewController as? UITabBarController,
-						let viewControllers = tabBarController.viewControllers?.map({ ($0 as? UINavigationController)?.viewControllers[0] }) {
+						let viewControllers = tabBarController.viewControllers?.flatMap({ ($0 as? UINavigationController)?.viewControllers.first }) {
 						for viewController in viewControllers {
 							if let coursesViewController = viewController as? CoursesViewController {
 								view = coursesViewController.view

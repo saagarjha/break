@@ -131,6 +131,17 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	// MARK: - Navigation
+	
+	func openProgressReport(for course: SchoolLoopCourse) {
+		guard let progressReportViewController = storyboard?.instantiateViewController(withIdentifier: "progressReport") as? ProgressReportViewController else {
+			assertionFailure("Could not create ProgressReportViewController")
+			return
+		}
+		progressReportViewController.title = course.courseName
+		progressReportViewController.titleButton.setTitle(course.courseName, for: .normal)
+		progressReportViewController.periodID = course.periodID
+		navigationController?.pushViewController(progressReportViewController, animated: true)
+	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = coursesTableView.indexPathForRow(at: location),

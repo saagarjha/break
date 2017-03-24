@@ -163,6 +163,15 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
+	
+	func openAssignmentDescription(for assignment: SchoolLoopAssignment) {
+		guard let assignmentDescriptionViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
+			assertionFailure("Could not create AssignmentDescriptionViewController")
+			return
+		}
+		assignmentDescriptionViewController.iD = assignment.iD
+		navigationController?.pushViewController(assignmentDescriptionViewController, animated: true)
+	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = assignmentsTableView.indexPathForRow(at: location),

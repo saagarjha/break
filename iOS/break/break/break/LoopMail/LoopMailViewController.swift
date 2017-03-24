@@ -119,6 +119,9 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 			}
 			let selectedLoopMail = self.filteredLoopMail[indexPath.row]
 			self.schoolLoop.getLoopMailMessage(withID: selectedLoopMail.ID) { error in
+				guard error == .noError else {
+					return
+				}
 				guard let loopMail = self.schoolLoop.loopMail(forID: selectedLoopMail.ID) else {
 					assertionFailure("Could not get LoopMail for ID")
 					return
@@ -150,6 +153,37 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	// MARK: - Navigation
+	
+	func openLoopMailMessage(for loopMail: SchoolLoopLoopMail) {
+		guard let loopMailMessageViewController = storyboard?.instantiateViewController(withIdentifier: "loopMailMessage") as? LoopMailMessageViewController else {
+			assertionFailure("Could not create LoopMailMessageViewController")
+			return
+		}
+		loopMailMessageViewController.ID = loopMail.ID
+		navigationController?.pushViewController(loopMailMessageViewController, animated: true)
+	}
+	
+	func openLoopMailCompose(for loopMail: SchoolLoopLoopMail) {
+		guard let loopMailComposeViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
+			assertionFailure("Could not create LoopMailComposeViewController")
+			return
+		}
+		(schoolLoop ?? SchoolLoop.sharedInstance).getLoopMailMessage(withID: loopMail.ID) { error in
+			guard error == .noError else {
+				return
+			}
+			guard let loopMail = self.schoolLoop.loopMail(forID: loopMail.ID) else {
+				assertionFailure("Could not get LoopMail for ID")
+				return
+			}
+			DispatchQueue.main.async {
+				loopMailComposeViewController.loopMail = loopMail
+				loopMailComposeViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
+				self.navigationController?.pushViewController(loopMailComposeViewController, animated: true)
+			}
+		}
+	}
+	
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = loopMailTableView.indexPathForRow(at: location),
 			let cell = loopMailTableView.cellForRow(at: indexPath) else {
