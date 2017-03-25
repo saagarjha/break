@@ -1,7 +1,5 @@
-<img src="http://saagarjha.github.io/break/images/AppIcon.png" width="200" height="200" align="left">
-# break
-break is a lightweight, native app for accessing [SchoolLoop](http://www.schoolloop.com). It aims to provide an easier to use, more feature rich alternative to the official SchoolLoop [iOS](https://itunes.apple.com/us/app/school-loop/id739554978?mt=8) and [Android](https://play.google.com/store/apps/details?id=com.schoolloop.mobileloop.app&hl=en) apps.  
-[![Build Status](https://travis-ci.org/saagarjha/break.svg?branch=master)](https://travis-ci.org/saagarjha/break)
+# break [![Build Status](https://travis-ci.org/saagarjha/break.svg?branch=master)](https://travis-ci.org/saagarjha/break)
+break is a lightweight, native app for accessing [SchoolLoop](http://www.schoolloop.com). It aims to provide an easier to use, more feature rich alternative to the official SchoolLoop [iOS](https://itunes.apple.com/us/app/school-loop/id739554978?mt=8) and [Android](https://play.google.com/store/apps/details?id=com.schoolloop.mobileloop.app&hl=en) apps.
 
 ## Features
 * **Native:** Written from the ground up to support the target platform
@@ -11,6 +9,7 @@ break is a lightweight, native app for accessing [SchoolLoop](http://www.schooll
 * **watchOS extension:** Check your grades on the go
 * **Password protection:** Prevent others from viewing sensitive data
 * **Security:** Passwords are encrypted with AES to prevent malicious access
+* **Grade calculation:** Make changes to your assignments and see how they affect your grade
 
 ## Planned features
 * One-time login (Guest mode)
