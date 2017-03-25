@@ -179,7 +179,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 			textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
 		}
 	}
-	
+
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		return textField !== categoryTextField
 	}

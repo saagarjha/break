@@ -120,7 +120,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 		}
 		courseViewController.present(alertController, animated: true, completion: nil)
 	}
-	
+
 	func textFieldDidBeginEditing(_ textField: UITextField) {
 		textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
 	}

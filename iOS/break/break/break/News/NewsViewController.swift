@@ -129,7 +129,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	// MARK: - Navigation
-	
+
 	func openNewsDescription(for news: SchoolLoopNews) {
 		guard let newsDescriptionViewController = storyboard?.instantiateViewController(withIdentifier: "newsDescription") as? NewsDescriptionViewController else {
 			assertionFailure("Could not create NewsDescriptionViewController")

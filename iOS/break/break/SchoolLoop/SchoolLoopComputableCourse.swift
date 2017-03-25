@@ -23,9 +23,9 @@ class SchoolLoopComputableCourse: SchoolLoopCourse {
 			let categories = computableCategories.flatMap { (category: SchoolLoopComputableCategory) -> SchoolLoopCheckedCategory? in
 				if let weight = category.computedWeight,
 					let score = category.computedScore {
-						return (weight, score)
+					return (weight, score)
 				} else {
-						return nil
+					return nil
 				}
 			}
 

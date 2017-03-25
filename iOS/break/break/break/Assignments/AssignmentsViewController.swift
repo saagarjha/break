@@ -163,7 +163,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	// MARK: - Navigation
-	
+
 	func openAssignmentDescription(for assignment: SchoolLoopAssignment) {
 		guard let assignmentDescriptionViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
 			assertionFailure("Could not create AssignmentDescriptionViewController")

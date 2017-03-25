@@ -23,9 +23,9 @@ class SchoolLoopKeychain {
 		}
 		status = SecItemAdd(item, nil)
 		if status != noErr {
-		#if os(iOS)
-			Logger.log("Added?: \(status)")
-		#endif
+			#if os(iOS)
+				Logger.log("Added?: \(status)")
+			#endif
 		}
 		return status == noErr
 	}

@@ -30,16 +30,16 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["courses": ""], replyHandler: { response in
 			if let data = response["courses"] as? Data,
 				let courses = NSKeyedUnarchiver.unarchiveObject(with: data) as? [SchoolLoopCourse] {
-					self.courses = courses
-					self.coursesTable.setNumberOfRows(courses.count, withRowType: self.rowType)
-					for (index, course) in courses.enumerated() {
-						if let controller = self.coursesTable.rowController(at: index) as? CourseRowController {
-							controller.courseNameLabel.setText(course.courseName)
-							controller.teacherNameLabel.setText(course.teacherName)
-							controller.gradeLabel.setText(course.grade)
-							controller.scoreLabel.setText(course.score)
-						}
+				self.courses = courses
+				self.coursesTable.setNumberOfRows(courses.count, withRowType: self.rowType)
+				for (index, course) in courses.enumerated() {
+					if let controller = self.coursesTable.rowController(at: index) as? CourseRowController {
+						controller.courseNameLabel.setText(course.courseName)
+						controller.teacherNameLabel.setText(course.teacherName)
+						controller.gradeLabel.setText(course.grade)
+						controller.scoreLabel.setText(course.score)
 					}
+				}
 			}
 		}, errorHandler: { error in
 			print(error)

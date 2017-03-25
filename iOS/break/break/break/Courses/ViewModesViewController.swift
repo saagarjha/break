@@ -9,48 +9,48 @@
 import UIKit
 
 class ViewModesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-	
+
 	let cellIdentifier = "viewMode"
-	
+
 	var viewModeDelegate: ViewModeDelegate?
-	
+
 	var viewMode: ViewMode!
-	
+
 	var viewModesTableView: UITableView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+		// Do any additional setup after loading the view.
 		viewModesTableView = UITableView()
 		viewModesTableView.dataSource = self
 		viewModesTableView.delegate = self
 		viewModesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 		view = viewModesTableView
-    }
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-	
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+		// Dispose of any resources that can be recreated.
+	}
+
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
-	
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return ViewMode._count.rawValue
 	}
-	
+
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		return "View Mode"
 	}
-	
+
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
 		if let vm = ViewMode(rawValue: indexPath.row) {
 			cell.textLabel?.text = vm.description
-			
+
 			if vm == viewMode {
 				cell.accessoryType = .checkmark
 			}
@@ -59,7 +59,7 @@ class ViewModesViewController: UIViewController, UITableViewDataSource, UITableV
 		}
 		return cell
 	}
-	
+
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard let viewMode = ViewMode(rawValue: indexPath.row) else {
 			assertionFailure("ViewMode row is out of bounds")
@@ -69,7 +69,7 @@ class ViewModesViewController: UIViewController, UITableViewDataSource, UITableV
 		dismiss(animated: false, completion: nil)
 	}
 
-    /*
+	/*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

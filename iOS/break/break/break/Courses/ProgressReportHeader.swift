@@ -31,7 +31,7 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 		let seperatorView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0, height: 1 / UIScreen.main.scale)))
 		seperatorView.backgroundColor = headerTableView.separatorColor
 		headerTableView.tableFooterView = seperatorView
-		
+
 		super.init()
 		headerTableView.dataSource = self
 		headerTableView.delegate = self

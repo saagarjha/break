@@ -25,9 +25,9 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 		get {
 			if weight.hasSuffix("%"),
 				let w = SchoolLoopComputableCourse.double(forPercent: weight) { // Workaround for SR-4082
-					return w / 100
+				return w / 100
 			} else {
-					return Double(weight)
+				return Double(weight)
 			}
 		}
 	}
@@ -42,8 +42,8 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 			for grade in grades {
 				if let computedScore = grade.computedScore,
 					let computedMaxPoints = grade.computedMaxPoints {
-						score += computedScore
-						maxPoints += computedMaxPoints
+					score += computedScore
+					maxPoints += computedMaxPoints
 				}
 			}
 			return (score, maxPoints)

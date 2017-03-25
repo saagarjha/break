@@ -34,7 +34,7 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 		destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
 		self.parentNavigationController?.pushViewController(destinationViewController, animated: true)
 	}
-	})] : []
+})] : []
 		}
 	}
 

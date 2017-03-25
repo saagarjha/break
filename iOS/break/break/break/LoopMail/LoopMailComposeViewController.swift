@@ -15,7 +15,13 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 
 	let leftQuoteInset: CGFloat = 20
 
-	@IBOutlet weak var composeTableView: UITableView!
+	@IBOutlet weak var composeTableView: UITableView! {
+		didSet {
+			let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoopMailComposeViewController.selectMessageTextView(_:)))
+			gestureRecognizer.cancelsTouchesInView = false
+			composeTableView.addGestureRecognizer(gestureRecognizer)
+		}
+	}
 	var subjectTextField: UITextField!
 	let composeView = UIView(frame: UIScreen.main.bounds)
 	var composeTextView: UITextView! {
@@ -78,19 +84,19 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 
 		schoolLoop = SchoolLoop.sharedInstance
 	}
-	
+
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		composeTextView.becomeFirstResponder()
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.deviceOrientationDidChange(notification:)), name: .UIDeviceOrientationDidChange, object: nil)
 	}
-	
+
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
@@ -143,6 +149,12 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		}
 	}
 
+	func selectMessageTextView(_ sender: UITapGestureRecognizer) {
+		if sender.location(in: composeTextView).y > 0 {
+			composeTextView.becomeFirstResponder()
+		}
+	}
+
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
@@ -182,6 +194,8 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.row {
+		case 0:
+			subjectTextField.becomeFirstResponder()
 		case 1:
 			fallthrough
 		case 2:
@@ -225,7 +239,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		})
 		composeTableView.tableFooterView = composeTableView.tableFooterView
 	}
-	
+
 	func deviceOrientationDidChange(notification: NSNotification) {
 		drawBorders()
 	}

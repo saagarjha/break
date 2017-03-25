@@ -153,7 +153,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	// MARK: - Navigation
-	
+
 	func openLoopMailMessage(for loopMail: SchoolLoopLoopMail) {
 		guard let loopMailMessageViewController = storyboard?.instantiateViewController(withIdentifier: "loopMailMessage") as? LoopMailMessageViewController else {
 			assertionFailure("Could not create LoopMailMessageViewController")
@@ -162,7 +162,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		loopMailMessageViewController.ID = loopMail.ID
 		navigationController?.pushViewController(loopMailMessageViewController, animated: true)
 	}
-	
+
 	func openLoopMailCompose(for loopMail: SchoolLoopLoopMail) {
 		guard let loopMailComposeViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
 			assertionFailure("Could not create LoopMailComposeViewController")
@@ -183,7 +183,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 			}
 		}
 	}
-	
+
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = loopMailTableView.indexPathForRow(at: location),
 			let cell = loopMailTableView.cellForRow(at: indexPath) else {

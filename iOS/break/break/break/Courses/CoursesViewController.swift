@@ -131,7 +131,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	}
 
 	// MARK: - Navigation
-	
+
 	func openProgressReport(for course: SchoolLoopCourse) {
 		guard let progressReportViewController = storyboard?.instantiateViewController(withIdentifier: "progressReport") as? ProgressReportViewController else {
 			assertionFailure("Could not create ProgressReportViewController")
