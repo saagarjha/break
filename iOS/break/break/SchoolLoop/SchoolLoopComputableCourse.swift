@@ -9,38 +9,51 @@
 import Foundation
 
 class SchoolLoopComputableCourse: SchoolLoopCourse {
-	var computedScore: Double? {
-		get {
-			return nil
+	var computedScore: Double {
+		typealias SchoolLoopCheckedCategory = (weight: Double, score: Double)
+		let categories = computableCategories.flatMap { (category: SchoolLoopComputableCategory) -> SchoolLoopCheckedCategory? in
+			if let weight = category.computedWeight,
+				let score = category.computedScore {
+				return (weight, score)
+			} else {
+				return nil
+			}
 		}
+
+		let totalWeight = categories.reduce(0) {
+			return $0 + $1.weight
+		}
+		guard totalWeight > 0 else {
+			return 1
+		}
+
+		var score = 0.0
+		for category in categories {
+			score += category.score * category.weight / totalWeight
+		}
+		return score
 	}
 	var computableCategories: [SchoolLoopComputableCategory] = []
 	var computableGrades: [SchoolLoopComputableGrade] = []
+	var computedScoreDifference: Double {
+		guard let score = SchoolLoopComputableCourse.double(forPercent: self.score) else { // Crashes compiler without self
+			return 0
+		}
+		return computedScore - score / 100
+	}
 
-	var average: Double {
-		get {
-			typealias SchoolLoopCheckedCategory = (weight: Double, score: Double)
-			let categories = computableCategories.flatMap { (category: SchoolLoopComputableCategory) -> SchoolLoopCheckedCategory? in
-				if let weight = category.computedWeight,
-					let score = category.computedScore {
-					return (weight, score)
-				} else {
-					return nil
-				}
-			}
-
-			let totalWeight = categories.reduce(0) {
-				return $0 + $1.weight
-			}
-			guard totalWeight > 0 else {
-				return 1
-			}
-
-			var score = 0.0
-			for category in categories {
-				score += category.score * category.weight / totalWeight
-			}
-			return score
+	var comparisonResult: ComparisonResult {
+		guard let s = SchoolLoopComputableCourse.double(forPercent: self.score) else { // Crashes compiler without self
+			return .orderedSame
+		}
+		let score = String(format: "%.2f", s)
+		let computedScore = String(format: "%.2f", self.computedScore * 100)
+		if score < computedScore {
+			return .orderedAscending
+		} else if score > computedScore {
+			return .orderedDescending
+		} else {
+			return .orderedSame
 		}
 	}
 

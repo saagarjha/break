@@ -78,6 +78,10 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		// Do any additional setup after loading the view.
 		composeTextView = UITextView()
 		messageTextView = UITextView()
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.deviceOrientationDidChange(notification:)), name: .UIDeviceOrientationDidChange, object: nil)
 
 		addComposeView()
 		drawBorders()
@@ -88,20 +92,6 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		composeTextView.becomeFirstResponder()
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.deviceOrientationDidChange(notification:)), name: .UIDeviceOrientationDidChange, object: nil)
-	}
-
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
-		NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
 	}
 
 	func addComposeView() {

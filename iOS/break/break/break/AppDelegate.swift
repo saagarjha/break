@@ -468,6 +468,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func sessionDidDeactivate(_ session: WCSession) {
 
 	}
+	
+	static func color(for string: String) -> UIColor {
+		let hashValue = UInt(bitPattern: string.hashValue)
+		let channelSize = UInt(MemoryLayout<Int>.size * 8 / 3)
+		let mask = 1 << channelSize - 1
+		let red = CGFloat(hashValue & mask) / CGFloat(mask + 1)
+		let green = CGFloat(hashValue >> channelSize & mask) / CGFloat(mask + 1)
+		let blue = CGFloat(hashValue >> (channelSize * 2) & mask) / CGFloat(mask + 1)
+		return UIColor(red: red, green: green, blue: blue, alpha: 1)
+	}
 }
 
 extension UITabBarController {

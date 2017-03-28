@@ -45,6 +45,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
+
 		schoolLoop = SchoolLoop.sharedInstance
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getSchools { error in
@@ -65,8 +69,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(LoopMailComposeViewController.keyboardWillChange(notification:)), name: .UIKeyboardWillHide, object: nil)
 		if runAnimation {
 			breakStackView.alpha = 0
 			schoolNameTextField.alpha = 0
@@ -103,12 +105,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			}, completion: nil)
 		}
 		runAnimation = false
-	}
-
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
 	}
 
 	override func didReceiveMemoryWarning() {

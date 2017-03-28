@@ -13,6 +13,7 @@ enum ViewMode: Int, CustomStringConvertible {
 	case original
 	case weights
 	case totals
+	case differences
 	case _count
 
 	var description: String {
@@ -25,6 +26,8 @@ enum ViewMode: Int, CustomStringConvertible {
 			return "Weights"
 		case .totals:
 			return "Totals"
+		case .differences:
+			return "Differences"
 		default:
 			assertionFailure("ViewMode is unrepresentable")
 			return ""

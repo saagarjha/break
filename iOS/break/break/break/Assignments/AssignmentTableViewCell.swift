@@ -10,6 +10,7 @@ import UIKit
 
 class AssignmentTableViewCell: UITableViewCell {
 
+	@IBOutlet weak var courseNameDiscriminatorView: UIView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var courseNameLabel: UILabel!
 

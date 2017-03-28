@@ -85,6 +85,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 		}
 		switch indexPath.section {
 		case 0:
+			cell.discriminatorView.backgroundColor = .clear
 			cell.titleLabel.text = "Last Updated"
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateStyle = .short
@@ -95,6 +96,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 			cell.courseViewController = self
 			cell.indexPath = indexPath
 			cell.isTappable = true
+			cell.discriminatorView.backgroundColor = AppDelegate.color(for: category.name)
 			cell.titleLabel.text = category.name
 			if let weightValue = category.computedWeight {
 				cell.subtitleLabel.text = String(format: "%.2f%%", weightValue * 100)
@@ -102,6 +104,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 				cell.subtitleLabel.text = course.categories[indexPath.row].weight
 			}
 		case 2:
+			cell.discriminatorView.backgroundColor = .clear
 			cell.titleLabel.text = "\(course.cutoffs[indexPath.row].Start)%"
 			cell.subtitleLabel.text = course.cutoffs[indexPath.row].Name
 		default:

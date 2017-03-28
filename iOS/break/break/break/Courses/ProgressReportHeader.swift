@@ -12,8 +12,8 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 
 	let cellIdentifier = "progressReportHeader"
 
-	var title: (title: String, subtitle: String)?
-	var headers: [(title: String, subtitle: String)] = [] {
+	var title: (title: String, subtitle: String, comparisonResult: ComparisonResult)?
+	var headers: [(title: String, subtitle: String, comparisonResult: ComparisonResult)] = [] {
 		didSet {
 			headerTableView.reloadData()
 		}
@@ -63,12 +63,32 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 		switch indexPath.section {
 		case 0:
 			cell.isBold = true
+			cell.discriminatorView.backgroundColor = .clear
 			cell.titleLabel.text = title?.title ?? ""
 			cell.subtitleLabel.text = title?.subtitle ?? ""
+			if let title = title {
+				switch title.comparisonResult {
+				case .orderedDescending:
+					cell.subtitleLabel.textColor = .red
+				case .orderedSame:
+					cell.subtitleLabel.textColor = .black
+				case .orderedAscending:
+					cell.subtitleLabel.textColor = .green
+				}
+			}
 		case 1:
 			let header = headers[indexPath.row]
+			cell.discriminatorView.backgroundColor = AppDelegate.color(for: header.title)
 			cell.titleLabel.text = header.title
 			cell.subtitleLabel.text = header.subtitle
+			switch header.comparisonResult {
+			case .orderedDescending:
+				cell.subtitleLabel.textColor = .red
+			case .orderedSame:
+				cell.subtitleLabel.textColor = .black
+			case .orderedAscending:
+				cell.subtitleLabel.textColor = .green
+			}
 		default:
 			assertionFailure("Invalid section for headerTableView")
 		}

@@ -13,6 +13,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 	weak var courseViewController: CourseViewController!
 	var indexPath: IndexPath!
 
+	var discriminatorView = UIView()
 	var titleLabel = UILabel()
 	var subtitleLabel = UILabel()
 
@@ -50,6 +51,12 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 		constraints.append(NSLayoutConstraint(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: subtitleLabel, attribute: .centerY, multiplier: 1, constant: 0))
 		constraints.append(NSLayoutConstraint(item: contentView, attribute: .centerY, relatedBy: .equal, toItem: titleLabel, attribute: .centerY, multiplier: 1, constant: 0))
 		subtitleLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+		discriminatorView.translatesAutoresizingMaskIntoConstraints = false
+		contentView.addSubview(discriminatorView)
+		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
+		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
+		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0))
+		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 4))
 		NSLayoutConstraint.activate(constraints)
 	}
 

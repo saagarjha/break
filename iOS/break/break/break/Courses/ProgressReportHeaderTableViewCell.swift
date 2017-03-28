@@ -13,6 +13,7 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 	static let normalFont = UIFont.preferredFont(forTextStyle: .title3)
 	static let boldFont = UIFont(descriptor: normalFont.fontDescriptor.withSymbolicTraits(.traitBold)!, size: normalFont.pointSize)
 
+	var discriminatorView: UIView
 	var titleLabel: UILabel
 	var subtitleLabel: UILabel
 
@@ -29,9 +30,11 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 	}
 
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+		discriminatorView = UIView()
 		titleLabel = UILabel()
 		subtitleLabel = UILabel()
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		contentView.addSubview(discriminatorView)
 		contentView.addSubview(titleLabel)
 		contentView.addSubview(subtitleLabel)
 
@@ -45,10 +48,16 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 			label.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
 		}
 		subtitleLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+		
+		discriminatorView.translatesAutoresizingMaskIntoConstraints = false
+		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
+		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[discriminator]|", options: [], metrics: nil, views: ["discriminator": discriminatorView])
+		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 4))
 		NSLayoutConstraint.activate(constraints)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
+		discriminatorView = UIView()
 		titleLabel = UILabel()
 		subtitleLabel = UILabel()
 		super.init(coder: aDecoder)

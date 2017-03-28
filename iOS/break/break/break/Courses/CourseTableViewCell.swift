@@ -10,6 +10,7 @@ import UIKit
 
 class CourseTableViewCell: UITableViewCell {
 
+	@IBOutlet weak var courseNameDiscriminatorView: UIView!
 	@IBOutlet weak var periodLabel: UILabel!
 	@IBOutlet weak var courseNameLabel: UILabel!
 	@IBOutlet weak var teacherNameLabel: UILabel!

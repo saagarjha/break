@@ -33,52 +33,74 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 				grades = computableCourse.computableGrades
 				addGradeButtonItem.isEnabled = true
 
-				header.title = (title: title, subtitle: String(format: "%.2f%%", computableCourse.average * 100))
+				header.title = (title: title, subtitle: String(format: "%.2f%%", computableCourse.computedScore * 100), comparisonResult: computableCourse.comparisonResult)
 				header.headers = categories.flatMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					guard let score = category.computedScore else {
-						return (title: category.name, subtitle: "")
+						return (title: category.name, subtitle: "", comparisonResult: category.comparisonResult)
 					}
-					return (title: category.name, subtitle: String(format: "%.2f%%", score * 100))
+					return (title: category.name, subtitle: String(format: "%.2f%%", score * 100), comparisonResult: category.comparisonResult)
 				}
 			case .original:
 				categories = course.categories
 				grades = course.grades
 				addGradeButtonItem.isEnabled = false
 
-				header.title = (title: title, subtitle: course.score)
+				header.title = (title: title, subtitle: course.score, comparisonResult: ComparisonResult.orderedSame)
 				header.headers = categories.map { category in
 					guard let score = Double(category.score) else {
-						return (category.name, subtitle: category.score)
+						return (category.name, subtitle: category.score, comparisonResult: ComparisonResult.orderedSame)
 					}
-					return (title: category.name, subtitle: String(format: "%.2f%%", score * 100))
+					return (title: category.name, subtitle: String(format: "%.2f%%", score * 100), comparisonResult: ComparisonResult.orderedSame)
 				}
 			case .weights:
 				categories = computableCourse.computableCategories
 				grades = computableCourse.computableGrades
 				addGradeButtonItem.isEnabled = true
 
-				header.title = (title: title, subtitle: "")
+				header.title = (title: title, subtitle: "", comparisonResult: computableCourse.comparisonResult)
 				header.headers = categories.flatMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					guard let weight = category.computedWeight else {
-						return (title: category.name, subtitle: "")
+						return (title: category.name, subtitle: "", comparisonResult: category.comparisonResult)
 					}
-					return (title: category.name, subtitle: String(format: "%.2f%%", weight * 100))
+					return (title: category.name, subtitle: String(format: "%.2f%%", weight * 100), comparisonResult: category.comparisonResult)
 				}
 			case .totals:
 				categories = computableCourse.computableCategories
 				grades = computableCourse.computableGrades
 				addGradeButtonItem.isEnabled = true
 
-				header.title = (title: title, subtitle: "")
+				header.title = (title: title, subtitle: "", comparisonResult: computableCourse.comparisonResult)
 				header.headers = categories.flatMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					let (score, maxPoints) = category.computedTotals
-					return (title: category.name, subtitle: String(format: "%.1f/%.1f", score, maxPoints))
+					return (title: category.name, subtitle: String(format: "%.1f/%.1f", score, maxPoints), comparisonResult: category.comparisonResult)
+				}
+			case .differences:
+				categories = computableCourse.computableCategories
+				grades = computableCourse.computableGrades
+				addGradeButtonItem.isEnabled = true
+				
+				var scoreDifferenceString = String(format: "%+.2f%%", computableCourse.computedScoreDifference * 100)
+				if scoreDifferenceString == "-0.00%" {
+					scoreDifferenceString = "+0.00%"
+				}
+				header.title = (title: title, subtitle: scoreDifferenceString, comparisonResult: computableCourse.comparisonResult)
+				header.headers = categories.flatMap {
+					$0 as? SchoolLoopComputableCategory
+					}.map { category in
+						guard let scoreDifference = category.computedScoreDifference else {
+							return (title: category.name, subtitle: "", comparisonResult: category.comparisonResult)
+						}
+						var scoreDifferenceString = String(format: "%+.2f%%", scoreDifference * 100)
+						if scoreDifferenceString == "-0.00%" {
+							scoreDifferenceString = "+0.00%"
+						}
+						return (title: category.name, subtitle: scoreDifferenceString, comparisonResult: category.comparisonResult)
 				}
 			default:
 				assertionFailure("ViewMode set to invalid value")

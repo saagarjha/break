@@ -241,19 +241,32 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vV7-jv-qlJ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="4" height="72"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="4" id="Itd-hg-and"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="s01-OF-ewj" secondAttribute="bottom" id="0aB-fy-KT6"/>
                                                 <constraint firstItem="s01-OF-ewj" firstAttribute="top" secondItem="VYV-Bi-RkN" secondAttribute="bottom" constant="8" id="5br-sI-ygE"/>
                                                 <constraint firstItem="VYV-Bi-RkN" firstAttribute="top" secondItem="jy4-JO-g0e" secondAttribute="topMargin" id="CYy-SA-pPF"/>
+                                                <constraint firstItem="vV7-jv-qlJ" firstAttribute="leading" secondItem="jy4-JO-g0e" secondAttribute="leading" id="Hf0-cU-FNu"/>
                                                 <constraint firstItem="s01-OF-ewj" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="jy4-JO-g0e" secondAttribute="trailingMargin" id="Mfv-ld-8cH"/>
+                                                <constraint firstItem="vV7-jv-qlJ" firstAttribute="top" secondItem="jy4-JO-g0e" secondAttribute="top" id="b4N-Kn-F6h"/>
                                                 <constraint firstItem="VYV-Bi-RkN" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="jy4-JO-g0e" secondAttribute="trailingMargin" id="g3t-c0-Nhm"/>
                                                 <constraint firstItem="VYV-Bi-RkN" firstAttribute="leading" secondItem="jy4-JO-g0e" secondAttribute="leadingMargin" id="ogn-yV-eRL"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="s01-OF-ewj" secondAttribute="bottom" id="utN-tB-Piq"/>
                                                 <constraint firstItem="s01-OF-ewj" firstAttribute="leading" secondItem="jy4-JO-g0e" secondAttribute="leadingMargin" id="zcb-yE-uCn"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="vV7-jv-qlJ" secondAttribute="bottom" id="1j3-VG-UJm"/>
+                                        </constraints>
                                         <connections>
+                                            <outlet property="courseNameDiscriminatorView" destination="vV7-jv-qlJ" id="4uD-Fp-ilt"/>
                                             <outlet property="courseNameLabel" destination="s01-OF-ewj" id="XsG-Cm-iC5"/>
                                             <outlet property="titleLabel" destination="VYV-Bi-RkN" id="Ruv-jY-wgh"/>
                                             <segue destination="dfx-bd-QRX" kind="show" id="DBr-2N-smW">
@@ -290,7 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9MN-Yh-4wQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2560" y="-378"/>
+            <point key="canvasLocation" x="2559.1999999999998" y="-378.26086956521743"/>
         </scene>
         <!--LoopMail-->
         <scene sceneID="hHu-5N-z0q">
@@ -866,17 +879,26 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OhD-Pp-Mgu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="4" height="72"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="4" id="0lV-fa-920"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jVD-xy-Doh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hsl-7n-bfX" secondAttribute="trailing" constant="8" id="2qk-sI-POU"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hsl-7n-bfX" secondAttribute="bottom" id="7SY-U0-top"/>
                                                 <constraint firstItem="FIM-k9-OJk" firstAttribute="leading" secondItem="ekR-ua-CQw" secondAttribute="trailing" constant="8" id="9kf-Ds-Bwq"/>
+                                                <constraint firstItem="OhD-Pp-Mgu" firstAttribute="top" secondItem="Vik-2b-jW9" secondAttribute="top" id="HhE-st-fA8"/>
                                                 <constraint firstItem="jVD-xy-Doh" firstAttribute="trailing" secondItem="Vik-2b-jW9" secondAttribute="trailingMargin" id="Ico-yj-cBT"/>
                                                 <constraint firstItem="FIM-k9-OJk" firstAttribute="top" secondItem="Vik-2b-jW9" secondAttribute="topMargin" id="JZ2-Hi-7UV"/>
                                                 <constraint firstItem="8xg-2d-s5p" firstAttribute="trailing" secondItem="Vik-2b-jW9" secondAttribute="trailingMargin" id="V9V-XQ-AUG"/>
                                                 <constraint firstItem="jVD-xy-Doh" firstAttribute="top" secondItem="hsl-7n-bfX" secondAttribute="top" id="dzi-YV-QkO"/>
                                                 <constraint firstItem="FIM-k9-OJk" firstAttribute="top" secondItem="Vik-2b-jW9" secondAttribute="topMargin" id="fWr-6P-YH4"/>
                                                 <constraint firstItem="hsl-7n-bfX" firstAttribute="leading" secondItem="FIM-k9-OJk" secondAttribute="leading" id="fos-Fc-DZs"/>
+                                                <constraint firstItem="OhD-Pp-Mgu" firstAttribute="leading" secondItem="Vik-2b-jW9" secondAttribute="leading" id="hgQ-Bc-QxE"/>
                                                 <constraint firstItem="8xg-2d-s5p" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FIM-k9-OJk" secondAttribute="trailing" constant="8" id="kn0-bV-4kg"/>
                                                 <constraint firstItem="ekR-ua-CQw" firstAttribute="centerY" secondItem="Vik-2b-jW9" secondAttribute="centerY" id="oak-oF-C8c"/>
                                                 <constraint firstItem="8xg-2d-s5p" firstAttribute="bottom" secondItem="FIM-k9-OJk" secondAttribute="bottom" id="pz0-o6-XcP"/>
@@ -890,7 +912,11 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="OhD-Pp-Mgu" secondAttribute="bottom" id="juO-7U-8lX"/>
+                                        </constraints>
                                         <connections>
+                                            <outlet property="courseNameDiscriminatorView" destination="OhD-Pp-Mgu" id="m44-wv-uBt"/>
                                             <outlet property="courseNameLabel" destination="FIM-k9-OJk" id="2Jv-Ej-Gwh"/>
                                             <outlet property="gradeLabel" destination="8xg-2d-s5p" id="SDm-yG-kB3"/>
                                             <outlet property="periodLabel" destination="ekR-ua-CQw" id="KgH-Hq-dOa"/>
@@ -930,7 +956,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ru1-0z-AnA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2560" y="-1064"/>
+            <point key="canvasLocation" x="2559.1999999999998" y="-1064.6176911544228"/>
         </scene>
         <!--Progess Report-->
         <scene sceneID="93k-tD-N7l">
@@ -985,12 +1011,19 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1000" text="Category" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRO-U6-bPs">
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1000" text="Category" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRO-U6-bPs" customClass="CategoryNameLabel" customModule="break" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="43" width="71" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qoO-GM-GHO">
+                                                    <rect key="frame" x="0.0" y="0.0" width="4" height="74"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="4" id="niT-Lc-kBz"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="upd-xB-YeT" firstAttribute="trailing" secondItem="CWd-kD-kQX" secondAttribute="trailingMargin" id="08e-eQ-9fA"/>
@@ -1007,15 +1040,21 @@
                                                 <constraint firstItem="xz1-sc-oZZ" firstAttribute="bottom" secondItem="kyC-D0-RYY" secondAttribute="bottom" id="hMm-NU-bNr"/>
                                                 <constraint firstItem="iu5-4C-DdG" firstAttribute="leading" secondItem="xz1-sc-oZZ" secondAttribute="trailing" id="kgu-tr-UOG"/>
                                                 <constraint firstItem="iu5-4C-DdG" firstAttribute="bottom" secondItem="kyC-D0-RYY" secondAttribute="bottom" id="l3V-0k-rT5"/>
+                                                <constraint firstItem="qoO-GM-GHO" firstAttribute="top" secondItem="CWd-kD-kQX" secondAttribute="top" id="laP-e2-hbA"/>
                                                 <constraint firstItem="sQ7-um-rb8" firstAttribute="trailing" secondItem="CWd-kD-kQX" secondAttribute="trailingMargin" id="pto-7z-C9a"/>
                                                 <constraint firstItem="xz1-sc-oZZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kyC-D0-RYY" secondAttribute="trailing" constant="8" id="rJi-Of-Aax"/>
                                                 <constraint firstItem="sQ7-um-rb8" firstAttribute="top" secondItem="CWd-kD-kQX" secondAttribute="topMargin" id="sIZ-o4-kid"/>
                                                 <constraint firstItem="upd-xB-YeT" firstAttribute="top" secondItem="pRO-U6-bPs" secondAttribute="top" id="sTE-it-adB"/>
                                                 <constraint firstItem="pRO-U6-bPs" firstAttribute="bottom" secondItem="CWd-kD-kQX" secondAttribute="bottomMargin" id="uaK-B2-Y9r"/>
+                                                <constraint firstItem="qoO-GM-GHO" firstAttribute="leading" secondItem="CWd-kD-kQX" secondAttribute="leading" id="wwx-dl-ukp"/>
                                                 <constraint firstItem="pRO-U6-bPs" firstAttribute="leading" secondItem="CWd-kD-kQX" secondAttribute="leadingMargin" id="xN0-sD-A6C"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="qoO-GM-GHO" secondAttribute="bottom" id="Agm-iw-XUz"/>
+                                        </constraints>
                                         <connections>
+                                            <outlet property="categoryDiscriminatorView" destination="qoO-GM-GHO" id="e4M-sD-Yxa"/>
                                             <outlet property="categoryNameLabel" destination="pRO-U6-bPs" id="p5H-oo-hn0"/>
                                             <outlet property="maxPointsLabel" destination="sQ7-um-rb8" id="k20-Xg-CEs"/>
                                             <outlet property="percentScoreLabel" destination="upd-xB-YeT" id="TCh-1M-qIO"/>

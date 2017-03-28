@@ -111,6 +111,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		let section = indexPath.section
 		let row = indexPath.row
 		let assignment = filteredAssignments[filteredAssignmentDueDates[section]]?[row]
+		cell.courseNameDiscriminatorView.backgroundColor = AppDelegate.color(for: assignment?.courseName ?? "")
 		if assignment?.isCompleted ?? false {
 			let titleText = NSAttributedString(string: assignment?.title ?? "", attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
 			let courseNameText = NSAttributedString(string: assignment?.courseName ?? "", attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
