@@ -53,6 +53,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 		loginOnLaunch()
 
+		let color = UIColor(red: 26 / 256, green: 188 / 256, blue: 156 / 256, alpha: 1)
+		window?.tintColor = color
+		let appearance = UINavigationBar.appearance()
+		appearance.barStyle = .black
+		appearance.tintColor = .white
+		appearance.barTintColor = color
+		
 		return true
 	}
 
@@ -163,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		} else {
 			Logger.log("Background fetch School: \(String(describing: schoolLoop.school))")
 			Logger.log("Background fetch Account: \(String(describing: schoolLoop.account?.username))")
-			Logger.log("Background fetch Password: \(schoolLoop.account.password.isEmpty)")
+			Logger.log("Background fetch Password: \(String(describing: schoolLoop.account?.password.isEmpty))")
 			completionHandler(.failed)
 		}
 	}
@@ -468,7 +475,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func sessionDidDeactivate(_ session: WCSession) {
 
 	}
-	
+
 	static func color(for string: String) -> UIColor {
 		let hashValue = UInt(bitPattern: string.hashValue)
 		let channelSize = UInt(MemoryLayout<Int>.size * 8 / 3)
