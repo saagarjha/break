@@ -14,8 +14,8 @@ class SchoolLoopCutoff: NSObject, NSCoding {
 	var Start: String
 
 	init(Name: String, Start: String) {
-		self.Name = Name
-		self.Start = Start
+		self.Name = Name ?! ""
+		self.Start = Start ?! ""
 		super.init()
 	}
 

@@ -50,12 +50,12 @@ class SchoolLoopCourse: NSObject, NSCoding {
 	var trendScores: [SchoolLoopTrendScore] = []
 
 	init(courseName: String, period: String, teacherName: String, grade: String, score: String, periodID: String) {
-		self.courseName = courseName
-		self.period = period
-		self.teacherName = teacherName
-		self.grade = grade
-		self.score = score
-		self.periodID = periodID
+		self.courseName = courseName ?! ""
+		self.period = period ?! ""
+		self.teacherName = teacherName ?! ""
+		self.grade = grade ?! ""
+		self.score = score ?! ""
+		self.periodID = periodID ?! ""
 		super.init()
 	}
 

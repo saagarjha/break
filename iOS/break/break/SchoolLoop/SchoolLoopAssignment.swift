@@ -20,12 +20,12 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 	var isCompleted: Bool
 
 	init(title: String, assignmentDescription: String, courseName: String, dueDate: String, links: [(title: String, URL: String)], iD: String) {
-		self.title = title
-		self.assignmentDescription = assignmentDescription
-		self.courseName = courseName
+		self.title = title ?! ""
+		self.assignmentDescription = assignmentDescription ?! ""
+		self.courseName = courseName ?! ""
 		self.dueDate = Date(timeIntervalSince1970: (TimeInterval(dueDate) ?? 0) / 1000)
 		self.links = links
-		self.iD = iD
+		self.iD = iD ?! ""
 		isCompleted = false
 		super.init()
 	}

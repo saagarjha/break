@@ -16,9 +16,9 @@ class SchoolLoopCategory: NSObject, NSCoding {
 	var weight: String
 
 	init(name: String, score: String, weight: String) {
-		self.name = name
-		self.score = score
-		self.weight = weight
+		self.name = name ?! ""
+		self.score = score ?! ""
+		self.weight = weight ?! ""
 		super.init()
 	}
 

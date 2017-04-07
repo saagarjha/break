@@ -14,7 +14,7 @@ class SchoolLoopTrendScore: NSObject, NSCoding {
 	var dayID: Date
 
 	init(score: String, dayID: String) {
-		self.score = score
+		self.score = score ?! ""
 		self.dayID = Date(timeIntervalSince1970: (TimeInterval(dayID) ?? 0) / 1000)
 		super.init()
 	}

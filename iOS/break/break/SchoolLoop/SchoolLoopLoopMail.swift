@@ -19,10 +19,10 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 	var links = [(title: String, URL: String)]()
 
 	init(subject: String, sender: SchoolLoopContact, date: String, ID: String) {
-		self.subject = subject
+		self.subject = subject ?! ""
 		self.sender = sender
 		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
-		self.ID = ID
+		self.ID = ID ?! ""
 		super.init()
 	}
 

@@ -18,12 +18,12 @@ class SchoolLoopNews: NSObject, NSCoding {
 	var iD: String
 
 	init(title: String, authorName: String, createdDate: String, newsDescription: String, links: [(title: String, URL: String)], iD: String) {
-		self.title = title
-		self.authorName = authorName
+		self.title = title ?! ""
+		self.authorName = authorName ?! ""
 		self.createdDate = Date(timeIntervalSince1970: TimeInterval(createdDate)! / 1000)
-		self.newsDescription = newsDescription
+		self.newsDescription = newsDescription ?! ""
 		self.links = links
-		self.iD = iD
+		self.iD = iD ?! ""
 		super.init()
 	}
 

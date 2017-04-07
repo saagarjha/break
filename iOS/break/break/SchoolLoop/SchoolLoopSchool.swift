@@ -14,8 +14,8 @@ class SchoolLoopSchool: NSObject, NSCoding {
 	var domainName: String
 
 	init(name: String, domainName: String) {
-		self.name = name
-		self.domainName = domainName
+		self.name = name ?! ""
+		self.domainName = domainName ?! ""
 		super.init()
 	}
 

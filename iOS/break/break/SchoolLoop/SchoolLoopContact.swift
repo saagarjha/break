@@ -22,10 +22,10 @@ class SchoolLoopContact: NSObject, NSCoding {
 	}
 
 	init(id: String, name: String, role: String, desc: String) {
-		self.id = id
-		self.name = name
-		self.role = role
-		self.desc = desc
+		self.id = id ?! ""
+		self.name = name ?! ""
+		self.role = role ?! ""
+		self.desc = desc ?! ""
 		super.init()
 	}
 

@@ -16,8 +16,8 @@ class SchoolLoopComposedLoopMail: NSObject {
 	var cc: [SchoolLoopContact]
 
 	init(subject: String, message: String, to: [SchoolLoopContact], cc: [SchoolLoopContact]) {
-		self.subject = subject
-		self.message = message
+		self.subject = subject ?! ""
+		self.message = message ?! ""
 		self.to = to
 		self.cc = cc
 		super.init()

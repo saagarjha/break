@@ -739,3 +739,10 @@ extension URLSession {
 		completionHandler(data, response, error)
 	}
 }
+
+infix operator ?!: NilCoalescingPrecedence
+extension String {
+	static func ?!(lhs: String, rhs: String) -> String {
+		return lhs == "null" ? rhs : lhs
+	}
+}

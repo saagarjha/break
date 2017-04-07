@@ -27,13 +27,13 @@ class SchoolLoopGrade: NSObject, NSCoding {
 	var changedDate: Date
 
 	init(title: String, categoryName: String, percentScore: String, score: String, maxPoints: String, comment: String, systemID: String, dueDate: String, changedDate: String) {
-		self.title = title
-		self.categoryName = categoryName
-		self.percentScore = percentScore
-		self.score = score
-		self.maxPoints = maxPoints
-		self.comment = comment
-		self.systemID = systemID
+		self.title = title ?! ""
+		self.categoryName = categoryName ?! ""
+		self.percentScore = percentScore ?! ""
+		self.score = score ?! ""
+		self.maxPoints = maxPoints ?! ""
+		self.comment = comment ?! ""
+		self.systemID = systemID ?! ""
 		self.dueDate = SchoolLoopGrade.dateFormatter.date(from: dueDate) ?? Date.distantPast
 		self.changedDate = SchoolLoopGrade.dateFormatter.date(from: changedDate) ?? Date.distantPast
 		super.init()
