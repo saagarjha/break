@@ -183,12 +183,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
+		notification.userInfo?["identifier"] = identifier
 		guard launchNotification == nil else {
 			return
 		}
 		DispatchQueue.main.async {
 			self.launchNotification = notification
 			self.completionHandler = completionHandler
+			if self.openContextForNotification(notification) {
+				self.launchNotification = nil
+				self.completionHandler = nil
+			}
 		}
 	}
 
@@ -219,6 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						self.window?.rootViewController = tabBarController
 						if let notification = self.launchNotification {
 							self.openContextForNotification(notification)
+							self.launchNotification = nil
 						}
 						self.completionHandler?()
 						if UIApplication.shared.applicationState == .active && UserDefaults.standard.bool(forKey: "password") {
@@ -402,11 +408,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
-	func openContextForNotification(_ notification: UILocalNotification) {
-		guard let data = notification.userInfo?["updatedItem"] as? Data,
-			let tabBarController = window?.rootViewController as? UITabBarController else {
+	@discardableResult func openContextForNotification(_ notification: UILocalNotification) -> Bool {
+		defer {
+			completionHandler?()
+		}
+		guard let data = notification.userInfo?["updatedItem"] as? Data else {
 				assertionFailure("Could not retrieve updated item")
-				return
+				return false
+		}
+		guard let tabBarController = window?.rootViewController as? UITabBarController else {
+			return false
 		}
 		switch NSKeyedUnarchiver.unarchiveObject(with: data) {
 		case let course as SchoolLoopCourse:
@@ -417,7 +428,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			tabBarController.viewControllerOfType(AssignmentsViewController.self)?.openAssignmentDescription(for: assignment)
 		case let loopMail as SchoolLoopLoopMail:
 			tabBarController.selectedIndex = 2
-			if notification.category != "ReplyCategory" {
+			if notification.userInfo?["identifier"] as? String != "Reply" {
 				tabBarController.viewControllerOfType(LoopMailViewController.self)?.openLoopMailMessage(for: loopMail)
 			} else {
 				tabBarController.viewControllerOfType(LoopMailViewController.self)?.openLoopMailCompose(for: loopMail)
@@ -428,6 +439,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		default:
 			assertionFailure("Unrecognized updated item")
 		}
+		return true
 	}
 
 	func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
