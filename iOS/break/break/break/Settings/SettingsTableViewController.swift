@@ -19,7 +19,7 @@ class SettingsTableViewController: UITableViewController {
 		super.viewWillAppear(animated)
 		schoolLoop = SchoolLoop.sharedInstance
 		accountNameLabel.text = schoolLoop.account.fullName
-		securityEnabledLabel.text = UserDefaults.standard.bool(forKey: "password") ? "Enabled" : "Disabled"
+		securityEnabledLabel.text = Preferences.isPasswordSet ? "Enabled" : "Disabled"
 	}
 
 	override func viewDidLoad() {

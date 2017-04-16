@@ -86,6 +86,7 @@
 		49AC180E1E03E30200DB8159 /* SchoolLoopComputableCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */; };
 		49AC180F1E03E30200DB8159 /* SchoolLoopComputableCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */; };
 		49AC18101E03E30200DB8159 /* SchoolLoopComputableGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */; };
+		49C9888E1EA32D62000AF3CF /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C9888D1EA32D62000AF3CF /* Preferences.swift */; };
 		49CC70961CD1CF53000566D4 /* SecurityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */; };
 		49CEE9A91CF739B600440802 /* SchoolLoopCutoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */; };
 		49CEE9AA1CF7426000440802 /* SchoolLoopCutoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */; };
@@ -228,6 +229,7 @@
 		498665731C8D24E9004BA249 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComputableCategory.swift; sourceTree = "<group>"; };
 		49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComputableGrade.swift; sourceTree = "<group>"; };
+		49C9888D1EA32D62000AF3CF /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityTableViewController.swift; sourceTree = "<group>"; };
 		49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCutoff.swift; sourceTree = "<group>"; };
 		49D04A301CD58B7200CB6650 /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ComplicationController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -464,6 +466,7 @@
 				49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */,
 				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 				495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */,
+				49C9888D1EA32D62000AF3CF /* Preferences.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				495574871CA6081100193EE5 /* Logger.swift in Sources */,
 				498665911C8D24E9004BA249 /* AssignmentsViewController.swift in Sources */,
 				4982807A1CEE4C34001A5000 /* SchoolLoopTrendScore.swift in Sources */,
+				49C9888E1EA32D62000AF3CF /* Preferences.swift in Sources */,
 				498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */,
 				49489F2B1DDA9EEE0039126D /* SchoolLoopContact.swift in Sources */,
 				4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */,

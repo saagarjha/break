@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			archived = false
 		}
 
-		launchIndex = index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? UserDefaults.standard.integer(forKey: "startup")
+		launchIndex = index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? Preferences.startupTabIndex
 		launchNotification = launchOptions?[.localNotification] as? UILocalNotification
 
 		loginOnLaunch()
@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func applicationDidEnterBackground(_ application: UIApplication) {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-		if UserDefaults.standard.bool(forKey: "password") {
+		if Preferences.isPasswordSet {
 			if let tabBarController = self.window?.rootViewController as? UITabBarController {
 				let view: UIView
 				if !UIAccessibilityIsReduceTransparencyEnabled() {
@@ -91,8 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-		if UserDefaults.standard.bool(forKey: "password") {
-			if UserDefaults.standard.bool(forKey: "touchID") {
+		if Preferences.isPasswordSet {
+			if Preferences.canUseTouchID {
 				self.showAuthententication()
 			} else {
 				self.showPassword()
@@ -227,7 +227,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 							self.launchNotification = nil
 						}
 						self.completionHandler?()
-						if UIApplication.shared.applicationState == .active && UserDefaults.standard.bool(forKey: "password") {
+						if UIApplication.shared.applicationState == .active && Preferences.isPasswordSet {
 							let view: UIView
 							if let viewController = self.window?.rootViewController {
 								if !UIAccessibilityIsReduceTransparencyEnabled() {
@@ -242,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 								viewController.view.addSubview(view)
 								self.securityView = view
 							}
-							if UserDefaults.standard.bool(forKey: "touchID") {
+							if Preferences.canUseTouchID {
 								self.showAuthententication()
 							} else {
 								self.showPassword()
@@ -348,9 +348,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		if let tabBarController = self.window?.rootViewController as? UITabBarController {
 			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your SchoolLoop account.", preferredStyle: .alert)
 			let forgotAction = UIAlertAction(title: "Forgot", style: .default) { _ in
-				UserDefaults.standard.set(false, forKey: "password")
-				UserDefaults.standard.set(false, forKey: "touchID")
-				UserDefaults.standard.synchronize()
+				Preferences.isPasswordSet = false
+				Preferences.canUseTouchID = false
 				SchoolLoop.sharedInstance.logOut()
 				DispatchQueue.main.async {
 					UIView.animate(withDuration: 0.25, animations: {

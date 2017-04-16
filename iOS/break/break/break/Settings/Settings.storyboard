@@ -153,7 +153,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="Lag-qQ-BoW" kind="show" id="Un9-Dc-dQV"/>
+                                            <segue destination="Lag-qQ-BoW" kind="show" id="Un9-Dc-dQV">
+                                                <segue key="commit" inheritsFrom="parent" id="osh-KO-RTT"/>
+                                                <segue key="preview" inheritsFrom="commit" id="DBF-8w-aks"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="OSz-eL-KVr" style="IBUITableViewCellStyleDefault" id="1ZW-ti-Kof">
@@ -173,7 +176,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="qMr-P6-21R" kind="show" id="hpV-Cr-fjj"/>
+                                            <segue destination="qMr-P6-21R" kind="show" id="hpV-Cr-fjj">
+                                                <segue key="commit" inheritsFrom="parent" id="c3N-F5-pLv"/>
+                                                <segue key="preview" inheritsFrom="commit" id="OmA-VZ-cVJ"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -637,8 +643,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="hpV-Cr-fjj"/>
+        <segue reference="vo6-Or-3cy"/>
+        <segue reference="Un9-Dc-dQV"/>
         <segue reference="pUD-c4-gJl"/>
         <segue reference="CHY-Me-CS0"/>
-        <segue reference="vo6-Or-3cy"/>
     </inferredMetricsTieBreakers>
 </document>

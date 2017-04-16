@@ -23,7 +23,7 @@ class StartupTableViewController: UITableViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		tableView.cellForRow(at: IndexPath(row: UserDefaults.standard.integer(forKey: "startup"), section: 0))?.accessoryType = .checkmark
+		tableView.cellForRow(at: IndexPath(row: Preferences.startupTabIndex, section: 0))?.accessoryType = .checkmark
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -93,7 +93,7 @@ class StartupTableViewController: UITableViewController {
 			tableView.cellForRow(at: IndexPath(row: i, section: 0))?.accessoryType = .none
 		}
 		tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-		UserDefaults.standard.set(indexPath.row, forKey: "startup")
+		Preferences.startupTabIndex = indexPath.row
 		return indexPath
 	}
 

@@ -20,8 +20,8 @@ class SecurityTableViewController: UITableViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		passwordSwitch.isOn = UserDefaults.standard.bool(forKey: "password")
-		touchIDSwitch.isOn = UserDefaults.standard.bool(forKey: "touchID")
+		passwordSwitch.isOn = Preferences.isPasswordSet
+		touchIDSwitch.isOn = Preferences.canUseTouchID
 		if passwordSwitch.isOn {
 			touchIDCell.isUserInteractionEnabled = true
 			touchIDLabel.isEnabled = true
@@ -78,8 +78,7 @@ class SecurityTableViewController: UITableViewController {
 				self.touchIDCell.isUserInteractionEnabled = true
 				self.touchIDLabel.isEnabled = true
 				self.touchIDSwitch.isEnabled = true
-				UserDefaults.standard.set(sender.isOn, forKey: "password")
-				UserDefaults.standard.synchronize()
+				Preferences.isPasswordSet = sender.isOn
 			}
 			alertController.addAction(cancelAction)
 			alertController.addAction(doneAction)
@@ -99,8 +98,7 @@ class SecurityTableViewController: UITableViewController {
 					self.touchIDCell.isUserInteractionEnabled = false
 					self.touchIDLabel.isEnabled = false
 					self.touchIDSwitch.isEnabled = false
-					UserDefaults.standard.set(sender.isOn, forKey: "password")
-					UserDefaults.standard.synchronize()
+					Preferences.isPasswordSet = sender.isOn
 				} else {
 					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
 					let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
@@ -119,8 +117,7 @@ class SecurityTableViewController: UITableViewController {
 	}
 
 	@IBAction func useTouchID(_ sender: UISwitch) {
-		UserDefaults.standard.set(sender.isOn, forKey: "touchID")
-		UserDefaults.standard.synchronize()
+		Preferences.canUseTouchID = sender.isOn
 	}
 
 	// MARK: - Table view data source
