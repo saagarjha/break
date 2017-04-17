@@ -17,6 +17,18 @@ class LoggerViewController: UIViewController {
 		// Do any additional setup after loading the view.
 		logTextView.text = Logger.readLog()
 	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		guard logTextView.text.characters.count > 0 else {
+			return
+		}
+		UIView.setAnimationsEnabled(false)
+		logTextView.scrollRangeToVisible(NSRange(location: logTextView.text.characters.count, length: 0))
+		UIView.setAnimationsEnabled(true)
+		logTextView.flashScrollIndicators()
+	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()

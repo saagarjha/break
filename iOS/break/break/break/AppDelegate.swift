@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		appearance.barStyle = .black
 		appearance.tintColor = .white
 		appearance.barTintColor = color
-		
+
 		return true
 	}
 
@@ -412,8 +412,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			completionHandler?()
 		}
 		guard let data = notification.userInfo?["updatedItem"] as? Data else {
-				assertionFailure("Could not retrieve updated item")
-				return false
+			assertionFailure("Could not retrieve updated item")
+			return false
 		}
 		guard let tabBarController = window?.rootViewController as? UITabBarController else {
 			return false
@@ -512,57 +512,61 @@ protocol UpdatableItem {
 
 extension SchoolLoopCourse: UpdatableItem {
 	func postNotification() {
-		if UIApplication.shared.applicationState != .active {
+		if UIApplication.shared.applicationState != .active,
+			Preferences.areCoursesNotificationsAllowed {
 			let notification = UILocalNotification()
 			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
-			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "Your grade in \(courseName) has changed"
-			notification.applicationIconBadgeNumber = 1
+			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			usleep(100_000)
 		}
 	}
 }
 
 extension SchoolLoopAssignment: UpdatableItem {
 	func postNotification() {
-		if UIApplication.shared.applicationState != .active {
+		if UIApplication.shared.applicationState != .active,
+			Preferences.areAssignmentsNotificationsAllowed {
 			let notification = UILocalNotification()
 			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
-			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "New assignment \(title) posted for \(courseName)"
-			notification.applicationIconBadgeNumber = 1
+			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			usleep(100_000)
 		}
 	}
 }
 
 extension SchoolLoopLoopMail: UpdatableItem {
 	func postNotification() {
-		if UIApplication.shared.applicationState != .active {
+		if UIApplication.shared.applicationState != .active,
+			Preferences.areLoopMailNotificationsAllowed {
 			let notification = UILocalNotification()
 			notification.category = "ReplyCategory"
 			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
-			notification.fireDate = Date(timeIntervalSinceNow: 1)
-			notification.alertBody = "From: \(sender.name)\n\(subject)\n"
-			notification.applicationIconBadgeNumber = 1
+			notification.alertBody = "From: \(self.sender.name)\n\(self.subject)"
+			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			usleep(100_000)
 		}
 	}
 }
 
 extension SchoolLoopNews: UpdatableItem {
 	func postNotification() {
-		if UIApplication.shared.applicationState != .active {
+		if UIApplication.shared.applicationState != .active,
+			Preferences.areNewsNotificationsAllowed {
 			let notification = UILocalNotification()
 			notification.userInfo = ["updatedItem": NSKeyedArchiver.archivedData(withRootObject: self)]
-			notification.fireDate = Date(timeIntervalSinceNow: 1)
 			notification.alertBody = "\(title)\n\(authorName)"
-			notification.applicationIconBadgeNumber = 1
+			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			usleep(100_000)
 		}
 	}
 }

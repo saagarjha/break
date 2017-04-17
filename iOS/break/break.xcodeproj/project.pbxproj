@@ -81,6 +81,7 @@
 		498665A31C8D24E9004BA249 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4986656E1C8D24E9004BA249 /* Settings.storyboard */; };
 		498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */; };
 		498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 498665731C8D24E9004BA249 /* LaunchScreen.storyboard */; };
+		49989A4C1EA44C9B00F95A65 /* NotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49989A4B1EA44C9B00F95A65 /* NotificationsTableViewController.swift */; };
 		49AC180B1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */; };
 		49AC180D1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */; };
 		49AC180E1E03E30200DB8159 /* SchoolLoopComputableCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */; };
@@ -227,6 +228,7 @@
 		4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		498665721C8D24E9004BA249 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		498665731C8D24E9004BA249 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		49989A4B1EA44C9B00F95A65 /* NotificationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewController.swift; sourceTree = "<group>"; };
 		49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComputableCategory.swift; sourceTree = "<group>"; };
 		49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComputableGrade.swift; sourceTree = "<group>"; };
 		49C9888D1EA32D62000AF3CF /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -461,12 +463,13 @@
 			isa = PBXGroup;
 			children = (
 				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
+				49C9888D1EA32D62000AF3CF /* Preferences.swift */,
 				4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */,
 				495574881CA6112000193EE5 /* LoggerViewController.swift */,
+				49989A4B1EA44C9B00F95A65 /* NotificationsTableViewController.swift */,
 				49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */,
 				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 				495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */,
-				49C9888D1EA32D62000AF3CF /* Preferences.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -768,6 +771,7 @@
 				49AC180D1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift in Sources */,
 				496FA3941E5FCEE700822436 /* CourseDetailTableViewCell.swift in Sources */,
 				498665A01C8D24E9004BA249 /* NewsTableViewCell.swift in Sources */,
+				49989A4C1EA44C9B00F95A65 /* NotificationsTableViewController.swift in Sources */,
 				49489F291DDA9D500039126D /* LoopMailContactsViewController.swift in Sources */,
 				498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */,
 				49489F2E1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift in Sources */,

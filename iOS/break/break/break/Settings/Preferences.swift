@@ -40,4 +40,44 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
+	
+	static var areCoursesNotificationsAllowed: Bool {
+		get {
+			return userDefaults.bool(forKey: "areCoursesNotificationsAllowed")
+		}
+		set {
+			userDefaults.set(newValue, forKey: "areCoursesNotificationsAllowed")
+			userDefaults.synchronize()
+		}
+	}
+	
+	static var areAssignmentsNotificationsAllowed: Bool {
+		get {
+			return userDefaults.bool(forKey: "areAssignmentsNotificationsAllowed")
+		}
+		set {
+			userDefaults.set(newValue, forKey: "areAssignmentsNotificationsAllowed")
+			userDefaults.synchronize()
+		}
+	}
+	
+	static var areLoopMailNotificationsAllowed: Bool {
+		get {
+			return userDefaults.bool(forKey: "areLoopMailNotificationsAllowed")
+		}
+		set {
+			userDefaults.set(newValue, forKey: "areLoopMailNotificationsAllowed")
+			userDefaults.synchronize()
+		}
+	}
+	
+	static var areNewsNotificationsAllowed: Bool {
+		get {
+			return userDefaults.bool(forKey: "areNewsNotificationsAllowed")
+		}
+		set {
+			userDefaults.set(newValue, forKey: "areNewsNotificationsAllowed")
+			userDefaults.synchronize()
+		}
+	}
 }
