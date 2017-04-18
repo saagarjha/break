@@ -68,6 +68,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: lockerCollectionView)
 		}
+		lockerItems = schoolLoop.lockerItem(forPath: path)?.lockerItems ?? []
 		refresh(self)
 	}
 
@@ -89,6 +90,11 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 					self.lockerItems = lockerItem.lockerItems
 					self.lockerCollectionView.reloadData()
 					self.lockerCollectionViewFlowLayout?.invalidateLayout()
+				} else if error == .authenticationError {
+					let alertController = UIAlertController(title: "Authentication error", message: "It looks like SchoolLoop's locker doesn't work with your account. Please file a bug report with SchoolLoop.", preferredStyle: .alert)
+					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+					alertController.addAction(okAction)
+					self.present(alertController, animated: true, completion: nil)
 				}
 				self.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
@@ -145,11 +151,28 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 	}
 
-	func lockerItemImage(for lockerItem: SchoolLoopLockerItem) -> UIImage? {
-		if lockerItem.type == SchoolLoopLockerItemType.directory {
-			return UIImage(named: "FolderIcon")
-		} else {
-			return UIImage(named: "FileIcon")
+	func lockerItemImage(for lockerItem: SchoolLoopLockerItem) -> UIImage {
+		switch lockerItem.type {
+		case .directory:
+			return #imageLiteral(resourceName: "FolderIcon")
+		case .pdf:
+			return #imageLiteral(resourceName: "PDFFileIcon")
+		case .txt:
+			return #imageLiteral(resourceName: "TXTFileIcon")
+		case .doc:
+			return #imageLiteral(resourceName: "DOCFileIcon")
+		case .xls:
+			return #imageLiteral(resourceName: "XLSFileIcon")
+		case .ppt:
+			return #imageLiteral(resourceName: "PPTFileIcon")
+		case .pages:
+			return #imageLiteral(resourceName: "PAGESFileIcon")
+		case .numbers:
+			return #imageLiteral(resourceName: "NUMBERSFileIcon")
+		case .key:
+			return #imageLiteral(resourceName: "KEYFileIcon")
+		case .unknown:
+			return #imageLiteral(resourceName: "FileIcon")
 		}
 	}
 

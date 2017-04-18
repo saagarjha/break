@@ -543,6 +543,11 @@ class SchoolLoop: NSObject, NSCoding {
 		let request = authenticatedRequest(withURL: url, httpMethod: "PROPFIND")
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
+			let httpResponse = response as? HTTPURLResponse
+			guard httpResponse?.statusCode != 401 else {
+				completionHandler?(.authenticationError)
+				return
+			}
 			guard let data = data else {
 				completionHandler?(.parseError)
 				return
@@ -691,6 +696,9 @@ extension SchoolLoop: XMLParserDelegate {
 		if currentTokens.last == "d:collection" {
 			currentType = .directory
 		} else if currentTokens.last == "d:response" {
+			if currentType == .unknown {
+				currentType = SchoolLoopLockerItemType(filename: currentName)
+			}
 			let lockerItem = SchoolLoopLockerItem(name: currentName, path: currentPath, type: currentType)
 			if let parent = lockerItemParent(forPath: lockerItem.path) {
 				if !parent.lockerItems.contains(where: { $0 == lockerItem }) {
@@ -708,17 +716,26 @@ extension SchoolLoop: XMLParserDelegate {
 
 	func parser(_ parser: XMLParser, foundCharacters string: String) {
 		if currentTokens.last == "d:href" {
-			currentPath = string.substring(from: string.index(string.characters.index(of: "/")!, offsetBy: 1))
-			currentPath = currentPath.substring(from: currentPath.index(currentPath.characters.index(of: "/")!, offsetBy: 1))
+			currentPath = string.substring(from: string.index(after: string.characters.index(of: "/")!))
+			currentPath = currentPath.substring(from: currentPath.index(after: currentPath.characters.index(of: "/")!))
 			currentPath = currentPath.substring(from: currentPath.characters.index(of: "/")!)
 		} else if currentTokens.last == "d:displayname" {
 			currentName += string
 		} else if currentTokens.last == "d:getcontenttype" {
 			if currentType != .directory {
-				if string == "application/pdf" {
+				switch string {
+				case "application/pdf":
 					currentType = .pdf
-				} else {
-					currentType = .unknown
+				case "text/plain":
+					currentType = .txt
+				case "application/msword":
+					currentType = .doc
+				case "application/mspowerpoint":
+					currentType = .ppt
+				case "application/vndms-excel":
+					currentType = .xls
+				default:
+					currentType = SchoolLoopLockerItemType(filename: currentName)
 				}
 			}
 		}
