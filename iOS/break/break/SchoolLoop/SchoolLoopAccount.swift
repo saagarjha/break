@@ -15,14 +15,16 @@ class SchoolLoopAccount: NSObject, NSCoding {
 	var fullName: String
 	var studentID: String
 	var hashedPassword: String
+	var email: String
 	var loggedIn: Bool = false
 
-	init(username: String, password: String, fullName: String, studentID: String, hashedPassword: String) {
+	init(username: String, password: String, fullName: String, studentID: String, hashedPassword: String, email: String) {
 		self.username = username
 		self.password = password
 		self.fullName = fullName
 		self.studentID = studentID
 		self.hashedPassword = hashedPassword
+		self.email = email
 		super.init()
 	}
 
@@ -40,6 +42,7 @@ class SchoolLoopAccount: NSObject, NSCoding {
 		fullName = aDecoder.decodeObject(forKey: "fullName") as? String ?? ""
 		studentID = aDecoder.decodeObject(forKey: "studentID") as? String ?? ""
 		hashedPassword = aDecoder.decodeObject(forKey: "hashedPassword") as? String ?? ""
+		email = aDecoder.decodeObject(forKey: "email") as? String ?? ""
 		super.init()
 	}
 
@@ -54,5 +57,6 @@ class SchoolLoopAccount: NSObject, NSCoding {
 		aCoder.encode(fullName, forKey: "fullName")
 		aCoder.encode(studentID, forKey: "studentID")
 		aCoder.encode(hashedPassword, forKey: "hashedPassword")
+		aCoder.encode(email, forKey: "email")
 	}
 }

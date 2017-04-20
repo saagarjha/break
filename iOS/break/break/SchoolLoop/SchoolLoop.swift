@@ -93,7 +93,8 @@ class SchoolLoop: NSObject, NSCoding {
 				}
 				let name = schoolJSON["name"] as? String ?? ""
 				let domainName = schoolJSON["domainName"] as? String ?? ""
-				let school = SchoolLoopSchool(name: name, domainName: domainName)
+				let districtName = schoolJSON["districtName"] as? String ?? ""
+				let school = SchoolLoopSchool(name: name, domainName: domainName, districtName: districtName)
 				newSchools.append(school)
 			}
 			self.schools = newSchools
@@ -107,7 +108,7 @@ class SchoolLoop: NSObject, NSCoding {
 			return
 		}
 		self.school = school
-		self.account = SchoolLoopAccount(username: username, password: password, fullName: account?.fullName ?? "", studentID: account?.studentID ?? "", hashedPassword: account?.hashedPassword ?? "")
+		self.account = SchoolLoopAccount(username: username, password: password, fullName: account?.fullName ?? "", studentID: account?.studentID ?? "", hashedPassword: account?.hashedPassword ?? "", email: "")
 		let url = SchoolLoopConstants.logInURL(withDomainName: school.domainName)
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
@@ -138,7 +139,8 @@ class SchoolLoop: NSObject, NSCoding {
 			let fullName = loginJSON["fullName"] as? String ?? ""
 			let studentID = loginJSON["userID"] as? String ?? ""
 			let hashedPassword = loginJSON["hashedPassword"] as? String ?? ""
-			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID, hashedPassword: hashedPassword)
+			let email = loginJSON["email"] as? String ?? ""
+			self.account = SchoolLoopAccount(username: username, password: password, fullName: fullName, studentID: studentID, hashedPassword: hashedPassword, email: email)
 			self.account.loggedIn = true
 			completionHandler?(.noError)
 		}.resume()

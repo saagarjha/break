@@ -13,6 +13,9 @@ class AccountTableViewController: UITableViewController {
 	var schoolLoop: SchoolLoop!
 
 	@IBOutlet weak var accountNameLabel: UILabel!
+	@IBOutlet weak var schoolNameLabel: UILabel!
+	@IBOutlet weak var districtNameLabel: UILabel!
+	@IBOutlet weak var emailLabel: UILabel!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,6 +27,9 @@ class AccountTableViewController: UITableViewController {
 		// self.navigationItem.rightBarButtonItem = self.editButtonItem()
 		schoolLoop = SchoolLoop.sharedInstance
 		accountNameLabel.text = schoolLoop.account.fullName
+		schoolNameLabel.text = schoolLoop.school.name
+		districtNameLabel.text = schoolLoop.school.districtName
+		emailLabel.text = schoolLoop.account.email
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -90,7 +96,7 @@ class AccountTableViewController: UITableViewController {
 	 */
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if indexPath.row == 1 {
+		if indexPath.row == 4 {
 			schoolLoop.logOut()
 			let appDelegate = UIApplication.shared.delegate as? AppDelegate
 			appDelegate?.clearCache()
