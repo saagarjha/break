@@ -14,7 +14,7 @@ class CoursesInterfaceController: WKInterfaceController, WCSessionDelegate {
 
 	let rowType = "course"
 
-	var courses: [SchoolLoopCourse] = []
+	var courses = [SchoolLoopCourse]()
 
 	@IBOutlet var coursesTable: WKInterfaceTable!
 

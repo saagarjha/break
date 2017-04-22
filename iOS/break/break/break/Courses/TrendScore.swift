@@ -15,7 +15,7 @@ class TrendScore: UIView {
 	let leftInset: CGFloat = 55
 	let bottomInset: CGFloat = 20
 
-	var trendScores: [SchoolLoopTrendScore] = [] {
+	var trendScores = [SchoolLoopTrendScore]() {
 		didSet {
 			drawTrendLine()
 		}

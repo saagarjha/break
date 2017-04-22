@@ -33,8 +33,8 @@ class SchoolLoopComputableCourse: SchoolLoopCourse {
 		}
 		return score
 	}
-	var computableCategories: [SchoolLoopComputableCategory] = []
-	var computableGrades: [SchoolLoopComputableGrade] = []
+	var computableCategories = [SchoolLoopComputableCategory]()
+	var computableGrades = [SchoolLoopComputableGrade]()
 	var computedScoreDifference: Double {
 		guard let score = SchoolLoopComputableCourse.double(forPercent: self.score) else { // Crashes compiler without self
 			return 0

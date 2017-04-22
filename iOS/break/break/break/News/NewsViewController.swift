@@ -13,8 +13,8 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	let cellIdentifier = "news"
 
 	var schoolLoop: SchoolLoop!
-	var news: [SchoolLoopNews] = []
-	var filteredNews: [SchoolLoopNews] = []
+	var news = [SchoolLoopNews]()
+	var filteredNews = [SchoolLoopNews]()
 
 	var destinationViewController: NewsDescriptionViewController!
 

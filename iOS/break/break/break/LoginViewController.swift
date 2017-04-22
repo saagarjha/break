@@ -13,7 +13,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	let logInSegueIdentifier = "logInSegue"
 
 	var schoolLoop: SchoolLoop!
-	var schools: [SchoolLoopSchool] = []
+	var schools = [SchoolLoopSchool]()
 
 	@IBOutlet weak var loginScrollView: UIScrollView!
 	@IBOutlet weak var loginViewHeightConstraint: NSLayoutConstraint!

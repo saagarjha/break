@@ -15,8 +15,8 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 	var loopMailContactsDelegate: LoopMailContactsDelegate?
 
 	var schoolLoop: SchoolLoop!
-	var contacts: [SchoolLoopContact] = []
-	var selectedContacts: [SchoolLoopContact] = []
+	var contacts = [SchoolLoopContact]()
+	var selectedContacts = [SchoolLoopContact]()
 
 	@IBOutlet weak var contactsTableView: UITableView!
 	let searchController = UISearchController(searchResultsController: nil)

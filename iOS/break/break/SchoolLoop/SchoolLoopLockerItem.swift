@@ -13,7 +13,7 @@ class SchoolLoopLockerItem {
 	var path: String
 	var type: SchoolLoopLockerItemType
 
-	var lockerItems: [SchoolLoopLockerItem] = []
+	var lockerItems = [SchoolLoopLockerItem]()
 
 	init(name: String, path: String, type: SchoolLoopLockerItemType) {
 		self.name = name ?! ""

@@ -15,7 +15,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	var schoolLoop: SchoolLoop!
 	var assignments = [Date: [SchoolLoopAssignment]]()
 	var filteredAssignments = [Date: [SchoolLoopAssignment]]()
-	var filteredAssignmentDueDates: [Date] = []
+	var filteredAssignmentDueDates = [Date]()
 
 	var destinationViewController: AssignmentDescriptionViewController!
 

@@ -15,7 +15,7 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 	let rowType = "grade"
 
 	var periodID: String!
-	var grades: [SchoolLoopGrade] = []
+	var grades = [SchoolLoopGrade]()
 
 	@IBOutlet var gradesTable: WKInterfaceTable!
 	override func awake(withContext context: Any?) {

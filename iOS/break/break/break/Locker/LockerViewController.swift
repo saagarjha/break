@@ -17,7 +17,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	var path = "/"
 
 	var schoolLoop: SchoolLoop!
-	var lockerItems: [SchoolLoopLockerItem] = []
+	var lockerItems = [SchoolLoopLockerItem]()
 
 	@IBOutlet weak var lockerCollectionView: UICollectionView! {
 		didSet {

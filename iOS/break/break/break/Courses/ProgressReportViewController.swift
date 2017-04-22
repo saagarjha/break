@@ -19,10 +19,10 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	var schoolLoop: SchoolLoop!
 	var course: SchoolLoopCourse!
 	var computableCourse: SchoolLoopComputableCourse!
-	var categories: [SchoolLoopCategory] = []
-	var grades: [SchoolLoopGrade] = []
-	var filteredGrades: [SchoolLoopGrade] = []
-	var trendScores: [SchoolLoopTrendScore] = []
+	var categories = [SchoolLoopCategory]()
+	var grades = [SchoolLoopGrade]()
+	var filteredGrades = [SchoolLoopGrade]()
+	var trendScores = [SchoolLoopTrendScore]()
 
 	var viewMode = ViewMode.calculated {
 		didSet {

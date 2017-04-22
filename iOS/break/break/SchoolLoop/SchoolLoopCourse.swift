@@ -44,10 +44,10 @@ class SchoolLoopCourse: NSObject, NSCoding {
 	var periodID: String
 	var lastUpdated: Date = Date.distantPast
 
-	var cutoffs: [SchoolLoopCutoff] = []
-	var categories: [SchoolLoopCategory] = []
-	var grades: [SchoolLoopGrade] = []
-	var trendScores: [SchoolLoopTrendScore] = []
+	var cutoffs = [SchoolLoopCutoff]()
+	var categories = [SchoolLoopCategory]()
+	var grades = [SchoolLoopGrade]()
+	var trendScores = [SchoolLoopTrendScore]()
 
 	init(courseName: String, period: String, teacherName: String, grade: String, score: String, periodID: String) {
 		self.courseName = courseName ?! ""

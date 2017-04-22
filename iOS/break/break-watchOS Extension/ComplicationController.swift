@@ -119,7 +119,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 		dateComponents.hour = 0
 		dateComponents.minute = 0
 		let tomorrowMidnight = (calendar.date(from: dateComponents))!
-		var futureDates: [Date] = []
+		var futureDates = [Date]()
 		var futureDate = tomorrowMidnight
 		for _ in 0...7 {
 			futureDates.append(futureDate)
@@ -128,7 +128,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			futureDate = (calendar.date(byAdding: dateComponents, to: date, wrappingComponents: true))!
 		}
 		if complication.family == .circularSmall {
-			var entries: [CLKComplicationTimelineEntry] = []
+			var entries = [CLKComplicationTimelineEntry]()
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
 				let template = CLKComplicationTemplateCircularSmallSimpleText()
@@ -138,7 +138,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			}
 			handler(entries)
 		} else if complication.family == .modularLarge {
-			var entries: [CLKComplicationTimelineEntry] = []
+			var entries = [CLKComplicationTimelineEntry]()
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
 				let template = CLKComplicationTemplateModularLargeTable()
@@ -156,7 +156,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			}
 			handler(entries)
 		} else if complication.family == .modularSmall {
-			var entries: [CLKComplicationTimelineEntry] = []
+			var entries = [CLKComplicationTimelineEntry]()
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
 				let template = CLKComplicationTemplateModularSmallStackText()
@@ -166,7 +166,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			}
 			handler(entries)
 		} else if complication.family == .utilitarianLarge {
-			var entries: [CLKComplicationTimelineEntry] = []
+			var entries = [CLKComplicationTimelineEntry]()
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
 				let template = CLKComplicationTemplateUtilitarianLargeFlat()
@@ -175,7 +175,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			}
 			handler(entries)
 		} else if complication.family == .utilitarianSmall {
-			var entries: [CLKComplicationTimelineEntry] = []
+			var entries = [CLKComplicationTimelineEntry]()
 			for futureDate in futureDates {
 				let dueTomorrow = assignments[futureDate] ?? []
 				let template = CLKComplicationTemplateUtilitarianSmallFlat()

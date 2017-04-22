@@ -13,8 +13,8 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	let cellIdentifier = "LoopMail"
 
 	var schoolLoop: SchoolLoop!
-	var loopMail: [SchoolLoopLoopMail] = []
-	var filteredLoopMail: [SchoolLoopLoopMail] = []
+	var loopMail = [SchoolLoopLoopMail]()
+	var filteredLoopMail = [SchoolLoopLoopMail]()
 
 	var destinationViewController: LoopMailMessageViewController!
 

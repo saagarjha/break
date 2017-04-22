@@ -13,7 +13,7 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 	let cellIdentifier = "progressReportHeader"
 
 	var title: (title: String, subtitle: String, comparisonResult: ComparisonResult)?
-	var headers: [(title: String, subtitle: String, comparisonResult: ComparisonResult)] = [] {
+	var headers = [(title: String, subtitle: String, comparisonResult: ComparisonResult)]() {
 		didSet {
 			headerTableView.reloadData()
 		}

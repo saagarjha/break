@@ -13,8 +13,8 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	let cellIdentifier = "course"
 
 	var schoolLoop: SchoolLoop!
-	var courses: [SchoolLoopCourse] = []
-	var filteredCourses: [SchoolLoopCourse] = []
+	var courses = [SchoolLoopCourse]()
+	var filteredCourses = [SchoolLoopCourse]()
 
 	@IBOutlet weak var coursesTableView: UITableView! {
 		didSet {

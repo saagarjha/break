@@ -15,14 +15,14 @@ class SchoolLoop: NSObject, NSCoding {
 	let keychain = SchoolLoopKeychain.sharedInstance
 
 	var school: SchoolLoopSchool!
-	var schools: [SchoolLoopSchool] = []
+	var schools = [SchoolLoopSchool]()
 	var account: SchoolLoopAccount!
-	var courses: [SchoolLoopCourse] = []
-	var computableCourses: [SchoolLoopComputableCourse] = []
-	var assignments: [SchoolLoopAssignment] = []
+	var courses = [SchoolLoopCourse]()
+	var computableCourses = [SchoolLoopComputableCourse]()
+	var assignments = [SchoolLoopAssignment]()
 	var assignmentsWithDueDates: [Date: [SchoolLoopAssignment]] {
 		get {
-			var awdd: [Date: [SchoolLoopAssignment]] = [:]
+			var awdd = [Date: [SchoolLoopAssignment]]()
 			for assigment in assignments {
 				var assignmentsForDate = awdd[assigment.dueDate] ?? []
 				assignmentsForDate.append(assigment)
@@ -31,11 +31,11 @@ class SchoolLoop: NSObject, NSCoding {
 			return awdd
 		}
 	}
-	var loopMail: [SchoolLoopLoopMail] = []
-	var news: [SchoolLoopNews] = []
+	var loopMail = [SchoolLoopLoopMail]()
+	var news = [SchoolLoopNews]()
 	var locker: SchoolLoopLockerItem!
 
-	var currentTokens: [String] = []
+	var currentTokens = [String]()
 	var currentName = ""
 	var currentPath = ""
 	var currentType = SchoolLoopLockerItemType.unknown
@@ -72,7 +72,7 @@ class SchoolLoop: NSObject, NSCoding {
 		request.httpMethod = "GET"
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
-			var newSchools: [SchoolLoopSchool] = []
+			var newSchools = [SchoolLoopSchool]()
 			guard error == nil else {
 				completionHandler?(.networkError)
 				return
@@ -156,7 +156,7 @@ class SchoolLoop: NSObject, NSCoding {
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
-			var newCourses: [SchoolLoopCourse] = []
+			var newCourses = [SchoolLoopCourse]()
 			var updatedCourses = [SchoolLoopCourse]()
 			guard error == nil else {
 				completionHandler?(updatedCourses, .networkError)
@@ -300,7 +300,7 @@ class SchoolLoop: NSObject, NSCoding {
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
-			var newAssignments: [SchoolLoopAssignment] = []
+			var newAssignments = [SchoolLoopAssignment]()
 			var updatedAssignments = [SchoolLoopAssignment]()
 			guard error == nil else {
 				completionHandler?(updatedAssignments, .networkError)
@@ -356,7 +356,7 @@ class SchoolLoop: NSObject, NSCoding {
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
-			var newLoopMail: [SchoolLoopLoopMail] = []
+			var newLoopMail = [SchoolLoopLoopMail]()
 			var updatedLoopMail = [SchoolLoopLoopMail]()
 			guard error == nil else {
 				completionHandler?(updatedLoopMail, .networkError)
@@ -443,7 +443,7 @@ class SchoolLoop: NSObject, NSCoding {
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
-			var contacts: [SchoolLoopContact] = []
+			var contacts = [SchoolLoopContact]()
 			guard error == nil else {
 				completionHandler?(contacts, .networkError)
 				return
@@ -492,7 +492,7 @@ class SchoolLoop: NSObject, NSCoding {
 		let request = authenticatedRequest(withURL: url)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
-			var newNews: [SchoolLoopNews] = []
+			var newNews = [SchoolLoopNews]()
 			var updatedNews = [SchoolLoopNews]()
 			guard error == nil else {
 				completionHandler?(updatedNews, .networkError)
