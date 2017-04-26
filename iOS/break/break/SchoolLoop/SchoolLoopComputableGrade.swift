@@ -8,26 +8,37 @@
 
 import Foundation
 
-class SchoolLoopComputableGrade: SchoolLoopGrade {
-	weak var computableCourse: SchoolLoopComputableCourse?
-	var isUserCreated = true
+/// Represents a single computable grade, suitable for grade calculation.
+public class SchoolLoopComputableGrade: SchoolLoopGrade {
+	/// The computable course associated with this computable grade.
+	public weak var computableCourse: SchoolLoopComputableCourse?
+	
+	/// A Boolean that designates whether this computable grade is created by
+	/// the user.
+	public var isUserCreated = true
+	
 
-	override var percentScore: String {
+	/// The percent score for this computable grade.
+	public override var percentScore: String {
 		didSet {
 			guard let maxPoints = computedMaxPoints,
-				let percent = SchoolLoopComputableCourse.double(forPercent: percentScore) else {
+				let percent = Double(percent: percentScore) else {
 					return
 			}
 			score = "\(maxPoints * percent / 100)"
 		}
 	}
 
-	var computedCategoryName: SchoolLoopComputableCategory? {
+
+	/// The computable category for this computable grade.
+	public var computedCategoryName: SchoolLoopComputableCategory? {
 		get {
 			return computableCourse?.computableCategory(for: categoryName)
 		}
 	}
-	var computedPercentScore: Double? {
+	
+	/// The computed percent score for this computable grade.
+	public var computedPercentScore: Double? {
 		get {
 			guard let computedScore = computedScore,
 				let computedMaxPoints = computedMaxPoints else {
@@ -36,12 +47,16 @@ class SchoolLoopComputableGrade: SchoolLoopGrade {
 			return computedScore / computedMaxPoints
 		}
 	}
-	var computedScore: Double? {
+	
+	/// The computed score for this computable grade.
+	public var computedScore: Double? {
 		get {
 			return Double(score)
 		}
 	}
-	var computedMaxPoints: Double? {
+	
+	/// The computed max points for this computed grade.
+	public var computedMaxPoints: Double? {
 		get {
 			return Double(maxPoints)
 		}

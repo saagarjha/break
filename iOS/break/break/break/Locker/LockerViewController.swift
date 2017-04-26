@@ -55,7 +55,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			let segmentedControl = UISegmentedControl(items: items)
 			navigationItem.titleView = segmentedControl
 			if items.index(of: path.components(separatedBy: "/")[1]) == nil {
-				schoolLoop.getLocker(withPath: path, completionHandler: nil)
+				schoolLoop.getLocker(withPath: path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
 				navigationItem.title = items[0]
 				path = path + items[0].addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)! + "/"
@@ -178,7 +178,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	func presentLockerItemViewController(withLockerItem lockerItem: SchoolLoopLockerItem) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
-		let file = schoolLoop.file(forLockerItem: lockerItem)
+		let file = schoolLoop.file(for: lockerItem)
 		UIApplication.shared.isNetworkActivityIndicatorVisible = false
 		let documentInteractionController = UIDocumentInteractionController(url: file)
 		documentInteractionController.delegate = self

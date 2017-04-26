@@ -74,7 +74,7 @@ class SecurityTableViewController: UITableViewController {
 			}
 			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
-				_ = schoolLoop.keychain.set(alertController.textFields![0].text!, forUsername: "\(schoolLoop.account.username)appPassword")
+				_ = schoolLoop.keychain.addPassword(alertController.textFields?.first?.text ?? "", forUsername: "\(schoolLoop.account.username)appPassword")
 				self.touchIDCell.isUserInteractionEnabled = true
 				self.touchIDLabel.isEnabled = true
 				self.touchIDSwitch.isEnabled = true

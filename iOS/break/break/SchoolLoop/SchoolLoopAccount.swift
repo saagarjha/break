@@ -8,17 +8,44 @@
 
 import Foundation
 
+/// Represents a single account.
 @objc(SchoolLoopAccount)
-class SchoolLoopAccount: NSObject, NSCoding {
-	var username: String
-	var password: String
-	var fullName: String
-	var studentID: String
-	var hashedPassword: String
-	var email: String
-	var loggedIn: Bool = false
+public class SchoolLoopAccount: NSObject, NSCoding {
+	/// The username for this account.
+	public var username: String
+	
+	/// The password for this account.
+	public var password: String
+	
+	/// The full name of the user associated with this account.
+	public var fullName: String
+	/// The student ID of the user associated with this account. Note that this
+	/// is the ID SchoolLoop uses to identify users; it may differ from the
+	/// student ID that many institutions give their students.
+	public var studentID: String
+	
+	/// The hashed password associated with this account, for SchoolLoop POST
+	/// requests.
+	public var hashedPassword: String
+	
+	/// The email of the user associated with this account.
+	public var email: String
+	
+	
+	/// A Boolean that indicates whether this account is logged in.
+	public var isLoggedIn: Bool = false
+	
 
-	init(username: String, password: String, fullName: String, studentID: String, hashedPassword: String, email: String) {
+	/// Create a new account with the specified values.
+	///
+	/// - Parameters:
+	///   - username: The username for this account
+	///   - password: The password for this account
+	///   - fullName: The full name of the user associated with this account
+	///   - studentID: The student ID of the user associated with this account
+	///   - hashedPassword: The hashed password associated with this account
+	///   - email: The email of the user associated with this account
+	public init(username: String, password: String, fullName: String, studentID: String, hashedPassword: String, email: String) {
 		self.username = username
 		self.password = password
 		self.fullName = fullName
@@ -28,7 +55,8 @@ class SchoolLoopAccount: NSObject, NSCoding {
 		super.init()
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		#if os(iOS)
 			Logger.log("Beginning account decoding")
 		#endif
@@ -46,9 +74,10 @@ class SchoolLoopAccount: NSObject, NSCoding {
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(username, forKey: "username")
-		let set = SchoolLoop.sharedInstance.keychain.set(password, forUsername: username)
+		let set = SchoolLoop.sharedInstance.keychain.addPassword(password, forUsername: username)
 		if !set {
 			#if os(iOS)
 				Logger.log("Failed to set password")

@@ -6,9 +6,19 @@
 //  Copyright © 2016 Saagar Jha. All rights reserved.
 //
 
-import Foundation
-
-enum SchoolLoopLockerItemType {
+/// A enumeration of recognized file types.
+///
+/// - directory: A directory.
+/// - pdf: A .pdf file.
+/// - txt: A .txt file.
+/// - doc: A .doc or .docx file.
+/// - xls: A .xls or .xlsx file.
+/// - ppt: A .ppt or .pptx file.
+/// - pages: A .pages file.
+/// - numbers: A .numbers file.
+/// - key: A .key file.
+/// - unknown: An unknown file.
+public enum SchoolLoopLockerItemType {
 	case directory
 	case pdf
 	case txt
@@ -20,6 +30,10 @@ enum SchoolLoopLockerItemType {
 	case key
 	case unknown
 
+	/// Create a locker item type from the specified filename's extension.
+	///
+	/// - Parameters:
+	///   - filename: The filename to create the locker item type from
 	init(filename: String) {
 		switch filename {
 		case _ where filename.hasSuffix(".pdf"):
@@ -36,7 +50,7 @@ enum SchoolLoopLockerItemType {
 			self = .pages
 		case _ where filename.hasSuffix(".numbers"):
 			self = .numbers
-		case _ where filename.hasSuffix("key"):
+		case _ where filename.hasSuffix(".key"):
 			self = .key
 		default:
 			self = .unknown

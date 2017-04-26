@@ -8,29 +8,54 @@
 
 import Foundation
 
+/// Represents a single LoopMail.
 @objc(SchoolLoopLoopMail)
-class SchoolLoopLoopMail: NSObject, NSCoding {
-	var subject: String
-	var sender: SchoolLoopContact
-	var date: Date
-	var ID: String
+public class SchoolLoopLoopMail: NSObject, NSCoding {
+	/// The subject of this LoopMail.
+	public var subject: String
+	
+	/// The sender of this LoopMail.
+	public var sender: SchoolLoopContact
+	
+	/// The date of this LoopMail.
+	public var date: Date
+	
+	/// The ID of this LoopMail.
+	public var ID: String
+	
 
-	var message: String = ""
-	var links = [(title: String, URL: String)]()
+	/// The message of this LoopMail.
+	public var message: String = ""
+	
+	/// This links associated with this LoopMail.
+	public var links = [(title: String, URL: String)]()
 
-	init(subject: String, sender: SchoolLoopContact, date: String, ID: String) {
+	
+	/// Creates a new LoopMail with the specified values.
+	///
+	/// - Parameters:
+	///   - subject: The subject of this LoopMail
+	///   - sender: The sender of this LoopMail
+	///   - date: The date of this LoopMail
+	///   - ID: The ID of this LoopMail
+	public init(subject: String, sender: SchoolLoopContact, date: String, ID: String) {
 		self.subject = subject ?! ""
 		self.sender = sender
-		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
+		self.date = Date(timeIntervalSince1970: (TimeInterval(date) ?? 0) / 1000)
 		self.ID = ID ?! ""
 		super.init()
 	}
 
+	/// Sets a new date value for this LoopMail.
+	///
+	/// - Parameters:
+	///   - date: The new date value
 	func set(newDate date: String) {
-		self.date = Date(timeIntervalSince1970: TimeInterval(date)! / 1000)
+		self.date = Date(timeIntervalSince1970: (TimeInterval(date) ?? 0) / 1000)
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		subject = aDecoder.decodeObject(forKey: "subject") as? String ?? ""
 		sender = aDecoder.decodeObject(forKey: "sender") as? SchoolLoopContact ?? SchoolLoopContact(id: "", name: "", role: "", desc: "")
 		date = aDecoder.decodeObject(forKey: "date") as? Date ?? Date.distantPast
@@ -40,7 +65,8 @@ class SchoolLoopLoopMail: NSObject, NSCoding {
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(subject, forKey: "subject")
 		aCoder.encode(sender, forKey: "sender")
 		aCoder.encode(date, forKey: "date")

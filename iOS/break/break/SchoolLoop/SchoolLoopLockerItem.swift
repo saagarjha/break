@@ -6,16 +6,28 @@
 //  Copyright © 2016 Saagar Jha. All rights reserved.
 //
 
-import Foundation
+/// Represents a single locker item.
+public class SchoolLoopLockerItem {
+	/// The name of this locker item.
+	public var name: String
+	
+	/// The path of this locker item.
+	public var path: String
+	
+	/// The type of this locker item.
+	public var type: SchoolLoopLockerItemType
 
-class SchoolLoopLockerItem {
-	var name: String
-	var path: String
-	var type: SchoolLoopLockerItemType
+	
+	/// The locker items for this locker item.
+	public var lockerItems = [SchoolLoopLockerItem]()
 
-	var lockerItems = [SchoolLoopLockerItem]()
-
-	init(name: String, path: String, type: SchoolLoopLockerItemType) {
+	/// Create a new locker item with the specified values.
+	///
+	/// - Parameters:
+	///   - name: The name of this locker item
+	///   - path: The path of this locker item
+	///   - type: The type of this locker item
+	public init(name: String, path: String, type: SchoolLoopLockerItemType) {
 		self.name = name ?! ""
 		self.path = path ?! ""
 		self.type = type
@@ -25,10 +37,10 @@ class SchoolLoopLockerItem {
 extension SchoolLoopLockerItem: Equatable, Comparable {
 }
 
-func == (lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
+public func ==(lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
 	return lhs.name == rhs.name && lhs.path == rhs.path && lhs.type == rhs.type
 }
 
-func < (lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
+public func <(lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
 	return lhs.name < rhs.name
 }

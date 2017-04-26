@@ -8,30 +8,57 @@
 
 import Foundation
 
+// Represents a single news item.
 @objc(SchoolLoopNews)
-class SchoolLoopNews: NSObject, NSCoding {
-	var title: String
-	var authorName: String
-	var createdDate: Date
-	var newsDescription: String
-	var links: [(title: String, URL: String)]
-	var iD: String
+public class SchoolLoopNews: NSObject, NSCoding {
+	// The title of this news item.
+	public var title: String
+	
+	/// The name of the author of this news item.
+	public var authorName: String
+	
+	/// The creation date of this news item.
+	public var createdDate: Date
+	
+	/// The description of this news item.
+	public var newsDescription: String
+	
+	/// The links associated with this news item.
+	public var links: [(title: String, URL: String)]
+	
+	/// The ID of this news item.
+	public var iD: String
 
-	init(title: String, authorName: String, createdDate: String, newsDescription: String, links: [(title: String, URL: String)], iD: String) {
+	
+	/// Create a new news item with the specified values.
+	///
+	/// - Parameters:
+	///   - title: The title of this news item
+	///   - authorName: The name of the author of this news item
+	///   - createdDate: The creation date of this news item
+	///   - newsDescription: The description of this news item
+	///   - links: TThe links associated with this news item
+	///   - iD: The ID of this news item
+	public init(title: String, authorName: String, createdDate: String, newsDescription: String, links: [(title: String, URL: String)], iD: String) {
 		self.title = title ?! ""
 		self.authorName = authorName ?! ""
-		self.createdDate = Date(timeIntervalSince1970: TimeInterval(createdDate)! / 1000)
+		self.createdDate = Date(timeIntervalSince1970: (TimeInterval(createdDate) ?? 0) / 1000)
 		self.newsDescription = newsDescription ?! ""
 		self.links = links
 		self.iD = iD ?! ""
 		super.init()
 	}
 
+	/// Sets a new creation date value for this news item.
+	///
+	/// - Parameters:
+	///   - createdDate: The new creation date value
 	func set(newCreatedDate createdDate: String) {
-		self.createdDate = Date(timeIntervalSince1970: TimeInterval(createdDate)! / 1000)
+		self.createdDate = Date(timeIntervalSince1970: (TimeInterval(createdDate) ?? 0) / 1000)
 	}
-
-	required init?(coder aDecoder: NSCoder) {
+	
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
 		authorName = aDecoder.decodeObject(forKey: "authorName") as? String ?? ""
 		createdDate = aDecoder.decodeObject(forKey: "createdDate") as? Date ?? Date.distantPast
@@ -40,8 +67,9 @@ class SchoolLoopNews: NSObject, NSCoding {
 		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
 		super.init()
 	}
-
-	func encode(with aCoder: NSCoder) {
+	
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(title, forKey: "title")
 		aCoder.encode(authorName, forKey: "authorName")
 		aCoder.encode(createdDate, forKey: "createdDate")

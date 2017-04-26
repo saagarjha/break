@@ -132,7 +132,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	}
 
 	@IBAction func send(_ sender: Any) {
-		schoolLoop.sendLoopMail(withComposedLoopMail: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: "<p>\(composeTextView.text ?? "")</p>\n\n\n\(message ?? "")", to: Array(to), cc: Array(cc))) { error in
+		schoolLoop.sendLoopMail(with: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: "<p>\(composeTextView.text ?? "")</p>\n\n\n\(message ?? "")", to: Array(to), cc: Array(cc))) { error in
 			DispatchQueue.main.async {
 				self.navigationController?.popViewController(animated: true)
 			}

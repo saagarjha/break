@@ -8,25 +8,58 @@
 
 import Foundation
 
+/// Represents a single grade.
 @objc(SchoolLoopGrade)
-class SchoolLoopGrade: NSObject, NSCoding {
-	static var dateFormatter: DateFormatter = {
+public class SchoolLoopGrade: NSObject, NSCoding {
+	/// A shared date formatter for parsing the due date and last changed date.
+	private static var dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
 		return dateFormatter
 	}()
 
-	var title: String
-	var categoryName: String
-	var percentScore: String
-	var score: String
-	var maxPoints: String
-	var comment: String
-	var systemID: String
-	var dueDate: Date
-	var changedDate: Date
+	
+	/// The title of this grade.
+	public var title: String
+	
+	// The category name of this grade.
+	public var categoryName: String
+	
+	// The percent score for this grade.
+	public var percentScore: String
+	
+	// The score for this grade.
+	public var score: String
+	
+	// The max points for this grade.
+	public var maxPoints: String
+	
+	// The comment for this grade.
+	public var comment: String
+	
+	// The system ID of this grade.
+	public var systemID: String
+	
+	// The due date of this grade.
+	public var dueDate: Date
+	
+	// The changed date of this grade.
+	public var changedDate: Date
+	
 
-	init(title: String, categoryName: String, percentScore: String, score: String, maxPoints: String, comment: String, systemID: String, dueDate: String, changedDate: String) {
+	/// Creates a new grade with the specified values.
+	///
+	/// - Parameters:
+	///   - title: The title of this grade
+	///   - categoryName: The category name of this grade
+	///   - percentScore: The percent score for this grade
+	///   - score: The score for this grade
+	///   - maxPoints: The max points for this grade
+	///   - comment: The comment for this grade
+	///   - systemID: The system ID of this grade
+	///   - dueDate: the due date of this grade
+	///   - changedDate: The changed date of this grade
+	public init(title: String, categoryName: String, percentScore: String, score: String, maxPoints: String, comment: String, systemID: String, dueDate: String, changedDate: String) {
 		self.title = title ?! ""
 		self.categoryName = categoryName ?! ""
 		self.percentScore = percentScore ?! ""
@@ -39,11 +72,15 @@ class SchoolLoopGrade: NSObject, NSCoding {
 		super.init()
 	}
 
+	/// Copy constructor.
+	///
+	/// - Parameter grade: The grade to copy
 	convenience init(grade: SchoolLoopGrade) {
 		self.init(title: grade.title, categoryName: grade.categoryName, percentScore: grade.percentScore, score: grade.score, maxPoints: grade.maxPoints, comment: grade.comment, systemID: grade.systemID, dueDate: SchoolLoopGrade.dateFormatter.string(from: grade.dueDate), changedDate: SchoolLoopGrade.dateFormatter.string(from: grade.dueDate))
 	}
-
-	required init?(coder aDecoder: NSCoder) {
+	
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
 		categoryName = aDecoder.decodeObject(forKey: "categoryName") as? String ?? ""
 		percentScore = aDecoder.decodeObject(forKey: "percentScore") as? String ?? ""
@@ -56,7 +93,8 @@ class SchoolLoopGrade: NSObject, NSCoding {
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(title, forKey: "title")
 		aCoder.encode(categoryName, forKey: "categoryName")
 		aCoder.encode(percentScore, forKey: "percentScore")

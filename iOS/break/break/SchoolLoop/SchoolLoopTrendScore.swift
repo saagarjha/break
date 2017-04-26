@@ -8,24 +8,35 @@
 
 import Foundation
 
+// Represents a single trend score.
 @objc(SchoolLoopTrendScore)
-class SchoolLoopTrendScore: NSObject, NSCoding {
-	var score: String
-	var dayID: Date
+public class SchoolLoopTrendScore: NSObject, NSCoding {
+	/// The score of this trend score.
+	public var score: String
+	
+	/// The day ID of this trend score.
+	public var dayID: Date
 
-	init(score: String, dayID: String) {
+	/// Create a new trend score with the specified values.
+	///
+	/// - Parameters:
+	///   - score: The score of this trend score
+	///   - dayID: The day ID of this trend score
+	public init(score: String, dayID: String) {
 		self.score = score ?! ""
 		self.dayID = Date(timeIntervalSince1970: (TimeInterval(dayID) ?? 0) / 1000)
 		super.init()
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
 		dayID = aDecoder.decodeObject(forKey: "dayID") as? Date ?? Date.distantPast
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(score, forKey: "score")
 		aCoder.encode(dayID, forKey: "dayID")
 	}

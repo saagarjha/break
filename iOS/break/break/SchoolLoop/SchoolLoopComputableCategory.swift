@@ -8,26 +8,38 @@
 
 import Foundation
 
-class SchoolLoopComputableCategory: SchoolLoopCategory {
-	weak var computableCourse: SchoolLoopComputableCourse?
-	var isUserCreated = true
+/// Represents a single computable category, suitable for grade calculation.
+public class SchoolLoopComputableCategory: SchoolLoopCategory {
+	/// The computable course associated with this computable category.
+	public weak var computableCourse: SchoolLoopComputableCourse?
+	
+	/// A Boolean that designates whether this computable cateogory is created
+	/// by the user.
+	public var isUserCreated = true
 
-	var computedScore: Double? {
+	
+	/// The computed score for this category.
+	public var computedScore: Double? {
 		let (score, maxPoints) = computedTotals
 		guard maxPoints != 0 else {
 			return nil
 		}
 		return score / maxPoints
 	}
-	var computedWeight: Double? {
+	
+	/// The computed weight for this category.
+	public var computedWeight: Double? {
 		if weight.hasSuffix("%"),
-			let w = SchoolLoopComputableCourse.double(forPercent: weight) { // Workaround for SR-4082
+			let w = Double(percent: weight) { // Workaround for SR-4082
 			return w / 100
 		} else {
 			return Double(weight)
 		}
 	}
-	var computedTotals: (Double, Double) {
+	
+	/// The computed totals for this computable category, in the form
+	/// (score, total).
+	public var computedTotals: (Double, Double) {
 		guard let grades = computableCourse?.computableGrades(in: self),
 			!grades.isEmpty else {
 				return (0, 0)
@@ -43,7 +55,9 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 		}
 		return (score, maxPoints)
 	}
-	var computedScoreDifference: Double? {
+	
+	/// The computed score difference for this computable category.
+	public var computedScoreDifference: Double? {
 		guard let computedScore = computedScore,
 			let score = Double(score) else {
 			return 0
@@ -51,7 +65,9 @@ class SchoolLoopComputableCategory: SchoolLoopCategory {
 		return computedScore - score
 	}
 	
-	var comparisonResult: ComparisonResult {
+	
+	/// The comparison result for this computable category.
+	public var comparisonResult: ComparisonResult {
 		guard let s = Double(self.score),
 			let cs = self.computedScore else { // Crashes compiler without self
 				return .orderedSame

@@ -8,16 +8,21 @@
 
 import Foundation
 
+// Represents a single course.
 @objc(SchoolLoopCourse)
-class SchoolLoopCourse: NSObject, NSCoding {
-	static let dateFormatter: DateFormatter = {
+public class SchoolLoopCourse: NSObject, NSCoding {
+	/// A shared date formatter for parsing the last updated date.
+	private static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/d/yy h:mm a"
 		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
 		return dateFormatter
 	}()
+	
 
-	var computableCourse: SchoolLoopComputableCourse {
+	/// A factory instance variable for a computable course.
+	/// - Remark: This should probably be a method.
+	public var computableCourse: SchoolLoopComputableCourse {
 		get {
 			let computableCourse = SchoolLoopComputableCourse(course: self)
 			computableCourse.computableCategories = self.categories.map {
@@ -36,20 +41,52 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		}
 	}
 
-	var courseName: String
-	var period: String
-	var teacherName: String
-	var grade: String
-	var score: String
-	var periodID: String
-	var lastUpdated: Date = Date.distantPast
+	
+	/// The name of this course.
+	public var courseName: String
+	
+	/// The period for this course.
+	public var period: String
+	
+	/// The name of the teacher for this course.
+	public var teacherName: String
+	
+	/// The grade for this course.
+	public var grade: String
+	
+	/// The score for this course.
+	public var score: String
+	
+	/// The period ID of this course.
+	public var periodID: String
+	
+	/// The last updated time for this course.
+	public var lastUpdated: Date = Date.distantPast
 
-	var cutoffs = [SchoolLoopCutoff]()
-	var categories = [SchoolLoopCategory]()
-	var grades = [SchoolLoopGrade]()
-	var trendScores = [SchoolLoopTrendScore]()
+	
+	/// The cutoffs associated with this course.
+	public var cutoffs = [SchoolLoopCutoff]()
+	
+	/// The categories associated with this course.
+	public var categories = [SchoolLoopCategory]()
+	
+	/// The grades associated with this course.
+	public var grades = [SchoolLoopGrade]()
+	
+	/// The trend scores associated with this course.
+	public var trendScores = [SchoolLoopTrendScore]()
+	
 
-	init(courseName: String, period: String, teacherName: String, grade: String, score: String, periodID: String) {
+	/// Create a new course with the specified values.
+	///
+	/// - Parameters:
+	///   - courseName: The name of this course
+	///   - period: The period for this course
+	///   - teacherName: The name of the teacher for this course
+	///   - grade: The grade for this course
+	///   - score: The score for this course
+	///   - periodID: The period ID for this course
+	public init(courseName: String, period: String, teacherName: String, grade: String, score: String, periodID: String) {
 		self.courseName = courseName ?! ""
 		self.period = period ?! ""
 		self.teacherName = teacherName ?! ""
@@ -59,6 +96,9 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		super.init()
 	}
 
+	/// Copy constructor.
+	///
+	/// - Parameter course: The course to copy
 	convenience init(course: SchoolLoopCourse) {
 		self.init(courseName: course.courseName, period: course.period, teacherName: course.teacherName, grade: course.grade, score: course.score, periodID: course.periodID)
 		self.lastUpdated = course.lastUpdated
@@ -68,6 +108,12 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		self.trendScores = course.trendScores
 	}
 
+	/// Sets a new updated value for this course and returns whether there was
+	/// an update.
+	///
+	/// - Parameters:
+	///   - lastUpdated: The new last updated value
+	/// - Returns: Whether the course was updated
 	func set(newLastUpdated lastUpdated: String) -> Bool {
 		let newLastUpdated = SchoolLoopCourse.dateFormatter.date(from: lastUpdated) ?? Date.distantPast
 		let updated = self.lastUpdated.compare(newLastUpdated) == .orderedAscending
@@ -75,7 +121,8 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		return updated
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
 		period = aDecoder.decodeObject(forKey: "period") as? String ?? ""
 		teacherName = aDecoder.decodeObject(forKey: "teacherName") as? String ?? ""
@@ -90,7 +137,8 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(courseName, forKey: "courseName")
 		aCoder.encode(period, forKey: "period")
 		aCoder.encode(teacherName, forKey: "teacherName")
@@ -104,12 +152,13 @@ class SchoolLoopCourse: NSObject, NSCoding {
 		aCoder.encode(trendScores, forKey: "trendScores")
 	}
 
-	func grade(forSystemID systemID: String) -> SchoolLoopGrade? {
-		for grade in grades {
-			if grade.systemID == systemID {
-				return grade
-			}
-		}
-		return nil
+	
+	/// Returns the grade with the specified system ID.
+	///
+	/// - Parameters:
+	///   - systemID: The system ID of the grade to search for
+	/// - Returns: The grade matching the specified system ID, if any
+	public func grade(forSystemID systemID: String) -> SchoolLoopGrade? {
+		return grades.first { $0.systemID == systemID }
 	}
 }

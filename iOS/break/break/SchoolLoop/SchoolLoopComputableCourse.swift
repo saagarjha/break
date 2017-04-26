@@ -8,8 +8,16 @@
 
 import Foundation
 
-class SchoolLoopComputableCourse: SchoolLoopCourse {
-	var computedScore: Double {
+/// Represents a single computable course, suitable for grade calculation.
+public class SchoolLoopComputableCourse: SchoolLoopCourse {
+	/// The computable categories associated with this computable course.
+	public var computableCategories = [SchoolLoopComputableCategory]()
+	
+	/// The computable grades associated with this computable course.
+	public var computableGrades = [SchoolLoopComputableGrade]()
+	
+	/// The computed score for this course.
+	public var computedScore: Double {
 		typealias SchoolLoopCheckedCategory = (weight: Double, score: Double)
 		let categories = computableCategories.flatMap { (category: SchoolLoopComputableCategory) -> SchoolLoopCheckedCategory? in
 			if let weight = category.computedWeight,
@@ -23,27 +31,26 @@ class SchoolLoopComputableCourse: SchoolLoopCourse {
 		let totalWeight = categories.reduce(0) {
 			return $0 + $1.weight
 		}
+		
 		guard totalWeight > 0 else {
 			return 1
 		}
-
-		var score = 0.0
-		for category in categories {
-			score += category.score * category.weight / totalWeight
+		return categories.reduce(0) { partialScore, category in
+			return partialScore + category.score * category.weight / totalWeight
 		}
-		return score
 	}
-	var computableCategories = [SchoolLoopComputableCategory]()
-	var computableGrades = [SchoolLoopComputableGrade]()
-	var computedScoreDifference: Double {
-		guard let score = SchoolLoopComputableCourse.double(forPercent: self.score) else { // Crashes compiler without self
+	
+	/// The computed score difference for this computable course.
+	public var computedScoreDifference: Double {
+		guard let score = Double(percent: self.score) else { // Crashes compiler without self
 			return 0
 		}
 		return computedScore - score / 100
 	}
 
-	var comparisonResult: ComparisonResult {
-		guard let s = SchoolLoopComputableCourse.double(forPercent: self.score) else { // Crashes compiler without self
+	/// The comparison result for this computable course.
+	public var comparisonResult: ComparisonResult {
+		guard let s = Double(percent: self.score) else { // Crashes compiler without self
 			return .orderedSame
 		}
 		let score = String(format: "%.2f", s)
@@ -57,6 +64,11 @@ class SchoolLoopComputableCourse: SchoolLoopCourse {
 		}
 	}
 
+	/// Returns the computable category with the specified category name.
+	///
+	/// - Parameters:
+	///   - categoryName: The category name to search for
+	/// - Returns: The computable category with the specified name, if any
 	func computableCategory(for categoryName: String) -> SchoolLoopComputableCategory? {
 		for category in computableCategories {
 			if category.name == categoryName {
@@ -66,16 +78,25 @@ class SchoolLoopComputableCourse: SchoolLoopCourse {
 		return nil
 	}
 
+	/// Returns the computable grades in the specified computable category.
+	///
+	/// - Parameters:
+	///   - computableCategory: The computable category to retrieve
+	///   grades for
+	/// - Returns: The computable grades in the specified category
 	func computableGrades(in computableCategory: SchoolLoopComputableCategory) -> [SchoolLoopComputableGrade] {
 		return computableGrades.filter {
 			return $0.computedCategoryName == computableCategory
 		}
 	}
+}
 
-	class func double(forPercent percent: String) -> Double? {
+extension Double {
+	init?(percent: String) {
 		guard percent.hasSuffix("%") else {
-			return Double(percent)
+			self.init(percent)
+			return
 		}
-		return Double(percent.substring(to: percent.index(before: percent.endIndex)))
+		self.init(percent.substring(to: percent.index(before: percent.endIndex)))
 	}
 }

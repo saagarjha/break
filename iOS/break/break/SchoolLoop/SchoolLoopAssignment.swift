@@ -8,18 +8,42 @@
 
 import Foundation
 
+/// Represents a single assignment.
 @objc(SchoolLoopAssignment)
-class SchoolLoopAssignment: NSObject, NSCoding {
-	var title: String
-	var assignmentDescription: String
-	var courseName: String
-	var dueDate: Date
-	var links: [(title: String, URL: String)]
-	var iD: String
+public class SchoolLoopAssignment: NSObject, NSCoding {
+	/// The title of this assignment.
+	public var title: String
+	
+	/// The description of this assignment.
+	public var assignmentDescription: String
+	
+	/// The course name associated with this assignment.
+	public var courseName: String
+	
+	/// The due date of this assignment.
+	public var dueDate: Date
+	
+	/// The links associated with this assignment.
+	public var links: [(title: String, URL: String)]
+	
+	/// The ID of this assignment.
+	public var iD: String
 
-	var isCompleted: Bool
+	
+	/// A Boolean that designates whether this assignment is completed.
+	public var isCompleted: Bool
+	
 
-	init(title: String, assignmentDescription: String, courseName: String, dueDate: String, links: [(title: String, URL: String)], iD: String) {
+	/// Create a new assignment with the specified values.
+	///
+	/// - Parameters:
+	///   - title: The title of this assignment
+	///   - assignmentDescription: The description of this assignment
+	///   - courseName: The course name associated with this assignment
+	///   - dueDate: The due date of this assignment
+	///   - links: The links associated with this assignment
+	///   - iD: The ID of this assignment
+	public init(title: String, assignmentDescription: String, courseName: String, dueDate: String, links: [(title: String, URL: String)], iD: String) {
 		self.title = title ?! ""
 		self.assignmentDescription = assignmentDescription ?! ""
 		self.courseName = courseName ?! ""
@@ -30,11 +54,8 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		super.init()
 	}
 
-	func set(newDueDate dueDate: String) {
-		self.dueDate = Date(timeIntervalSince1970: TimeInterval(dueDate)! / 1000)
-	}
-
-	required init?(coder aDecoder: NSCoder) {
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
 		assignmentDescription = aDecoder.decodeObject(forKey: "assignmentDescription") as? String ?? ""
 		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
@@ -45,7 +66,8 @@ class SchoolLoopAssignment: NSObject, NSCoding {
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(title, forKey: "title")
 		aCoder.encode(description, forKey: "assignmentDescription")
 		aCoder.encode(courseName, forKey: "courseName")

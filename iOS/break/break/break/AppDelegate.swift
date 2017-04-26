@@ -153,13 +153,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						}
 
 						group.enter()
-						schoolLoop.getCourses(withCompletionHandler: completion)
+						schoolLoop.getCourses(with: completion)
 						group.enter()
-						schoolLoop.getAssignments(withCompletionHandler: completion)
+						schoolLoop.getAssignments(with: completion)
 						group.enter()
-						schoolLoop.getLoopMail(withCompletionHandler: completion)
+						schoolLoop.getLoopMail(with: completion)
 						group.enter()
-						schoolLoop.getNews(withCompletionHandler: completion)
+						schoolLoop.getNews(with: completion)
 						_ = group.wait(timeout: .now() + 25)
 						completionHandler(updated)
 					}

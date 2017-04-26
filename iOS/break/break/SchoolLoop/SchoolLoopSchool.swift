@@ -8,27 +8,41 @@
 
 import Foundation
 
+// Represents a single school.
 @objc(SchoolLoopSchool)
-class SchoolLoopSchool: NSObject, NSCoding {
-	var name: String
-	var domainName: String
-	var districtName: String
+public class SchoolLoopSchool: NSObject, NSCoding {
+	/// The name of this school.
+	public var name: String
+	
+	// The domain name for this school.
+	public var domainName: String
+	
+	// The district name of this school.
+	public var districtName: String
 
-	init(name: String, domainName: String, districtName: String) {
+	/// Creates a new school with the specified values.
+	///
+	/// - Parameters:
+	///   - name: The name of this school
+	///   - domainName: The domain name for this school
+	///   - districtName: The district name of this school
+	public init(name: String, domainName: String, districtName: String) {
 		self.name = name ?! ""
 		self.domainName = domainName ?! ""
 		self.districtName = districtName ?! ""
 		super.init()
 	}
-
-	required init?(coder aDecoder: NSCoder) {
+	
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
 		domainName = aDecoder.decodeObject(forKey: "domainName") as? String ?? ""
 		districtName = aDecoder.decodeObject(forKey: "districtName") as? String ?? ""
 		super.init()
 	}
-
-	func encode(with aCoder: NSCoder) {
+	
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(name, forKey: "name")
 		aCoder.encode(domainName, forKey: "domainName")
 		aCoder.encode(districtName, forKey: "districtName")
@@ -37,10 +51,10 @@ class SchoolLoopSchool: NSObject, NSCoding {
 
 extension SchoolLoopSchool: Comparable { }
 
-func == (lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
+public func ==(lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
 	return lhs.name == rhs.name
 }
 
-func < (lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
+public func <(lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
 	return lhs.name < rhs.name
 }

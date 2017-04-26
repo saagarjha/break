@@ -8,24 +8,35 @@
 
 import Foundation
 
+/// Represents a single cutoff.
 @objc(SchoolLoopCutoff)
-class SchoolLoopCutoff: NSObject, NSCoding {
-	var Name: String
-	var Start: String
+public class SchoolLoopCutoff: NSObject, NSCoding {
+	/// The name of this cutoff.
+	public var Name: String
+	
+	// The start of this cutoff.
+	public var Start: String
 
-	init(Name: String, Start: String) {
+	/// Create a new cutoff with the specified values.
+	///
+	/// - Parameters:
+	///   - Name: The name of this cutoff
+	///   - Start: The start of this cutoff
+	public init(Name: String, Start: String) {
 		self.Name = Name ?! ""
 		self.Start = Start ?! ""
 		super.init()
 	}
 
-	required init?(coder aDecoder: NSCoder) {
+	/// `NSCoding` initializer. You probably don't want to invoke this directly.
+	public required init?(coder aDecoder: NSCoder) {
 		self.Name = aDecoder.decodeObject(forKey: "Name") as? String ?? ""
 		self.Start = aDecoder.decodeObject(forKey: "Start") as? String ?? ""
 		super.init()
 	}
 
-	func encode(with aCoder: NSCoder) {
+	/// `NSCoding` encoding. You probably don't want to invoke this directly.
+	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(Name, forKey: "Name")
 		aCoder.encode(Start, forKey: "Start")
 	}

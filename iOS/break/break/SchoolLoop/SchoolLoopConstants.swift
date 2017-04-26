@@ -9,77 +9,174 @@
 import Foundation
 import UIKit
 
-struct SchoolLoopConstants {
-	static let version = "3"
+/// A set of constants for the SchoolLoop API.
+enum SchoolLoopConstants {
+	/// The application verion. It appears that SchoolLoop accepts anything
+	/// greater than 2.
+	private static let version = "3"
+	
 	#if os(iOS)
+		/// The UUID of the current device.
 		static let devToken = UIDevice.current.identifierForVendor?.uuidString ?? ""
 	#else
+		/// The UUID of the current device. watchOS does not support this API.
 		static let devToken = ""
 	#endif
-	static var devOS: String {
+	
+	/// A string describing the device, in this case the model identifier.
+	private static var devOS: String {
 		get {
 			var systemInfo = utsname()
 			uname(&systemInfo)
-			let machineMirror = Mirror(reflecting: systemInfo.machine)
-			return machineMirror.children.reduce("") { identifier, element in
-				guard let value = element.value as? Int8, value != 0 else {
-					return identifier
-				}
-				return identifier + String(UnicodeScalar(UInt8(value)))
+			return Mirror(reflecting: systemInfo.machine).children.reduce("") { identifier, element in
+				identifier + ((element.value as? Int8).flatMap { String(UnicodeScalar(UInt8($0))) } ?? "")
 			}
 		}
 	}
-	static var year: String {
+	
+	/// The current year.
+	private static var year: String {
 		get {
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "y"
 			return dateFormatter.string(from: Date())
 		}
 	}
-	static let max = "25"
-	static let forgotURL = URL(string: "https://montavista.schoolloop.com/portal/forgot_password")!
+	
+	
+	/// The max number of items to fetch for rate-limited APIs.
+	private static let max = "25"
+	
+	
+	/// A URL to the SchoolLoop "forgot password" page.
+	static let forgotURL = URL(string: "https://lol.schoolloop.com/portal/forgot_password")!
 
+	/// Returns the link to the SchoolLoop schools API endpoint.
+	///
+	/// - Returns: The link to the schools API endpoint
 	static func schoolURL() -> URL {
 		return URL(string: "https://lol.schoolloop.com/mapi/schools".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func logInURL(withDomainName domainName: String) -> URL {
+	/// Creates a URL to the SchoolLoop login endpoint with the specified
+	/// domain name.
+	///
+	/// - Parameters:
+	///     - domainName: The domain name used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop login endpoint with the specified
+	///   domain name
+	static func loginURL(domainName: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func courseURL(withDomainName domainName: String, studentID: String) -> URL {
+	/// Creates a URL to the SchoolLoop course endpoint with the specified
+	/// domain name and student ID.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop course endpoint with the specified
+	///   domain name and student ID
+	static func courseURL(domainName: String, studentID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/report_card?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func gradeURL(withDomainName domainName: String, studentID: String, periodID: String) -> URL {
+	/// Creates a URL to the SchoolLoop course endpoint with the specified
+	/// domain name, student ID, and period ID.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	///   - periodID: The period ID used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop course endpoint with the specified
+	///   domain name, student ID, and period ID
+	static func gradeURL(domainName: String, studentID: String, periodID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/progress_report?studentID=\(studentID)&periodID=\(periodID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
-
-	static func assignmentURL(withDomainName domainName: String, studentID: String) -> URL {
+	
+	/// Creates a URL to the SchoolLoop assignment endpoint with the specified
+	/// domain name and student ID.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop assignment endpoint with the
+	///   specified domain name and student ID
+	static func assignmentURL(domainName: String, studentID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/assignments?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func loopMailURL(withDomainName domainName: String, studentID: String) -> URL {
+	/// Creates a URL to the SchoolLoop LoopMail endpoint with the specified
+	/// domain name and student ID.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop LoopMail endpoint with the specified
+	///   domain name and student ID
+	static func loopMailURL(domainName: String, studentID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func loopMailMessageURL(withDomainName domainName: String, studentID: String, ID: String) -> URL {
+	/// Creates a URL to the SchoolLoop LoopMail message endpoint with the
+	/// specified domain name, student ID, and ID.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	///   - ID: The ID used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop LoopMail message endpoint with the
+	///   specified domain name, student ID, and ID
+	static func loopMailMessageURL(domainName: String, studentID: String, ID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages?studentID=\(studentID)&ID=\(ID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func loopMailContactsURL(withDomainName domainName: String, studentID: String, query: String) -> URL {
+	/// Creates a URL to the SchoolLoop LoopMail contacts endpoint with the
+	/// specified domain name, student ID, and query.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	///   - query: The query used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop LoopMail contacts endpoint with the
+	///   specified domain name, student ID, and query
+	static func loopMailContactsURL(domainName: String, studentID: String, query: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/contacts?studentID=\(studentID)&q=\(query)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func loopMailSendURL(withDomainName domainName: String) -> URL {
+	/// Creates a URL to the SchoolLoop LoopMail send endpoint with the
+	/// specified domain name.
+	///
+	/// - Parameters:
+	///     - domainName: The domain name used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop LoopMail send endpoint with the
+	///   specified domain name
+	static func loopMailSendURL(domainName: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
-
-	static func newsURL(withDomainName domainName: String, studentID: String) -> URL {
+	
+	/// Creates a URL to the SchoolLoop news endpoint with the specified domain
+	/// name and student ID.
+	///
+	/// - Parameters:
+	///   - domainName: The domain name used for the creation of the URL
+	///   - studentID: The student ID used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop news endpoint with the specified
+	///   domain name and student ID
+	static func newsURL(domainName: String, studentID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/news?studentID=\(studentID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
-	static func lockerURL(withPath path: String, domainName: String, username: String) -> URL {
+	/// Creates a URL to the SchoolLoop locker endpoint with the specified path,
+	/// domain name, and username.
+	///
+	/// - Parameters:
+	///   - path: The path used for the creation of the URL
+	///   - domainName: The domain name used for the creation of the URL
+	///   - username: The username used for the creation of the URL
+	/// - Returns: A URL to the SchoolLoop locker endpoint with the specified
+	///   domain name and student ID
+	static func lockerURL(path: String, domainName: String, username: String) -> URL {
 		return URL(string: "https://webdav-\(domainName)/users/\(username)\(path)")!
 	}
 }
