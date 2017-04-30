@@ -37,6 +37,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	@IBOutlet weak var logInButton: UIButton!
 	@IBOutlet weak var forgotButton: UIButton!
 	@IBOutlet weak var privacyPolicyButton: UIButton!
+	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	}
 
 	var runAnimation = true
 
@@ -170,12 +174,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 	@IBAction func forgot(_ sender: AnyObject) {
-		let safariViewController = SFSafariViewController(url: SchoolLoopConstants.forgotURL)
+		let safariViewController = breakSafariViewController(url: SchoolLoopConstants.forgotURL)
 		present(safariViewController, animated: true, completion: nil)
 	}
 
 	@IBAction func privacyPolicy(_ sender: Any) {
-		let safariViewController = SFSafariViewController(url: URL(string: "https://saagarjha.com/projects/break/privacy-policy/")!)
+		let safariViewController = breakSafariViewController(url: URL(string: "https://saagarjha.com/projects/break/privacy-policy/")!)
 		present(safariViewController, animated: true, completion: nil)
 	}
 
@@ -201,6 +205,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		if textField === schoolNameTextField {
 			textField.textColor = nil
 		}
+		// Fix a bug with the text "jumping" due to a keyboard animation
+		textField.layoutIfNeeded()
 	}
 
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

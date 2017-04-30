@@ -9,21 +9,12 @@
 import UIKit
 import WebKit
 
-class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegate {
+class AssignmentDescriptionViewController: WebViewToSafariViewControllerShimViewController {
 
 	var iD: String!
 
 	var schoolLoop: SchoolLoop!
 	var assignmentDescription: String = ""
-
-	var descriptionWebView: WKWebView!
-
-	override func loadView() {
-		descriptionWebView = WKWebView()
-		descriptionWebView.navigationDelegate = self
-		descriptionWebView.allowsBackForwardNavigationGestures = true
-		view = descriptionWebView
-	}
 
 //    override func viewWillAppear(animated: Bool) {
 //        super.viewWillAppear(animated)
@@ -55,7 +46,7 @@ class AssignmentDescriptionViewController: UIViewController, WKNavigationDelegat
 		for link in assignment.links {
 			assignmentDescription += "<a href=\(link.URL)>\(link.title)</a><br>"
 		}
-		descriptionWebView.loadHTMLString(assignmentDescription, baseURL: nil)
+		webView.loadHTMLString(assignmentDescription, baseURL: nil)
 	}
 
 //	override func prefersStatusBarHidden() -> Bool {

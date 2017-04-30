@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
+class LoopMailMessageViewController: WebViewToSafariViewControllerShimViewController {
 
 	var ID: String!
 
@@ -18,7 +18,6 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 	var loopMail: SchoolLoopLoopMail?
 
 	var parentNavigationController: UINavigationController?
-	var messageWebView: WKWebView!
 	override var previewActionItems: [UIPreviewActionItem] {
 		get {
 			return loopMail != nil ? [UIPreviewAction(title: "Reply", style: .default, handler: { _, viewController in
@@ -36,13 +35,6 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 	}
 })] : []
 		}
-	}
-
-	override func loadView() {
-		messageWebView = WKWebView()
-		messageWebView.navigationDelegate = self
-		messageWebView.allowsBackForwardNavigationGestures = true
-		view = messageWebView
 	}
 
 //    override func viewWillAppear(animated: Bool) {
@@ -72,7 +64,7 @@ class LoopMailMessageViewController: UIViewController, WKNavigationDelegate {
 					for link in loopMail.links {
 						self.message += "<a href=\(link.URL)>\(link.title)</a><br>"
 					}
-					self.messageWebView.loadHTMLString(self.message, baseURL: nil)
+					self.webView.loadHTMLString(self.message, baseURL: nil)
 				}
 			}
 		}
