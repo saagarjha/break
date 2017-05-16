@@ -17,28 +17,28 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 	@IBOutlet weak var categoryDiscriminatorView: UIView!
 	@IBOutlet weak var titleLabel: UILabel! {
 		didSet {
-			titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(GradeTableViewCell.changeTitle(_:))))
+			titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTitle)))
 		}
 	}
 	@IBOutlet weak var scoreLabel: UILabel! {
 		didSet {
-			scoreLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(GradeTableViewCell.changeScore(_:))))
+			scoreLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeScore)))
 		}
 	}
 	@IBOutlet weak var maxPointsLabel: UILabel! {
 		didSet {
-			maxPointsLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(GradeTableViewCell.changeMaxPoints(_:))))
+			maxPointsLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeMaxPoints)))
 		}
 	}
 	@IBOutlet weak var categoryNameLabel: CategoryNameLabel! {
 		didSet {
-			categoryNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(GradeTableViewCell.changeCategoryName(_:))))
+			categoryNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeCategoryName)))
 			categoryNameLabel.gradeTableViewCell = self
 		}
 	}
 	@IBOutlet weak var percentScoreLabel: UILabel! {
 		didSet {
-			percentScoreLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(GradeTableViewCell.changePercentScore(_:))))
+			percentScoreLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changePercentScore)))
 		}
 	}
 
@@ -58,7 +58,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 	func changeTitle(_ sender: Any) {
 		let alertController = UIAlertController(title: "Change Title", message: "Enter a new title for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return
@@ -67,7 +67,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
-		alertController.addTextField { textField in
+		alertController.addTextField { [unowned self] textField in
 			textField.placeholder = "New Title"
 			textField.text = self.titleLabel.text ?? ""
 			textField.delegate = self
@@ -87,7 +87,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
-		alertController.addTextField { textField in
+		alertController.addTextField { [unowned self] textField in
 			textField.placeholder = "New Score"
 			textField.text = self.scoreLabel.text ?? ""
 			textField.keyboardType = .decimalPad
@@ -100,7 +100,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 	func changeMaxPoints(_ sender: Any?) {
 		let alertController = UIAlertController(title: "Change Max Value", message: "Enter a new max value for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return
@@ -109,7 +109,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
-		alertController.addTextField { textField in
+		alertController.addTextField { [unowned self] textField in
 			textField.placeholder = "New Max Points"
 			textField.text = self.maxPointsLabel.text ?? ""
 			textField.keyboardType = .decimalPad
@@ -121,7 +121,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 	func changeCategoryName(_ sender: Any) {
 		let alertController = UIAlertController(title: "Change Category", message: "Enter a new category for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return
@@ -130,7 +130,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
-		alertController.addTextField { textField in
+		alertController.addTextField { [unowned self] textField in
 			self.categoryTextField = textField
 			textField.tintColor = .clear
 			textField.text = self.categoryNameLabel.text ?? ""
@@ -147,7 +147,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 	func changePercentScore(_ sender: Any) {
 		let alertController = UIAlertController(title: "Change Percent Score", message: "Enter a new percent score for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return
@@ -156,7 +156,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
-		alertController.addTextField { textField in
+		alertController.addTextField { [unowned self] textField in
 			textField.placeholder = "New Percent Score"
 			if let text = self.percentScoreLabel.text {
 				textField.text = text.hasSuffix("%") ? text.substring(to: text.index(before: text.endIndex)) : text
@@ -175,9 +175,9 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		}
 		progressReportViewController.present(alertController, animated: true, completion: nil)
 	}
-	
+
 	func updateCategoryDicriminatorView(_ sender: Any) {
-		categoryDiscriminatorView.backgroundColor = AppDelegate.color(for: categoryNameLabel.text ?? "")
+		categoryDiscriminatorView.backgroundColor = UIColor(string: categoryNameLabel.text ?? "")
 	}
 
 	func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -209,7 +209,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 
 class CategoryNameLabel: UILabel {
 	weak var gradeTableViewCell: GradeTableViewCell!
-	
+
 	override var text: String? {
 		didSet {
 			gradeTableViewCell.updateCategoryDicriminatorView(self)

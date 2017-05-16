@@ -1,4 +1,4 @@
 language: objective-c
-osx_image: xcode8.2
+osx_image: xcode8.3
 
 script: xcodebuild -project iOS/break/break.xcodeproj -scheme break CODE_SIGNING_ALLOWED=NO

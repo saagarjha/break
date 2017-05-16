@@ -18,15 +18,14 @@ class LoggerViewController: UIViewController {
 		logTextView.text = Logger.readLog()
 	}
 	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 		
 		guard logTextView.text.characters.count > 0 else {
 			return
 		}
-		UIView.setAnimationsEnabled(false)
-		logTextView.scrollRangeToVisible(NSRange(location: logTextView.text.characters.count, length: 0))
-		UIView.setAnimationsEnabled(true)
+		logTextView.layoutIfNeeded()
+		logTextView.contentOffset = CGPoint(x: 0, y: logTextView.contentSize.height)
 		logTextView.flashScrollIndicators()
 	}
 
@@ -35,17 +34,17 @@ class LoggerViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func clear(_ sender: AnyObject) {
+	@IBAction func clear(_ sender: Any) {
 		Logger.clearLog()
 		logTextView.text = Logger.readLog()
 	}
 
-	@IBAction func share(_ sender: AnyObject) {
+	@IBAction func share(_ sender: Any) {
 		let activityViewController = UIActivityViewController(activityItems: [logTextView.text], applicationActivities: nil)
 		present(activityViewController, animated: true, completion: nil)
 	}
 
-	@IBAction func mark(_ sender: AnyObject) {
+	@IBAction func mark(_ sender: Any) {
 		let alertController = UIAlertController(title: "Add a mark to the log", message: nil, preferredStyle: .alert)
 		alertController.addTextField { textField in
 			textField.placeholder = "Mark"
@@ -63,7 +62,7 @@ class LoggerViewController: UIViewController {
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepareForSegue(segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
 	 }

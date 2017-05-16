@@ -10,7 +10,13 @@ import UIKit
 
 class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-	let cellIdentifier = "gradeDetail"
+	static let cellIdentifier = "gradeDetail"
+	
+	static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "M/dd"
+		return dateFormatter
+	}()
 
 	var periodID: String!
 	var systemID: String!
@@ -20,8 +26,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
 	@IBOutlet weak var gradeTableView: UITableView! {
 		didSet {
-			gradeTableView.sectionFooterHeight = UITableViewAutomaticDimension
-			gradeTableView.estimatedSectionFooterHeight = 80
+			breakShared.autoresizeTableViewCells(for: gradeTableView)
 		}
 	}
 	var commentsView = UIView(frame: UIScreen.main.bounds)
@@ -67,16 +72,14 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "M/dd"
+		let cell = tableView.dequeueReusableCell(withIdentifier: GradeViewController.cellIdentifier, for: indexPath)
 		switch indexPath.row {
 		case 0:
 			cell.textLabel?.text = "Due Date"
-			cell.detailTextLabel?.text = dateFormatter.string(from: grade.dueDate)
+			cell.detailTextLabel?.text = GradeViewController.dateFormatter.string(from: grade.dueDate)
 		case 1:
 			cell.textLabel?.text = "Changed Date"
-			cell.detailTextLabel?.text = dateFormatter.string(from: grade.changedDate)
+			cell.detailTextLabel?.text = GradeViewController.dateFormatter.string(from: grade.changedDate)
 		case 2:
 			cell.textLabel?.text = "Comments:"
 			cell.detailTextLabel?.text = ""
@@ -90,7 +93,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepareForSegue(segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
 	 }

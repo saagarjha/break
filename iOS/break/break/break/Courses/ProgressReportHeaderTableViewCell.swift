@@ -52,7 +52,7 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 		discriminatorView.translatesAutoresizingMaskIntoConstraints = false
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[discriminator]|", options: [], metrics: nil, views: ["discriminator": discriminatorView])
-		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 4))
+		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: breakConstants.discriminatorViewWidth))
 		NSLayoutConstraint.activate(constraints)
 	}
 

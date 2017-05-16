@@ -37,6 +37,7 @@ public class SchoolLoopCourse: NSObject, NSCoding {
 				grade.computableCourse = computableCourse
 				return grade
 			}
+			computableCourse.precision = precision
 			return computableCourse
 		}
 	}
@@ -76,7 +77,14 @@ public class SchoolLoopCourse: NSObject, NSCoding {
 	/// The trend scores associated with this course.
 	public var trendScores = [SchoolLoopTrendScore]()
 	
-
+	/// The precision of the score for this course.
+	public var precision: Int = 0
+	
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
+	
 	/// Create a new course with the specified values.
 	///
 	/// - Parameters:
@@ -123,17 +131,17 @@ public class SchoolLoopCourse: NSObject, NSCoding {
 
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
-		period = aDecoder.decodeObject(forKey: "period") as? String ?? ""
-		teacherName = aDecoder.decodeObject(forKey: "teacherName") as? String ?? ""
-		grade = aDecoder.decodeObject(forKey: "grade") as? String ?? ""
-		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
-		periodID = aDecoder.decodeObject(forKey: "periodID") as? String ?? ""
-		lastUpdated = aDecoder.decodeObject(forKey: "lastUpdated") as? Date ?? Date.distantPast
-		cutoffs = aDecoder.decodeObject(forKey: "cutoffs") as? [SchoolLoopCutoff] ?? []
-		categories = aDecoder.decodeObject(forKey: "categories") as? [SchoolLoopCategory] ?? []
-		grades = aDecoder.decodeObject(forKey: "grades") as? [SchoolLoopGrade] ?? []
-		trendScores = aDecoder.decodeObject(forKey: "trendScores") as? [SchoolLoopTrendScore] ?? []
+		courseName = aDecoder.decodeObject(of: NSString.self, forKey: "courseName") as String? ?? ""
+		period = aDecoder.decodeObject(of: NSString.self, forKey: "period") as String? ?? ""
+		teacherName = aDecoder.decodeObject(of: NSString.self, forKey: "teacherName") as String? ?? ""
+		grade = aDecoder.decodeObject(of: NSString.self, forKey: "grade") as String? ?? ""
+		score = aDecoder.decodeObject(of: NSString.self, forKey: "score") as String? ?? ""
+		periodID = aDecoder.decodeObject(of: NSString.self, forKey: "periodID") as String? ?? ""
+		lastUpdated = aDecoder.decodeObject(of: NSDate.self, forKey: "lastUpdated") as Date? ?? Date.distantPast
+		cutoffs = aDecoder.decodeObject(of: [NSArray.self, SchoolLoopCutoff.self], forKey: "cutoffs") as? [SchoolLoopCutoff] ?? []
+		categories = aDecoder.decodeObject(of: [NSArray.self, SchoolLoopCategory.self], forKey: "categories") as? [SchoolLoopCategory] ?? []
+		grades = aDecoder.decodeObject(of: [NSArray.self, SchoolLoopGrade.self], forKey: "grades") as? [SchoolLoopGrade] ?? []
+		trendScores = aDecoder.decodeObject(of: [NSArray.self, SchoolLoopTrendScore.self], forKey: "trendScores") as? [SchoolLoopTrendScore] ?? []
 		super.init()
 	}
 
@@ -150,6 +158,10 @@ public class SchoolLoopCourse: NSObject, NSCoding {
 		aCoder.encode(categories, forKey: "categories")
 		aCoder.encode(grades, forKey: "grades")
 		aCoder.encode(trendScores, forKey: "trendScores")
+	}
+	
+	public func set(newPrecision precision: String) {
+		self.precision = Int(precision) ?? 0
 	}
 
 	

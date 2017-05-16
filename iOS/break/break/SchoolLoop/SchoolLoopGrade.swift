@@ -47,6 +47,10 @@ public class SchoolLoopGrade: NSObject, NSCoding {
 	public var changedDate: Date
 	
 
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
+	
 	/// Creates a new grade with the specified values.
 	///
 	/// - Parameters:
@@ -81,15 +85,15 @@ public class SchoolLoopGrade: NSObject, NSCoding {
 	
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
-		categoryName = aDecoder.decodeObject(forKey: "categoryName") as? String ?? ""
-		percentScore = aDecoder.decodeObject(forKey: "percentScore") as? String ?? ""
-		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
-		maxPoints = aDecoder.decodeObject(forKey: "maxPoints") as? String ?? ""
-		comment = aDecoder.decodeObject(forKey: "comment") as? String ?? ""
-		systemID = aDecoder.decodeObject(forKey: "systemID") as? String ?? ""
-		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
-		changedDate = aDecoder.decodeObject(forKey: "changedDate") as? Date ?? Date.distantPast
+		title = aDecoder.decodeObject(of: NSString.self, forKey: "title") as String? ?? ""
+		categoryName = aDecoder.decodeObject(of: NSString.self, forKey: "categoryName") as String? ?? ""
+		percentScore = aDecoder.decodeObject(of: NSString.self, forKey: "percentScore") as String? ?? ""
+		score = aDecoder.decodeObject(of: NSString.self, forKey: "score") as String? ?? ""
+		maxPoints = aDecoder.decodeObject(of: NSString.self, forKey: "maxPoints") as String? ?? ""
+		comment = aDecoder.decodeObject(of: NSString.self, forKey: "comment") as String? ?? ""
+		systemID = aDecoder.decodeObject(of: NSString.self, forKey: "systemID") as String? ?? ""
+		dueDate = aDecoder.decodeObject(of: NSDate.self, forKey: "dueDate") as Date? ?? Date.distantPast
+		changedDate = aDecoder.decodeObject(of: NSDate.self, forKey: "changedDate") as Date? ?? Date.distantPast
 		super.init()
 	}
 

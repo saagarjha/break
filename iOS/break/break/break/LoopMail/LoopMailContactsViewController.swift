@@ -8,9 +8,9 @@
 
 import UIKit
 
-class LoopMailContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
+class LoopMailContactsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
 
-	let cellIdentifier = "contact"
+	static let cellIdentifier = "contact"
 
 	var loopMailContactsDelegate: LoopMailContactsDelegate?
 
@@ -25,14 +25,21 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		definesPresentationContext = true
-		searchController.searchResultsUpdater = self
-		searchController.delegate = self
-		searchController.dimsBackgroundDuringPresentation = false
-		searchController.hidesNavigationBarDuringPresentation = false
-		contactsTableView.tableHeaderView = searchController.searchBar
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(LoopMailContactsViewController.done(_:)))
+		addSearchBar(from: searchController, to: contactsTableView)
+
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
+
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
 		schoolLoop = SchoolLoop.sharedInstance
+	}
+
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		// Wait for the search controller to finish its setup
+		DispatchQueue.main.async { [unowned self] in
+			self.searchController.searchBar.becomeFirstResponder()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -72,7 +79,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: LoopMailContactsViewController.cellIdentifier, for: indexPath)
 		let contact: SchoolLoopContact
 		switch indexPath.section {
 		case 0:
@@ -91,14 +98,21 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		schoolLoop.getLoopMailContacts(withQuery: filter) { contacts, error in
-			guard error == .noError else {
-				return
-			}
-			DispatchQueue.main.async {
-				self.contacts = contacts.filter {
-					!self.selectedContacts.contains($0)
+		if filter != "" {
+			schoolLoop.getLoopMailContacts(withQuery: filter) { contacts, error in
+				guard error == .noError else {
+					return
 				}
+				DispatchQueue.main.async { [unowned self] in
+					self.contacts = contacts.filter {
+						!self.selectedContacts.contains($0)
+					}
+					self.contactsTableView.reloadData()
+				}
+			}
+		} else {
+			contacts.removeAll()
+			DispatchQueue.main.async { [unowned self] in
 				self.contactsTableView.reloadData()
 			}
 		}
@@ -115,6 +129,23 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		}
 		tableView.deselectRow(at: indexPath, animated: true)
 		contactsTableView.reloadData()
+	}
+
+	func keyboardWillChange(notification: NSNotification) {
+		guard let userInfo = notification.userInfo,
+			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+				return
+		}
+		let convertedKeyboardEndFrame = contactsTableView.convert(keyboardEndFrame, from: contactsTableView.window)
+		let rawAnimationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
+		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
+		contactsTableView.contentInset = UIEdgeInsets(top: contactsTableView.contentInset.top, left: contactsTableView.contentInset.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.contentInset.right)
+		contactsTableView.scrollIndicatorInsets = UIEdgeInsets(top: contactsTableView.scrollIndicatorInsets.top, left: contactsTableView.scrollIndicatorInsets.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.scrollIndicatorInsets.right)
+		contactsTableView.flashScrollIndicators()
+		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: { [unowned self] in
+			self.contactsTableView.layoutIfNeeded()
+		})
 	}
 
 	/*

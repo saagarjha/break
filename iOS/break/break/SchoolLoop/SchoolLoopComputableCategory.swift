@@ -51,6 +51,10 @@ public class SchoolLoopComputableCategory: SchoolLoopCategory {
 				let computedMaxPoints = grade.computedMaxPoints {
 				score += computedScore
 				maxPoints += computedMaxPoints
+			} else if let computedMaxPoints = grade.computedMaxPoints,
+				let computedPercentScore = grade.computedPercentScore {
+				score += computedMaxPoints * computedPercentScore
+				maxPoints += computedMaxPoints
 			}
 		}
 		return (score, maxPoints)
@@ -68,18 +72,10 @@ public class SchoolLoopComputableCategory: SchoolLoopCategory {
 	
 	/// The comparison result for this computable category.
 	public var comparisonResult: ComparisonResult {
-		guard let s = Double(self.score),
-			let cs = self.computedScore else { // Crashes compiler without self
+		guard let score = Double(score),
+			let computedScore = computedScore else {
 				return .orderedSame
 		}
-		let score = String(format: "%.2f", s)
-		let computedScore = String(format: "%.2f", cs)
-		if score < computedScore {
-			 return .orderedAscending
-		} else if score > computedScore {
-			return .orderedDescending
-		} else {
-			return .orderedSame
-		}
+		return Double.fuzzyCompare(score, computedScore, precision: 4)
 	}
 }

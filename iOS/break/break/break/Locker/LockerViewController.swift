@@ -12,7 +12,9 @@ import UIKit
 
 class LockerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerPreviewingDelegate, UIDocumentInteractionControllerDelegate {
 
-	let cellIdentifier = "lockerItem"
+	static let cellIdentifier = "lockerItem"
+
+	static let cellWidth: CGFloat = 144
 
 	var path = "/"
 
@@ -22,15 +24,8 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	@IBOutlet weak var lockerCollectionView: UICollectionView! {
 		didSet {
 			lockerCollectionView.alwaysBounceVertical = true
-			refreshControl.addTarget(self, action: #selector(LockerViewController.refresh(_:)), for: .valueChanged)
-			if #available(iOS 10.0, *) {
-				lockerCollectionView.refreshControl = refreshControl
-			} else {
-				lockerCollectionView.addSubview(refreshControl)
-				lockerCollectionView.backgroundView = UIView()
-				lockerCollectionView.backgroundView?.backgroundColor = .clear
-			}
-			lockerCollectionViewFlowLayout?.estimatedItemSize = CGSize(width: cellWidth, height: cellWidth)
+			breakShared.addRefreshControl(refreshControl, to: lockerCollectionView)
+			lockerCollectionViewFlowLayout?.estimatedItemSize = CGSize(width: LockerViewController.cellWidth, height: LockerViewController.cellWidth)
 		}
 	}
 	var lockerCollectionViewFlowLayout: UICollectionViewFlowLayout? {
@@ -38,12 +33,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			return lockerCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout
 		}
 	}
-	let cellWidth: CGFloat = 144
 	let refreshControl = UIRefreshControl()
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -60,7 +50,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 				navigationItem.title = items[0]
 				path = path + items[0].addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)! + "/"
 			}
-			segmentedControl.addTarget(self, action: #selector(LockerViewController.changePath(_:)), for: .valueChanged)
+			segmentedControl.addTarget(self, action: #selector(changePath), for: .valueChanged)
 		} else {
 			navigationItem.leftItemsSupplementBackButton = true
 			navigationItem.leftBarButtonItem = nil
@@ -68,8 +58,13 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: lockerCollectionView)
 		}
-		lockerItems = schoolLoop.lockerItem(forPath: path)?.lockerItems ?? []
 		refresh(self)
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		lockerItems = SchoolLoop.sharedInstance.lockerItem(forPath: path)?.lockerItems ?? []
+		lockerCollectionView.reloadData()
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -77,31 +72,35 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: AnyObject) {
+	func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getLocker(withPath: path) { error in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
+				guard let `self` = self else {
+					return
+				}
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
-					guard let lockerItem = self.schoolLoop.lockerItem(forPath: self.path) else {
+					guard let lockerItem = `self`.schoolLoop.lockerItem(forPath: `self`.path) else {
 						return
 					}
 					lockerItem.lockerItems.sort()
-					self.lockerItems = lockerItem.lockerItems
-					self.lockerCollectionView.reloadData()
-					self.lockerCollectionViewFlowLayout?.invalidateLayout()
+					`self`.lockerItems = lockerItem.lockerItems
+					`self`.lockerCollectionView.reloadData()
+					`self`.lockerCollectionViewFlowLayout?.invalidateLayout()
 				} else if error == .authenticationError {
 					let alertController = UIAlertController(title: "Authentication error", message: "It looks like SchoolLoop's locker doesn't work with your account. Please file a bug report with SchoolLoop.", preferredStyle: .alert)
 					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
-					self.present(alertController, animated: true, completion: nil)
+					`self`.present(alertController, animated: true, completion: nil)
 				}
-				self.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
+				// Otherwise the refresh control dismiss animation doesn't work
+				`self`.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 	}
 
-	@IBAction func openSettings(_ sender: AnyObject) {
+	@IBAction func openSettings(_ sender: Any) {
 		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "settings")
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
@@ -113,7 +112,8 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		let inset = lockerCollectionView.frame.width.truncatingRemainder(dividingBy: cellWidth) / (floor(lockerCollectionView.frame.width / cellWidth) + 1)
+		// Do not use ceil here
+		let inset = lockerCollectionView.frame.width.truncatingRemainder(dividingBy: LockerViewController.cellWidth) / (floor(lockerCollectionView.frame.width / LockerViewController.cellWidth) + 1)
 		return UIEdgeInsets(inset: inset)
 	}
 
@@ -126,13 +126,13 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? LockerItemCollectionViewCell else {
+		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LockerViewController.cellIdentifier, for: indexPath) as? LockerItemCollectionViewCell else {
 			assertionFailure("Could not deque LockerItemCollectionViewCell")
-			return collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
+			return collectionView.dequeueReusableCell(withReuseIdentifier: LockerViewController.cellIdentifier, for: indexPath)
 		}
 		let lockerItem = lockerItems[indexPath.row]
 		cell.nameLabel.text = lockerItem.name
-		cell.typeImageView.image = lockerItemImage(for: lockerItem)
+		cell.typeImageView.image = LockerViewController.lockerItemImage(for: lockerItem)
 		return cell
 	}
 
@@ -148,31 +148,6 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			newLockerViewController.path = lockerItem.path
 			newLockerViewController.title = lockerItem.name
 			navigationController?.pushViewController(newLockerViewController, animated: true)
-		}
-	}
-
-	func lockerItemImage(for lockerItem: SchoolLoopLockerItem) -> UIImage {
-		switch lockerItem.type {
-		case .directory:
-			return #imageLiteral(resourceName: "FolderIcon")
-		case .pdf:
-			return #imageLiteral(resourceName: "PDFFileIcon")
-		case .txt:
-			return #imageLiteral(resourceName: "TXTFileIcon")
-		case .doc:
-			return #imageLiteral(resourceName: "DOCFileIcon")
-		case .xls:
-			return #imageLiteral(resourceName: "XLSFileIcon")
-		case .ppt:
-			return #imageLiteral(resourceName: "PPTFileIcon")
-		case .pages:
-			return #imageLiteral(resourceName: "PAGESFileIcon")
-		case .numbers:
-			return #imageLiteral(resourceName: "NUMBERSFileIcon")
-		case .key:
-			return #imageLiteral(resourceName: "KEYFileIcon")
-		case .unknown:
-			return #imageLiteral(resourceName: "FileIcon")
 		}
 	}
 
@@ -198,9 +173,34 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		coordinator.animate(alongsideTransition: { _ in
+		coordinator.animate(alongsideTransition: { [unowned self] _ in
 			self.lockerCollectionView?.collectionViewLayout.invalidateLayout()
 		}, completion: nil)
+	}
+	
+	static func lockerItemImage(for lockerItem: SchoolLoopLockerItem) -> UIImage {
+		switch lockerItem.type {
+		case .directory:
+			return #imageLiteral(resourceName: "FolderIcon")
+		case .pdf:
+			return #imageLiteral(resourceName: "PDFFileIcon")
+		case .txt:
+			return #imageLiteral(resourceName: "TXTFileIcon")
+		case .doc:
+			return #imageLiteral(resourceName: "DOCFileIcon")
+		case .xls:
+			return #imageLiteral(resourceName: "XLSFileIcon")
+		case .ppt:
+			return #imageLiteral(resourceName: "PPTFileIcon")
+		case .pages:
+			return #imageLiteral(resourceName: "PAGESFileIcon")
+		case .numbers:
+			return #imageLiteral(resourceName: "NUMBERSFileIcon")
+		case .key:
+			return #imageLiteral(resourceName: "KEYFileIcon")
+		case .unknown:
+			return #imageLiteral(resourceName: "FileIcon")
+		}
 	}
 
 	// MARK: - Navigation
@@ -226,7 +226,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 		destinationViewController.title = selectedItem.name
 		destinationViewController.path = selectedItem.path
-		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		destinationViewController.preferredContentSize = .zero
 		previewingContext.sourceRect = cell.frame
 		return destinationViewController
 	}

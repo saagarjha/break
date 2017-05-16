@@ -31,6 +31,10 @@ public class SchoolLoopLoopMail: NSObject, NSCoding {
 	public var links = [(title: String, URL: String)]()
 
 	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
+	
 	/// Creates a new LoopMail with the specified values.
 	///
 	/// - Parameters:
@@ -56,12 +60,12 @@ public class SchoolLoopLoopMail: NSObject, NSCoding {
 
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		subject = aDecoder.decodeObject(forKey: "subject") as? String ?? ""
-		sender = aDecoder.decodeObject(forKey: "sender") as? SchoolLoopContact ?? SchoolLoopContact(id: "", name: "", role: "", desc: "")
-		date = aDecoder.decodeObject(forKey: "date") as? Date ?? Date.distantPast
-		ID = aDecoder.decodeObject(forKey: "ID") as? String ?? ""
-		message = aDecoder.decodeObject(forKey: "message") as? String ?? ""
-		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
+		subject = aDecoder.decodeObject(of: NSString.self, forKey: "subject") as String? ?? ""
+		sender = aDecoder.decodeObject(of: SchoolLoopContact.self, forKey: "sender") ?? SchoolLoopContact(id: "", name: "", role: "", desc: "")
+		date = aDecoder.decodeObject(of: NSDate.self, forKey: "date") as Date? ?? Date.distantPast
+		ID = aDecoder.decodeObject(of: NSString.self, forKey: "ID") as String? ?? ""
+		message = aDecoder.decodeObject(of: NSString.self, forKey: "message") as String? ?? ""
+		links = (aDecoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
 		super.init()
 	}
 

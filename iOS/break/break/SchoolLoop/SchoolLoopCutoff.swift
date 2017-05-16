@@ -16,7 +16,12 @@ public class SchoolLoopCutoff: NSObject, NSCoding {
 	
 	// The start of this cutoff.
 	public var Start: String
+	
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
 
+	
 	/// Create a new cutoff with the specified values.
 	///
 	/// - Parameters:
@@ -30,8 +35,8 @@ public class SchoolLoopCutoff: NSObject, NSCoding {
 
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		self.Name = aDecoder.decodeObject(forKey: "Name") as? String ?? ""
-		self.Start = aDecoder.decodeObject(forKey: "Start") as? String ?? ""
+		self.Name = aDecoder.decodeObject(of: NSString.self, forKey: "Name") as String? ?? ""
+		self.Start = aDecoder.decodeObject(of: NSString.self, forKey: "Start") as String? ?? ""
 		super.init()
 	}
 

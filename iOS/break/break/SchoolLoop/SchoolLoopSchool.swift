@@ -20,6 +20,11 @@ public class SchoolLoopSchool: NSObject, NSCoding {
 	// The district name of this school.
 	public var districtName: String
 
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
+	
 	/// Creates a new school with the specified values.
 	///
 	/// - Parameters:
@@ -35,9 +40,9 @@ public class SchoolLoopSchool: NSObject, NSCoding {
 	
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
-		domainName = aDecoder.decodeObject(forKey: "domainName") as? String ?? ""
-		districtName = aDecoder.decodeObject(forKey: "districtName") as? String ?? ""
+		name = aDecoder.decodeObject(of: NSString.self, forKey: "name") as String? ?? ""
+		domainName = aDecoder.decodeObject(of: NSString.self, forKey: "domainName") as String? ?? ""
+		districtName = aDecoder.decodeObject(of: NSString.self, forKey: "districtName") as String? ?? ""
 		super.init()
 	}
 	

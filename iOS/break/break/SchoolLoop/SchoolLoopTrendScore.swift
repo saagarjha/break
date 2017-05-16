@@ -17,6 +17,11 @@ public class SchoolLoopTrendScore: NSObject, NSCoding {
 	/// The day ID of this trend score.
 	public var dayID: Date
 
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
+	
 	/// Create a new trend score with the specified values.
 	///
 	/// - Parameters:
@@ -30,8 +35,8 @@ public class SchoolLoopTrendScore: NSObject, NSCoding {
 
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
-		dayID = aDecoder.decodeObject(forKey: "dayID") as? Date ?? Date.distantPast
+		score = aDecoder.decodeObject(of: NSString.self, forKey: "score") as String? ?? ""
+		dayID = aDecoder.decodeObject(of: NSDate.self, forKey: "dayID") as Date? ?? Date.distantPast
 		super.init()
 	}
 

@@ -10,7 +10,7 @@ import UIKit
 
 class ViewModesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-	let cellIdentifier = "viewMode"
+	static let cellIdentifier = "viewMode"
 
 	var viewModeDelegate: ViewModeDelegate?
 
@@ -25,7 +25,7 @@ class ViewModesViewController: UIViewController, UITableViewDataSource, UITableV
 		viewModesTableView = UITableView()
 		viewModesTableView.dataSource = self
 		viewModesTableView.delegate = self
-		viewModesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+		viewModesTableView.register(UITableViewCell.self, forCellReuseIdentifier: ViewModesViewController.cellIdentifier)
 		view = viewModesTableView
 	}
 
@@ -47,11 +47,11 @@ class ViewModesViewController: UIViewController, UITableViewDataSource, UITableV
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-		if let vm = ViewMode(rawValue: indexPath.row) {
-			cell.textLabel?.text = vm.description
+		let cell = tableView.dequeueReusableCell(withIdentifier: ViewModesViewController.cellIdentifier, for: indexPath)
+		if let viewMode = ViewMode(rawValue: indexPath.row) {
+			cell.textLabel?.text = viewMode.description
 
-			if vm == viewMode {
+			if viewMode == self.viewMode {
 				cell.accessoryType = .checkmark
 			}
 		} else {

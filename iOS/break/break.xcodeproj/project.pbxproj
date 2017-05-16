@@ -84,6 +84,7 @@
 		498665A41C8D24E9004BA249 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */; };
 		498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 498665731C8D24E9004BA249 /* LaunchScreen.storyboard */; };
 		49989A4C1EA44C9B00F95A65 /* NotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49989A4B1EA44C9B00F95A65 /* NotificationsTableViewController.swift */; };
+		4998B29B1EB3E4DF00044A14 /* breakShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4998B29A1EB3E4DF00044A14 /* breakShared.swift */; };
 		4998B29D1EB51B6D00044A14 /* WebViewToSafariViewControllerShimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4998B29C1EB51B6D00044A14 /* WebViewToSafariViewControllerShimViewController.swift */; };
 		4998B29F1EB5665800044A14 /* breakSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4998B29E1EB5665800044A14 /* breakSafariViewController.swift */; };
 		49AC180B1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */; };
@@ -167,17 +168,17 @@
 		4901A5E41E5501E200CC2E41 /* ProgressReportHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressReportHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		4905293E1CE58787006190C4 /* SchoolLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoop.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4905293F1CE58787006190C4 /* SchoolLoopAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAccount.swift; sourceTree = "<group>"; };
-		490529401CE58787006190C4 /* SchoolLoopAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopAssignment.swift; sourceTree = "<group>"; };
+		490529401CE58787006190C4 /* SchoolLoopAssignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopAssignment.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		490529411CE58787006190C4 /* SchoolLoopConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopConstants.swift; sourceTree = "<group>"; };
 		490529421CE58787006190C4 /* SchoolLoopCourse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopCourse.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		490529431CE58787006190C4 /* SchoolLoopError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopError.swift; sourceTree = "<group>"; };
-		490529441CE58787006190C4 /* SchoolLoopGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopGrade.swift; sourceTree = "<group>"; };
-		490529451CE58787006190C4 /* SchoolLoopKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopKeychain.swift; sourceTree = "<group>"; };
+		490529441CE58787006190C4 /* SchoolLoopGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopGrade.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		490529451CE58787006190C4 /* SchoolLoopKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopKeychain.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		490529461CE58787006190C4 /* SchoolLoopLockerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopLockerItem.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		490529471CE58787006190C4 /* SchoolLoopLockerItemType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLockerItemType.swift; sourceTree = "<group>"; };
-		490529481CE58787006190C4 /* SchoolLoopLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopLoopMail.swift; sourceTree = "<group>"; };
-		490529491CE58787006190C4 /* SchoolLoopNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopNews.swift; sourceTree = "<group>"; };
-		4905294A1CE58787006190C4 /* SchoolLoopSchool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopSchool.swift; sourceTree = "<group>"; };
+		490529481CE58787006190C4 /* SchoolLoopLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopLoopMail.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		490529491CE58787006190C4 /* SchoolLoopNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopNews.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4905294A1CE58787006190C4 /* SchoolLoopSchool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopSchool.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4906AB791CCDBFB800610448 /* break-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "break-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4906AB7C1CCDBFBA00610448 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		4906AB801CCDBFBA00610448 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -198,7 +199,7 @@
 		4943D6FC1E5AB280005EBB15 /* ViewModesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ViewModesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4943D6FE1E5AB48E005EBB15 /* ViewMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ViewMode.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49489F281DDA9D500039126D /* LoopMailContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoopMailContactsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		49489F2A1DDA9EEE0039126D /* SchoolLoopContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopContact.swift; sourceTree = "<group>"; };
+		49489F2A1DDA9EEE0039126D /* SchoolLoopContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopContact.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49489F2D1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComposedLoopMail.swift; sourceTree = "<group>"; };
 		4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopComputableCourse.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		495574861CA6081100193EE5 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -207,7 +208,7 @@
 		4957CF051D46909800487039 /* break.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = break.entitlements; sourceTree = "<group>"; };
 		495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupTableViewController.swift; sourceTree = "<group>"; };
 		496FA3931E5FCEE700822436 /* CourseDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailTableViewCell.swift; sourceTree = "<group>"; };
-		498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopTrendScore.swift; sourceTree = "<group>"; };
+		498280791CEE4C34001A5000 /* SchoolLoopTrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopTrendScore.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4982807D1CEE4E95001A5000 /* TrendScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrendScore.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		498665541C8D24E9004BA249 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		498665561C8D24E9004BA249 /* AssignmentDescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignmentDescriptionViewController.swift; sourceTree = "<group>"; };
@@ -233,13 +234,14 @@
 		498665721C8D24E9004BA249 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		498665731C8D24E9004BA249 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49989A4B1EA44C9B00F95A65 /* NotificationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewController.swift; sourceTree = "<group>"; };
+		4998B29A1EB3E4DF00044A14 /* breakShared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = breakShared.swift; sourceTree = "<group>"; };
 		4998B29C1EB51B6D00044A14 /* WebViewToSafariViewControllerShimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewToSafariViewControllerShimViewController.swift; sourceTree = "<group>"; };
 		4998B29E1EB5665800044A14 /* breakSafariViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = breakSafariViewController.swift; sourceTree = "<group>"; };
 		49AC180A1E03DA1B00DB8159 /* SchoolLoopComputableCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComputableCategory.swift; sourceTree = "<group>"; };
 		49AC180C1E03DA3E00DB8159 /* SchoolLoopComputableGrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComputableGrade.swift; sourceTree = "<group>"; };
 		49C9888D1EA32D62000AF3CF /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityTableViewController.swift; sourceTree = "<group>"; };
-		49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCutoff.swift; sourceTree = "<group>"; };
+		49CEE9A81CF739B600440802 /* SchoolLoopCutoff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopCutoff.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49D04A301CD58B7200CB6650 /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ComplicationController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49D04A321CD58B9300CB6650 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49DC05B91CCDEDDD0090578F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -392,10 +394,11 @@
 			isa = PBXGroup;
 			children = (
 				498665541C8D24E9004BA249 /* AppDelegate.swift */,
-				4998B29C1EB51B6D00044A14 /* WebViewToSafariViewControllerShimViewController.swift */,
+				4998B29A1EB3E4DF00044A14 /* breakShared.swift */,
 				4998B29E1EB5665800044A14 /* breakSafariViewController.swift */,
 				495574861CA6081100193EE5 /* Logger.swift */,
 				498665621C8D24E9004BA249 /* LoginViewController.swift */,
+				4998B29C1EB51B6D00044A14 /* WebViewToSafariViewControllerShimViewController.swift */,
 				498665551C8D24E9004BA249 /* Assignments */,
 				498665591C8D24E9004BA249 /* Courses */,
 				4986655E1C8D24E9004BA249 /* Locker */,
@@ -799,6 +802,7 @@
 				490529511CE58787006190C4 /* SchoolLoopConstants.swift in Sources */,
 				4954C2861E03D9BC00564D28 /* SchoolLoopComputableCourse.swift in Sources */,
 				49DF2B2E1CF3BDF900DC1EB7 /* CourseViewController.swift in Sources */,
+				4998B29B1EB3E4DF00044A14 /* breakShared.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,7 @@ import Foundation
 
 // Represents a single category.
 @objc(SchoolLoopCategory)
-public class SchoolLoopCategory: NSObject, NSCoding {
+public class SchoolLoopCategory: NSObject, NSSecureCoding {
 	/// The name of this category.
 	public var name: String
 	
@@ -20,6 +20,10 @@ public class SchoolLoopCategory: NSObject, NSCoding {
 	/// The weight of this category.
 	public var weight: String
 
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
 	
 	/// Create a new category with the specified values.
 	///
@@ -44,9 +48,9 @@ public class SchoolLoopCategory: NSObject, NSCoding {
 
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init(coder aDecoder: NSCoder) {
-		name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
-		score = aDecoder.decodeObject(forKey: "score") as? String ?? ""
-		weight = aDecoder.decodeObject(forKey: "weight") as? String ?? ""
+		name = aDecoder.decodeObject(of: NSString.self, forKey: "name") as String? ?? ""
+		score = aDecoder.decodeObject(of: NSString.self, forKey: "score") as String? ?? ""
+		weight = aDecoder.decodeObject(of: NSString.self, forKey: "weight") as String? ?? ""
 		super.init()
 	}
 

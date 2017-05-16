@@ -39,7 +39,7 @@ class SettingsTableViewController: UITableViewController {
 
 	// MARK: - Table view data source
 
-	@IBAction func closeSettings(_ sender: AnyObject) {
+	@IBAction func closeSettings(_ sender: Any) {
 		navigationController?.dismiss(animated: true, completion: nil)
 	}
 	/*
@@ -105,7 +105,7 @@ class SettingsTableViewController: UITableViewController {
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepareForSegue(segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
 	 }

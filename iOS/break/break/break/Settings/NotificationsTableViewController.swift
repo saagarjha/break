@@ -90,13 +90,13 @@ class NotificationsTableViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		switch  indexPath.row {
-		case 0:
+		case breakTabIndices.courses.rawValue:
 			Preferences.areCoursesNotificationsAllowed = !Preferences.areCoursesNotificationsAllowed
-		case 1:
+		case breakTabIndices.assignments.rawValue:
 			Preferences.areAssignmentsNotificationsAllowed = !Preferences.areAssignmentsNotificationsAllowed
-		case 2:
+		case breakTabIndices.loopMail.rawValue:
 			Preferences.areLoopMailNotificationsAllowed = !Preferences.areLoopMailNotificationsAllowed
-		case 3:
+		case breakTabIndices.news.rawValue:
 			Preferences.areNewsNotificationsAllowed = !Preferences.areNewsNotificationsAllowed
 		default:
 			assertionFailure("Invalid notification index")
@@ -107,20 +107,35 @@ class NotificationsTableViewController: UITableViewController {
 	func updateCheckmarks() {
 		var notifications = [Int]()
 		if Preferences.areCoursesNotificationsAllowed {
-			notifications.append(0)
+			notifications.append(breakTabIndices.courses.rawValue)
 		}
 		if Preferences.areAssignmentsNotificationsAllowed {
-			notifications.append(1)
+			notifications.append(breakTabIndices.assignments.rawValue)
 		}
 		if Preferences.areLoopMailNotificationsAllowed {
-			notifications.append(2)
+			notifications.append(breakTabIndices.loopMail.rawValue)
 		}
 		if Preferences.areNewsNotificationsAllowed {
-			notifications.append(3)
+			notifications.append(breakTabIndices.news.rawValue)
 		}
-		[0, 1, 2, 3].forEach {
+		(0..<4).forEach {
 			tableView.cellForRow(at: IndexPath(row: $0, section: 0))?.accessoryType = .none
 		}
+		
+		if !notifications.isEmpty {
+			let replyNotificationAction = UIMutableUserNotificationAction()
+			replyNotificationAction.identifier = "Reply"
+			replyNotificationAction.title = "Reply"
+			replyNotificationAction.activationMode = .foreground
+			
+			let replyNotificationCategory = UIMutableUserNotificationCategory()
+			replyNotificationCategory.identifier = "ReplyCategory"
+			replyNotificationCategory.setActions([replyNotificationAction], for: .default)
+			replyNotificationCategory.setActions([replyNotificationAction], for: .minimal)
+			
+			UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: [replyNotificationCategory]))
+		}
+		
 		notifications.forEach {
 			tableView.cellForRow(at: IndexPath(row: $0, section: 0))?.accessoryType = .checkmark
 		}

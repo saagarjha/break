@@ -80,4 +80,14 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
+	
+	static var hideGrades: Bool {
+		get {
+			return userDefaults.bool(forKey: "hideGrades")
+		}
+		set {
+			userDefaults.set(newValue, forKey: "hideGrades")
+			userDefaults.synchronize()
+		}
+	}
 }

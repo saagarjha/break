@@ -12,11 +12,11 @@ import Foundation
 public class SchoolLoopComputableGrade: SchoolLoopGrade {
 	/// The computable course associated with this computable grade.
 	public weak var computableCourse: SchoolLoopComputableCourse?
-	
+
 	/// A Boolean that designates whether this computable grade is created by
 	/// the user.
 	public var isUserCreated = true
-	
+
 
 	/// The percent score for this computable grade.
 	public override var percentScore: String {
@@ -36,25 +36,25 @@ public class SchoolLoopComputableGrade: SchoolLoopGrade {
 			return computableCourse?.computableCategory(for: categoryName)
 		}
 	}
-	
+
 	/// The computed percent score for this computable grade.
 	public var computedPercentScore: Double? {
 		get {
 			guard let computedScore = computedScore,
 				let computedMaxPoints = computedMaxPoints else {
-					return nil
+					return Double(percent: percentScore).flatMap { $0 / 100 }
 			}
 			return computedScore / computedMaxPoints
 		}
 	}
-	
+
 	/// The computed score for this computable grade.
 	public var computedScore: Double? {
 		get {
 			return Double(score)
 		}
 	}
-	
+
 	/// The computed max points for this computed grade.
 	public var computedMaxPoints: Double? {
 		get {

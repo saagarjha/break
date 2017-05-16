@@ -8,9 +8,15 @@
 
 import UIKit
 
-class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
+class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
-	let cellIdentifier = "assignment"
+	static let cellIdentifier = "assignment"
+
+	static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "EEEE, MMMM d"
+		return dateFormatter
+	}()
 
 	var schoolLoop: SchoolLoop!
 	var assignments = [Date: [SchoolLoopAssignment]]()
@@ -21,46 +27,30 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 	@IBOutlet weak var assignmentsTableView: UITableView! {
 		didSet {
-			assignmentsTableView.rowHeight = UITableViewAutomaticDimension
-			assignmentsTableView.estimatedRowHeight = 80.0
-			refreshControl.addTarget(self, action: #selector(AssignmentsViewController.refresh(_:)), for: .valueChanged)
-			if #available(iOS 10.0, *) {
-				assignmentsTableView.refreshControl = refreshControl
-			} else {
-				assignmentsTableView.addSubview(refreshControl)
-				assignmentsTableView.backgroundView = UIView()
-				assignmentsTableView.backgroundView?.backgroundColor = .clear
-			}
+			breakShared.autoresizeTableViewCells(for: assignmentsTableView)
+			breakShared.addRefreshControl(refreshControl, to: assignmentsTableView)
+			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		}
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 
-	deinit {
-		searchController.loadViewIfNeeded()
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		assignments = SchoolLoop.sharedInstance.assignmentsWithDueDates
-		updateSearchResults(for: searchController)
-		navigationController?.hidesBarsOnSwipe = false
-	}
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		definesPresentationContext = true
-		searchController.searchResultsUpdater = self
-		searchController.delegate = self
-		searchController.dimsBackgroundDuringPresentation = false
-		assignmentsTableView.tableHeaderView = searchController.searchBar
+		addSearchBar(from: searchController, to: assignmentsTableView)
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: assignmentsTableView)
 		}
 		refresh(self)
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		assignments = SchoolLoop.sharedInstance.assignmentsWithDueDates
+		updateSearchResults(for: searchController)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -68,23 +58,27 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: AnyObject) {
+	func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getAssignments { (_, error) in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
+				guard let `self` = self else {
+					return
+				}
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
-					self.assignments = self.schoolLoop.assignmentsWithDueDates
-					self.updateSearchResults(for: self.searchController)
+					`self`.assignments = `self`.schoolLoop.assignmentsWithDueDates
+					`self`.updateSearchResults(for: `self`.searchController)
 				}
-				self.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
+				// Otherwise the refresh control dismiss animation doesn't work
+				`self`.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 
 	}
 
-	@IBAction func openSettings(_ sender: AnyObject) {
+	@IBAction func openSettings(_ sender: Any) {
 		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "settings")
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
@@ -94,9 +88,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "EEEE, MMMM d"
-		return dateFormatter.string(from: filteredAssignmentDueDates[section])
+		return AssignmentsViewController.dateFormatter.string(from: filteredAssignmentDueDates[section])
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -104,22 +96,21 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AssignmentTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: AssignmentsViewController.cellIdentifier, for: indexPath) as? AssignmentTableViewCell else {
 			assertionFailure("Could not deque AssignmentTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: AssignmentsViewController.cellIdentifier, for: indexPath)
 		}
-		let section = indexPath.section
-		let row = indexPath.row
-		let assignment = filteredAssignments[filteredAssignmentDueDates[section]]?[row]
-		cell.courseNameDiscriminatorView.backgroundColor = AppDelegate.color(for: assignment?.courseName ?? "")
-		if assignment?.isCompleted ?? false {
-			let titleText = NSAttributedString(string: assignment?.title ?? "", attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
-			let courseNameText = NSAttributedString(string: assignment?.courseName ?? "", attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
-			cell.titleLabel.attributedText = titleText
-			cell.courseNameLabel.attributedText = courseNameText
-		} else {
-			cell.titleLabel.text = assignment?.title
-			cell.courseNameLabel.text = assignment?.courseName
+		(filteredAssignments[filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
+			cell.courseNameDiscriminatorView.backgroundColor = UIColor(string: assignment.courseName)
+			if assignment.isCompleted {
+				let titleText = NSAttributedString(string: assignment.title, attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+				let courseNameText = NSAttributedString(string: assignment.courseName, attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+				cell.titleLabel.attributedText = titleText
+				cell.courseNameLabel.attributedText = courseNameText
+			} else {
+				cell.titleLabel.text = assignment.title
+				cell.courseNameLabel.text = assignment.courseName
+			}
 		}
 		return cell
 	}
@@ -129,11 +120,12 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-		let completeAction = UITableViewRowAction(style: .normal, title: "Mark\nDone") { _, indexPath in
-			let assignment = self.filteredAssignments[self.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]
-			assignment?.isCompleted = !(assignment?.isCompleted ?? false)
-			DispatchQueue.main.async {
-				tableView.reloadData()
+		let completeAction = UITableViewRowAction(style: .normal, title: "Mark\nDone") { [unowned self] _, indexPath in
+			(self.filteredAssignments[self.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
+				assignment.isCompleted = !assignment.isCompleted
+				DispatchQueue.main.async {
+					tableView.reloadData()
+				}
 			}
 		}
 		completeAction.backgroundColor = view.tintColor
@@ -154,11 +146,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		} else {
 			filteredAssignments = assignments
 		}
-		filteredAssignmentDueDates = Array(filteredAssignments.keys)
-		filteredAssignmentDueDates.sort {
+		filteredAssignmentDueDates = Array(filteredAssignments.keys).sorted {
 			$0.compare($1) == .orderedAscending
 		}
-		DispatchQueue.main.async {
+		DispatchQueue.main.async { [unowned self] in
 			self.assignmentsTableView.reloadData()
 		}
 	}
@@ -182,9 +173,12 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
 			return nil
 		}
-		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
+		guard let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]?[indexPath.row] else {
+			assertionFailure("Previewing index path is invalid")
+			return nil
+		}
 		destinationViewController.iD = selectedAssignment.iD
-		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		destinationViewController.preferredContentSize = .zero
 		previewingContext.sourceRect = cell.frame
 		return destinationViewController
 	}

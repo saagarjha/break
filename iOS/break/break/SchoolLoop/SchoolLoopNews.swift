@@ -29,6 +29,10 @@ public class SchoolLoopNews: NSObject, NSCoding {
 	/// The ID of this news item.
 	public var iD: String
 
+
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
 	
 	/// Create a new news item with the specified values.
 	///
@@ -59,12 +63,12 @@ public class SchoolLoopNews: NSObject, NSCoding {
 	
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
-		authorName = aDecoder.decodeObject(forKey: "authorName") as? String ?? ""
-		createdDate = aDecoder.decodeObject(forKey: "createdDate") as? Date ?? Date.distantPast
-		newsDescription = aDecoder.decodeObject(forKey: "newsDescription") as? String ?? ""
-		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
-		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
+		title = aDecoder.decodeObject(of: NSString.self, forKey: "title") as String? ?? ""
+		authorName = aDecoder.decodeObject(of: NSString.self, forKey: "authorName") as String? ?? ""
+		createdDate = aDecoder.decodeObject(of: NSDate.self, forKey: "createdDate") as Date? ?? Date.distantPast
+		newsDescription = aDecoder.decodeObject(of: NSString.self, forKey: "newsDescription") as String? ?? ""
+		links = (aDecoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
+		iD = aDecoder.decodeObject(of: NSString.self, forKey: "iD") as String? ?? ""
 		super.init()
 	}
 	

@@ -10,16 +10,15 @@ import UIKit
 
 class CourseViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-	let cellIdentifier = "courseDetail"
+	static let cellIdentifier = "courseDetail"
 
 	var course: SchoolLoopComputableCourse!
 
 	@IBOutlet weak var trendScore: TrendScore!
 	@IBOutlet weak var courseTableView: UITableView! {
 		didSet {
-			courseTableView.estimatedRowHeight = 80.0
-			courseTableView.rowHeight = UITableViewAutomaticDimension
-			courseTableView.register(CourseDetailTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+			breakShared.autoresizeTableViewCells(for: courseTableView)
+			courseTableView.register(CourseDetailTableViewCell.self, forCellReuseIdentifier: CourseViewController.cellIdentifier)
 		}
 	}
 
@@ -27,11 +26,13 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(CourseViewController.addCategory(_:)))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCategory))
 	}
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
+		trendScore.layoutMargins.left = courseTableView.layoutMargins.left
+		trendScore.layoutMargins.right = courseTableView.layoutMargins.right
 		trendScore.trendScores = course.trendScores
 	}
 
@@ -79,9 +80,9 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CourseDetailTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: CourseViewController.cellIdentifier, for: indexPath) as? CourseDetailTableViewCell else {
 			assertionFailure("")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: CourseViewController.cellIdentifier, for: indexPath)
 		}
 		switch indexPath.section {
 		case 0:
@@ -96,7 +97,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 			cell.courseViewController = self
 			cell.indexPath = indexPath
 			cell.isTappable = true
-			cell.discriminatorView.backgroundColor = AppDelegate.color(for: category.name)
+			cell.discriminatorView.backgroundColor = UIColor(string: category.name)
 			cell.titleLabel.text = category.name
 			if let weightValue = category.computedWeight {
 				cell.subtitleLabel.text = String(format: "%.2f%%", weightValue * 100)
@@ -142,7 +143,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepareForSegue(segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
 	 }

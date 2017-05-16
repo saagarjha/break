@@ -15,28 +15,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	let file = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!).appendingPathComponent("schoolLoop").path
 
 	var window: UIWindow?
+
 	var splashView: UIImageView!
-	var securityView: UIView!
+	lazy var securityView: UIView = {
+		let securityView: UIView
+		if !UIAccessibilityIsReduceTransparencyEnabled() {
+			let effect = UIBlurEffect(style: .light)
+			securityView = UIVisualEffectView(effect: effect)
+			securityView.frame = UIScreen.main.bounds
+		} else {
+			securityView = UIView(frame: UIScreen.main.bounds)
+			securityView.backgroundColor = .white
+		}
+		securityView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		return securityView
+	}()
+	weak var securityAlertController: UIAlertController?
 
 	var archived = true
 	var launchIndex = 0
 	var launchNotification: UILocalNotification?
 	var completionHandler: (() -> Void)?
+	var loginTries = 0
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-		let replyNotificationAction = UIMutableUserNotificationAction()
-		replyNotificationAction.identifier = "Reply"
-		replyNotificationAction.title = "Reply"
-		replyNotificationAction.activationMode = .foreground
 
-		let replyNotificationCategory = UIMutableUserNotificationCategory()
-		replyNotificationCategory.identifier = "ReplyCategory"
-		replyNotificationCategory.setActions([replyNotificationAction], for: .default)
-		replyNotificationCategory.setActions([replyNotificationAction], for: .minimal)
-
-		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: [replyNotificationCategory]))
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+
 		if WCSession.isSupported() {
 			let session = WCSession.default()
 			session.delegate = self
@@ -48,17 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			archived = false
 		}
 
-		launchIndex = index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? Preferences.startupTabIndex
+		launchIndex = AppDelegate.index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? Preferences.startupTabIndex
 		launchNotification = launchOptions?[.localNotification] as? UILocalNotification
 
 		loginOnLaunch()
 
-		let color = UIColor(red: 26 / 256, green: 188 / 256, blue: 156 / 256, alpha: 1)
-		window?.tintColor = color
-		let appearance = UINavigationBar.appearance()
-		appearance.barStyle = .black
-		appearance.tintColor = .white
-		appearance.barTintColor = color
+		setupAppearance()
 
 		return true
 	}
@@ -72,30 +73,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 		// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 		if Preferences.isPasswordSet {
-			if let tabBarController = self.window?.rootViewController as? UITabBarController {
-				let view: UIView
-				if !UIAccessibilityIsReduceTransparencyEnabled() {
-					let effect = UIBlurEffect(style: .light)
-					view = UIVisualEffectView(effect: effect)
-					view.frame = tabBarController.view.bounds
-				} else {
-					view = UIView(frame: tabBarController.view.bounds)
-					view.backgroundColor = .white
-				}
-				view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-				tabBarController.view.addSubview(view)
-				securityView = view
+			if let tabBarController = self.window?.rootViewController as? UITabBarController,
+				tabBarController.view.window != nil
+				{
+				tabBarController.view.addSubview(securityView)
 			}
 		}
 	}
 
 	func applicationWillEnterForeground(_ application: UIApplication) {
 		// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+
+		// Remove any previous alerts, if any
+		securityAlertController?.dismiss(animated: true, completion: nil)
+
 		if Preferences.isPasswordSet {
 			if Preferences.canUseTouchID {
-				self.showAuthententication()
+				showAuthententication()
 			} else {
-				self.showPassword()
+				showPassword()
 			}
 		}
 	}
@@ -107,16 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-		guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
-			return
-		}
-		do {
-			try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)
-		} catch _ {
-		}
-		guard (try? FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)) != nil else {
-			return
-		}
+		saveCache()
 	}
 
 	func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -130,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				if error == .noError {
-					DispatchQueue.global(qos: .userInitiated).async {
+					DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
 						let group = DispatchGroup()
 
 						func completion<T>(updatedItems: [T], error: SchoolLoopError) where T: UpdatableItem {
@@ -160,6 +147,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						schoolLoop.getLoopMail(with: completion)
 						group.enter()
 						schoolLoop.getNews(with: completion)
+
+						// Be conservative since we're only allowed 30 seconds
 						_ = group.wait(timeout: .now() + 25)
 						completionHandler(updated)
 					}
@@ -179,7 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		guard launchNotification == nil else {
 			return
 		}
-		openContextForNotification(notification)
+		openContext(for: notification)
 	}
 
 	func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
@@ -187,10 +176,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		guard launchNotification == nil else {
 			return
 		}
-		DispatchQueue.main.async {
+		DispatchQueue.main.async { [unowned self] in
 			self.launchNotification = notification
 			self.completionHandler = completionHandler
-			if self.openContextForNotification(notification) {
+			if self.openContext(for: notification) {
 				self.launchNotification = nil
 				self.completionHandler = nil
 			}
@@ -199,7 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 
 	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-		let launchIndex = self.index(forType: shortcutItem.type) ?? -1
+		let launchIndex = AppDelegate.index(forType: shortcutItem.type) ?? -1
 		if launchIndex > 0 {
 			if let tabBarController = window?.rootViewController as? UITabBarController {
 				tabBarController.selectedIndex = launchIndex
@@ -213,57 +202,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		let schoolLoop = SchoolLoop.sharedInstance
 		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-				DispatchQueue.main.async {
+				DispatchQueue.main.async { [unowned self] in
 					Logger.log("Login completed with error \(error)")
 					if error == .noError {
+						// Initialize tab bar controller
 						let storybard = UIStoryboard(name: "Main", bundle: nil)
 						let tabBarController = storybard.instantiateViewController(withIdentifier: "tab")
 						(tabBarController as? UITabBarController)?.selectedIndex = self.launchIndex
+
+						// Take a snapshot to perform an animation on
 						let oldView = UIScreen.main.snapshotView(afterScreenUpdates: false)
 						tabBarController.view.addSubview(oldView)
+
 						self.window?.rootViewController = tabBarController
+
+						// Handle notification contexts
 						if let notification = self.launchNotification {
-							self.openContextForNotification(notification)
+							self.openContext(for: notification)
 							self.launchNotification = nil
 						}
 						self.completionHandler?()
+
+						// Show security view
 						if UIApplication.shared.applicationState == .active && Preferences.isPasswordSet {
-							let view: UIView
-							if let viewController = self.window?.rootViewController {
-								if !UIAccessibilityIsReduceTransparencyEnabled() {
-									let effect = UIBlurEffect(style: .light)
-									view = UIVisualEffectView(effect: effect)
-									view.frame = viewController.view.bounds
-								} else {
-									view = UIView(frame: viewController.view.bounds)
-									view.backgroundColor = .white
-								}
-								view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-								viewController.view.addSubview(view)
-								self.securityView = view
-							}
+							tabBarController.view.addSubview(self.securityView)
 							if Preferences.canUseTouchID {
 								self.showAuthententication()
 							} else {
 								self.showPassword()
 							}
 						}
+
+						// Remove the old view with an animation
 						UIView.animate(withDuration: 0.25, animations: {
 							oldView.alpha = 0
 						}, completion: { _ in
 							oldView.removeFromSuperview()
 						})
+
+						self.loginTries = 0
 					} else if error == .authenticationError {
 						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
+
 						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-							DispatchQueue.main.async {
+							DispatchQueue.main.async { [unowned self] in
 								self.showLogin()
 							}
 						}
 						alertController.addAction(okAction)
+
+						self.securityAlertController = alertController
 						UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+						self.loginTries = 0
 					} else {
-						self.loginOnLaunch()
+						// Third time's the charm
+						if self.loginTries < 3 {
+							self.loginOnLaunch()
+						}
+						self.loginTries += 1
 					}
 				}
 			}
@@ -273,11 +269,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			Logger.log("Password: \(String(describing: schoolLoop.account?.password.isEmpty))")
 			showLogin()
 		}
+	}
 
+	func setupAppearance() {
+		window?.tintColor = UIColor.break
+		let appearance = UINavigationBar.appearance()
+		appearance.barStyle = .black
+		appearance.tintColor = .white
+		appearance.barTintColor = UIColor.break
 	}
 
 	func showLogin() {
-		DispatchQueue.main.async {
+		DispatchQueue.main.async { [unowned self] in
 			let storyboard = UIStoryboard(name: "Main", bundle: nil)
 			let loginViewController = storyboard.instantiateViewController(withIdentifier: "login")
 			self.window?.makeKeyAndVisible()
@@ -293,8 +296,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func saveCache() {
-		if !NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) {
+		guard NSKeyedArchiver.archiveRootObject(SchoolLoop.sharedInstance, toFile: file) else {
 			Logger.log("Could not save cache")
+			return
+		}
+		do {
+			try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file)
+		} catch _ {
+			Logger.log("Error saving cache")
 		}
 	}
 
@@ -306,37 +315,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 	}
 
-	func index(forType type: String) -> Int? {
+	static func index(forType type: String) -> Int? {
 		switch type {
-		case "Course":
-			return 0
-		case "Assignments":
-			return 1
-		case "LoopMail":
-			return 2
-		case "News":
-			return 3
-		case "Locker":
-			return 4
+		case breakTabIndices.courses.description:
+			return breakTabIndices.courses.rawValue
+		case breakTabIndices.assignments.description:
+			return breakTabIndices.assignments.rawValue
+		case breakTabIndices.loopMail.description:
+			return breakTabIndices.loopMail.rawValue
+		case breakTabIndices.news.description:
+			return breakTabIndices.news.rawValue
+		case breakTabIndices.locker.description:
+			return breakTabIndices.locker.rawValue
 		default:
 			return nil
 		}
 	}
 
 	func showAuthententication() {
-		LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { (success, error) in
+		LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { [unowned self] (success, error) in
 			if success {
-				DispatchQueue.main.async {
-					UIView.animate(withDuration: 0.25, animations: {
-						if let view = self.securityView as? UIVisualEffectView {
-							view.effect = nil
-						} else {
-							self.securityView.alpha = 0
-						}
-					}, completion: { _ in
-						self.securityView.removeFromSuperview()
-					})
-				}
+				self.removeSecurityView()
 			} else {
 				self.showPassword()
 			}
@@ -347,40 +346,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func showPassword() {
 		if let tabBarController = self.window?.rootViewController as? UITabBarController {
 			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your SchoolLoop account.", preferredStyle: .alert)
-			let forgotAction = UIAlertAction(title: "Forgot", style: .default) { _ in
+			let forgotAction = UIAlertAction(title: "Forgot", style: .cancel) { [unowned self] _ in
 				Preferences.isPasswordSet = false
 				Preferences.canUseTouchID = false
 				SchoolLoop.sharedInstance.logOut()
-				DispatchQueue.main.async {
-					UIView.animate(withDuration: 0.25, animations: {
-						if let view = self.securityView as? UIVisualEffectView {
-							view.effect = nil
-						} else {
-							self.securityView.alpha = 0
-						}
-					}, completion: { _ in
-						self.securityView.removeFromSuperview()
-					})
-				}
+				self.removeSecurityView()
 			}
 			let okAction = UIAlertAction(title: "OK", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
-				if alertController.textFields![0].text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
-					DispatchQueue.main.async {
-						UIView.animate(withDuration: 0.25, animations: {
-							if let view = self.securityView as? UIVisualEffectView {
-								view.effect = nil
-							} else {
-								self.securityView.alpha = 0
-							}
-						}, completion: { _ in
-							self.securityView.removeFromSuperview()
-						})
-					}
+
+				if alertController.textFields?.first?.text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
+					self.removeSecurityView()
 				} else {
 					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
 					let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-						DispatchQueue.main.async {
+						DispatchQueue.main.async { [unowned self] in
 							self.showPassword()
 						}
 					}
@@ -391,26 +371,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				}
 
 			}
+
 			alertController.addAction(forgotAction)
 			alertController.addAction(okAction)
+
 			alertController.addTextField { textField in
 				textField.placeholder = "Password"
 				textField.isSecureTextEntry = true
 				let schoolLoop = SchoolLoop.sharedInstance
-				if Int(schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") ?? "") != nil {
+
+				// If the password is numeric show the number pad
+				if (schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") ?? "").rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil {
 					textField.keyboardType = .numberPad
 				}
 			}
-			DispatchQueue.main.async {
+
+			DispatchQueue.main.async { [unowned self] in
+				self.securityAlertController = alertController
 				tabBarController.present(alertController, animated: true, completion: nil)
 			}
 		}
 	}
 
-	@discardableResult func openContextForNotification(_ notification: UILocalNotification) -> Bool {
+	func removeSecurityView() {
+		DispatchQueue.main.async {
+			UIView.animate(withDuration: 0.25, animations: { [unowned self] in
+				if let securityView = self.securityView as? UIVisualEffectView {
+					securityView.effect = nil
+				} else {
+					self.securityView.alpha = 0
+				}
+			}, completion: { [unowned self] _ in
+				self.securityView.removeFromSuperview()
+
+				// Reset the security view for the next use
+				if let securityView = self.securityView as? UIVisualEffectView {
+					securityView.effect = UIBlurEffect(style: .light)
+				} else {
+					self.securityView.alpha = 1
+				}
+			})
+		}
+	}
+
+	@discardableResult func openContext(for notification: UILocalNotification) -> Bool {
 		defer {
 			completionHandler?()
 		}
+
 		guard let data = notification.userInfo?["updatedItem"] as? Data else {
 			assertionFailure("Could not retrieve updated item")
 			return false
@@ -418,22 +426,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		guard let tabBarController = window?.rootViewController as? UITabBarController else {
 			return false
 		}
+
 		switch NSKeyedUnarchiver.unarchiveObject(with: data) {
 		case let course as SchoolLoopCourse:
-			tabBarController.selectedIndex = 0
+			tabBarController.selectedIndex = breakTabIndices.courses.rawValue
 			tabBarController.viewControllerOfType(CoursesViewController.self)?.openProgressReport(for: course)
 		case let assignment as SchoolLoopAssignment:
-			tabBarController.selectedIndex = 1
+			tabBarController.selectedIndex = breakTabIndices.assignments.rawValue
 			tabBarController.viewControllerOfType(AssignmentsViewController.self)?.openAssignmentDescription(for: assignment)
 		case let loopMail as SchoolLoopLoopMail:
-			tabBarController.selectedIndex = 2
+			tabBarController.selectedIndex = breakTabIndices.loopMail.rawValue
 			if notification.userInfo?["identifier"] as? String != "Reply" {
 				tabBarController.viewControllerOfType(LoopMailViewController.self)?.openLoopMailMessage(for: loopMail)
 			} else {
 				tabBarController.viewControllerOfType(LoopMailViewController.self)?.openLoopMailCompose(for: loopMail)
 			}
 		case let news as SchoolLoopNews:
-			tabBarController.selectedIndex = 3
+			tabBarController.selectedIndex = breakTabIndices.news.rawValue
 			tabBarController.viewControllerOfType(NewsViewController.self)?.openNewsDescription(for: news)
 		default:
 			assertionFailure("Unrecognized updated item")
@@ -486,16 +495,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func sessionDidDeactivate(_ session: WCSession) {
 
 	}
-
-	static func color(for string: String) -> UIColor {
-		let hashValue = UInt(bitPattern: string.hashValue)
-		let channelSize = UInt(MemoryLayout<Int>.size * 8 / 3)
-		let mask = 1 << channelSize - 1
-		let red = CGFloat(hashValue & mask) / CGFloat(mask + 1)
-		let green = CGFloat(hashValue >> channelSize & mask) / CGFloat(mask + 1)
-		let blue = CGFloat(hashValue >> (channelSize * 2) & mask) / CGFloat(mask + 1)
-		return UIColor(red: red, green: green, blue: blue, alpha: 1)
-	}
 }
 
 extension UITabBarController {
@@ -520,6 +519,7 @@ extension SchoolLoopCourse: UpdatableItem {
 			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			// rdar://problem/31790032
 			usleep(100_000)
 		}
 	}
@@ -535,6 +535,7 @@ extension SchoolLoopAssignment: UpdatableItem {
 			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			// rdar://problem/31790032
 			usleep(100_000)
 		}
 	}
@@ -551,6 +552,7 @@ extension SchoolLoopLoopMail: UpdatableItem {
 			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			// rdar://problem/31790032
 			usleep(100_000)
 		}
 	}
@@ -566,6 +568,7 @@ extension SchoolLoopNews: UpdatableItem {
 			notification.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
 			notification.soundName = UILocalNotificationDefaultSoundName
 			UIApplication.shared.scheduleLocalNotification(notification)
+			// rdar://problem/31790032
 			usleep(100_000)
 		}
 	}

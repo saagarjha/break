@@ -16,11 +16,6 @@ class AssignmentDescriptionViewController: WebViewToSafariViewControllerShimView
 	var schoolLoop: SchoolLoop!
 	var assignmentDescription: String = ""
 
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
-//        navigationController?.hidesBarsOnSwipe = true
-//    }
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -39,7 +34,8 @@ class AssignmentDescriptionViewController: WebViewToSafariViewControllerShimView
 			assertionFailure("Could not get assignment for iD")
 			return
 		}
-		assignmentDescription = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style><h3>\(assignment.title)</h3>\(assignment.assignmentDescription)"
+		assignmentDescription = breakConstants.webViewDefaultStyle
+		assignmentDescription += "<h3>\(assignment.title)</h3>\(assignment.assignmentDescription)"
 		if !assignment.links.isEmpty {
 			assignmentDescription += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 		}
@@ -49,15 +45,11 @@ class AssignmentDescriptionViewController: WebViewToSafariViewControllerShimView
 		webView.loadHTMLString(assignmentDescription, baseURL: nil)
 	}
 
-//	override func prefersStatusBarHidden() -> Bool {
-//		return navigationController?.navigationBarHidden ?? false
-//	}
-
 	/*
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepareForSegue(segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
 	 }

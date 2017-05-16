@@ -11,20 +11,21 @@ import Foundation
 class Logger {
 	static let filePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("log.txt")
 
+	static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "M/d H:mm:ss.SSS"
+		return dateFormatter
+	}()
+
 	class func log(_ string: String = "") {
 		DispatchQueue.main.async {
 			if !FileManager.default.fileExists(atPath: filePath) {
 				FileManager.default.createFile(atPath: filePath, contents: nil, attributes: nil)
 			}
-			let formatter = DateFormatter()
-			formatter.dateFormat = "M/d H:mm:ss.SSS"
 			let file = FileHandle(forUpdatingAtPath: filePath)
 			file?.seekToEndOfFile()
-//		#if arch(i386) || arch(x86_64)
-			print("\(formatter.string(from: Date())): \(string)")
-//		#else
-			file?.write("\(formatter.string(from: Date())): \(string)\n".data(using: String.Encoding.utf8)!)
-//		#endif
+			print("\(Logger.dateFormatter.string(from: Date())): \(string)")
+			file?.write("\(Logger.dateFormatter.string(from: Date())): \(string)\n".data(using: String.Encoding.utf8)!)
 			file?.closeFile()
 		}
 	}

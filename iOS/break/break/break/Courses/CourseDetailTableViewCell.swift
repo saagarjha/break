@@ -27,9 +27,9 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 			}
 			if isTappable {
 				titleLabel.isUserInteractionEnabled = true
-				titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CourseDetailTableViewCell.changeTitle(_:))))
+				titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeTitle)))
 				subtitleLabel.isUserInteractionEnabled = true
-				subtitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(CourseDetailTableViewCell.changeSubtitle(_:))))
+				subtitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeSubtitle)))
 			}
 		}
 	}
@@ -44,7 +44,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 			contentView.addSubview(copy)
 			copy.translatesAutoresizingMaskIntoConstraints = false
 			copy.numberOfLines = 0
-			constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=12)-[label]-(>=12)-|", options: [], metrics: nil, views: ["label": copy])
+			constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=\(breakConstants.tableViewCellVerticalPadding))-[label]-(>=\(breakConstants.tableViewCellVerticalPadding))-|", options: [], metrics: nil, views: ["label": copy])
 			copy.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
 		}
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[title]-(>=8)-[subtitle]-|", options: [], metrics: nil, views: ["title": titleLabel, "subtitle": subtitleLabel])
@@ -56,7 +56,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
 		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0))
-		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 4))
+		constraints.append(NSLayoutConstraint(item: discriminatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: breakConstants.discriminatorViewWidth))
 		NSLayoutConstraint.activate(constraints)
 	}
 
@@ -78,7 +78,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 	func changeTitle(_ sender: Any) {
 		let alertController = UIAlertController(title: "Rename Category", message: "Enter a new category name for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return
@@ -99,7 +99,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 	func changeSubtitle(_ sender: UILabel) {
 		let alertController = UIAlertController(title: "Change Weight", message: "Enter a new weight for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return

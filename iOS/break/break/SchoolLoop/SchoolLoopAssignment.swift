@@ -33,7 +33,11 @@ public class SchoolLoopAssignment: NSObject, NSCoding {
 	/// A Boolean that designates whether this assignment is completed.
 	public var isCompleted: Bool
 	
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
 
+	
 	/// Create a new assignment with the specified values.
 	///
 	/// - Parameters:
@@ -56,13 +60,13 @@ public class SchoolLoopAssignment: NSObject, NSCoding {
 
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
-		title = aDecoder.decodeObject(forKey: "title") as? String ?? ""
-		assignmentDescription = aDecoder.decodeObject(forKey: "assignmentDescription") as? String ?? ""
-		courseName = aDecoder.decodeObject(forKey: "courseName") as? String ?? ""
-		dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date ?? Date.distantPast
-		links = (aDecoder.decodeObject(forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
-		iD = aDecoder.decodeObject(forKey: "iD") as? String ?? ""
-		isCompleted = aDecoder.decodeObject(forKey: "isCompleted") as? Bool ?? false
+		title = aDecoder.decodeObject(of: NSString.self, forKey: "title") as String? ?? ""
+		assignmentDescription = aDecoder.decodeObject(of: NSString.self, forKey: "assignmentDescription") as String? ?? ""
+		courseName = aDecoder.decodeObject(of: NSString.self, forKey: "courseName") as String? ?? ""
+		dueDate = aDecoder.decodeObject(of: NSDate.self, forKey: "dueDate") as Date? ?? Date.distantPast
+		links = (aDecoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "links") as? [[String]])?.map { (title: $0[0], URL: $0[1]) } ?? []
+		iD = aDecoder.decodeObject(of: NSString.self, forKey: "iD") as String? ?? ""
+		isCompleted = aDecoder.decodeBool(forKey: "isCompleted")
 		super.init()
 	}
 
@@ -74,6 +78,6 @@ public class SchoolLoopAssignment: NSObject, NSCoding {
 		aCoder.encode(dueDate, forKey: "dueDate")
 		aCoder.encode(links.map { [$0.title, $0.URL] }, forKey: "links")
 		aCoder.encode(iD, forKey: "iD")
-		aCoder.encode(isCompleted as Any, forKey: "isCompleted")
+		aCoder.encode(isCompleted, forKey: "isCompleted")
 	}
 }

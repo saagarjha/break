@@ -22,7 +22,7 @@ class breakSafariViewController: SFSafariViewController {
 	override init(url URL: URL, entersReaderIfAvailable: Bool) {
 		super.init(url: URL, entersReaderIfAvailable: true)
 		if #available(iOS 10.0, *) {
-			preferredBarTintColor = UIColor(red: 26 / 256, green: 188 / 256, blue: 156 / 256, alpha: 1)
+			preferredBarTintColor = UIColor.break
 			preferredControlTintColor = .white
 		}
 	}

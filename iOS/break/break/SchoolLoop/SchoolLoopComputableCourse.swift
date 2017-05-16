@@ -12,10 +12,10 @@ import Foundation
 public class SchoolLoopComputableCourse: SchoolLoopCourse {
 	/// The computable categories associated with this computable course.
 	public var computableCategories = [SchoolLoopComputableCategory]()
-	
+
 	/// The computable grades associated with this computable course.
 	public var computableGrades = [SchoolLoopComputableGrade]()
-	
+
 	/// The computed score for this course.
 	public var computedScore: Double {
 		typealias SchoolLoopCheckedCategory = (weight: Double, score: Double)
@@ -31,7 +31,7 @@ public class SchoolLoopComputableCourse: SchoolLoopCourse {
 		let totalWeight = categories.reduce(0) {
 			return $0 + $1.weight
 		}
-		
+
 		guard totalWeight > 0 else {
 			return 1
 		}
@@ -39,7 +39,7 @@ public class SchoolLoopComputableCourse: SchoolLoopCourse {
 			return partialScore + category.score * category.weight / totalWeight
 		}
 	}
-	
+
 	/// The computed score difference for this computable course.
 	public var computedScoreDifference: Double {
 		guard let score = Double(percent: self.score) else { // Crashes compiler without self
@@ -50,18 +50,10 @@ public class SchoolLoopComputableCourse: SchoolLoopCourse {
 
 	/// The comparison result for this computable course.
 	public var comparisonResult: ComparisonResult {
-		guard let s = Double(percent: self.score) else { // Crashes compiler without self
+		guard let score = Double(percent: score) else {
 			return .orderedSame
 		}
-		let score = String(format: "%.2f", s)
-		let computedScore = String(format: "%.2f", self.computedScore * 100)
-		if score < computedScore {
-			return .orderedAscending
-		} else if score > computedScore {
-			return .orderedDescending
-		} else {
-			return .orderedSame
-		}
+		return Double.fuzzyCompare(score, computedScore * 100, precision: precision)
 	}
 
 	/// Returns the computable category with the specified category name.
@@ -91,6 +83,12 @@ public class SchoolLoopComputableCourse: SchoolLoopCourse {
 	}
 }
 
+private let numberFormatter: NumberFormatter = {
+	let numberFormatter = NumberFormatter()
+	numberFormatter.locale = Locale(identifier: "en_US_POSIX")
+	return numberFormatter
+}()
+
 extension Double {
 	init?(percent: String) {
 		guard percent.hasSuffix("%") else {
@@ -98,5 +96,15 @@ extension Double {
 			return
 		}
 		self.init(percent.substring(to: percent.index(before: percent.endIndex)))
+	}
+
+	static func fuzzyCompare(_ lhs: Double, _ rhs: Double, precision: Int) -> ComparisonResult {
+		numberFormatter.minimumFractionDigits = precision
+		numberFormatter.maximumFractionDigits = precision
+		guard let lhsString = numberFormatter.string(from: lhs as NSNumber),
+			let rhsString = numberFormatter.string(from: rhs as NSNumber) else {
+				return .orderedSame
+		}
+		return lhsString.localizedStandardCompare(rhsString)
 	}
 }

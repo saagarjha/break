@@ -8,11 +8,32 @@
 
 import UIKit
 
-class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate {
+class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate {
 
-	let cellIdentifier = "grade"
+	static let cellIdentifier = "grade"
+
 	static let normalFont = UIFont.preferredFont(forTextStyle: .title3)
 	static let boldFont = UIFont(descriptor: normalFont.fontDescriptor.withSymbolicTraits(.traitBold)!, size: normalFont.pointSize)
+	static let triangleImageWidth: CGFloat = 8
+	static let triangleImageHeight: CGFloat = 8
+	static let triangeImageSpacing: CGFloat = 8
+	static let triangleImage: UIImage? = {
+		let width = ProgressReportViewController.triangleImageWidth
+		let height = ProgressReportViewController.triangleImageHeight
+		let spacing = ProgressReportViewController.triangeImageSpacing
+
+		let trianglePath = UIBezierPath()
+		trianglePath.move(to: CGPoint(x: spacing, y: height / 4))
+		trianglePath.addLine(to: CGPoint(x: width + spacing, y: height / 4))
+		trianglePath.addLine(to: CGPoint(x: width / 2 + spacing, y: 3 * height / 4))
+		trianglePath.close()
+		UIGraphicsBeginImageContextWithOptions(CGSize(width: width + spacing, height: height), false, UIScreen.main.scale)
+		defer {
+			UIGraphicsEndImageContext()
+		}
+		trianglePath.fill()
+		return UIGraphicsGetImageFromCurrentImageContext()
+	}()
 
 	var periodID: String!
 
@@ -84,23 +105,24 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 				categories = computableCourse.computableCategories
 				grades = computableCourse.computableGrades
 				addGradeButtonItem.isEnabled = true
-				
+
 				var scoreDifferenceString = String(format: "%+.2f%%", computableCourse.computedScoreDifference * 100)
+				// Convert "negative 0" to "positive 0"
 				if scoreDifferenceString == "-0.00%" {
 					scoreDifferenceString = "+0.00%"
 				}
 				header.title = (title: title, subtitle: scoreDifferenceString, comparisonResult: computableCourse.comparisonResult)
 				header.headers = categories.flatMap {
 					$0 as? SchoolLoopComputableCategory
-					}.map { category in
-						guard let scoreDifference = category.computedScoreDifference else {
-							return (title: category.name, subtitle: "", comparisonResult: category.comparisonResult)
-						}
-						var scoreDifferenceString = String(format: "%+.2f%%", scoreDifference * 100)
-						if scoreDifferenceString == "-0.00%" {
-							scoreDifferenceString = "+0.00%"
-						}
-						return (title: category.name, subtitle: scoreDifferenceString, comparisonResult: category.comparisonResult)
+				}.map { category in
+					guard let scoreDifference = category.computedScoreDifference else {
+						return (title: category.name, subtitle: "", comparisonResult: category.comparisonResult)
+					}
+					var scoreDifferenceString = String(format: "%+.2f%%", scoreDifference * 100)
+					if scoreDifferenceString == "-0.00%" {
+						scoreDifferenceString = "+0.00%"
+					}
+					return (title: category.name, subtitle: scoreDifferenceString, comparisonResult: category.comparisonResult)
 				}
 			default:
 				assertionFailure("ViewMode set to invalid value")
@@ -116,6 +138,11 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	@IBOutlet weak var titleButton: UIButton! {
 		didSet {
 			titleButton.isEnabled = false
+			titleButton.setImage(ProgressReportViewController.triangleImage, for: .normal)
+			// Make the image show up on the right
+			titleButton.semanticContentAttribute = .forceRightToLeft
+			// Center the title label
+			titleButton.contentEdgeInsets.left = ProgressReportViewController.triangleImageWidth + ProgressReportViewController.triangeImageSpacing
 		}
 	}
 	@IBOutlet weak var addGradeButtonItem: UIBarButtonItem! {
@@ -125,10 +152,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 	@IBOutlet weak var gradesTableView: UITableView! {
 		didSet {
-			gradesTableView.backgroundView = UIView()
-			gradesTableView.backgroundView?.backgroundColor = .clear
-			gradesTableView.rowHeight = UITableViewAutomaticDimension
-			gradesTableView.estimatedRowHeight = 80.0
+			breakShared.autoresizeTableViewCells(for: gradesTableView)
 			gradesTableView.sectionHeaderHeight = UITableViewAutomaticDimension
 			gradesTableView.estimatedSectionHeaderHeight = 200.0
 		}
@@ -138,42 +162,35 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 	var viewModesViewController: ViewModesViewController!
 
-	deinit {
-		searchController.loadViewIfNeeded()
-	}
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		definesPresentationContext = true
-		searchController.searchResultsUpdater = self
-		searchController.delegate = self
-		searchController.dimsBackgroundDuringPresentation = false
-		gradesTableView.tableHeaderView = searchController.searchBar
+		addSearchBar(from: searchController, to: gradesTableView)
 		header = ProgressReportHeader()
-		header.headerTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgressReportViewController.showCourse(_:))))
+		header.headerTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showCourse)))
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: gradesTableView)
 		}
 		schoolLoop.getGrades(withPeriodID: periodID) { error in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
+				guard let `self` = self else {
+					return
+				}
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError || error == .trendScoreError {
 					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
-					guard let course = self.schoolLoop.course(forPeriodID: self.periodID) else {
+					guard let course = `self`.schoolLoop.course(forPeriodID: `self`.periodID) else {
 						assertionFailure("Could not get grades for periodID")
 						return
 					}
-					self.course = course
-					self.computableCourse = course.computableCourse
-					self.categories = self.computableCourse.computableCategories
-					self.grades = self.computableCourse.computableGrades
-					self.viewMode = .calculated
-					self.updateSearchResults(for: self.searchController)
-					self.trendScores = self.course.trendScores
-					self.titleButton.isEnabled = true
+					`self`.course = course
+					`self`.computableCourse = course.computableCourse
+					`self`.trendScores = course.trendScores
+					`self`.viewMode = .calculated
+					`self`.updateSearchResults(for: `self`.searchController)
+					`self`.titleButton.isEnabled = true
 				}
 			}
 		}
@@ -182,8 +199,15 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		if course != nil {
+			// Call didSet
 			viewMode = { viewMode }()
 		}
+	}
+
+	override func viewWillLayoutSubviews() {
+		super.viewWillLayoutSubviews()
+		// Collapse the left content inset if there's not enough space for it
+		titleButton.contentEdgeInsets.left = max(titleButton.contentEdgeInsets.left - (titleButton.frame.midX - view.frame.midX), 0)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -228,9 +252,9 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? GradeTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: ProgressReportViewController.cellIdentifier, for: indexPath) as? GradeTableViewCell else {
 			assertionFailure("Could not deque GradeTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: ProgressReportViewController.cellIdentifier, for: indexPath)
 		}
 		let grade = filteredGrades[indexPath.row]
 		cell.progressReportViewController = self
@@ -254,7 +278,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		} else {
 			guard let computableGrade = grade as? SchoolLoopComputableGrade else {
 				assertionFailure("Could not convert SchoolLoopGrade to SchoolLoopComputableGrade")
-				return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+				return tableView.dequeueReusableCell(withIdentifier: ProgressReportViewController.cellIdentifier, for: indexPath)
 			}
 
 			if computableGrade.isUserCreated {
@@ -296,6 +320,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+		// Only enable selection for "original" grades
 		if viewMode == .original {
 			return indexPath
 		} else {
@@ -316,6 +341,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
 		tableView.deleteRows(at: [indexPath], with: .fade)
+		// Call didSet
 		viewMode = { viewMode }()
 	}
 
@@ -340,6 +366,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.title = title
+		// Call didSet
 		viewMode = { viewMode }()
 	}
 
@@ -349,6 +376,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.score = score
+		// Call didSet
 		viewMode = { viewMode }()
 	}
 
@@ -358,6 +386,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.maxPoints = maxPoints
+		// Call didSet
 		viewMode = { viewMode }()
 	}
 
@@ -367,6 +396,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.categoryName = categoryName
+		// Call didSet
 		viewMode = { viewMode }()
 	}
 
@@ -376,12 +406,13 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			return
 		}
 		grade.percentScore = percentScore
+		// Call didSet
 		viewMode = { viewMode }()
 	}
 
 	// MARK: - Navigation
 
-	func showCourse(_ sender: AnyObject) {
+	func showCourse(_ sender: Any) {
 		guard let courseViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "course") as? CourseViewController else {
 			assertionFailure("Could not create CourseViewController")
 			return
@@ -428,7 +459,11 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		viewModesViewController.preferredContentSize = viewModesViewController.viewModesTableView.contentSize
 		popoverPresentationController.permittedArrowDirections = .up
 		popoverPresentationController.sourceView = titleButton
-		popoverPresentationController.sourceRect = titleButton.bounds
+		// Make the popover appear to originate from the center of the button's
+		// title label, not the center of the button (which includes the image)
+		titleButton.titleLabel.flatMap {
+			popoverPresentationController.sourceRect = CGRect(x: $0.frame.minX, y: titleButton.bounds.minY, width: $0.frame.width, height: titleButton.frame.height)
+		}
 	}
 
 	func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {

@@ -92,9 +92,9 @@ class SecurityTableViewController: UITableViewController {
 			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
 				sender.isOn = true
 			}
-			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+			let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 				let schoolLoop = SchoolLoop.sharedInstance
-				if alertController.textFields![0].text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
+				if alertController.textFields?.first?.text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
 					self.touchIDCell.isUserInteractionEnabled = false
 					self.touchIDLabel.isEnabled = false
 					self.touchIDSwitch.isEnabled = false
@@ -104,6 +104,7 @@ class SecurityTableViewController: UITableViewController {
 					let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
 					alertController.addAction(okAction)
 					self.present(alertController, animated: true, completion: nil)
+					sender.isOn = true
 				}
 			}
 			alertController.addAction(cancelAction)
@@ -187,7 +188,7 @@ class SecurityTableViewController: UITableViewController {
 	 // MARK: - Navigation
 
 	 // In a storyboard-based application, you will often want to do a little preparation before navigation
-	 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	 override func prepareForSegue(segue: UIStoryboardSegue, sender: Any?) {
 	 // Get the new view controller using segue.destinationViewController.
 	 // Pass the selected object to the new view controller.
 	 }

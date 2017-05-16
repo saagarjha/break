@@ -42,5 +42,5 @@ public func ==(lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
 }
 
 public func <(lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
-	return lhs.name < rhs.name
+	return lhs.name.localizedCompare(rhs.name) == .orderedDescending
 }

@@ -8,9 +8,15 @@
 
 import UIKit
 
-class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
+class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
-	let cellIdentifier = "news"
+	static let cellIdentifier = "news"
+	
+	static let dateFormatter: DateFormatter = {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "M/d/yy"
+		return dateFormatter
+	}()
 
 	var schoolLoop: SchoolLoop!
 	var news = [SchoolLoopNews]()
@@ -20,41 +26,19 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	@IBOutlet weak var newsTableView: UITableView! {
 		didSet {
-			newsTableView.rowHeight = UITableViewAutomaticDimension
-			newsTableView.estimatedRowHeight = 80.0
-			refreshControl.addTarget(self, action: #selector(NewsViewController.refresh(_:)), for: .valueChanged)
-			if #available(iOS 10.0, *) {
-				newsTableView.refreshControl = refreshControl
-			} else {
-				newsTableView.addSubview(refreshControl)
-				newsTableView.backgroundView = UIView()
-				newsTableView.backgroundView?.backgroundColor = .clear
-			}
+			breakShared.autoresizeTableViewCells(for: newsTableView)
+			breakShared.addRefreshControl(refreshControl, to: newsTableView)
+			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		}
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 
-	deinit {
-		searchController.loadViewIfNeeded()
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		news = SchoolLoop.sharedInstance.news
-		updateSearchResults(for: searchController)
-//        navigationController?.hidesBarsOnSwipe = false
-	}
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		definesPresentationContext = true
-		searchController.searchResultsUpdater = self
-		searchController.delegate = self
-		searchController.dimsBackgroundDuringPresentation = false
-		newsTableView.tableHeaderView = searchController.searchBar
+		addSearchBar(from: searchController, to: newsTableView)
 		schoolLoop = SchoolLoop.sharedInstance
 		if traitCollection.forceTouchCapability == .available {
 			registerForPreviewing(with: self, sourceView: newsTableView)
@@ -62,27 +46,37 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		refresh(self)
 	}
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		news = SchoolLoop.sharedInstance.news
+		updateSearchResults(for: searchController)
+	}
+
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: AnyObject) {
+	func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getNews() { (_, error) in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
+				guard let `self` = self else {
+					return
+				}
 				UIApplication.shared.isNetworkActivityIndicatorVisible = false
 				if error == .noError {
 					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
-					self.news = self.schoolLoop.news
-					self.updateSearchResults(for: self.searchController)
+					`self`.news = self.schoolLoop.news
+					`self`.updateSearchResults(for: self.searchController)
 				}
-				self.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
+				// Otherwise the refresh control dismiss animation doesn't work
+				`self`.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 	}
 
-	@IBAction func openSettings(_ sender: AnyObject) {
+	@IBAction func openSettings(_ sender: Any) {
 		let viewController = UIStoryboard(name: "Settings", bundle: nil).instantiateViewController(withIdentifier: "settings")
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
@@ -96,16 +90,14 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? NewsTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsViewController.cellIdentifier, for: indexPath) as? NewsTableViewCell else {
 			assertionFailure("Could not deque NewsTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: NewsViewController.cellIdentifier, for: indexPath)
 		}
 		let news = filteredNews[indexPath.row]
 		cell.titleLabel.text = news.title
 		cell.authorNameLabel.text = news.authorName
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "M/d/yy"
-		cell.createdDateLabel.text = dateFormatter.string(from: news.createdDate)
+		cell.createdDateLabel.text = NewsViewController.dateFormatter.string(from: news.createdDate)
 		return cell
 	}
 
@@ -123,7 +115,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		} else {
 			filteredNews = news
 		}
-		DispatchQueue.main.async {
+		DispatchQueue.main.async { [unowned self] in
 			self.newsTableView.reloadData()
 		}
 	}
@@ -149,7 +141,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		}
 		let selectedNews = filteredNews[indexPath.row]
 		destinationViewController.iD = selectedNews.iD
-		destinationViewController.preferredContentSize = CGSize(width: 0.0, height: 0.0)
+		destinationViewController.preferredContentSize = .zero
 		previewingContext.sourceRect = cell.frame
 		return destinationViewController
 	}

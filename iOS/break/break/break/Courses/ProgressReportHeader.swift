@@ -10,7 +10,7 @@ import UIKit
 
 class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate {
 
-	let cellIdentifier = "progressReportHeader"
+	static let cellIdentifier = "progressReportHeader"
 
 	var title: (title: String, subtitle: String, comparisonResult: ComparisonResult)?
 	var headers = [(title: String, subtitle: String, comparisonResult: ComparisonResult)]() {
@@ -23,8 +23,7 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 
 	override init() {
 		headerTableView = UITableView()
-		headerTableView.rowHeight = UITableViewAutomaticDimension
-		headerTableView.estimatedRowHeight = 80.0
+		breakShared.autoresizeTableViewCells(for: headerTableView)
 		headerTableView.isScrollEnabled = false
 		headerTableView.separatorStyle = .none
 		headerTableView.allowsSelection = false
@@ -35,7 +34,7 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 		super.init()
 		headerTableView.dataSource = self
 		headerTableView.delegate = self
-		headerTableView.register(ProgressReportHeaderTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+		headerTableView.register(ProgressReportHeaderTableViewCell.self, forCellReuseIdentifier: ProgressReportHeader.cellIdentifier)
 	}
 
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -55,9 +54,9 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ProgressReportHeaderTableViewCell else {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: ProgressReportHeader.cellIdentifier, for: indexPath) as? ProgressReportHeaderTableViewCell else {
 			assertionFailure("Could not deque ProgressReportHeaderTableViewCell")
-			return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+			return tableView.dequeueReusableCell(withIdentifier: ProgressReportHeader.cellIdentifier, for: indexPath)
 		}
 		cell.subtitleLabel.textColor = cell.titleLabel.textColor
 		switch indexPath.section {
@@ -78,7 +77,7 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 			}
 		case 1:
 			let header = headers[indexPath.row]
-			cell.discriminatorView.backgroundColor = AppDelegate.color(for: header.title)
+			cell.discriminatorView.backgroundColor = UIColor(string: header.title)
 			cell.titleLabel.text = header.title
 			cell.subtitleLabel.text = header.subtitle
 			switch header.comparisonResult {

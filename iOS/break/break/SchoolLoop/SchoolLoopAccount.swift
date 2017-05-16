@@ -10,7 +10,7 @@ import Foundation
 
 /// Represents a single account.
 @objc(SchoolLoopAccount)
-public class SchoolLoopAccount: NSObject, NSCoding {
+public class SchoolLoopAccount: NSObject, NSSecureCoding {
 	/// The username for this account.
 	public var username: String
 	
@@ -35,7 +35,11 @@ public class SchoolLoopAccount: NSObject, NSCoding {
 	/// A Boolean that indicates whether this account is logged in.
 	public var isLoggedIn: Bool = false
 	
-
+	
+	/// This class supports secure coding.
+	public static var supportsSecureCoding = true
+	
+	
 	/// Create a new account with the specified values.
 	///
 	/// - Parameters:
@@ -60,17 +64,17 @@ public class SchoolLoopAccount: NSObject, NSCoding {
 		#if os(iOS)
 			Logger.log("Beginning account decoding")
 		#endif
-		username = aDecoder.decodeObject(forKey: "username") as? String ?? ""
+		username = aDecoder.decodeObject(of: NSString.self, forKey: "username") as String? ?? ""
 		password = SchoolLoop.sharedInstance.keychain.getPassword(forUsername: username) ?? ""
 		if password.isEmpty {
 			#if os(iOS)
 				Logger.log("Failed to get password")
 			#endif
 		}
-		fullName = aDecoder.decodeObject(forKey: "fullName") as? String ?? ""
-		studentID = aDecoder.decodeObject(forKey: "studentID") as? String ?? ""
-		hashedPassword = aDecoder.decodeObject(forKey: "hashedPassword") as? String ?? ""
-		email = aDecoder.decodeObject(forKey: "email") as? String ?? ""
+		fullName = aDecoder.decodeObject(of: NSString.self, forKey: "fullName") as String? ?? ""
+		studentID = aDecoder.decodeObject(of: NSString.self, forKey: "studentID") as String? ?? ""
+		hashedPassword = aDecoder.decodeObject(of: NSString.self, forKey: "hashedPassword") as String? ?? ""
+		email = aDecoder.decodeObject(of: NSString.self, forKey: "email") as String? ?? ""
 		super.init()
 	}
 
