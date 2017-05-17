@@ -32,8 +32,15 @@ public class SchoolLoopComputableCourse: SchoolLoopCourse {
 			return $0 + $1.weight
 		}
 
+		// Apparently a 0 weight for all categories means that weighting is
+		// turned off
 		guard totalWeight > 0 else {
-			return 1
+			let totals = computableCategories.map {
+				$0.computedTotals
+			}.reduce((0, 0)) {
+				($0.0 + $1.0, $0.1 + $1.1)
+			}
+			return totals.1 != 0 ? totals.0 / totals.1 : 1
 		}
 		return categories.reduce(0) { partialScore, category in
 			return partialScore + category.score * category.weight / totalWeight
