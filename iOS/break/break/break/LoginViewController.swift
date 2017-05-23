@@ -15,7 +15,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	var schoolLoop: SchoolLoop!
 	var schools = [SchoolLoopSchool]()
 
-	@IBOutlet weak var loginScrollView: UIScrollView!
+	@IBOutlet weak var loginScrollView: UIScrollView! {
+		didSet {
+			loginScrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
+		}
+	}
 	@IBOutlet weak var loginViewHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var breakStackView: UIStackView!
 	@IBOutlet weak var schoolNameTextField: UITextField! {
@@ -250,6 +254,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
 		textField.attributedText = attributedString
 		
+		// On iOS, it appears that setting the string "scrolls" the text field
+		// to the end. Setting the cursor location (as below) will work,
+		// however, this is done in a "lazy" way so that minimum "scrolling" is
+		// needed. If the text is long, the text field will first scroll to the
+		// end and then scroll back so that the cursor is just barely on the
+		// screen on the left side. If we force a scroll to the beginning by
+		// moving the cursor to the start of the text, we can prevent this
+		// undesirable behavior and make it appear as if no "scrolling" was
+		// performed.
+		
+		// Move the cursor to the start
+		textField.position(from: textField.beginningOfDocument, offset: 0).flatMap { textField.selectedTextRange = textField.textRange(from: $0, to: $0) }
+		
 		// Move the cursor to where it should be, in between the user's string
 		// and the suggestion
 		textField.position(from: textField.beginningOfDocument, offset: range.location + string.characters.count).flatMap { textField.selectedTextRange = textField.textRange(from: $0, to: $0) }
@@ -280,7 +297,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		return schoolName
 	}
 
-	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+	func hideKeyboard() {
 		view.endEditing(true)
 	}
 
