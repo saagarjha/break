@@ -8,16 +8,16 @@
 
 import Foundation
 
-// Represents a single school.
+/// Represents a single school.
 @objc(SchoolLoopSchool)
 public class SchoolLoopSchool: NSObject, NSCoding {
 	/// The name of this school.
 	public var name: String
 	
-	// The domain name for this school.
+	/// The domain name for this school.
 	public var domainName: String
 	
-	// The district name of this school.
+	/// The district name of this school.
 	public var districtName: String
 
 	

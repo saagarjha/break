@@ -8,10 +8,10 @@
 
 import Foundation
 
-// Represents a single news item.
+/// Represents a single news item.
 @objc(SchoolLoopNews)
 public class SchoolLoopNews: NSObject, NSCoding {
-	// The title of this news item.
+	/// The title of this news item.
 	public var title: String
 	
 	/// The name of the author of this news item.
@@ -41,7 +41,7 @@ public class SchoolLoopNews: NSObject, NSCoding {
 	///   - authorName: The name of the author of this news item
 	///   - createdDate: The creation date of this news item
 	///   - newsDescription: The description of this news item
-	///   - links: TThe links associated with this news item
+	///   - links: The links associated with this news item
 	///   - iD: The ID of this news item
 	public init(title: String, authorName: String, createdDate: String, newsDescription: String, links: [(title: String, URL: String)], iD: String) {
 		self.title = title ?! ""

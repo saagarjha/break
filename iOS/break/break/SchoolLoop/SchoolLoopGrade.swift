@@ -22,28 +22,28 @@ public class SchoolLoopGrade: NSObject, NSCoding {
 	/// The title of this grade.
 	public var title: String
 	
-	// The category name of this grade.
+	/// The category name of this grade.
 	public var categoryName: String
 	
-	// The percent score for this grade.
+	/// The percent score for this grade.
 	public var percentScore: String
 	
-	// The score for this grade.
+	/// The score for this grade.
 	public var score: String
 	
-	// The max points for this grade.
+	/// The max points for this grade.
 	public var maxPoints: String
 	
-	// The comment for this grade.
+	/// The comment for this grade.
 	public var comment: String
 	
-	// The system ID of this grade.
+	/// The system ID of this grade.
 	public var systemID: String
 	
-	// The due date of this grade.
+	/// The due date of this grade.
 	public var dueDate: Date
 	
-	// The changed date of this grade.
+	/// The changed date of this grade.
 	public var changedDate: Date
 	
 

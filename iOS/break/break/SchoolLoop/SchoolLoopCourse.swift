@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Represents a single course.
+/// Represents a single course.
 @objc(SchoolLoopCourse)
 public class SchoolLoopCourse: NSObject, NSCoding {
 	/// A shared date formatter for parsing the last updated date.
