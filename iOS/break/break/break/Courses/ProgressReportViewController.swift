@@ -361,7 +361,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func changedTitle(to title: String, forIndexPath indexPath: IndexPath) {
-		guard let grade = grades[indexPath.row] as? SchoolLoopComputableGrade else {
+		guard let grade = filteredGrades[indexPath.row] as? SchoolLoopComputableGrade else {
 			assertionFailure("Could not cast SchoolLoopGrade to SchoolLoopComputableGrade")
 			return
 		}
@@ -371,7 +371,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func changedScore(to score: String, forIndexPath indexPath: IndexPath) {
-		guard let grade = grades[indexPath.row] as? SchoolLoopComputableGrade else {
+		guard let grade = filteredGrades[indexPath.row] as? SchoolLoopComputableGrade else {
 			assertionFailure("Could not cast SchoolLoopGrade to SchoolLoopComputableGrade")
 			return
 		}
@@ -381,7 +381,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func changedMaxPoints(to maxPoints: String, forIndexPath indexPath: IndexPath) {
-		guard let grade = grades[indexPath.row] as? SchoolLoopComputableGrade else {
+		guard let grade = filteredGrades[indexPath.row] as? SchoolLoopComputableGrade else {
 			assertionFailure("Could not cast SchoolLoopGrade to SchoolLoopComputableGrade")
 			return
 		}
@@ -391,7 +391,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	func changedCategoryName(to categoryName: String, forIndexPath indexPath: IndexPath) {
-		guard let grade = grades[indexPath.row] as? SchoolLoopComputableGrade else {
+		guard let grade = filteredGrades[indexPath.row] as? SchoolLoopComputableGrade else {
 			assertionFailure("Could not cast SchoolLoopGrade to SchoolLoopComputableGrade")
 			return
 		}
