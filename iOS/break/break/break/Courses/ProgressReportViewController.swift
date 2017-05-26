@@ -16,7 +16,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	static let boldFont = UIFont(descriptor: normalFont.fontDescriptor.withSymbolicTraits(.traitBold)!, size: normalFont.pointSize)
 	static let triangleImageWidth: CGFloat = 8
 	static let triangleImageHeight: CGFloat = 8
-	static let triangeImageSpacing: CGFloat = 8
+	static let triangeImageSpacing: CGFloat = 4
 	static let triangleImage: UIImage? = {
 		let width = ProgressReportViewController.triangleImageWidth
 		let height = ProgressReportViewController.triangleImageHeight
