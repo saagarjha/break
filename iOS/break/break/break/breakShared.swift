@@ -68,29 +68,29 @@ enum breakConstants {
 	static let discriminatorViewWidth: CGFloat = 4
 }
 
+protocol RefreshableView: AnyObject {
+	@available(iOS 10.0, *)
+	var refreshControl: UIRefreshControl? { get set }
+	
+	var backgroundView: UIView? { get set }
+}
+
+extension UITableView: RefreshableView { }
+extension UICollectionView: RefreshableView { }
+
 enum breakShared {
 	static func autoresizeTableViewCells(for tableView: UITableView) {
 		tableView.rowHeight = UITableViewAutomaticDimension
 		tableView.estimatedRowHeight = 80.0
 	}
 	
-	static func addRefreshControl(_ refreshControl: UIRefreshControl, to tableView: UITableView) {
+	static func addRefreshControl<V: UIView>(_ refreshControl: UIRefreshControl, to view: V) where V: RefreshableView {
 		if #available(iOS 10.0, *) {
-			tableView.refreshControl = refreshControl
+			view.refreshControl = refreshControl
 		} else {
-			tableView.addSubview(refreshControl)
-			tableView.backgroundView = UIView()
-			tableView.backgroundView?.backgroundColor = .clear
-		}
-	}
-	
-	static func addRefreshControl(_ refreshControl: UIRefreshControl, to collectionView: UICollectionView) {
-		if #available(iOS 10.0, *) {
-			collectionView.refreshControl = refreshControl
-		} else {
-			collectionView.addSubview(refreshControl)
-			collectionView.backgroundView = UIView()
-			collectionView.backgroundView?.backgroundColor = .clear
+			view.addSubview(refreshControl)
+			view.backgroundView = UIView()
+			view.backgroundView?.backgroundColor = .clear
 		}
 	}
 }

@@ -25,6 +25,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		didSet {
 			lockerCollectionView.alwaysBounceVertical = true
 			breakShared.addRefreshControl(refreshControl, to: lockerCollectionView)
+			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 			lockerCollectionViewFlowLayout?.estimatedItemSize = CGSize(width: LockerViewController.cellWidth, height: LockerViewController.cellWidth)
 		}
 	}
