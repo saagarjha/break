@@ -48,6 +48,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			session.delegate = self
 			session.activate()
 		}
+		
+		SchoolLoop.sharedInstance = DemoableSchoolLoop()
 
 		if archived {
 			NSKeyedUnarchiver.unarchiveObject(withFile: file)

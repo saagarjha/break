@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 /// The central class for managing SchoolLoop's API.
 @objc(SchoolLoop)
@@ -33,9 +32,6 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 
 	/// A list of courses for this `SchoolLoop`'s account.
 	public var courses = [SchoolLoopCourse]()
-
-	/// A list of computable courses for this `SchoolLoop`'s account.
-	public var computableCourses = [SchoolLoopComputableCourse]()
 
 	/// A list of assignments for this `SchoolLoop`'s account.
 	public var assignments = [SchoolLoopAssignment]()
@@ -88,7 +84,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 
 	/// Creates a new `SchoolLoop` with default values. Intended to reset
 	/// everything (such as when logging out of an acccount).
-	private override init() {
+	override init() {
 		super.init()
 	}
 
@@ -270,7 +266,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				let course = SchoolLoopCourse(courseName: courseName, period: period, teacherName: teacherName, grade: grade, score: score, periodID: periodID)
 				_ = course.set(newLastUpdated: lastUpdated)
 				if let oldCourse = self.course(forPeriodID: periodID) {
-					if oldCourse.set(newLastUpdated: lastUpdated) {
+					// Do not add course to updated list if there is no apparent
+					// change in its score
+					if oldCourse.set(newLastUpdated: lastUpdated) && course.score != oldCourse.score {
 						updatedCourses.append(course)
 					}
 				} else {
