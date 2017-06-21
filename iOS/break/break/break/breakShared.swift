@@ -61,7 +61,7 @@ enum breakConstants {
 	static let loginMovableAnimationDuration = 0.5
 	static let loginMovableAnimationDelay = 0.1
 		
-	static let webViewDefaultStyle = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style type=\"text/css\">body{font: -apple-system-body;}</style>"
+	static let webViewDefaultStyle = "<meta charset=\"utf-8\"><meta name=\"viewport\" content=\"initial-scale=1\" /><style type=\"text/css\">body{font: -apple-system-body;}</style>"
 	
 	static let tableViewCellVerticalPadding = 12
 	
