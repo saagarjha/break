@@ -6,7 +6,7 @@
 //  Copyright © 2016 Saagar Jha. All rights reserved.
 //
 
-/// A mapping of possible errors from SchoolLoop's API.
+/// A mapping of possible errors from School Loop's API.
 ///
 /// - noError: There was no error.
 /// - unknownError: There was an error, but its exact nature cannot be

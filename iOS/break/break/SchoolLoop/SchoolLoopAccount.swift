@@ -20,11 +20,11 @@ public class SchoolLoopAccount: NSObject, NSSecureCoding {
 	/// The full name of the user associated with this account.
 	public var fullName: String
 	/// The student ID of the user associated with this account. Note that this
-	/// is the ID SchoolLoop uses to identify users; it may differ from the
+	/// is the ID School Loop uses to identify users; it may differ from the
 	/// student ID that many institutions give their students.
 	public var studentID: String
 	
-	/// The hashed password associated with this account, for SchoolLoop POST
+	/// The hashed password associated with this account, for School Loop POST
 	/// requests.
 	public var hashedPassword: String
 	

@@ -112,7 +112,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 					(UIApplication.shared.delegate as? AppDelegate)?.saveCache()
 					`self`.showLogin()
 				} else if error == .networkError {
-					let alertController = UIAlertController(title: "Network error", message: "There was an issue accessing SchoolLoop. Please try again.", preferredStyle: .alert)
+					let alertController = UIAlertController(title: "Network error", message: "There was an issue accessing School Loop. Please try again.", preferredStyle: .alert)
 					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
 					`self`.present(alertController, animated: true, completion: nil)

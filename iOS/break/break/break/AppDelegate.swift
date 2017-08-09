@@ -347,7 +347,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func showPassword() {
 		if let tabBarController = self.window?.rootViewController as? UITabBarController {
-			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your SchoolLoop account.", preferredStyle: .alert)
+			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your School Loop account.", preferredStyle: .alert)
 			let forgotAction = UIAlertAction(title: "Forgot", style: .cancel) { [unowned self] _ in
 				Preferences.isPasswordSet = false
 				Preferences.canUseTouchID = false

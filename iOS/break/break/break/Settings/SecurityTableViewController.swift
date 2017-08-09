@@ -88,7 +88,7 @@ class SecurityTableViewController: UITableViewController {
 			}
 			present(alertController, animated: true, completion: nil)
 		} else {
-			let alertController = UIAlertController(title: "Enter your password", message: "Please enter your current password to disable it. If you've forgotten your password, you can log out of your SchoolLoop account and log back in to clear it.", preferredStyle: .alert)
+			let alertController = UIAlertController(title: "Enter your password", message: "Please enter your current password to disable it. If you've forgotten your password, you can log out of your School Loop account and log back in to clear it.", preferredStyle: .alert)
 			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
 				sender.isOn = true
 			}

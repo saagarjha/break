@@ -90,7 +90,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 					`self`.lockerCollectionView.reloadData()
 					`self`.lockerCollectionViewFlowLayout?.invalidateLayout()
 				} else if error == .authenticationError {
-					let alertController = UIAlertController(title: "Authentication error", message: "It looks like SchoolLoop's locker doesn't work with your account. Please file a bug report with SchoolLoop.", preferredStyle: .alert)
+					let alertController = UIAlertController(title: "Authentication error", message: "It looks like School Loop's locker doesn't work with your account. Please file a bug report with School Loop.", preferredStyle: .alert)
 					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
 					`self`.present(alertController, animated: true, completion: nil)

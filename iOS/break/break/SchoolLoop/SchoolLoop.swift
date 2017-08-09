@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// The central class for managing SchoolLoop's API.
+/// The central class for managing School Loop's API.
 @objc(SchoolLoop)
 public class SchoolLoop: NSObject, NSSecureCoding {
 	// MARK: - Static singletons
@@ -24,7 +24,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	/// The current school for this `SchoolLoop`'s account.
 	public var school: SchoolLoopSchool!
 
-	/// A list of all SchoolLoop schools.
+	/// A list of all School Loop schools.
 	public var schools = [SchoolLoopSchool]()
 
 	/// The current account managed by this `SchoolLoop`.
@@ -112,7 +112,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 		aCoder.encode(news, forKey: "news")
 	}
 
-	// MARK: - SchoolLoop core API
+	// MARK: - School Loop core API
 
 	/// Fetch a list of schools asynchronously and update `schools`.
 	///
@@ -165,7 +165,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///
 	/// - Parameters:
 	///   - schoolName: The school name to use when logging in. This must be a
-	///     "full" school name in that it is the one that SchoolLoop uses.
+	///     "full" school name in that it is the one that School Loop uses.
 	///   - username: The username to use to log in
 	///   - password: The password to use to log in
 	///   - completion: Called upon completion of the log in, and contains any
@@ -693,7 +693,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	/// - Important: This method is asynchronous, so put any logic that depends
 	///   on an updated value of `lockerItems` in `completion`.
 	///
-	/// - Note: It appears that SchoolLoop does not specify the depth of the
+	/// - Note: It appears that School Loop does not specify the depth of the
 	///   directory tree that it returns for a given path. Thus, while this
 	///   method often is able to populate a significant portion of the tree,
 	///   you cannot guarantee that it is complete (i.e. you must call this
@@ -701,7 +701,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///
 	/// - Bug: This method fails for some users with a 401 Unauthorized; in this
 	///   case it will call the `completion` with `.authenticationError`. This
-	///   has already been reported to SchoolLoop, but the underlying reason is
+	///   has already been reported to School Loop, but the underlying reason is
 	///   still unknown.
 	///
 	/// - Parameters:
@@ -736,7 +736,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	// MARK: - Request factory methods
 
 	/// Creates an authenticated request with the current user's credentials,
-	/// suitable for most interaction with SchoolLoop's API.
+	/// suitable for most interaction with School Loop's API.
 	///
 	/// - Parameters:
 	///   - url: The URL to used for creation of the request
@@ -750,7 +750,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	}
 
 	/// Creates an hashed, authenticated request with the current user's
-	/// credentials, suitable for interaction with SchoolLoop's POST API.
+	/// credentials, suitable for interaction with School Loop's POST API.
 	///
 	/// - Parameters:
 	///   - url: The URL to used for creation of the request
