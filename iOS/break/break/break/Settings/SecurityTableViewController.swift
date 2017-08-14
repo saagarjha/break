@@ -11,45 +11,29 @@ import UIKit
 
 class SecurityTableViewController: UITableViewController {
 
-	@IBOutlet weak var passwordSwitch: UISwitch!
-	@IBOutlet weak var touchIDSwitch: UISwitch!
-	@IBOutlet weak var touchIDCell: UITableViewCell!
+	@IBOutlet weak var passwordCell: UITableViewCell! {
+		didSet {
+			passwordCell.accessoryView = passwordSwitch
+		}
+	}
+	let  passwordSwitch: UISwitch = {
+		let passwordSwitch = UISwitch()
+		passwordSwitch.addTarget(self, action: #selector(usePassword), for: .valueChanged)
+		return passwordSwitch
+	}()
+	@IBOutlet weak var touchIDCell: UITableViewCell! {
+		didSet {
+			touchIDCell.accessoryView = touchIDSwitch
+		}
+	}
 	@IBOutlet weak var touchIDLabel: UILabel!
+	let touchIDSwitch: UISwitch = {
+		let touchIDSwitch = UISwitch()
+		touchIDSwitch.addTarget(self, action: #selector(useTouchID), for: .valueChanged)
+		return touchIDSwitch
+	}()
 
 	var error: String = ""
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		passwordSwitch.isOn = Preferences.isPasswordSet
-		touchIDSwitch.isOn = Preferences.canUseTouchID
-		if passwordSwitch.isOn {
-			touchIDCell.isUserInteractionEnabled = true
-			touchIDLabel.isEnabled = true
-			touchIDSwitch.isEnabled = true
-		} else {
-			touchIDCell.isUserInteractionEnabled = false
-			touchIDLabel.isEnabled = false
-			touchIDSwitch.isEnabled = false
-		}
-		var error: NSError?
-		LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
-		if let error = error {
-			if error.code == LAError.touchIDNotEnrolled.rawValue {
-				self.error = "You don't have an fingers set for TouchID. Please set one in Settings."
-				touchIDCell.isUserInteractionEnabled = false
-				touchIDLabel.isEnabled = false
-				touchIDSwitch.isOn = false
-			} else if error.code == LAError.passcodeNotSet.rawValue {
-				self.error = "Your phone doesn't have a passcode or TouchID enabled. Please set one in Settings."
-				touchIDCell.isUserInteractionEnabled = false
-				touchIDLabel.isEnabled = false
-				touchIDSwitch.isOn = false
-			} else {
-				self.error = "Unsupported"
-			}
-		}
-		tableView.reloadData()
-	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -59,6 +43,11 @@ class SecurityTableViewController: UITableViewController {
 
 		// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 		// self.navigationItem.rightBarButtonItem = self.editButtonItem()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		updateTableView()
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -72,13 +61,11 @@ class SecurityTableViewController: UITableViewController {
 			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
 				sender.isOn = false
 			}
-			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+			let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 				let schoolLoop = SchoolLoop.sharedInstance
 				_ = schoolLoop.keychain.addPassword(alertController.textFields?.first?.text ?? "", forUsername: "\(schoolLoop.account.username)appPassword")
-				self.touchIDCell.isUserInteractionEnabled = true
-				self.touchIDLabel.isEnabled = true
-				self.touchIDSwitch.isEnabled = true
 				Preferences.isPasswordSet = sender.isOn
+				self.updateTableView()
 			}
 			alertController.addAction(cancelAction)
 			alertController.addAction(doneAction)
@@ -95,13 +82,11 @@ class SecurityTableViewController: UITableViewController {
 			let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
 				let schoolLoop = SchoolLoop.sharedInstance
 				if alertController.textFields?.first?.text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
-					self.touchIDCell.isUserInteractionEnabled = false
-					self.touchIDLabel.isEnabled = false
-					self.touchIDSwitch.isEnabled = false
 					Preferences.isPasswordSet = sender.isOn
+					self.updateTableView()
 				} else {
 					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
-					let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+					let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 					alertController.addAction(okAction)
 					self.present(alertController, animated: true, completion: nil)
 					sender.isOn = true
@@ -132,11 +117,42 @@ class SecurityTableViewController: UITableViewController {
 	}
 
 	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-		if section != 1 {
+		guard section == 1 else {
 			return super.tableView(tableView, titleForFooterInSection: section)
-		} else {
-			return error == "" ? super.tableView(tableView, titleForFooterInSection: section) : error
 		}
+		return error == "" ? super.tableView(tableView, titleForFooterInSection: section) : error
+	}
+	
+	func updateTableView() {
+		passwordSwitch.isOn = Preferences.isPasswordSet
+		touchIDSwitch.isOn = Preferences.canUseTouchID
+		if passwordSwitch.isOn {
+			touchIDCell.isUserInteractionEnabled = true
+			touchIDLabel.isEnabled = true
+			touchIDSwitch.isEnabled = true
+		} else {
+			touchIDCell.isUserInteractionEnabled = false
+			touchIDLabel.isEnabled = false
+			touchIDSwitch.isEnabled = false
+		}
+		var error: NSError?
+		LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+		if let error = error {
+			if error.code == LAError.touchIDNotEnrolled.rawValue {
+				self.error = "You don't have an fingers set for TouchID. Please set one in Settings."
+				touchIDCell.isUserInteractionEnabled = false
+				touchIDLabel.isEnabled = false
+				touchIDSwitch.isEnabled = false
+			} else if error.code == LAError.passcodeNotSet.rawValue {
+				self.error = "Your phone doesn't have a passcode or TouchID enabled. Please set one in Settings."
+				touchIDCell.isUserInteractionEnabled = false
+				touchIDLabel.isEnabled = false
+				touchIDSwitch.isEnabled = false
+			} else {
+				self.error = "Unsupported"
+			}
+		}
+		tableView.reloadData()
 	}
 
 	/*
