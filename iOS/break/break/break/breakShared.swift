@@ -57,6 +57,8 @@ extension UISearchResultsUpdating where Self: UIViewController {
 }
 
 enum breakConstants {
+	static let iTunesIdentifier = "1113901082"
+	
 	static let loginStationaryAnimationDuration = 1.0
 	static let loginMovableAnimationDuration = 0.5
 	static let loginMovableAnimationDelay = 0.1

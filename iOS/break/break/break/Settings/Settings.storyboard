@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="17A330h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="17A360a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -154,8 +154,31 @@
                             </tableViewSection>
                             <tableViewSection id="mhL-dK-APw">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="VUL-xt-xi1" style="IBUITableViewCellStyleDefault" id="Zk8-Cz-cf8">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="bbF-6K-HsK" style="IBUITableViewCellStyleDefault" id="yPJ-1t-qbT">
                                         <rect key="frame" x="0.0" y="283" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yPJ-1t-qbT" id="MMP-th-OgS">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Ratings and Reviews" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bbF-6K-HsK">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="NLT-k4-hco" kind="show" id="Fsy-Hh-DL2">
+                                                <segue key="commit" inheritsFrom="parent" id="jwM-vC-EaE"/>
+                                                <segue key="preview" inheritsFrom="commit" id="XyT-8G-0cx"/>
+                                            </segue>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="VUL-xt-xi1" style="IBUITableViewCellStyleDefault" id="Zk8-Cz-cf8">
+                                        <rect key="frame" x="0.0" y="327" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zk8-Cz-cf8" id="dpC-Hi-pb6">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -178,7 +201,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="setting" textLabel="OSz-eL-KVr" style="IBUITableViewCellStyleDefault" id="1ZW-ti-Kof">
-                                        <rect key="frame" x="0.0" y="327" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="371" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1ZW-ti-Kof" id="u8x-Nh-VCS">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -368,7 +391,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9yQ-Em-4Xm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="-1439"/>
+            <point key="canvasLocation" x="5726" y="-1751"/>
         </scene>
         <!--Security-->
         <scene sceneID="H61-VU-9oI">
@@ -437,7 +460,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U8i-9K-Gx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="-743"/>
+            <point key="canvasLocation" x="5726" y="-1055"/>
         </scene>
         <!--Startup-->
         <scene sceneID="zI5-Dm-MQO">
@@ -548,7 +571,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BgI-sd-J7o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="-50"/>
+            <point key="canvasLocation" x="5726" y="-362"/>
         </scene>
         <!--Notifications-->
         <scene sceneID="pTP-gt-BLi">
@@ -642,7 +665,71 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oa9-ZV-uO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="633"/>
+            <point key="canvasLocation" x="5726" y="322"/>
+        </scene>
+        <!--Ratings and Reviews-->
+        <scene sceneID="G8o-yc-pQc">
+            <objects>
+                <tableViewController id="NLT-k4-hco" customClass="RatingsReviewsTableViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="noP-cg-98S">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection footerTitle="break on the App Store, where you can rate it or write a review." id="Dtn-ZG-Isi">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="r3J-SO-peR" style="IBUITableViewCellStyleDefault" id="thW-LJ-cq5">
+                                        <rect key="frame" x="0.0" y="35" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="thW-LJ-cq5" id="xKj-xq-mZY">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="View break on the App Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="r3J-SO-peR">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="tIE-Qy-9d5">
+                                <string key="footerTitle">Displays an in-app review alert. Due to iOS restrictions this can only be used three times a year, so if nothing happens when you tap this go to the App Store page and leave a rating there.</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="PLj-0i-T4t" style="IBUITableViewCellStyleDefault" id="uma-Wn-4yj">
+                                        <rect key="frame" x="0.0" y="143" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uma-Wn-4yj" id="IOr-YW-QFF">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rate break" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PLj-0i-T4t">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="NLT-k4-hco" id="pqi-qc-Klp"/>
+                            <outlet property="delegate" destination="NLT-k4-hco" id="y4k-ca-RvR"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Ratings and Reviews" id="tyJ-Xv-qu3"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jbr-Be-5Wo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5726" y="1015"/>
         </scene>
         <!--Beta Testers-->
         <scene sceneID="VFp-PK-S6v">
@@ -820,7 +907,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iBJ-WU-YrS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="1300"/>
+            <point key="canvasLocation" x="5726" y="1712"/>
         </scene>
         <!--Log-->
         <scene sceneID="7Og-J4-F55">
@@ -858,15 +945,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cNe-9U-Kj2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="2006"/>
+            <point key="canvasLocation" x="5726" y="2418"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="Fsy-Hh-DL2"/>
         <segue reference="oQC-kz-4hP"/>
-        <segue reference="wgw-14-YGW"/>
-        <segue reference="osh-KO-RTT"/>
         <segue reference="vqp-fl-7Lp"/>
-        <segue reference="nNk-kO-eR4"/>
+        <segue reference="osh-KO-RTT"/>
         <segue reference="hpV-Cr-fjj"/>
+        <segue reference="nNk-kO-eR4"/>
+        <segue reference="wgw-14-YGW"/>
     </inferredMetricsTieBreakers>
 </document>
