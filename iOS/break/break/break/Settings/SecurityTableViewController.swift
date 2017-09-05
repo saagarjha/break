@@ -112,9 +112,12 @@ class SecurityTableViewController: UITableViewController {
 		return error == "Unsupported" ? 1 : 2
 	}
 
+	/*
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 1
+	// #warning Incomplete implementation, return the number of rows
+	return 0
 	}
+	*/
 
 	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		guard section == 1 else {
