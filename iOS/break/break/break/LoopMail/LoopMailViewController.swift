@@ -28,22 +28,25 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	@IBOutlet weak var loopMailTableView: UITableView! {
 		didSet {
 			breakShared.autoresizeTableViewCells(for: loopMailTableView)
-			breakShared.addRefreshControl(refreshControl, to: loopMailTableView)
+			breakShared.add(refreshControl, to: loopMailTableView)
 			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		}
 	}
 	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
+	
+	var forceTouchSourceView: UIView! {
+		return loopMailTableView
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: loopMailTableView)
+		setupSelfAsMasterViewController()
+
 		schoolLoop = SchoolLoop.sharedInstance
-		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: loopMailTableView)
-		}
 		refresh(self)
 	}
 
@@ -109,24 +112,8 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 			guard let `self` = self else {
 				return
 			}
-			guard let destinationViewController = `self`.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
-				return
-			}
 			let selectedLoopMail = `self`.filteredLoopMail[indexPath.row]
-			self.schoolLoop.getLoopMailMessage(withID: selectedLoopMail.ID) { error in
-				guard error == .noError else {
-					return
-				}
-				guard let loopMail = `self`.schoolLoop.loopMail(forID: selectedLoopMail.ID) else {
-					assertionFailure("Could not get LoopMail for ID")
-					return
-				}
-				DispatchQueue.main.async {
-					destinationViewController.loopMail = loopMail
-					destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
-					`self`.navigationController?.pushViewController(destinationViewController, animated: true)
-				}
-			}
+			`self`.openLoopMailCompose(for: selectedLoopMail)
 		}
 		replyAction.backgroundColor = view.tintColor
 		return [replyAction]
@@ -159,9 +146,11 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	func openLoopMailCompose(for loopMail: SchoolLoopLoopMail) {
-		guard let loopMailComposeViewController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
-			assertionFailure("Could not create LoopMailComposeViewController")
-			return
+		guard let navigationController = self.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? UINavigationController,
+			let loopMailComposeViewController = navigationController.topViewController as? LoopMailComposeViewController
+			else {
+				assertionFailure("Could not create LoopMailComposeViewController")
+				return
 		}
 		(schoolLoop ?? SchoolLoop.sharedInstance).getLoopMailMessage(withID: loopMail.ID) { [weak self] error in
 			guard let `self` = self else {
@@ -177,9 +166,13 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 			DispatchQueue.main.async {
 				loopMailComposeViewController.loopMail = loopMail
 				loopMailComposeViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
-				`self`.navigationController?.pushViewController(loopMailComposeViewController, animated: true)
+				`self`.present(navigationController, animated: true, completion: nil)
 			}
 		}
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		setupForceTouch(originatingFrom: loopMailTableView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -195,7 +188,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		// Give it a placeholder LoopMail while it loads its own, for any
 		// preview actions
 		destinationViewController.loopMail = selectedLoopMail
-		destinationViewController.parentNavigationController = navigationController
+		destinationViewController.parentLoopMailViewController = self
 		destinationViewController.preferredContentSize = CGSize(width: 0, height: 0)
 		previewingContext.sourceRect = cell.frame
 		return destinationViewController
@@ -209,7 +202,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destination as? LoopMailMessageViewController,
+		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? LoopMailMessageViewController,
 			let cell = sender as? LoopMailTableViewCell,
 			let indexPath = loopMailTableView.indexPath(for: cell) else {
 				return
@@ -220,6 +213,6 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		// preview actions
 		destinationViewController.loopMail = selectedLoopMail
 		self.destinationViewController = destinationViewController
-		destinationViewController.parentNavigationController = navigationController
+		destinationViewController.parentLoopMailViewController = self
 	}
 }

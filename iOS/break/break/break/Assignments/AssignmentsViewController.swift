@@ -28,7 +28,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	@IBOutlet weak var assignmentsTableView: UITableView! {
 		didSet {
 			breakShared.autoresizeTableViewCells(for: assignmentsTableView)
-			breakShared.addRefreshControl(refreshControl, to: assignmentsTableView)
+			breakShared.add(refreshControl, to: assignmentsTableView)
 			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		}
 	}
@@ -40,10 +40,9 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: assignmentsTableView)
+		setupSelfAsMasterViewController()
+
 		schoolLoop = SchoolLoop.sharedInstance
-		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: assignmentsTableView)
-		}
 		refresh(self)
 	}
 	
@@ -164,6 +163,10 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		assignmentDescriptionViewController.iD = assignment.iD
 		navigationController?.pushViewController(assignmentDescriptionViewController, animated: true)
 	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		setupForceTouch(originatingFrom: assignmentsTableView)
+	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = assignmentsTableView.indexPathForRow(at: location),
@@ -191,14 +194,14 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destination as? AssignmentDescriptionViewController,
+		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? AssignmentDescriptionViewController,
 			let cell = sender as? AssignmentTableViewCell,
 			let indexPath = assignmentsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
 				return
 		}
-		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]![indexPath.row]
-		destinationViewController.iD = selectedAssignment.iD
+		let selectedAssignment = filteredAssignments[filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]
+		destinationViewController.iD = selectedAssignment?.iD
 		self.destinationViewController = destinationViewController
 	}
 }

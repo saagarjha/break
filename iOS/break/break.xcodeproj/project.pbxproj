@@ -52,6 +52,7 @@
 		49489F2C1DDAA1090039126D /* SchoolLoopContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49489F2A1DDA9EEE0039126D /* SchoolLoopContact.swift */; };
 		49489F2E1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49489F2D1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift */; };
 		49489F2F1DDAA2D90039126D /* SchoolLoopComposedLoopMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49489F2D1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift */; };
+		494FA0841F5F49BB005921AA /* breakSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494FA0831F5F49BB005921AA /* breakSplitViewController.swift */; };
 		4954C2861E03D9BC00564D28 /* SchoolLoopComputableCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */; };
 		495574871CA6081100193EE5 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574861CA6081100193EE5 /* Logger.swift */; };
 		495574891CA6112000193EE5 /* LoggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495574881CA6112000193EE5 /* LoggerViewController.swift */; };
@@ -203,6 +204,7 @@
 		49489F281DDA9D500039126D /* LoopMailContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LoopMailContactsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49489F2A1DDA9EEE0039126D /* SchoolLoopContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopContact.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49489F2D1DDAA2060039126D /* SchoolLoopComposedLoopMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopComposedLoopMail.swift; sourceTree = "<group>"; };
+		494FA0831F5F49BB005921AA /* breakSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = breakSplitViewController.swift; sourceTree = "<group>"; };
 		4954C2851E03D9BC00564D28 /* SchoolLoopComputableCourse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SchoolLoopComputableCourse.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		495574861CA6081100193EE5 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		495574881CA6112000193EE5 /* LoggerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerViewController.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				498665541C8D24E9004BA249 /* AppDelegate.swift */,
 				4998B29A1EB3E4DF00044A14 /* breakShared.swift */,
 				4998B29E1EB5665800044A14 /* breakSafariViewController.swift */,
+				494FA0831F5F49BB005921AA /* breakSplitViewController.swift */,
 				499B12631ED76862006C0C8D /* DemoableSchoolLoop.swift */,
 				495574861CA6081100193EE5 /* Logger.swift */,
 				498665621C8D24E9004BA249 /* LoginViewController.swift */,
@@ -773,6 +776,7 @@
 				4982807A1CEE4C34001A5000 /* SchoolLoopTrendScore.swift in Sources */,
 				49C9888E1EA32D62000AF3CF /* Preferences.swift in Sources */,
 				498665941C8D24E9004BA249 /* CourseTableViewCell.swift in Sources */,
+				494FA0841F5F49BB005921AA /* breakSplitViewController.swift in Sources */,
 				49489F2B1DDA9EEE0039126D /* SchoolLoopContact.swift in Sources */,
 				4986659C1C8D24E9004BA249 /* LoopMailTableViewCell.swift in Sources */,
 				49DF2B2A1CF3BDE200DC1EB7 /* GradeViewController.swift in Sources */,

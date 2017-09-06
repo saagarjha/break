@@ -167,11 +167,14 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: gradesTableView)
+		setupSelfAsDetailViewController()
+		
 		header = ProgressReportHeader()
 		header.headerTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showCourse)))
+		
 		schoolLoop = SchoolLoop.sharedInstance
-		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: gradesTableView)
+		guard let periodID = periodID else {
+			return
 		}
 		schoolLoop.getGrades(withPeriodID: periodID) { error in
 			DispatchQueue.main.async { [weak self] in
@@ -231,7 +234,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		computableCourse.computableGrades.insert(grade, at: 0)
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
-		gradesTableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .middle, animated: true)
+		gradesTableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
 	}
 
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -419,6 +422,10 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 		courseViewController.course = computableCourse
 		navigationController?.pushViewController(courseViewController, animated: true)
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		setupForceTouch(originatingFrom: gradesTableView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {

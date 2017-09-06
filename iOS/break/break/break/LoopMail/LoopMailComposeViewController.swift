@@ -154,6 +154,10 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		// Dispose of any resources that can be recreated.
 	}
 
+	@IBAction func cancel(_ sender: Any) {
+		navigationController?.dismiss(animated: true, completion: nil)
+	}
+	
 	@IBAction func send(_ sender: Any) {
 		schoolLoop.sendLoopMail(with: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: "<p>\(composeTextView.text ?? "")</p>\n\n\n\(message ?? "")", to: Array(to), cc: Array(cc))) { error in
 			DispatchQueue.main.async { [weak self] in

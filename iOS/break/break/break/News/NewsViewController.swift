@@ -27,7 +27,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	@IBOutlet weak var newsTableView: UITableView! {
 		didSet {
 			breakShared.autoresizeTableViewCells(for: newsTableView)
-			breakShared.addRefreshControl(refreshControl, to: newsTableView)
+			breakShared.add(refreshControl, to: newsTableView)
 			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		}
 	}
@@ -39,10 +39,9 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: newsTableView)
+		setupSelfAsMasterViewController()
+		
 		schoolLoop = SchoolLoop.sharedInstance
-		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: newsTableView)
-		}
 		refresh(self)
 	}
 
@@ -130,6 +129,10 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		newsDescriptionViewController.iD = news.iD
 		navigationController?.pushViewController(newsDescriptionViewController, animated: true)
 	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		setupForceTouch(originatingFrom: newsTableView)
+	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = newsTableView.indexPathForRow(at: location),
@@ -154,7 +157,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destination as? NewsDescriptionViewController,
+		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? NewsDescriptionViewController,
 			let cell = sender as? NewsTableViewCell,
 			let indexPath = newsTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")

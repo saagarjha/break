@@ -28,7 +28,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	@IBOutlet weak var coursesTableView: UITableView! {
 		didSet {
 			breakShared.autoresizeTableViewCells(for: coursesTableView)
-			breakShared.addRefreshControl(refreshControl, to: coursesTableView)
+			breakShared.add(refreshControl, to: coursesTableView)
 			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		}
 	}
@@ -40,10 +40,9 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: coursesTableView)
+		setupSelfAsMasterViewController()
+		
 		schoolLoop = SchoolLoop.sharedInstance
-		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: coursesTableView)
-		}
 		refresh(self)
 	}
 
@@ -160,6 +159,10 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		progressReportViewController.periodID = course.periodID
 		navigationController?.pushViewController(progressReportViewController, animated: true)
 	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		setupForceTouch(originatingFrom: coursesTableView)
+	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
 		guard let indexPath = coursesTableView.indexPathForRow(at: location),
@@ -185,7 +188,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let destinationViewController = segue.destination as? ProgressReportViewController,
+		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? ProgressReportViewController,
 			let cell = sender as? CourseTableViewCell,
 			let indexPath = coursesTableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to ProgressReportViewController")

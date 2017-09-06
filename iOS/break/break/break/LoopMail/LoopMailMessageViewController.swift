@@ -17,26 +17,19 @@ class LoopMailMessageViewController: WebViewToSafariViewControllerShimViewContro
 	var message: String = ""
 	var loopMail: SchoolLoopLoopMail?
 
-	var parentNavigationController: UINavigationController?
+	var parentLoopMailViewController: LoopMailViewController?
 	override var previewActionItems: [UIPreviewActionItem] {
-		get {
-			return loopMail != nil ? [UIPreviewAction(title: "Reply", style: .default, handler: { [weak self] _, viewController in
+		return [loopMail.map { loopMail in
+			{ [weak self] _, _ in
 				guard let `self` = self else {
 					return
 				}
-				guard let destinationViewController = `self`.storyboard?.instantiateViewController(withIdentifier: "loopMailCompose") as? LoopMailComposeViewController else {
-					return
-				}
-				guard let loopMail = `self`.loopMail else {
-					assertionFailure("Could not get LoopMail")
-					return
-				}
-				DispatchQueue.main.async {
-					destinationViewController.loopMail = loopMail
-					destinationViewController.composedLoopMail = SchoolLoopComposedLoopMail(subject: "\(loopMail.subject)", message: loopMail.message, to: [loopMail.sender], cc: [])
-					`self`.parentNavigationController?.pushViewController(destinationViewController, animated: true)
-				}
-			})] : []
+				`self`.parentLoopMailViewController?.openLoopMailCompose(for: loopMail)
+			}
+		}].flatMap {
+			$0
+		}.map {
+			UIPreviewAction(title: "Reply", style: .default, handler: $0)
 		}
 	}
 
@@ -44,7 +37,12 @@ class LoopMailMessageViewController: WebViewToSafariViewControllerShimViewContro
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		setupSelfAsDetailViewController()
+
 		schoolLoop = SchoolLoop.sharedInstance
+		guard let ID = ID else {
+			return
+		}
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getLoopMailMessage(withID: ID) { error in
 			DispatchQueue.main.async { [weak self] in
@@ -82,7 +80,7 @@ class LoopMailMessageViewController: WebViewToSafariViewControllerShimViewContro
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		// Get the new view controller using segue.destinationViewController.
 		// Pass the selected object to the new view controller.
-		guard let loopMailComposeViewController = segue.destination as? LoopMailComposeViewController,
+		guard let loopMailComposeViewController = (segue.destination as? UINavigationController)?.topViewController as? LoopMailComposeViewController,
 			let loopMail = loopMail else {
 				return
 		}

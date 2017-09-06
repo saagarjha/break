@@ -20,6 +20,8 @@ class NewsDescriptionViewController: WebViewToSafariViewControllerShimViewContro
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		setupSelfAsDetailViewController()
+		
 		schoolLoop = SchoolLoop.sharedInstance
 		loadDescription()
 	}
@@ -30,6 +32,9 @@ class NewsDescriptionViewController: WebViewToSafariViewControllerShimViewContro
 	}
 
 	func loadDescription() {
+		guard let iD = iD else {
+			return
+		}
 		guard let news = schoolLoop.news(foriD: iD) else {
 			assertionFailure("Could not get news for iD")
 			return

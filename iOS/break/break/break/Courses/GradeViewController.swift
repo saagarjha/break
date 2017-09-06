@@ -38,6 +38,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 		// Do any additional setup after loading the view.
 		schoolLoop = SchoolLoop.sharedInstance
 		grade = schoolLoop.course(forPeriodID: periodID)?.grade(forSystemID: systemID)
+		
 		commentsLabel.translatesAutoresizingMaskIntoConstraints = false
 		commentsLabel.text = grade.comment
 		commentsLabel.numberOfLines = 0

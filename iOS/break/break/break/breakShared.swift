@@ -10,7 +10,7 @@ import UIKit
 
 extension UIColor {
 	static let `break` = #colorLiteral(red: 0.1019607843, green: 0.737254902, blue: 0.6117647059, alpha: 1)
-	
+
 	convenience init(string: String) {
 		let hashValue = UInt(bitPattern: string.hashValue)
 		let channelSize = UInt(MemoryLayout<Int>.size * 8 / 3)
@@ -28,7 +28,7 @@ enum breakTabIndices: Int, CustomStringConvertible {
 	case loopMail
 	case news
 	case locker
-	
+
 	var description: String {
 		switch self {
 		case .courses:
@@ -45,6 +45,17 @@ enum breakTabIndices: Int, CustomStringConvertible {
 	}
 }
 
+extension UIViewController {
+	func setupSelfAsMasterViewController() {
+		splitViewController?.preferredDisplayMode = .allVisible
+	}
+
+	func setupSelfAsDetailViewController() {
+		navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+		navigationItem.leftItemsSupplementBackButton = true
+	}
+}
+
 extension UISearchResultsUpdating where Self: UIViewController {
 	func addSearchBar(from searchController: UISearchController, to tableView: UITableView) {
 		definesPresentationContext = true
@@ -56,24 +67,32 @@ extension UISearchResultsUpdating where Self: UIViewController {
 	}
 }
 
+extension UIViewControllerPreviewingDelegate where Self: UIViewController {
+	func setupForceTouch(originatingFrom sourceView: UIView) {
+		if traitCollection.forceTouchCapability == .available {
+			registerForPreviewing(with: self, sourceView: sourceView)
+		}
+	}
+}
+
 enum breakConstants {
 	static let iTunesIdentifier = "1113901082"
-	
+
 	static let loginStationaryAnimationDuration = 1.0
 	static let loginMovableAnimationDuration = 0.5
 	static let loginMovableAnimationDelay = 0.1
-		
+
 	static let webViewDefaultStyle = "<meta charset=\"utf-8\"><meta name=\"viewport\" content=\"initial-scale=1\" /><style type=\"text/css\">body{font: -apple-system-body;}</style>"
-	
+
 	static let tableViewCellVerticalPadding = 12
-	
+
 	static let discriminatorViewWidth: CGFloat = 4
 }
 
 protocol RefreshableView: AnyObject {
 	@available(iOS 10.0, *)
 	var refreshControl: UIRefreshControl? { get set }
-	
+
 	var backgroundView: UIView? { get set }
 }
 
@@ -85,8 +104,8 @@ enum breakShared {
 		tableView.rowHeight = UITableViewAutomaticDimension
 		tableView.estimatedRowHeight = 80.0
 	}
-	
-	static func addRefreshControl<V: UIView>(_ refreshControl: UIRefreshControl, to view: V) where V: RefreshableView {
+
+	static func add<V: UIView>(_ refreshControl: UIRefreshControl, to view: V) where V: RefreshableView {
 		if #available(iOS 10.0, *) {
 			view.refreshControl = refreshControl
 		} else {

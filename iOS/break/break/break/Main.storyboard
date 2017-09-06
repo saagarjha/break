@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="17A264c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VA0-KO-lQk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="17A360a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VA0-KO-lQk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -31,22 +31,22 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full School Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4QA-5T-P9E">
-                                                <rect key="frame" x="76" y="280.5" width="223" height="30"/>
+                                                <rect key="frame" x="76" y="281" width="223" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="next"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pw9-f5-ZVc">
-                                                <rect key="frame" x="76" y="318.5" width="223" height="30"/>
+                                                <rect key="frame" x="76" y="319" width="223" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L0c-ty-z1U">
-                                                <rect key="frame" x="76" y="356.5" width="223" height="30"/>
+                                                <rect key="frame" x="76" y="357" width="223" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                             </textField>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="oXX-Qp-n0g">
-                                                <rect key="frame" x="76" y="172.5" width="223" height="100"/>
+                                                <rect key="frame" x="76" y="173" width="223" height="100"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Oe1-ED-gEo">
                                                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
@@ -76,7 +76,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnn-Ty-sq3">
-                                                <rect key="frame" x="76" y="394.5" width="223" height="34"/>
+                                                <rect key="frame" x="76" y="395" width="223" height="34"/>
                                                 <color key="backgroundColor" red="0.039215686270000001" green="0.4823529412" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="Log in"/>
                                                 <state key="disabled" title="Logging in…"/>
@@ -245,13 +245,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Assignment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYV-Bi-RkN">
-                                                    <rect key="frame" x="15" y="11" width="106.5" height="24"/>
+                                                    <rect key="frame" x="15" y="11" width="107" height="24"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Class" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s01-OF-ewj">
-                                                    <rect key="frame" x="15" y="43" width="37.5" height="18"/>
+                                                    <rect key="frame" x="15" y="43" width="38" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -283,10 +283,7 @@
                                             <outlet property="courseNameDiscriminatorView" destination="vV7-jv-qlJ" id="4uD-Fp-ilt"/>
                                             <outlet property="courseNameLabel" destination="s01-OF-ewj" id="XsG-Cm-iC5"/>
                                             <outlet property="titleLabel" destination="VYV-Bi-RkN" id="Ruv-jY-wgh"/>
-                                            <segue destination="dfx-bd-QRX" kind="show" id="DBr-2N-smW">
-                                                <segue key="commit" inheritsFrom="parent" id="1M7-Q0-X3X"/>
-                                                <segue key="preview" inheritsFrom="commit" id="K8J-pN-Epk"/>
-                                            </segue>
+                                            <segue destination="JQh-ht-K4w" kind="show" action="showDetailViewController:sender:" id="Wy9-gi-nms"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -317,13 +314,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9MN-Yh-4wQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2559.1999999999998" y="-378.26086956521743"/>
+            <point key="canvasLocation" x="3297" y="-376"/>
         </scene>
         <!--LoopMail-->
+        <scene sceneID="IEg-y4-6xI">
+            <objects>
+                <splitViewController id="mqn-vm-Q0E" customClass="breakSplitViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="LoopMail" image="LoopMailTabBarIcon" id="aGP-nn-IUQ"/>
+                    <connections>
+                        <segue destination="jq6-Z9-vLX" kind="relationship" relationship="masterViewController" id="mn6-Xs-h1S"/>
+                        <segue destination="2PU-JK-wmk" kind="relationship" relationship="detailViewController" id="M1j-FA-MtI"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q6F-Ob-w6N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1806" y="322"/>
+        </scene>
+        <!--Navigation Controller-->
         <scene sceneID="hHu-5N-z0q">
             <objects>
                 <navigationController id="jq6-Z9-vLX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="LoopMail" image="LoopMailTabBarIcon" id="JKX-99-JpN"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uUV-or-Kmn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -334,7 +344,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="508-8R-oPJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1806" y="322"/>
+            <point key="canvasLocation" x="2558" y="322"/>
         </scene>
         <!--News-->
         <scene sceneID="psc-a1-My8">
@@ -366,7 +376,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jao-iq-UiQ">
-                                                    <rect key="frame" x="15" y="43" width="46.5" height="18"/>
+                                                    <rect key="frame" x="15" y="43" width="47" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -395,10 +405,7 @@
                                             <outlet property="authorNameLabel" destination="Jao-iq-UiQ" id="GCC-U6-sfI"/>
                                             <outlet property="createdDateLabel" destination="Usv-wU-8ia" id="AAk-XY-KBt"/>
                                             <outlet property="titleLabel" destination="aub-WS-Em7" id="R3p-5t-4PO"/>
-                                            <segue destination="nba-0f-x9V" kind="show" id="ncT-Sv-NS9">
-                                                <segue key="commit" inheritsFrom="parent" id="mUe-b6-lAn"/>
-                                                <segue key="preview" inheritsFrom="commit" id="scF-83-yyF"/>
-                                            </segue>
+                                            <segue destination="C3g-Wi-Qlm" kind="show" action="showDetailViewController:sender:" id="Bhg-cW-E23"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -429,7 +436,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5K-H1-kfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2560" y="1068"/>
+            <point key="canvasLocation" x="3297" y="1039"/>
         </scene>
         <!--Locker-->
         <scene sceneID="xPT-EB-M9y">
@@ -505,6 +512,22 @@
             </objects>
             <point key="canvasLocation" x="2559.1999999999998" y="1771.6641679160421"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="6Ab-gT-Z1o">
+            <objects>
+                <navigationController id="C3g-Wi-Qlm" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WBb-bH-PDV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="nba-0f-x9V" kind="relationship" relationship="rootViewController" id="kXg-ng-1Cy"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ODP-un-Luz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4033" y="1039"/>
+        </scene>
         <!--News Description View Controller-->
         <scene sceneID="A4h-TD-Izq">
             <objects>
@@ -518,10 +541,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Mj0-0E-G3o"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtY-sd-KfS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3298" y="1068"/>
+            <point key="canvasLocation" x="4774" y="1039"/>
         </scene>
         <!--LoopMail-->
         <scene sceneID="ghx-V4-zR0">
@@ -547,7 +571,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y82-R4-SVY">
-                                                    <rect key="frame" x="15" y="11" width="68.5" height="24"/>
+                                                    <rect key="frame" x="15" y="11" width="69" height="24"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -565,7 +589,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8wU-RD-Vap">
-                                                    <rect key="frame" x="15" y="69" width="32.5" height="18"/>
+                                                    <rect key="frame" x="15" y="69" width="33" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -590,10 +614,7 @@
                                             <outlet property="dateLabel" destination="8wU-RD-Vap" id="UjP-z6-eRc"/>
                                             <outlet property="senderLabel" destination="dKz-2e-SeY" id="gb2-64-dsO"/>
                                             <outlet property="subjectLabel" destination="Y82-R4-SVY" id="NCq-Ah-V1L"/>
-                                            <segue destination="vY2-MK-FCV" kind="show" id="kce-Tu-qVK">
-                                                <segue key="commit" inheritsFrom="parent" id="GJ3-84-G9L"/>
-                                                <segue key="preview" inheritsFrom="commit" id="PwL-Mm-uyk"/>
-                                            </segue>
+                                            <segue destination="2PU-JK-wmk" kind="show" action="showDetailViewController:sender:" id="feh-e8-JoJ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -619,7 +640,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="kKr-HO-jvW">
                             <connections>
-                                <segue destination="NQq-dC-EGV" kind="show" id="MTy-Je-66Y"/>
+                                <segue destination="NBd-Sz-aNH" kind="presentation" id="ZUS-dj-LcW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -629,7 +650,24 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xfG-La-64Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2560" y="322"/>
+            <point key="canvasLocation" x="3297" y="322"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="b7C-Ic-YMz">
+            <objects>
+                <navigationController id="JQh-ht-K4w" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="RuA-PN-iwm"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HFM-2N-nx4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="dfx-bd-QRX" kind="relationship" relationship="rootViewController" id="VLg-aM-MOt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5ul-tn-CwH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4033" y="-376"/>
         </scene>
         <!--Assignment Description View Controller-->
         <scene sceneID="7Ve-1V-cJV">
@@ -644,10 +682,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="jRH-JA-f4m"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3xV-N5-0To" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3298" y="-378"/>
+            <point key="canvasLocation" x="4774" y="-376"/>
         </scene>
         <!--Loop Mail Message View Controller-->
         <scene sceneID="qrG-f3-UcG">
@@ -665,19 +704,35 @@
                     <navigationItem key="navigationItem" id="RqF-uG-8da">
                         <barButtonItem key="rightBarButtonItem" systemItem="reply" id="olJ-Hj-Jlj">
                             <connections>
-                                <segue destination="NQq-dC-EGV" kind="show" id="N2X-dl-fdz"/>
+                                <segue destination="NBd-Sz-aNH" kind="presentation" id="xbe-A4-Sbm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lOr-Lw-Cq8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3298" y="322"/>
+            <point key="canvasLocation" x="4774" y="322"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="RKp-KQ-c2Y">
+            <objects>
+                <navigationController id="2PU-JK-wmk" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="waD-1N-Eie">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vY2-MK-FCV" kind="relationship" relationship="rootViewController" id="B5c-Vx-w6b"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JG9-ja-NV6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4033" y="322"/>
         </scene>
         <!--Compose-->
         <scene sceneID="A1v-DN-PN9">
             <objects>
-                <viewController storyboardIdentifier="loopMailCompose" id="NQq-dC-EGV" customClass="LoopMailComposeViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="NQq-dC-EGV" customClass="LoopMailComposeViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8V3-H3-Vh7"/>
                         <viewControllerLayoutGuide type="bottom" id="Tc9-hI-yLs"/>
@@ -698,7 +753,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9l-rA-jQd">
-                                                    <rect key="frame" x="15" y="14.5" width="50" height="16"/>
+                                                    <rect key="frame" x="15" y="14" width="50" height="16"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="F9j-SY-q7E"/>
                                                     </constraints>
@@ -742,6 +797,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Compose" id="wO1-yV-iDb">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="PSu-QC-L4D">
+                            <connections>
+                                <action selector="cancel:" destination="NQq-dC-EGV" id="boZ-as-c1M"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Send" style="done" id="anE-YT-DLZ">
                             <connections>
                                 <action selector="send:" destination="NQq-dC-EGV" id="ca9-x4-eMN"/>
@@ -754,7 +814,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P7A-yg-9En" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4032.8000000000002" y="321.58920539730138"/>
+            <point key="canvasLocation" x="6297" y="322"/>
         </scene>
         <!--Loop Mail Contacts View Controller-->
         <scene sceneID="RgE-CW-hqZ">
@@ -817,7 +877,21 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="67p-KN-o7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4773.6000000000004" y="321.58920539730138"/>
+            <point key="canvasLocation" x="7054" y="322"/>
+        </scene>
+        <!--Assignments-->
+        <scene sceneID="bnE-Bb-7pC">
+            <objects>
+                <splitViewController id="KPb-9n-Vay" customClass="breakSplitViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Assignments" image="AssignmentsTabBarIcon" id="eo2-a3-Ddk"/>
+                    <connections>
+                        <segue destination="RGe-K8-waF" kind="relationship" relationship="masterViewController" id="kt8-9z-eJX"/>
+                        <segue destination="JQh-ht-K4w" kind="relationship" relationship="detailViewController" id="5od-Zg-pDm"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Atx-xU-ygW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1806" y="-376"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="epV-1C-OxP">
@@ -829,10 +903,10 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="dAP-6a-vBb" kind="relationship" relationship="viewControllers" id="asQ-ce-3tR"/>
-                        <segue destination="RGe-K8-waF" kind="relationship" relationship="viewControllers" id="l12-gG-3qq"/>
-                        <segue destination="jq6-Z9-vLX" kind="relationship" relationship="viewControllers" id="4zO-cj-dmR"/>
-                        <segue destination="Vfg-RB-iwd" kind="relationship" relationship="viewControllers" id="DGA-wp-wIt"/>
+                        <segue destination="OlR-q2-c0L" kind="relationship" relationship="viewControllers" id="CCS-bI-b72"/>
+                        <segue destination="KPb-9n-Vay" kind="relationship" relationship="viewControllers" id="dMZ-rj-bn1"/>
+                        <segue destination="mqn-vm-Q0E" kind="relationship" relationship="viewControllers" id="GDS-nh-SdA"/>
+                        <segue destination="VMu-z4-FWD" kind="relationship" relationship="viewControllers" id="aZh-kI-x95"/>
                         <segue destination="lTZ-fN-kMb" kind="relationship" relationship="viewControllers" id="tXZ-VC-3B0"/>
                     </connections>
                 </tabBarController>
@@ -876,7 +950,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Course" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FIM-k9-OJk">
-                                                    <rect key="frame" x="47" y="11" width="64.5" height="24"/>
+                                                    <rect key="frame" x="47" y="11" width="65" height="24"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -931,10 +1005,7 @@
                                             <outlet property="periodLabel" destination="ekR-ua-CQw" id="KgH-Hq-dOa"/>
                                             <outlet property="scoreLabel" destination="jVD-xy-Doh" id="AB7-Ex-Vsf"/>
                                             <outlet property="teacherNameLabel" destination="hsl-7n-bfX" id="vzR-PJ-ymP"/>
-                                            <segue destination="y9r-Jb-Tkn" kind="show" id="HQd-0d-6Op">
-                                                <segue key="commit" inheritsFrom="parent" id="FXb-Jg-meZ"/>
-                                                <segue key="preview" inheritsFrom="commit" id="Stw-yl-fg9"/>
-                                            </segue>
+                                            <segue destination="5O3-dv-Hal" kind="show" action="showDetailViewController:sender:" id="4GK-0F-GkW"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -971,7 +1042,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ru1-0z-AnA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2559.1999999999998" y="-1064.6176911544228"/>
+            <point key="canvasLocation" x="3297" y="-1057"/>
         </scene>
         <!--Progess Report-->
         <scene sceneID="93k-tD-N7l">
@@ -1075,7 +1146,10 @@
                                             <outlet property="percentScoreLabel" destination="upd-xB-YeT" id="TCh-1M-qIO"/>
                                             <outlet property="scoreLabel" destination="xz1-sc-oZZ" id="fo8-gw-PIf"/>
                                             <outlet property="titleLabel" destination="kyC-D0-RYY" id="UY4-Oa-PM4"/>
-                                            <segue destination="GxX-QL-UIG" kind="show" id="St0-Gu-a7o"/>
+                                            <segue destination="GxX-QL-UIG" kind="show" id="St0-Gu-a7o">
+                                                <segue key="commit" inheritsFrom="parent" id="5Nt-gc-E3f"/>
+                                                <segue key="preview" inheritsFrom="commit" id="JDW-Zm-aSe"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1118,7 +1192,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ACy-4z-oGj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3296.8000000000002" y="-1064.6176911544228"/>
+            <point key="canvasLocation" x="4774" y="-1057"/>
         </scene>
         <!--Course View Controller-->
         <scene sceneID="rMU-vs-dnK">
@@ -1187,7 +1261,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KxF-a0-8GL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4033" y="-1773"/>
+            <point key="canvasLocation" x="4774" y="-1765"/>
         </scene>
         <!--Grade-->
         <scene sceneID="8CJ-Kj-wtS">
@@ -1256,13 +1330,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vkg-hB-zSm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4033" y="-1065"/>
+            <point key="canvasLocation" x="5521" y="-1057"/>
         </scene>
-        <!--Assignments-->
+        <!--Navigation Controller-->
         <scene sceneID="XWK-P6-bYK">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RGe-K8-waF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Assignments" image="AssignmentsTabBarIcon" id="Uzt-BE-cJx" userLabel="Assignments"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dbp-YY-aax">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1270,18 +1343,31 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="4Sq-vC-hyX" kind="relationship" relationship="rootViewController" id="lK8-av-JWq"/>
+                        <segue destination="4Sq-vC-hyX" kind="relationship" relationship="rootViewController" id="ZaL-vY-6LQ"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JXs-gc-mro" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1806" y="-378"/>
+            <point key="canvasLocation" x="2558" y="-376"/>
         </scene>
         <!--Courses-->
+        <scene sceneID="ZCt-Pa-chi">
+            <objects>
+                <splitViewController id="OlR-q2-c0L" customClass="breakSplitViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Courses" image="CoursesTabBarIcon" id="rDJ-2o-5Sl"/>
+                    <connections>
+                        <segue destination="dAP-6a-vBb" kind="relationship" relationship="masterViewController" id="9Mn-K0-AJP"/>
+                        <segue destination="5O3-dv-Hal" kind="relationship" relationship="detailViewController" id="WTK-iT-aVO"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4vL-Ri-8gz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1806" y="-1057"/>
+        </scene>
+        <!--Navigation Controller-->
         <scene sceneID="ML0-pB-9bE">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dAP-6a-vBb" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Courses" image="CoursesTabBarIcon" id="3cA-zt-OP4"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0bk-ld-Gzl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1294,13 +1380,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bcu-xa-MbI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1806" y="-1064"/>
+            <point key="canvasLocation" x="2559" y="-1057"/>
         </scene>
         <!--News-->
+        <scene sceneID="UKO-ph-3mV">
+            <objects>
+                <splitViewController id="VMu-z4-FWD" customClass="breakSplitViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="News" image="NewsTabBarIcon" id="cSf-x2-AB4"/>
+                    <connections>
+                        <segue destination="Vfg-RB-iwd" kind="relationship" relationship="masterViewController" id="4U5-Zp-YAE"/>
+                        <segue destination="C3g-Wi-Qlm" kind="relationship" relationship="detailViewController" id="dhL-zp-lBx"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k1i-9G-AHf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1806" y="1039"/>
+        </scene>
+        <!--Navigation Controller-->
         <scene sceneID="Qih-uP-Xq3">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vfg-RB-iwd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="News" image="NewsTabBarIcon" id="hve-F2-hHu"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="teN-Nx-MmF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1313,7 +1412,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zcD-mo-9V8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1806" y="1068"/>
+            <point key="canvasLocation" x="2558" y="1039"/>
         </scene>
         <!--Locker-->
         <scene sceneID="8bQ-qh-bUm">
@@ -1334,6 +1433,42 @@
             </objects>
             <point key="canvasLocation" x="1806" y="1772"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="UV5-W8-9a2">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5O3-dv-Hal" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fPA-mC-GtU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="y9r-Jb-Tkn" kind="relationship" relationship="rootViewController" id="UTp-D9-NFh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ore-Ae-fyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4033" y="-1057"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hmI-X4-dsm">
+            <objects>
+                <navigationController storyboardIdentifier="loopMailCompose" automaticallyAdjustsScrollViewInsets="NO" id="NBd-Sz-aNH" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1kS-jc-4Lb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="NQq-dC-EGV" kind="relationship" relationship="rootViewController" id="kQB-uK-7pV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ira-uV-YR7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5520.8000000000002" y="321.58920539730138"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AppIcon" width="512" height="512"/>
@@ -1346,10 +1481,11 @@
         <image name="SettingsBarButtonIcon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="K8J-pN-Epk"/>
-        <segue reference="Stw-yl-fg9"/>
-        <segue reference="scF-83-yyF"/>
-        <segue reference="kce-Tu-qVK"/>
-        <segue reference="MTy-Je-66Y"/>
+        <segue reference="4GK-0F-GkW"/>
+        <segue reference="St0-Gu-a7o"/>
+        <segue reference="feh-e8-JoJ"/>
+        <segue reference="xbe-A4-Sbm"/>
+        <segue reference="Bhg-cW-E23"/>
+        <segue reference="Wy9-gi-nms"/>
     </inferredMetricsTieBreakers>
 </document>

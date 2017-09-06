@@ -20,6 +20,8 @@ class AssignmentDescriptionViewController: WebViewToSafariViewControllerShimView
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		setupSelfAsDetailViewController()
+		
 		schoolLoop = SchoolLoop.sharedInstance
 		loadDescription()
 	}
@@ -30,6 +32,9 @@ class AssignmentDescriptionViewController: WebViewToSafariViewControllerShimView
 	}
 
 	func loadDescription() {
+		guard let iD = iD else {
+			return
+		}
 		guard let assignment = schoolLoop.assignment(foriD: iD) else {
 			assertionFailure("Could not get assignment for iD")
 			return

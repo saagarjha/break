@@ -24,7 +24,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	@IBOutlet weak var lockerCollectionView: UICollectionView! {
 		didSet {
 			lockerCollectionView.alwaysBounceVertical = true
-			breakShared.addRefreshControl(refreshControl, to: lockerCollectionView)
+			breakShared.add(refreshControl, to: lockerCollectionView)
 			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 			lockerCollectionViewFlowLayout?.estimatedItemSize = CGSize(width: LockerViewController.cellWidth, height: LockerViewController.cellWidth)
 		}
@@ -55,9 +55,6 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		} else {
 			navigationItem.leftItemsSupplementBackButton = true
 			navigationItem.leftBarButtonItem = nil
-		}
-		if traitCollection.forceTouchCapability == .available {
-			registerForPreviewing(with: self, sourceView: lockerCollectionView)
 		}
 		refresh(self)
 	}
@@ -211,6 +208,10 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			return false
 		}
 		return false
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		setupForceTouch(originatingFrom: lockerCollectionView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
