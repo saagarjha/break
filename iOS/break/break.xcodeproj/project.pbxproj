@@ -483,12 +483,12 @@
 			children = (
 				4986656E1C8D24E9004BA249 /* Settings.storyboard */,
 				49C9888D1EA32D62000AF3CF /* Preferences.swift */,
+				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 				4986656D1C8D24E9004BA249 /* AccountTableViewController.swift */,
 				495574881CA6112000193EE5 /* LoggerViewController.swift */,
 				49989A4B1EA44C9B00F95A65 /* NotificationsTableViewController.swift */,
 				49F128C31F5F365F0000E19A /* RatingsReviewsTableViewController.swift */,
 				49CC70951CD1CF53000566D4 /* SecurityTableViewController.swift */,
-				4986656F1C8D24E9004BA249 /* SettingsTableViewController.swift */,
 				495D1D191CFE0B54006F55C2 /* StartupTableViewController.swift */,
 			);
 			path = Settings;

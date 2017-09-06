@@ -13,7 +13,7 @@
         <!--Navigation Controller-->
         <scene sceneID="VcO-Wr-GEF">
             <objects>
-                <navigationController storyboardIdentifier="settings" automaticallyAdjustsScrollViewInsets="NO" id="1Rp-Ig-TtJ" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1Rp-Ig-TtJ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WVQ-0d-8E9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -63,10 +63,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="dh5-aG-QG7" kind="show" id="pUD-c4-gJl">
-                                                <segue key="commit" inheritsFrom="parent" id="PNj-wz-dGt"/>
-                                                <segue key="preview" inheritsFrom="commit" id="vqp-fl-7Lp"/>
-                                                <nil key="action"/>
+                                            <segue destination="fDs-sB-uNZ" kind="showDetail" id="EyK-X5-myh">
+                                                <segue key="commit" inheritsFrom="parent" id="VNJ-Pl-rs8"/>
+                                                <segue key="preview" inheritsFrom="commit" id="dCQ-Aj-Ftr"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -94,9 +93,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="3Xs-ap-SmM" kind="show" id="vo6-Or-3cy">
-                                                <segue key="commit" inheritsFrom="parent" id="AIH-np-wOo"/>
-                                                <segue key="preview" inheritsFrom="commit" id="wgw-14-YGW"/>
+                                            <segue destination="aDb-hb-dsJ" kind="showDetail" id="XL0-iB-kcJ">
+                                                <segue key="commit" inheritsFrom="parent" id="I4M-xo-K71"/>
+                                                <segue key="preview" inheritsFrom="commit" id="tkV-MR-d61"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -121,9 +120,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="dm8-xE-zWF" kind="show" id="CHY-Me-CS0">
-                                                <segue key="commit" inheritsFrom="parent" id="oQC-kz-4hP"/>
-                                                <segue key="preview" inheritsFrom="commit" id="5x8-XW-CNK"/>
+                                            <segue destination="MRb-IZ-Zs8" kind="showDetail" id="DAj-ri-qdV">
+                                                <segue key="commit" inheritsFrom="parent" id="Kf1-45-O3X"/>
+                                                <segue key="preview" inheritsFrom="commit" id="hjC-sd-G7V"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -144,9 +143,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="Zu2-2G-KtV" kind="show" id="Sbs-ds-QhK">
-                                                <segue key="commit" inheritsFrom="parent" id="Svo-Ya-Xve"/>
-                                                <segue key="preview" inheritsFrom="commit" id="nNk-kO-eR4"/>
+                                            <segue destination="jbZ-dh-sO5" kind="showDetail" id="p3h-ea-B2f">
+                                                <segue key="commit" inheritsFrom="parent" id="kUe-TC-KBV"/>
+                                                <segue key="preview" inheritsFrom="commit" id="LFO-P4-apQ"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -171,9 +170,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="NLT-k4-hco" kind="show" id="Fsy-Hh-DL2">
-                                                <segue key="commit" inheritsFrom="parent" id="jwM-vC-EaE"/>
-                                                <segue key="preview" inheritsFrom="commit" id="XyT-8G-0cx"/>
+                                            <segue destination="pAE-Qp-cQ0" kind="showDetail" id="YkY-KX-HMt">
+                                                <segue key="commit" inheritsFrom="parent" id="7Gk-kf-Nvo"/>
+                                                <segue key="preview" inheritsFrom="commit" id="Ejo-9O-cIe"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -194,9 +193,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="Lag-qQ-BoW" kind="show" id="Un9-Dc-dQV">
-                                                <segue key="commit" inheritsFrom="parent" id="osh-KO-RTT"/>
-                                                <segue key="preview" inheritsFrom="commit" id="DBF-8w-aks"/>
+                                            <segue destination="miC-vR-OdF" kind="showDetail" id="mYQ-Cc-qek">
+                                                <segue key="commit" inheritsFrom="parent" id="Dx6-jT-dEL"/>
+                                                <segue key="preview" inheritsFrom="commit" id="iLl-U0-rqh"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -217,9 +216,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="qMr-P6-21R" kind="show" id="hpV-Cr-fjj">
-                                                <segue key="commit" inheritsFrom="parent" id="c3N-F5-pLv"/>
-                                                <segue key="preview" inheritsFrom="commit" id="OmA-VZ-cVJ"/>
+                                            <segue destination="tlM-KB-1z9" kind="showDetail" id="Ut2-B6-73r">
+                                                <segue key="commit" inheritsFrom="parent" id="Iry-FA-Nit"/>
+                                                <segue key="preview" inheritsFrom="commit" id="Ese-Na-XZV"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
@@ -391,7 +390,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9yQ-Em-4Xm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="-1751"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="-1751.8740629685158"/>
         </scene>
         <!--Security-->
         <scene sceneID="H61-VU-9oI">
@@ -460,7 +459,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U8i-9K-Gx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="-1055"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="-1055.6221889055473"/>
         </scene>
         <!--Startup-->
         <scene sceneID="zI5-Dm-MQO">
@@ -571,7 +570,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BgI-sd-J7o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="-362"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="-362.06896551724139"/>
         </scene>
         <!--Notifications-->
         <scene sceneID="pTP-gt-BLi">
@@ -665,7 +664,20 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oa9-ZV-uO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="322"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="321.58920539730138"/>
+        </scene>
+        <!--Break Split View Controller-->
+        <scene sceneID="KM3-ya-3Fm">
+            <objects>
+                <splitViewController storyboardIdentifier="settings" id="Kco-at-uMG" customClass="breakSplitViewController" customModule="break" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="1Rp-Ig-TtJ" kind="relationship" relationship="masterViewController" id="b1T-ux-GAQ"/>
+                        <segue destination="fDs-sB-uNZ" kind="relationship" relationship="detailViewController" id="SCC-B0-UHf"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WAd-t2-crL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3492" y="322"/>
         </scene>
         <!--Ratings and Reviews-->
         <scene sceneID="G8o-yc-pQc">
@@ -729,7 +741,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jbr-Be-5Wo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="1015"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="1014.2428785607198"/>
         </scene>
         <!--Beta Testers-->
         <scene sceneID="VFp-PK-S6v">
@@ -907,7 +919,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iBJ-WU-YrS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="1712"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="1711.3943028485758"/>
         </scene>
         <!--Log-->
         <scene sceneID="7Og-J4-F55">
@@ -945,16 +957,142 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cNe-9U-Kj2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5726" y="2418"/>
+            <point key="canvasLocation" x="6664.8000000000002" y="2417.5412293853074"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LEK-Yw-QVd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fDs-sB-uNZ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZJE-XE-NOe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dh5-aG-QG7" kind="relationship" relationship="rootViewController" id="DZq-fe-xfu"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xqz-Ca-bpv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="-1751.8740629685158"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ag4-Ea-D1m">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aDb-hb-dsJ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1cH-Yz-TnV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="3Xs-ap-SmM" kind="relationship" relationship="rootViewController" id="1IJ-5O-djL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1W7-yX-H9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="-1055.6221889055473"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vqH-O0-H5C">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MRb-IZ-Zs8" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mCG-Co-BAQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dm8-xE-zWF" kind="relationship" relationship="rootViewController" id="LIy-N7-lC3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GAg-mr-B2B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="-362.06896551724139"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wXk-6Y-2Mj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jbZ-dh-sO5" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="c65-T6-mOd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Zu2-2G-KtV" kind="relationship" relationship="rootViewController" id="BAg-wn-lFL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p19-Uu-K2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="321.58920539730138"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ThU-zO-s4p">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pAE-Qp-cQ0" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TwH-H0-1Gy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="NLT-k4-hco" kind="relationship" relationship="rootViewController" id="T2o-nz-OkM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vEP-0O-feA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="1014.2428785607198"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="BKc-hV-HnD">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="miC-vR-OdF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SvP-KQ-d7D">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Lag-qQ-BoW" kind="relationship" relationship="rootViewController" id="zaZ-mq-3xL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dg0-Vk-KXD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="1711.3943028485758"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="YPz-ut-OMg">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tlM-KB-1z9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Whq-2Q-P1i">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qMr-P6-21R" kind="relationship" relationship="rootViewController" id="tpg-lE-Uxp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dwv-Tn-3hi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725.6000000000004" y="2417.5412293853074"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Fsy-Hh-DL2"/>
-        <segue reference="oQC-kz-4hP"/>
-        <segue reference="vqp-fl-7Lp"/>
-        <segue reference="osh-KO-RTT"/>
-        <segue reference="hpV-Cr-fjj"/>
-        <segue reference="nNk-kO-eR4"/>
-        <segue reference="wgw-14-YGW"/>
+        <segue reference="p3h-ea-B2f"/>
+        <segue reference="DAj-ri-qdV"/>
+        <segue reference="YkY-KX-HMt"/>
+        <segue reference="XL0-iB-kcJ"/>
+        <segue reference="mYQ-Cc-qek"/>
+        <segue reference="Ut2-B6-73r"/>
+        <segue reference="EyK-X5-myh"/>
     </inferredMetricsTieBreakers>
 </document>

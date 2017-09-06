@@ -25,6 +25,8 @@ class AccountTableViewController: UITableViewController {
 
 		// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 		// self.navigationItem.rightBarButtonItem = self.editButtonItem()
+		setupSelfAsDetailViewController()
+
 		schoolLoop = SchoolLoop.sharedInstance
 		accountNameLabel.text = schoolLoop.account.fullName
 		schoolNameLabel.text = schoolLoop.school.name

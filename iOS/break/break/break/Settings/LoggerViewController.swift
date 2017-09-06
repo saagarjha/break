@@ -15,6 +15,8 @@ class LoggerViewController: UIViewController {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
+		setupSelfAsDetailViewController()
+		
 		logTextView.text = Logger.readLog()
 	}
 	
