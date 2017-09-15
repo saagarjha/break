@@ -129,12 +129,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 	@IBAction func forgot(_ sender: Any) {
-		let safariViewController = breakSafariViewController(url: SchoolLoopConstants.forgotURL)
+		let safariViewController = breakSafariViewController(url: SchoolLoopConstants.forgotURL, entersReaderIfAvailable: false)
 		present(safariViewController, animated: true, completion: nil)
 	}
 
 	@IBAction func privacyPolicy(_ sender: Any) {
-		let safariViewController = breakSafariViewController(url: URL(string: "https://saagarjha.com/projects/break/privacy-policy/")!)
+		let safariViewController = breakSafariViewController(url: URL(string: "https://saagarjha.com/projects/break/privacy-policy/")!, entersReaderIfAvailable: false)
 		present(safariViewController, animated: true, completion: nil)
 	}
 

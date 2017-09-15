@@ -32,7 +32,7 @@ class WebViewToSafariViewControllerShimViewController: UIViewController, WKNavig
 				decisionHandler(.allow)
 				return
 		}
-		let safariViewController = breakSafariViewController(url: url)
+		let safariViewController = breakSafariViewController(url: url, entersReaderIfAvailable: false)
 		navigationController?.present(safariViewController, animated: true, completion: nil)
 		decisionHandler(.cancel)
 	}
@@ -45,7 +45,7 @@ extension WebViewToSafariViewControllerShimViewController: WKUIDelegate {
 	}
 	
 	func webView(_ webView: WKWebView, previewingViewControllerForElement elementInfo: WKPreviewElementInfo, defaultActions previewActions: [WKPreviewActionItem]) -> UIViewController? {
-		let safariViewController = breakSafariViewController(url: elementInfo.linkURL!)
+		let safariViewController = breakSafariViewController(url: elementInfo.linkURL!, entersReaderIfAvailable: false)
 		return safariViewController
 	}
 	
