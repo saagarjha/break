@@ -61,7 +61,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: Any) {
+	@objc func refresh(_ sender: Any) {
 		schoolLoop.getLoopMail { (_, error) in
 			DispatchQueue.main.async { [weak self] in
 				guard let `self` = self else {

@@ -57,7 +57,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: Any) {
+	@objc func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getAssignments { (_, error) in
 			DispatchQueue.main.async { [weak self] in
@@ -102,8 +102,8 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		(filteredAssignments[filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
 			cell.courseNameDiscriminatorView.backgroundColor = UIColor(string: assignment.courseName)
 			if assignment.isCompleted {
-				let titleText = NSAttributedString(string: assignment.title, attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
-				let courseNameText = NSAttributedString(string: assignment.courseName, attributes: [NSStrikethroughStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+				let titleText = NSAttributedString(string: assignment.title, attributes: [NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+				let courseNameText = NSAttributedString(string: assignment.courseName, attributes: [NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
 				cell.titleLabel.attributedText = titleText
 				cell.courseNameLabel.attributedText = courseNameText
 			} else {

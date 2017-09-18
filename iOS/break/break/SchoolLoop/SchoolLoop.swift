@@ -891,7 +891,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	/// - Returns: The parent for the locker item at the specified path, if any
 	fileprivate func lockerItemParent(forPath path: String) -> SchoolLoopLockerItem? {
 		// The path without a trailing "/"
-		let cleanPath = path.hasSuffix("/") ? path.substring(to: (path.range(of: "/", options: .backwards)?.lowerBound)!) : path
+		let cleanPath = path.hasSuffix("/") ? String(path.range(of: "/", options: .backwards).map { path[..<$0.lowerBound] } ?? "") : path
 		var currentLockerItem: SchoolLoopLockerItem? = locker
 		var currentDirectoryContents: [SchoolLoopLockerItem] = locker?.lockerItems ?? []
 		for (index, pathComponent) in cleanPath.components(separatedBy: "/").enumerated().dropFirst().dropLast() {
@@ -940,9 +940,11 @@ extension SchoolLoop: XMLParserDelegate {
 	public func parser(_ parser: XMLParser, foundCharacters string: String) {
 		if currentTokens.last == "d:href" {
 			// Drop the leading "/users/[username]"
-			currentPath = string.substring(from: string.index(after: string.characters.index(of: "/")!))
-			currentPath = currentPath.substring(from: currentPath.index(after: currentPath.characters.index(of: "/")!))
-			currentPath = currentPath.substring(from: currentPath.characters.index(of: "/")!)
+			if let path1 = string.index(of: "/").map({ string[string.index(after: $0)...] }),
+				let path2 = path1.index(of: "/").map({ path1[path1.index(after: $0)...] }),
+				let path3 = path2.index(of: "/").map({ path2[$0...] }) {
+				currentPath = String(path3)
+			}
 		} else if currentTokens.last == "d:displayname" {
 			currentName += string
 		} else if currentTokens.last == "d:getcontenttype" {
@@ -995,8 +997,8 @@ extension URLSession {
 	func synchronousDataTask(with request: URLRequest, completionHandler: (_ data: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
 		var data: Data?, response: URLResponse?, error: Error?
 		let semaphore = DispatchSemaphore(value: 0)
-		dataTask(with: request) {
-			(data, response, error) = $0
+		dataTask(with: request) { d, r, e in
+			(data, response, error) = (d, r, e)
 			semaphore.signal()
 		}.resume()
 		_ = semaphore.wait(timeout: DispatchTime.distantFuture)

@@ -56,7 +56,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: Any) {
+	@objc func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getNews() { (_, error) in
 			DispatchQueue.main.async { [weak self] in

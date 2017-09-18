@@ -235,7 +235,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Find the position of the user-entered text
 		var attributedRange = NSRange(location: 0, length: 0)
 		if attributedText.length > 0 {
-			attributedText.attribute(NSForegroundColorAttributeName, at: 0, longestEffectiveRange: &attributedRange, in: NSRange(location: 0, length: attributedText.length))
+			attributedText.attribute(.foregroundColor, at: 0, longestEffectiveRange: &attributedRange, in: NSRange(location: 0, length: attributedText.length))
 		}
 		
 		// If the range specified is in the user-entered range, use that,
@@ -251,7 +251,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		
 		// Display the suggestion
 		let attributedString = NSMutableAttributedString(string: suggestion)
-		attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
+		attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
 		textField.attributedText = attributedString
 		
 		// On iOS, it appears that setting the string "scrolls" the text field
@@ -297,11 +297,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		return schoolName
 	}
 
-	func hideKeyboard() {
+	@objc func hideKeyboard() {
 		view.endEditing(true)
 	}
 
-	func keyboardWillChange(notification: NSNotification) {
+	@objc func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
 			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
 			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {

@@ -611,17 +611,17 @@
 					4906AB781CCDBFB800610448 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 3493UDPWAK;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					4906AB841CCDBFBA00610448 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 3493UDPWAK;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					493E17751C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 3493UDPWAK;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -634,13 +634,13 @@
 					493E17891C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = X4A9GH5NN2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						TestTargetID = 493E17751C63E95000AFC7A6;
 					};
 					493E17941C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = X4A9GH5NN2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						TestTargetID = 493E17751C63E95000AFC7A6;
 					};
 				};
@@ -885,7 +885,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -905,7 +904,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -924,7 +922,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -944,7 +942,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -1064,7 +1062,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1082,7 +1080,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1094,7 +1092,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/break.app/break";
 			};
 			name = Debug;
@@ -1108,7 +1106,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/break.app/break";
 			};
 			name = Release;
@@ -1120,7 +1118,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = break;
 				USES_XCTRUNNER = YES;
 			};
@@ -1134,7 +1132,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.breakUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = break;
 				USES_XCTRUNNER = YES;
 			};

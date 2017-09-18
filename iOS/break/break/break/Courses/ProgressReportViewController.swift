@@ -141,8 +141,13 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			titleButton.setImage(ProgressReportViewController.triangleImage, for: .normal)
 			// Make the image show up on the right
 			titleButton.semanticContentAttribute = .forceRightToLeft
-			// Center the title label
-			titleButton.contentEdgeInsets.left = ProgressReportViewController.triangleImageWidth + ProgressReportViewController.triangeImageSpacing
+			// Don't mess with the title view in iOS 11, since its animation is
+			// somewhat different and breaks this method
+			if #available(iOS 11.0, *) {
+			} else {
+				// Center the title label
+				titleButton.contentEdgeInsets.left = ProgressReportViewController.triangleImageWidth + ProgressReportViewController.triangeImageSpacing
+			}
 		}
 	}
 	@IBOutlet weak var addGradeButtonItem: UIBarButtonItem! {
@@ -168,10 +173,10 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: gradesTableView)
 		setupSelfAsDetailViewController()
-		
+
 		header = ProgressReportHeader()
 		header.headerTableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showCourse)))
-		
+
 		schoolLoop = SchoolLoop.sharedInstance
 		guard let periodID = periodID else {
 			return
@@ -209,8 +214,12 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 	override func viewWillLayoutSubviews() {
 		super.viewWillLayoutSubviews()
-		// Collapse the left content inset if there's not enough space for it
-		titleButton.contentEdgeInsets.left = max(titleButton.contentEdgeInsets.left - (titleButton.frame.midX - view.frame.midX), 0)
+		// This only works on iOS 10 or below
+		if #available(iOS 11.0, *) {
+		} else {
+			// Collapse the left content inset if there's not enough space for it
+			titleButton.contentEdgeInsets.left = max(titleButton.contentEdgeInsets.left - (titleButton.frame.midX - view.frame.midX), 0)
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -415,7 +424,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 
 	// MARK: - Navigation
 
-	func showCourse(_ sender: Any) {
+	@objc func showCourse(_ sender: Any) {
 		guard let courseViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "course") as? CourseViewController else {
 			assertionFailure("Could not create CourseViewController")
 			return
@@ -423,7 +432,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		courseViewController.course = computableCourse
 		navigationController?.pushViewController(courseViewController, animated: true)
 	}
-	
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		setupForceTouch(originatingFrom: gradesTableView)
 	}

@@ -55,7 +55,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		// Configure the view for the selected state
 	}
 
-	func changeTitle(_ sender: Any) {
+	@objc func changeTitle(_ sender: Any) {
 		let alertController = UIAlertController(title: "Change Title", message: "Enter a new title for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
@@ -75,7 +75,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		progressReportViewController.present(alertController, animated: true, completion: nil)
 	}
 
-	func changeScore(_ sender: Any?) {
+	@objc func changeScore(_ sender: Any?) {
 		let alertController = UIAlertController(title: "Change Score", message: "Enter a new score for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
@@ -97,7 +97,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 
 	}
 
-	func changeMaxPoints(_ sender: Any?) {
+	@objc func changeMaxPoints(_ sender: Any?) {
 		let alertController = UIAlertController(title: "Change Max Value", message: "Enter a new max value for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
@@ -118,7 +118,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		progressReportViewController.present(alertController, animated: true, completion: nil)
 	}
 
-	func changeCategoryName(_ sender: Any) {
+	@objc func changeCategoryName(_ sender: Any) {
 		let alertController = UIAlertController(title: "Change Category", message: "Enter a new category for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
@@ -144,7 +144,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		progressReportViewController.present(alertController, animated: true, completion: nil)
 	}
 
-	func changePercentScore(_ sender: Any) {
+	@objc func changePercentScore(_ sender: Any) {
 		let alertController = UIAlertController(title: "Change Percent Score", message: "Enter a new percent score for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
@@ -159,7 +159,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		alertController.addTextField { [unowned self] textField in
 			textField.placeholder = "New Percent Score"
 			if let text = self.percentScoreLabel.text {
-				textField.text = text.hasSuffix("%") ? text.substring(to: text.index(before: text.endIndex)) : text
+				textField.text = text.hasSuffix("%") ? String(text[..<text.index(before: text.endIndex)]) : text
 			} else {
 				textField.text = self.percentScoreLabel.text ?? ""
 			}

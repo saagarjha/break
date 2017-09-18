@@ -70,7 +70,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: Any) {
+	@objc func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getLocker(withPath: path) { error in
 			DispatchQueue.main.async { [weak self] in
@@ -103,16 +103,34 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
 
-	func changePath(_ sender: UISegmentedControl) {
+	@objc func changePath(_ sender: UISegmentedControl) {
 		navigationItem.title = sender.titleForSegment(at: sender.selectedSegmentIndex) ?? ""
 		path = "/" + (sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)! + "/"
 		refresh(self)
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		let width: CGFloat
+		if #available(iOS 11.0, *) {
+			// In iOS 11 this method gets called slightly before rotating is
+			// registered, so during the landscape -> portrait tranistion the
+			// width ends up being incorrect. Exit early in this case and just
+			// return whatever the safe area insets are.
+			guard lockerCollectionView.safeAreaInsets.left == 0, lockerCollectionView.safeAreaInsets.right == 0 else {
+				return lockerCollectionView.safeAreaInsets
+			}
+			
+			width = lockerCollectionView.frame.width - lockerCollectionView.safeAreaInsets.right - lockerCollectionView.safeAreaInsets.left
+		} else {
+			width = lockerCollectionView.frame.width
+		}
 		// Do not use ceil here
-		let inset = lockerCollectionView.frame.width.truncatingRemainder(dividingBy: LockerViewController.cellWidth) / (floor(lockerCollectionView.frame.width / LockerViewController.cellWidth) + 1)
-		return UIEdgeInsets(inset: inset)
+		let inset = width.truncatingRemainder(dividingBy: LockerViewController.cellWidth) / (floor(width / LockerViewController.cellWidth) + 1)
+		if #available(iOS 11.0, *) {
+			return UIEdgeInsets(top: inset, left: lockerCollectionView.safeAreaInsets.left + inset, bottom: inset, right: lockerCollectionView.safeAreaInsets.right + inset)
+		} else {
+			return UIEdgeInsets(inset: inset)
+		}
 	}
 
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -175,7 +193,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			self.lockerCollectionView?.collectionViewLayout.invalidateLayout()
 		}, completion: nil)
 	}
-	
+
 	static func lockerItemImage(for lockerItem: SchoolLoopLockerItem) -> UIImage {
 		switch lockerItem.type {
 		case .directory:
@@ -209,7 +227,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 		return false
 	}
-	
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		setupForceTouch(originatingFrom: lockerCollectionView)
 	}

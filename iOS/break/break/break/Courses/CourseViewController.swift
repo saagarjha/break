@@ -41,7 +41,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 		// Dispose of any resources that can be recreated.
 	}
 
-	func addCategory(_ sender: Any) {
+	@objc func addCategory(_ sender: Any) {
 		let category = SchoolLoopComputableCategory(name: "Category", score: "", weight: "0")
 		category.computableCourse = course
 		course.computableCategories.insert(category, at: 0)

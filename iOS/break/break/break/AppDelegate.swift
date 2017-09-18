@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 
 		if WCSession.isSupported() {
-			let session = WCSession.default()
+			let session = WCSession.default
 			session.delegate = self
 			session.activate()
 		}
@@ -461,7 +461,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 			if error == .noError {
 				if message["courses"] != nil {
-					schoolLoop.getCourses { _ in
+					schoolLoop.getCourses { _,_ in
 						replyHandler(["courses": NSKeyedArchiver.archivedData(withRootObject: schoolLoop.courses)])
 					}
 				} else if let periodID = message["grades"] as? String {
@@ -471,7 +471,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						}
 					}
 				} else if message["assignments"] != nil {
-					schoolLoop.getAssignments { _ in
+					schoolLoop.getAssignments { _,_ in
 						replyHandler(["assignments": NSKeyedArchiver.archivedData(withRootObject: schoolLoop.assignmentsWithDueDates)])
 					}
 				} else {

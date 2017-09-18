@@ -57,7 +57,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 		// Dispose of any resources that can be recreated.
 	}
 
-	func refresh(_ sender: Any) {
+	@objc func refresh(_ sender: Any) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		schoolLoop.getCourses { (_, error) in
 			DispatchQueue.main.async { [weak self] in
@@ -173,7 +173,7 @@ class CoursesViewController: UIViewController, UITableViewDataSource, UITableVie
 			return nil
 		}
 		let selectedCourse = filteredCourses[indexPath.row]
-		destinationViewController.title = selectedCourse.courseName
+		destinationViewController.titleButton.setTitle(selectedCourse.courseName, for: .normal)
 		destinationViewController.periodID = selectedCourse.periodID
 		destinationViewController.preferredContentSize = .zero
 		previewingContext.sourceRect = cell.frame

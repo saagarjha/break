@@ -45,9 +45,9 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 			label.translatesAutoresizingMaskIntoConstraints = false
 			label.numberOfLines = 0
 			constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-(>=4)-[label]-(>=4)-|", options: [], metrics: nil, views: ["label": label])
-			label.setContentHuggingPriority(UILayoutPriorityRequired, for: .vertical)
+			label.setContentHuggingPriority(.required, for: .vertical)
 		}
-		subtitleLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+		subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 		
 		discriminatorView.translatesAutoresizingMaskIntoConstraints = false
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])

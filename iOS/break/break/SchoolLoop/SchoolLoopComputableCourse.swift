@@ -102,7 +102,7 @@ extension Double {
 			self.init(percent)
 			return
 		}
-		self.init(percent.substring(to: percent.index(before: percent.endIndex)))
+		self.init(percent[..<percent.index(before: percent.endIndex)])
 	}
 
 	static func fuzzyCompare(_ lhs: Double, _ rhs: Double, precision: Int) -> ComparisonResult {

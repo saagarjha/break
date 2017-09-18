@@ -47,7 +47,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 			guard let message = message else {
 				return
 			}
-			message.data(using: .utf8).flatMap { messageTextView.attributedText = try? NSAttributedString(data: $0, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil)
+			message.data(using: .utf8).flatMap { messageTextView.attributedText = try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
 			}
 			messageTextView.textColor = .gray
 
@@ -169,7 +169,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		}
 	}
 
-	func selectMessageTextView(_ sender: UITapGestureRecognizer) {
+	@objc func selectMessageTextView(_ sender: UITapGestureRecognizer) {
 		// If the user touches "below" the compose text view (only possible if
 		// the tableview doesn't fill the screen), then act as if the text view
 		// fills the screen and give it first responder status
@@ -245,7 +245,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		relayoutComposeView()
 	}
 
-	func keyboardWillChange(notification: NSNotification) {
+	@objc func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
 			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
 			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
@@ -262,7 +262,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		})
 	}
 
-	func deviceOrientationDidChange(notification: NSNotification) {
+	@objc func deviceOrientationDidChange(notification: NSNotification) {
 		resizeBorders()
 	}
 

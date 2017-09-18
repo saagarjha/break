@@ -47,7 +47,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		// Dispose of any resources that can be recreated.
 	}
 
-	func done(_ sender: Any?) {
+	@objc func done(_ sender: Any?) {
 		loopMailContactsDelegate?.selected(contacts: selectedContacts)
 		navigationController?.popViewController(animated: true)
 	}
@@ -131,7 +131,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		contactsTableView.reloadData()
 	}
 
-	func keyboardWillChange(notification: NSNotification) {
+	@objc func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
 			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
 			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
