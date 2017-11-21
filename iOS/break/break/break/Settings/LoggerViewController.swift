@@ -23,7 +23,7 @@ class LoggerViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		guard logTextView.text.characters.count > 0 else {
+		guard logTextView.text.count > 0 else {
 			return
 		}
 		logTextView.layoutIfNeeded()

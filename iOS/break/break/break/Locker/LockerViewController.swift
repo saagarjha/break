@@ -48,13 +48,18 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			if items.index(of: path.components(separatedBy: "/")[1]) == nil {
 				schoolLoop.getLocker(withPath: path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
-				navigationItem.title = items[0]
+				if #available(iOS 11.0, *) {
+					navigationItem.largeTitleDisplayMode = .always
+				}
 				path = path + items[0].addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)! + "/"
 			}
 			segmentedControl.addTarget(self, action: #selector(changePath), for: .valueChanged)
 		} else {
 			navigationItem.leftItemsSupplementBackButton = true
 			navigationItem.leftBarButtonItem = nil
+			if #available(iOS 11.0, *) {
+				navigationItem.largeTitleDisplayMode = .never
+			}
 		}
 		refresh(self)
 	}
@@ -119,7 +124,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			guard lockerCollectionView.safeAreaInsets.left == 0, lockerCollectionView.safeAreaInsets.right == 0 else {
 				return lockerCollectionView.safeAreaInsets
 			}
-			
+
 			width = lockerCollectionView.frame.width - lockerCollectionView.safeAreaInsets.right - lockerCollectionView.safeAreaInsets.left
 		} else {
 			width = lockerCollectionView.frame.width
@@ -163,6 +168,11 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			}
 			newLockerViewController.path = lockerItem.path
 			newLockerViewController.title = lockerItem.name
+			// If we're at the top level, grab the title from the segmented
+			// control and set the back button's text
+			if let segmentedControl = navigationItem.titleView as? UISegmentedControl {
+				navigationItem.backBarButtonItem = UIBarButtonItem(title: segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex), style: .plain, target: nil, action: nil)
+			}
 			navigationController?.pushViewController(newLockerViewController, animated: true)
 		}
 	}

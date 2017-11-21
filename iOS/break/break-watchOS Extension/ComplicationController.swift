@@ -75,11 +75,11 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 			template.headerTextProvider = CLKSimpleTextProvider(text: "Nothing due")
 			if dueTomorrow.count > 0 {
 				template.headerTextProvider = CLKSimpleTextProvider(text: "Due tomorrow", shortText: "Due")
-				template.row1Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[0].courseName.characters.last!)")
+				template.row1Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[0].courseName.last!)")
 				template.row1Column2TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[0].title)")
 			}
 			if dueTomorrow.count > 1 {
-				template.row2Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].courseName.characters.last!)")
+				template.row2Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].courseName.last!)")
 				template.row2Column2TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].title)")
 			}
 			handler(CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template))
@@ -145,11 +145,11 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 				template.headerTextProvider = CLKSimpleTextProvider(text: "Nothing due")
 				if dueTomorrow.count > 0 {
 					template.headerTextProvider = CLKSimpleTextProvider(text: "Due tomorrow", shortText: "Due")
-					template.row1Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[0].courseName.characters.last!)")
+					template.row1Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[0].courseName.last!)")
 					template.row1Column2TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[0].title)")
 				}
 				if dueTomorrow.count > 1 {
-					template.row2Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].courseName.characters.last!)")
+					template.row2Column1TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].courseName.last!)")
 					template.row2Column2TextProvider = CLKSimpleTextProvider(text: "\(dueTomorrow[1].title)")
 				}
 				entries.append(CLKComplicationTimelineEntry(date: futureDate, complicationTemplate: template))

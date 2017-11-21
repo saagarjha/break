@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
+class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
 	static let cellIdentifier = "news"
 	
@@ -24,21 +24,14 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	var destinationViewController: NewsDescriptionViewController!
 
-	@IBOutlet weak var newsTableView: UITableView! {
-		didSet {
-			breakShared.autoresizeTableViewCells(for: newsTableView)
-			breakShared.add(refreshControl, to: newsTableView)
-			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-		}
-	}
-	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		addSearchBar(from: searchController, to: newsTableView)
+		setupRefreshControl()
+		addSearchBar(from: searchController, to: tableView)
 		setupSelfAsMasterViewController()
 		
 		schoolLoop = SchoolLoop.sharedInstance
@@ -70,7 +63,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 					`self`.updateSearchResults(for: self.searchController)
 				}
 				// Otherwise the refresh control dismiss animation doesn't work
-				`self`.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
+				`self`.refreshControl?.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 	}
@@ -80,15 +73,15 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
 
-	func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filteredNews.count
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsViewController.cellIdentifier, for: indexPath) as? NewsTableViewCell else {
 			assertionFailure("Could not deque NewsTableViewCell")
 			return tableView.dequeueReusableCell(withIdentifier: NewsViewController.cellIdentifier, for: indexPath)
@@ -100,7 +93,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		return cell
 	}
 
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
@@ -115,7 +108,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			filteredNews = news
 		}
 		DispatchQueue.main.async { [unowned self] in
-			self.newsTableView.reloadData()
+			self.tableView.reloadData()
 		}
 	}
 
@@ -131,12 +124,12 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		setupForceTouch(originatingFrom: newsTableView)
+		setupForceTouch(originatingFrom: tableView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = newsTableView.indexPathForRow(at: location),
-			let cell = newsTableView.cellForRow(at: indexPath) else {
+		guard let indexPath = tableView.indexPathForRow(at: location),
+			let cell = tableView.cellForRow(at: indexPath) else {
 				return nil
 		}
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "newsDescription") as? NewsDescriptionViewController else {
@@ -159,7 +152,7 @@ class NewsViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? NewsDescriptionViewController,
 			let cell = sender as? NewsTableViewCell,
-			let indexPath = newsTableView.indexPath(for: cell) else {
+			let indexPath = tableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to NewsDescriptionViewController")
 				return
 		}

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoopMailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
+class LoopMailViewController: UITableViewController, Refreshable, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
 	static let cellIdentifier = "LoopMail"
 
@@ -25,25 +25,18 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	var destinationViewController: LoopMailMessageViewController!
 
-	@IBOutlet weak var loopMailTableView: UITableView! {
-		didSet {
-			breakShared.autoresizeTableViewCells(for: loopMailTableView)
-			breakShared.add(refreshControl, to: loopMailTableView)
-			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-		}
-	}
-	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 	
 	var forceTouchSourceView: UIView! {
-		return loopMailTableView
+		return tableView
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		addSearchBar(from: searchController, to: loopMailTableView)
+		setupRefreshControl()
+		addSearchBar(from: searchController, to: tableView)
 		setupSelfAsMasterViewController()
 
 		schoolLoop = SchoolLoop.sharedInstance
@@ -73,7 +66,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 					`self`.updateSearchResults(for: self.searchController)
 				}
 				// Otherwise the refresh control dismiss animation doesn't work
-				`self`.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
+				`self`.refreshControl?.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 	}
@@ -83,15 +76,15 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
 
-	func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filteredLoopMail.count
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: LoopMailViewController.cellIdentifier, for: indexPath) as? LoopMailTableViewCell else {
 			assertionFailure("Could not deque LoopMailTableViewCell")
 			return tableView.dequeueReusableCell(withIdentifier: LoopMailViewController.cellIdentifier, for: indexPath)
@@ -103,11 +96,11 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		return cell
 	}
 
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
-	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+	override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		let replyAction = UITableViewRowAction(style: .default, title: "Reply") { [weak self] _, indexPath in
 			guard let `self` = self else {
 				return
@@ -130,7 +123,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 			filteredLoopMail = loopMail
 		}
 		DispatchQueue.main.async { [unowned self] in
-			self.loopMailTableView.reloadData()
+			self.tableView.reloadData()
 		}
 	}
 
@@ -172,12 +165,12 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		setupForceTouch(originatingFrom: loopMailTableView)
+		setupForceTouch(originatingFrom: tableView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = loopMailTableView.indexPathForRow(at: location),
-			let cell = loopMailTableView.cellForRow(at: indexPath) else {
+		guard let indexPath = tableView.indexPathForRow(at: location),
+			let cell = tableView.cellForRow(at: indexPath) else {
 				return nil
 		}
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "loopMailMessage") as? LoopMailMessageViewController else {
@@ -204,7 +197,7 @@ class LoopMailViewController: UIViewController, UITableViewDataSource, UITableVi
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? LoopMailMessageViewController,
 			let cell = sender as? LoopMailTableViewCell,
-			let indexPath = loopMailTableView.indexPath(for: cell) else {
+			let indexPath = tableView.indexPath(for: cell) else {
 				return
 		}
 		let selectedLoopMail = filteredLoopMail[indexPath.row]

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AssignmentsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
+class AssignmentsViewController: UITableViewController, Refreshable, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
 	static let cellIdentifier = "assignment"
 
@@ -25,21 +25,14 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 
 	var destinationViewController: AssignmentDescriptionViewController!
 
-	@IBOutlet weak var assignmentsTableView: UITableView! {
-		didSet {
-			breakShared.autoresizeTableViewCells(for: assignmentsTableView)
-			breakShared.add(refreshControl, to: assignmentsTableView)
-			refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-		}
-	}
-	let refreshControl = UIRefreshControl()
 	let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		addSearchBar(from: searchController, to: assignmentsTableView)
+		setupRefreshControl()
+		addSearchBar(from: searchController, to: tableView)
 		setupSelfAsMasterViewController()
 
 		schoolLoop = SchoolLoop.sharedInstance
@@ -71,7 +64,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 					`self`.updateSearchResults(for: `self`.searchController)
 				}
 				// Otherwise the refresh control dismiss animation doesn't work
-				`self`.refreshControl.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
+				`self`.refreshControl?.perform(#selector(UIRefreshControl.endRefreshing), with: nil, afterDelay: 0)
 			}
 		}
 
@@ -82,19 +75,19 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		navigationController?.present(viewController, animated: true, completion: nil)
 	}
 
-	func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return filteredAssignments.keys.count
 	}
 
-	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		return AssignmentsViewController.dateFormatter.string(from: filteredAssignmentDueDates[section])
 	}
 
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return filteredAssignments[filteredAssignmentDueDates[section]]?.count ?? 0
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: AssignmentsViewController.cellIdentifier, for: indexPath) as? AssignmentTableViewCell else {
 			assertionFailure("Could not deque AssignmentTableViewCell")
 			return tableView.dequeueReusableCell(withIdentifier: AssignmentsViewController.cellIdentifier, for: indexPath)
@@ -114,11 +107,11 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		return cell
 	}
 
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
-	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+	override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		let completeAction = UITableViewRowAction(style: .normal, title: "Mark\nDone") { [unowned self] _, indexPath in
 			(self.filteredAssignments[self.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
 				assignment.isCompleted = !assignment.isCompleted
@@ -149,7 +142,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 			$0.compare($1) == .orderedAscending
 		}
 		DispatchQueue.main.async { [unowned self] in
-			self.assignmentsTableView.reloadData()
+			self.tableView.reloadData()
 		}
 	}
 
@@ -165,12 +158,12 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		setupForceTouch(originatingFrom: assignmentsTableView)
+		setupForceTouch(originatingFrom: tableView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = assignmentsTableView.indexPathForRow(at: location),
-			let cell = assignmentsTableView.cellForRow(at: indexPath) else {
+		guard let indexPath = tableView.indexPathForRow(at: location),
+			let cell = tableView.cellForRow(at: indexPath) else {
 				return nil
 		}
 		guard let destinationViewController = storyboard?.instantiateViewController(withIdentifier: "assignmentDescription") as? AssignmentDescriptionViewController else {
@@ -196,7 +189,7 @@ class AssignmentsViewController: UIViewController, UITableViewDataSource, UITabl
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = (segue.destination as? UINavigationController)?.topViewController as? AssignmentDescriptionViewController,
 			let cell = sender as? AssignmentTableViewCell,
-			let indexPath = assignmentsTableView.indexPath(for: cell) else {
+			let indexPath = tableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to AssignmentDescriptionViewController")
 				return
 		}

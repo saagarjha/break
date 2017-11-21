@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProgressReportViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate {
+class ProgressReportViewController: UITableViewController, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, UIPopoverPresentationControllerDelegate {
 
 	static let cellIdentifier = "grade"
 
@@ -128,8 +128,8 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 				assertionFailure("ViewMode set to invalid value")
 			}
 			UIView.setAnimationsEnabled(false)
-			gradesTableView.beginUpdates()
-			gradesTableView.endUpdates()
+			tableView.beginUpdates()
+			tableView.endUpdates()
 			UIView.setAnimationsEnabled(true)
 			updateSearchResults(for: searchController)
 		}
@@ -155,13 +155,6 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			addGradeButtonItem.isEnabled = false
 		}
 	}
-	@IBOutlet weak var gradesTableView: UITableView! {
-		didSet {
-			breakShared.autoresizeTableViewCells(for: gradesTableView)
-			gradesTableView.sectionHeaderHeight = UITableViewAutomaticDimension
-			gradesTableView.estimatedSectionHeaderHeight = 200.0
-		}
-	}
 	let searchController = UISearchController(searchResultsController: nil)
 	var header: ProgressReportHeader!
 
@@ -171,7 +164,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		addSearchBar(from: searchController, to: gradesTableView)
+		addSearchBar(from: searchController, to: tableView)
 		setupSelfAsDetailViewController()
 
 		header = ProgressReportHeader()
@@ -201,6 +194,14 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 					`self`.titleButton.isEnabled = true
 				}
 			}
+		}
+
+		// Workaround for rdar://problem/35436877
+		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [unowned self] in
+			UIView.setAnimationsEnabled(false)
+			self.tableView.beginUpdates()
+			self.tableView.endUpdates()
+			UIView.setAnimationsEnabled(true)
 		}
 	}
 
@@ -243,27 +244,27 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		computableCourse.computableGrades.insert(grade, at: 0)
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
-		gradesTableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
+		tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
 	}
 
-	func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
 
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		return section == 0 ? header?.headerTableView : nil
 	}
 
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		header.headerTableView.layoutIfNeeded()
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		header?.headerTableView.layoutIfNeeded()
 		return section == 0 && header != nil ? header.headerTableView.contentSize.height : 0
 	}
 
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return section == 0 ? 0 : filteredGrades.count
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: ProgressReportViewController.cellIdentifier, for: indexPath) as? GradeTableViewCell else {
 			assertionFailure("Could not deque GradeTableViewCell")
 			return tableView.dequeueReusableCell(withIdentifier: ProgressReportViewController.cellIdentifier, for: indexPath)
@@ -331,7 +332,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		return cell
 	}
 
-	func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
 		// Only enable selection for "original" grades
 		if viewMode == .original {
 			return indexPath
@@ -340,15 +341,15 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		}
 	}
 
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
-	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		return viewMode != .original
 	}
 
-	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		computableCourse.computableGrades.remove(at: indexPath.row)
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
@@ -368,7 +369,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 			filteredGrades = grades
 		}
 		DispatchQueue.main.async {
-			self.gradesTableView.reloadData()
+			self.tableView.reloadData()
 		}
 	}
 
@@ -434,12 +435,12 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 	}
 
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		setupForceTouch(originatingFrom: gradesTableView)
+		setupForceTouch(originatingFrom: tableView)
 	}
 
 	func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-		guard let indexPath = gradesTableView.indexPathForRow(at: location),
-			let cell = gradesTableView.cellForRow(at: indexPath) else {
+		guard let indexPath = tableView.indexPathForRow(at: location),
+			let cell = tableView.cellForRow(at: indexPath) else {
 				guard header.headerTableView.frame.contains(location),
 					let courseViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "course") as? CourseViewController else {
 						return nil
@@ -492,7 +493,7 @@ class ProgressReportViewController: UIViewController, UITableViewDataSource, UIT
 		// Pass the selected object to the new view controller.
 		guard let destinationViewController = segue.destination as? GradeViewController,
 			let cell = sender as? GradeTableViewCell,
-			let indexPath = gradesTableView.indexPath(for: cell) else {
+			let indexPath = tableView.indexPath(for: cell) else {
 				assertionFailure("Could not cast destinationViewController to GradeViewController")
 				return
 		}

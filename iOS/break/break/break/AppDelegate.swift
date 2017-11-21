@@ -275,10 +275,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func setupAppearance() {
 		window?.tintColor = UIColor.break
-		let appearance = UINavigationBar.appearance()
-		appearance.barStyle = .black
-		appearance.tintColor = .white
-		appearance.barTintColor = UIColor.break
+		let navigationBarAppearance = UINavigationBar.appearance()
+		navigationBarAppearance.barStyle = .black
+		navigationBarAppearance.tintColor = .white
+		navigationBarAppearance.barTintColor = UIColor.break
+		let searchBarAppearance = UISearchBar.appearance()
+		searchBarAppearance.tintColor = .white
 	}
 
 	func showLogin() {

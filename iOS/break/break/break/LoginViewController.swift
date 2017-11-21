@@ -99,6 +99,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 	@IBAction func logIn(_ sender: Any) {
+		hideKeyboard()
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		logInButton.isEnabled = false
 		logInButton.alpha = 0.5
@@ -251,7 +252,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		
 		// Display the suggestion
 		let attributedString = NSMutableAttributedString(string: suggestion)
-		attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: schoolName.characters.count, length: suggestion.characters.count - schoolName.characters.count))
+		attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: schoolName.count, length: suggestion.count - schoolName.count))
 		textField.attributedText = attributedString
 		
 		// On iOS, it appears that setting the string "scrolls" the text field
@@ -269,7 +270,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		
 		// Move the cursor to where it should be, in between the user's string
 		// and the suggestion
-		textField.position(from: textField.beginningOfDocument, offset: range.location + string.characters.count).flatMap { textField.selectedTextRange = textField.textRange(from: $0, to: $0) }
+		textField.position(from: textField.beginningOfDocument, offset: range.location + string.count).flatMap { textField.selectedTextRange = textField.textRange(from: $0, to: $0) }
 		return false
 
 	}
@@ -312,7 +313,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
 		loginScrollView.contentInset = UIEdgeInsets(top: loginScrollView.contentInset.top, left: loginScrollView.contentInset.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.contentInset.right)
 		loginScrollView.scrollIndicatorInsets = UIEdgeInsets(top: loginScrollView.scrollIndicatorInsets.top, left: loginScrollView.scrollIndicatorInsets.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.scrollIndicatorInsets.right)
-		loginViewHeightConstraint.constant = -view.bounds.maxY + convertedKeyboardEndFrame.minY
+		loginViewHeightConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
 		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
 			self.view.layoutIfNeeded()
 		})

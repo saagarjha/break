@@ -26,6 +26,9 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 
 		// Do any additional setup after loading the view.
 		addSearchBar(from: searchController, to: contactsTableView)
+		if #available(iOS 11.0, *) {
+			navigationItem.hidesSearchBarWhenScrolling = false
+		}
 
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)

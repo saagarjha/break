@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G8c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13770"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,49 +22,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wuk-fH-LyB">
-                                <rect key="frame" x="186" y="270" width="4.5" height="128.5"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDe-MB-e8i">
+                                <rect key="frame" x="185.5" y="270" width="4.5" height="128"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6PP-y1-GrT">
-                                        <rect key="frame" x="-109.5" y="0.0" width="222.5" height="100"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ega-mY-QAw">
+                                        <rect key="frame" x="-107" y="0.0" width="219" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3LX-2Z-VQ9">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIconiOS11Hack" translatesAutoresizingMaskIntoConstraints="NO" id="fBM-7w-WOi">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="100" id="3qf-V2-6FL"/>
-                                                    <constraint firstAttribute="width" secondItem="3LX-2Z-VQ9" secondAttribute="height" multiplier="1:1" id="eNI-PO-s06"/>
+                                                    <constraint firstAttribute="width" constant="100" id="7bA-0i-kT3"/>
+                                                    <constraint firstAttribute="width" secondItem="fBM-7w-WOi" secondAttribute="height" multiplier="1:1" id="u0Y-my-ARe"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="break" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vm0-bl-ZGH">
-                                                <rect key="frame" x="100" y="0.0" width="122.5" height="100"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="break" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4T2-xn-VeM">
+                                                <rect key="frame" x="100" y="0.0" width="119" height="100"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oxl-3c-wdG">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mgx-LX-Vfi">
                                         <rect key="frame" x="0.0" y="108" width="4.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="6PP-y1-GrT" firstAttribute="centerX" secondItem="wuk-fH-LyB" secondAttribute="centerX" id="3K9-h7-AZ6"/>
-                                    <constraint firstAttribute="trailing" secondItem="Oxl-3c-wdG" secondAttribute="trailing" id="9Pl-df-rMt"/>
-                                    <constraint firstItem="Oxl-3c-wdG" firstAttribute="top" secondItem="6PP-y1-GrT" secondAttribute="bottom" constant="8" id="LWU-ys-YPZ"/>
-                                    <constraint firstItem="Oxl-3c-wdG" firstAttribute="centerX" secondItem="wuk-fH-LyB" secondAttribute="centerX" id="U8y-CW-fQB"/>
-                                    <constraint firstItem="6PP-y1-GrT" firstAttribute="top" secondItem="wuk-fH-LyB" secondAttribute="top" id="Zh0-YR-ZnT"/>
-                                    <constraint firstItem="Oxl-3c-wdG" firstAttribute="leading" secondItem="wuk-fH-LyB" secondAttribute="leading" id="dKa-mc-ywZ"/>
-                                    <constraint firstAttribute="bottom" secondItem="Oxl-3c-wdG" secondAttribute="bottom" id="pYQ-we-XOW"/>
+                                    <constraint firstItem="Mgx-LX-Vfi" firstAttribute="centerX" secondItem="LDe-MB-e8i" secondAttribute="centerX" id="87s-ks-vWo"/>
+                                    <constraint firstItem="Mgx-LX-Vfi" firstAttribute="top" secondItem="ega-mY-QAw" secondAttribute="bottom" constant="8" id="Igf-fU-tWX"/>
+                                    <constraint firstItem="ega-mY-QAw" firstAttribute="top" secondItem="LDe-MB-e8i" secondAttribute="top" id="NQR-Cl-74f"/>
+                                    <constraint firstAttribute="trailing" secondItem="Mgx-LX-Vfi" secondAttribute="trailing" id="Qnf-36-dN4"/>
+                                    <constraint firstAttribute="bottom" secondItem="Mgx-LX-Vfi" secondAttribute="bottom" id="Wgz-Tj-D4f"/>
+                                    <constraint firstItem="ega-mY-QAw" firstAttribute="centerX" secondItem="LDe-MB-e8i" secondAttribute="centerX" id="els-7m-Xyj"/>
+                                    <constraint firstItem="Mgx-LX-Vfi" firstAttribute="leading" secondItem="LDe-MB-e8i" secondAttribute="leading" id="xyt-PZ-2lR"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.1019607843" green="0.73725490199999999" blue="0.61176470589999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="wuk-fH-LyB" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="QC2-Mi-PaH"/>
-                            <constraint firstItem="wuk-fH-LyB" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="VyD-gv-bIu"/>
+                            <constraint firstItem="LDe-MB-e8i" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="cIF-IA-stb"/>
+                            <constraint firstItem="LDe-MB-e8i" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fj4-jK-YNo"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -73,6 +74,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AppIcon" width="512" height="512"/>
+        <image name="AppIconiOS11Hack" width="512" height="512"/>
     </resources>
 </document>

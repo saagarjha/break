@@ -190,7 +190,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				#if os(iOS)
 					Logger.log("Login failed with status code \(String(describing: httpResponse?.statusCode)))")
 					Logger.log("Login username: \(username)")
-					Logger.log("Login password size: \(password.characters.count)")
+					Logger.log("Login password size: \(password.count)")
 				#endif
 				completion?(.unknownError)
 				return

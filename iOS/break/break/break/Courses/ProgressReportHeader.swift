@@ -23,7 +23,6 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 
 	override init() {
 		headerTableView = UITableView()
-		breakShared.autoresizeTableViewCells(for: headerTableView)
 		headerTableView.isScrollEnabled = false
 		headerTableView.separatorStyle = .none
 		headerTableView.allowsSelection = false

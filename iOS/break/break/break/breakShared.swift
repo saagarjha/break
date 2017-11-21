@@ -13,7 +13,7 @@ extension UIColor {
 
 	convenience init(string: String) {
 		let hashValue = UInt(bitPattern: string.hashValue)
-		let channelSize = UInt(MemoryLayout<Int>.size * 8 / 3)
+		let channelSize = UInt(MemoryLayout<UInt>.size * 8 / 3)
 		let mask = 1 << channelSize - 1
 		let red = CGFloat(hashValue & mask) / CGFloat(mask + 1)
 		let green = CGFloat(hashValue >> channelSize & mask) / CGFloat(mask + 1)
@@ -48,11 +48,32 @@ enum breakTabIndices: Int, CustomStringConvertible {
 extension UIViewController {
 	func setupSelfAsMasterViewController() {
 		splitViewController?.preferredDisplayMode = .allVisible
+
+		if #available(iOS 11.0, *) {
+			navigationController?.navigationBar.prefersLargeTitles = true
+			navigationItem.largeTitleDisplayMode = .always
+		}
 	}
 
 	func setupSelfAsDetailViewController() {
 		navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
 		navigationItem.leftItemsSupplementBackButton = true
+
+		if #available(iOS 11.0, *) {
+			navigationController?.navigationBar.prefersLargeTitles = false
+			navigationItem.largeTitleDisplayMode = .never
+		}
+	}
+}
+
+@objc protocol Refreshable {
+	func refresh(_ sender: Any)
+}
+
+extension Refreshable where Self: UITableViewController {
+	func setupRefreshControl() {
+		refreshControl = UIRefreshControl()
+		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
 	}
 }
 
@@ -61,9 +82,15 @@ extension UISearchResultsUpdating where Self: UIViewController {
 		definesPresentationContext = true
 		searchController.searchResultsUpdater = self
 		searchController.dimsBackgroundDuringPresentation = false
-		tableView.tableHeaderView = searchController.searchBar
-		// Hide the search bar by default
-		tableView.contentOffset.y = searchController.searchBar.frame.height
+		if #available(iOS 11.0, *),
+			// Workaround for rdar://problem/35436877
+			type(of: self) != ProgressReportViewController.self {
+			navigationItem.searchController = searchController
+		} else {
+			tableView.tableHeaderView = searchController.searchBar
+			// Hide the search bar by default
+			tableView.contentOffset.y = searchController.searchBar.frame.height
+		}
 	}
 }
 
