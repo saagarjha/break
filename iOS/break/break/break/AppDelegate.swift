@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			session.delegate = self
 			session.activate()
 		}
-		
+
 		SchoolLoop.sharedInstance = DemoableSchoolLoop()
 
 		if archived {
@@ -239,8 +239,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						UIView.animate(withDuration: 0.25, animations: {
 							oldView.alpha = 0
 						}, completion: { _ in
-							oldView.removeFromSuperview()
-						})
+								oldView.removeFromSuperview()
+							})
 
 						self.loginTries = 0
 					} else if error == .authenticationError {
@@ -348,49 +348,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showPassword() {
-		if let tabBarController = self.window?.rootViewController as? UITabBarController {
-			let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your School Loop account.", preferredStyle: .alert)
-			let forgotAction = UIAlertAction(title: "Forgot", style: .cancel) { [unowned self] _ in
-				Preferences.isPasswordSet = false
-				Preferences.canUseTouchID = false
-				SchoolLoop.sharedInstance.logOut()
-				self.removeSecurityView()
-			}
-			let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-				let schoolLoop = SchoolLoop.sharedInstance
-
-				if alertController.textFields?.first?.text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
+		DispatchQueue.main.async { [unowned self] in
+			if let tabBarController = self.window?.rootViewController as? UITabBarController {
+				let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your School Loop account.", preferredStyle: .alert)
+				let forgotAction = UIAlertAction(title: "Forgot", style: .cancel) { [unowned self] _ in
+					Preferences.isPasswordSet = false
+					Preferences.canUseTouchID = false
+					SchoolLoop.sharedInstance.logOut()
 					self.removeSecurityView()
-				} else {
-					let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
-					let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-						DispatchQueue.main.async { [unowned self] in
-							self.showPassword()
+				}
+				let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+					let schoolLoop = SchoolLoop.sharedInstance
+
+					if alertController.textFields?.first?.text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
+						self.removeSecurityView()
+					} else {
+						let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
+						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+							DispatchQueue.main.async { [unowned self] in
+								self.showPassword()
+							}
+						}
+						alertController.addAction(okAction)
+						DispatchQueue.main.async {
+							tabBarController.present(alertController, animated: true, completion: nil)
 						}
 					}
-					alertController.addAction(okAction)
-					DispatchQueue.main.async {
-						tabBarController.present(alertController, animated: true, completion: nil)
+
+				}
+
+				alertController.addAction(forgotAction)
+				alertController.addAction(okAction)
+
+				alertController.addTextField { textField in
+					textField.placeholder = "Password"
+					textField.isSecureTextEntry = true
+					let schoolLoop = SchoolLoop.sharedInstance
+
+					// If the password is numeric show the number pad
+					if (schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") ?? "").rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil {
+						textField.keyboardType = .numberPad
 					}
 				}
 
-			}
-
-			alertController.addAction(forgotAction)
-			alertController.addAction(okAction)
-
-			alertController.addTextField { textField in
-				textField.placeholder = "Password"
-				textField.isSecureTextEntry = true
-				let schoolLoop = SchoolLoop.sharedInstance
-
-				// If the password is numeric show the number pad
-				if (schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") ?? "").rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil {
-					textField.keyboardType = .numberPad
-				}
-			}
-
-			DispatchQueue.main.async { [unowned self] in
 				self.securityAlertController = alertController
 				tabBarController.present(alertController, animated: true, completion: nil)
 			}
@@ -406,15 +406,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					self.securityView.alpha = 0
 				}
 			}, completion: { [unowned self] _ in
-				self.securityView.removeFromSuperview()
+					self.securityView.removeFromSuperview()
 
-				// Reset the security view for the next use
-				if let securityView = self.securityView as? UIVisualEffectView {
-					securityView.effect = UIBlurEffect(style: .light)
-				} else {
-					self.securityView.alpha = 1
-				}
-			})
+					// Reset the security view for the next use
+					if let securityView = self.securityView as? UIVisualEffectView {
+						securityView.effect = UIBlurEffect(style: .light)
+					} else {
+						self.securityView.alpha = 1
+					}
+				})
 		}
 	}
 
@@ -463,7 +463,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 			if error == .noError {
 				if message["courses"] != nil {
-					schoolLoop.getCourses { _,_ in
+					schoolLoop.getCourses { _, _ in
 						replyHandler(["courses": NSKeyedArchiver.archivedData(withRootObject: schoolLoop.courses)])
 					}
 				} else if let periodID = message["grades"] as? String {
@@ -473,7 +473,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						}
 					}
 				} else if message["assignments"] != nil {
-					schoolLoop.getAssignments { _,_ in
+					schoolLoop.getAssignments { _, _ in
 						replyHandler(["assignments": NSKeyedArchiver.archivedData(withRootObject: schoolLoop.assignmentsWithDueDates)])
 					}
 				} else {

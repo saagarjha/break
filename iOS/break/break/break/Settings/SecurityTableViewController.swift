@@ -21,16 +21,16 @@ class SecurityTableViewController: UITableViewController {
 		passwordSwitch.addTarget(self, action: #selector(usePassword), for: .valueChanged)
 		return passwordSwitch
 	}()
-	@IBOutlet weak var touchIDCell: UITableViewCell! {
+	@IBOutlet weak var biometricAuthenticationCell: UITableViewCell! {
 		didSet {
-			touchIDCell.accessoryView = touchIDSwitch
+			biometricAuthenticationCell.accessoryView = biometricAuthenticationSwitch
 		}
 	}
-	@IBOutlet weak var touchIDLabel: UILabel!
-	let touchIDSwitch: UISwitch = {
-		let touchIDSwitch = UISwitch()
-		touchIDSwitch.addTarget(self, action: #selector(useTouchID), for: .valueChanged)
-		return touchIDSwitch
+	@IBOutlet weak var biometricAuthenticationLabel: UILabel!
+	let biometricAuthenticationSwitch: UISwitch = {
+		let biometricAuthenticationSwitch = UISwitch()
+		biometricAuthenticationSwitch.addTarget(self, action: #selector(useBiometricAuthentication), for: .valueChanged)
+		return biometricAuthenticationSwitch
 	}()
 
 	var error: String = ""
@@ -103,7 +103,7 @@ class SecurityTableViewController: UITableViewController {
 		}
 	}
 
-	@IBAction func useTouchID(_ sender: UISwitch) {
+	@objc func useBiometricAuthentication(_ sender: UISwitch) {
 		Preferences.canUseTouchID = sender.isOn
 	}
 
@@ -129,29 +129,29 @@ class SecurityTableViewController: UITableViewController {
 	
 	func updateTableView() {
 		passwordSwitch.isOn = Preferences.isPasswordSet
-		touchIDSwitch.isOn = Preferences.canUseTouchID
+		biometricAuthenticationSwitch.isOn = Preferences.canUseTouchID
 		if passwordSwitch.isOn {
-			touchIDCell.isUserInteractionEnabled = true
-			touchIDLabel.isEnabled = true
-			touchIDSwitch.isEnabled = true
+			biometricAuthenticationCell.isUserInteractionEnabled = true
+			biometricAuthenticationLabel.isEnabled = true
+			biometricAuthenticationSwitch.isEnabled = true
 		} else {
-			touchIDCell.isUserInteractionEnabled = false
-			touchIDLabel.isEnabled = false
-			touchIDSwitch.isEnabled = false
+			biometricAuthenticationCell.isUserInteractionEnabled = false
+			biometricAuthenticationLabel.isEnabled = false
+			biometricAuthenticationSwitch.isEnabled = false
 		}
 		var error: NSError?
 		LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
 		if let error = error {
 			if error.code == LAError.touchIDNotEnrolled.rawValue {
-				self.error = "You don't have an fingers set for TouchID. Please set one in Settings."
-				touchIDCell.isUserInteractionEnabled = false
-				touchIDLabel.isEnabled = false
-				touchIDSwitch.isEnabled = false
+				self.error = "You don't have any fingers set for Touch ID or a face set for Face ID. Please set one in Settings."
+				biometricAuthenticationCell.isUserInteractionEnabled = false
+				biometricAuthenticationLabel.isEnabled = false
+				biometricAuthenticationSwitch.isEnabled = false
 			} else if error.code == LAError.passcodeNotSet.rawValue {
-				self.error = "Your phone doesn't have a passcode or TouchID enabled. Please set one in Settings."
-				touchIDCell.isUserInteractionEnabled = false
-				touchIDLabel.isEnabled = false
-				touchIDSwitch.isEnabled = false
+				self.error = "Your phone doesn't have a passcode, Touch ID or Face ID enabled. Please set one in Settings."
+				biometricAuthenticationCell.isUserInteractionEnabled = false
+				biometricAuthenticationLabel.isEnabled = false
+				biometricAuthenticationSwitch.isEnabled = false
 			} else {
 				self.error = "Unsupported"
 			}

@@ -362,7 +362,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAc-JS-9zY">
-                                                    <rect key="frame" x="157" y="5.5" width="61" height="33"/>
+                                                    <rect key="frame" x="269.5" y="5.5" width="61" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <state key="normal" title="Log Out"/>
                                                 </button>
@@ -424,7 +424,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="You can use TouchID to unlock break and fallback on your password." id="osi-PK-EgP">
+                            <tableViewSection footerTitle="You can use Touch ID or Face ID to unlock break and fallback on your password." id="osi-PK-EgP">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="5n9-wb-xiK" rowHeight="48" style="IBUITableViewCellStyleDefault" id="DKw-kF-qKM">
                                         <rect key="frame" x="0.0" y="179" width="375" height="48"/>
@@ -433,7 +433,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="47.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Use TouchID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5n9-wb-xiK">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Use biometric authentication" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5n9-wb-xiK">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="47.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -453,9 +453,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Security" largeTitleDisplayMode="never" id="Lgj-B5-rqh"/>
                     <connections>
+                        <outlet property="biometricAuthenticationCell" destination="DKw-kF-qKM" id="K6y-nG-PxC"/>
+                        <outlet property="biometricAuthenticationLabel" destination="5n9-wb-xiK" id="7sS-k3-Avn"/>
                         <outlet property="passwordCell" destination="GM3-sM-gEb" id="5Sr-40-h8s"/>
-                        <outlet property="touchIDCell" destination="DKw-kF-qKM" id="K6y-nG-PxC"/>
-                        <outlet property="touchIDLabel" destination="5n9-wb-xiK" id="7sS-k3-Avn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U8i-9K-Gx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
