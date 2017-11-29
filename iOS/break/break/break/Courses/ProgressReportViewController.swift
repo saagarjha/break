@@ -198,10 +198,8 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 
 		// Workaround for rdar://problem/35436877
 		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [unowned self] in
-			UIView.setAnimationsEnabled(false)
-			self.tableView.beginUpdates()
-			self.tableView.endUpdates()
-			UIView.setAnimationsEnabled(true)
+			self.tableView.estimatedRowHeight = 80
+			self.updateSearchResults(for: self.searchController)
 		}
 	}
 
@@ -368,8 +366,13 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		} else {
 			filteredGrades = grades
 		}
-		DispatchQueue.main.async {
+		DispatchQueue.main.async { [unowned self] in
 			self.tableView.reloadData()
+			// Workaround for rdar://problem/35436877
+			UIView.setAnimationsEnabled(false)
+			self.tableView.beginUpdates()
+			self.tableView.endUpdates()
+			UIView.setAnimationsEnabled(true)
 		}
 	}
 
