@@ -45,10 +45,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	var movingAnimatableViews = [UIView]()
 	var stationaryAnimatableViews = [UIView]()
 
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .lightContent
-	}
-
 	var runAnimation = true
 
 	override func viewDidLoad() {

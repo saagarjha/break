@@ -9,28 +9,23 @@
 import UIKit
 
 class breakSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
-	
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .lightContent
-	}
-	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+		// Do any additional setup after loading the view.
 		self.delegate = self
-    }
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-	
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+		// Dispose of any resources that can be recreated.
+	}
+
 	func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
 		return true
 	}
 
-    /*
+	/*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

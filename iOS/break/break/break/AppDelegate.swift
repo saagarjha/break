@@ -281,6 +281,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		navigationBarAppearance.barTintColor = UIColor.break
 		let searchBarAppearance = UISearchBar.appearance()
 		searchBarAppearance.tintColor = .white
+		if #available(iOS 11.0, *) {
+			let refreshControlAppearance = UIRefreshControl.appearance()
+			refreshControlAppearance.tintColor = .white
+		}
 	}
 
 	func showLogin() {

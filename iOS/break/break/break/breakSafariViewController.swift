@@ -10,15 +10,6 @@ import SafariServices
 import UIKit
 
 class breakSafariViewController: SFSafariViewController {
-
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		if #available(iOS 10.0, *) {
-			return .lightContent
-		} else {
-			return .default
-		}
-	}
-
 	override init(url URL: URL, entersReaderIfAvailable: Bool) {
 		super.init(url: URL, entersReaderIfAvailable: true)
 		if #available(iOS 10.0, *) {
