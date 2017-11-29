@@ -359,6 +359,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					Preferences.isPasswordSet = false
 					Preferences.canUseTouchID = false
 					SchoolLoop.sharedInstance.logOut()
+					self.clearCache()
+					self.showLogin()
 					self.removeSecurityView()
 				}
 				let okAction = UIAlertAction(title: "OK", style: .default) { _ in
