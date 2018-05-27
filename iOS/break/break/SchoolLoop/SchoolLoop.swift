@@ -20,45 +20,204 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	public let keychain = SchoolLoopKeychain.sharedInstance
 
 	// MARK: - Instance variables
+	
+	private var schoolLock = DispatchSemaphore(value: 1)
+	private var _school: SchoolLoopSchool!
 
 	/// The current school for this `SchoolLoop`'s account.
-	public var school: SchoolLoopSchool!
+	public var school: SchoolLoopSchool! {
+		get {
+			schoolLock.wait()
+			defer {
+				schoolLock.signal()
+			}
+			return _school
+		}
+		set {
+			schoolLock.wait()
+			defer {
+				schoolLock.signal()
+			}
+			_school = newValue
+		}
+	}
+	
+	private var schoolsLock = DispatchSemaphore(value: 1)
+	private var _schools = [SchoolLoopSchool]()
 
 	/// A list of all School Loop schools.
-	public var schools = [SchoolLoopSchool]()
+	public var schools: [SchoolLoopSchool] {
+		get {
+			schoolsLock.wait()
+			defer {
+				schoolsLock.signal()
+			}
+			return _schools
+		}
+		set {
+			schoolsLock.wait()
+			defer {
+				schoolsLock.signal()
+			}
+			_schools = newValue
+		}
+	}
+	
+	private var accountLock = DispatchSemaphore(value: 1)
+	private var _account: SchoolLoopAccount!
 
 	/// The current account managed by this `SchoolLoop`.
-	public var account: SchoolLoopAccount!
+	public var account: SchoolLoopAccount! {
+		get {
+			accountLock.wait()
+			defer {
+				accountLock.signal()
+			}
+			return _account
+		}
+		set {
+			accountLock.wait()
+			defer {
+				accountLock.signal()
+			}
+			_account = newValue
+		}
+	}
+
+	private var coursesLock = DispatchSemaphore(value: 1)
+	private var _courses = [SchoolLoopCourse]()
 
 	/// A list of courses for this `SchoolLoop`'s account.
-	public var courses = [SchoolLoopCourse]()
+	public var courses: [SchoolLoopCourse] {
+		get {
+			coursesLock.wait()
+			defer {
+				coursesLock.signal()
+			}
+			return _courses
+		}
+		set {
+			coursesLock.wait()
+			defer {
+				coursesLock.signal()
+			}
+			_courses = newValue
+		}
+	}
+
+	private var assignmentsLock = DispatchSemaphore(value: 1)
+	private var _assignments = [SchoolLoopAssignment]()
 
 	/// A list of assignments for this `SchoolLoop`'s account.
-	public var assignments = [SchoolLoopAssignment]()
+	public var assignments: [SchoolLoopAssignment] {
+		get {
+			assignmentsLock.wait()
+			defer {
+				assignmentsLock.signal()
+			}
+			return _assignments
+		}
+		set {
+			assignmentsLock.wait()
+			defer {
+				assignmentsLock.signal()
+			}
+			_assignments = newValue
+			var assignmentsWithDueDates = [Date: [SchoolLoopAssignment]]()
+			for assigment in _assignments {
+				var assignmentsForDate = assignmentsWithDueDates[assigment.dueDate] ?? []
+				assignmentsForDate.append(assigment)
+				assignmentsWithDueDates[assigment.dueDate] = assignmentsForDate
+			}
+			self.assignmentsWithDueDates = assignmentsWithDueDates
+		}
+	}
+	
+	private var assignmentsWithDueDatesLock = DispatchSemaphore(value: 1)
+	private var _assignmentsWithDueDates = [Date: [SchoolLoopAssignment]]()
 
 	/// A list of assignments for this `SchoolLoop`'s account, organized by due
 	/// date. Each key in the `Dictionary` refers to a day, and its value is
 	/// the assignments due on that day.
-	public var assignmentsWithDueDates: [Date: [SchoolLoopAssignment]] {
+	public private(set) var assignmentsWithDueDates: [Date: [SchoolLoopAssignment]] {
 		get {
-			var awdd = [Date: [SchoolLoopAssignment]]()
-			for assigment in assignments {
-				var assignmentsForDate = awdd[assigment.dueDate] ?? []
-				assignmentsForDate.append(assigment)
-				awdd[assigment.dueDate] = assignmentsForDate
+			assignmentsWithDueDatesLock.wait()
+			defer {
+				assignmentsWithDueDatesLock.signal()
 			}
-			return awdd
+			return _assignmentsWithDueDates
+		}
+		set {
+			assignmentsWithDueDatesLock.wait()
+			defer {
+				assignmentsWithDueDatesLock.signal()
+			}
+			_assignmentsWithDueDates = newValue
+		}
+	}
+	
+	private var loopMailLock = DispatchSemaphore(value: 1)
+	private var _loopMail = [SchoolLoopLoopMail]()
+
+	/// A list of LoopMail for this `SchoolLoop`'s account.
+	public var loopMail: [SchoolLoopLoopMail] {
+		get {
+			loopMailLock.wait()
+			defer {
+				loopMailLock.signal()
+			}
+			return _loopMail
+		}
+		set {
+			loopMailLock.wait()
+			defer {
+				loopMailLock.signal()
+			}
+			_loopMail = newValue
 		}
 	}
 
-	/// A list of LoopMail for this `SchoolLoop`'s account.
-	public var loopMail = [SchoolLoopLoopMail]()
-
+	private var newsLock = DispatchSemaphore(value: 1)
+	private var _news = [SchoolLoopNews]()
+	
 	/// A list of News for this `SchoolLoop`'s account.
-	public var news = [SchoolLoopNews]()
+	public var news: [SchoolLoopNews] {
+		get {
+			newsLock.wait()
+			defer {
+				newsLock.signal()
+			}
+			return _news
+		}
+		set {
+			newsLock.wait()
+			defer {
+				newsLock.signal()
+			}
+			_news = newValue
+		}
+	}
+	
+	private var lockerLock = DispatchSemaphore(value: 1)
+	private var _locker: SchoolLoopLockerItem!
 
 	/// The top-level (i.e. "/") locker item for this `SchoolLoop`'s account.
-	public var locker: SchoolLoopLockerItem!
+	public var locker: SchoolLoopLockerItem! {
+		get {
+			lockerLock.wait()
+			defer {
+				lockerLock.signal()
+			}
+			return _locker
+		}
+		set {
+			lockerLock.wait()
+			defer {
+				lockerLock.signal()
+			}
+			_locker = newValue
+		}
+	}
 
 
 	// MARK: - Private locker parsing instance variables
@@ -1006,7 +1165,7 @@ extension URLSession {
 	}
 }
 
-infix operator ?!: NilCoalescingPrecedence
+infix operator ?! : NilCoalescingPrecedence
 extension String {
 	/// The "'null' coalescing" operator. This operator is similar to the nil
 	/// coalescing operator except that it picks the right hand size if the left
