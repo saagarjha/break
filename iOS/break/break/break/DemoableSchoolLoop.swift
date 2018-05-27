@@ -15,6 +15,7 @@ class DemoableSchoolLoop: SchoolLoop {
 	static let password = "thechosen1"
 
 	var isInDemo = false
+	let demoQueue = DispatchQueue(label: "com.saagarjha.break.DemoQueue")
 
 	override var school: SchoolLoopSchool! {
 		get {
@@ -27,7 +28,7 @@ class DemoableSchoolLoop: SchoolLoop {
 			super.school = newValue
 		}
 	}
-
+	
 	override var schools: [SchoolLoopSchool] {
 		get {
 			// This is used for autocomplete, so merge the demo schools with
@@ -55,12 +56,39 @@ class DemoableSchoolLoop: SchoolLoop {
 		}
 	}
 
-	override var courses: [SchoolLoopCourse] {
-		get {
-			guard isInDemo else {
-				return super.courses
-			}
-			return [
+	override func getSchools(with completion: ((SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getSchools(with: completion)
+			return
+		}
+		completion?(.noError)
+	}
+
+	override func logIn(withSchoolName schoolName: String, username: String, password: String, completion: ((SchoolLoopError) -> Void)?) {
+		guard schoolName != DemoableSchoolLoop.schoolName ||
+			username != DemoableSchoolLoop.username ||
+			password != DemoableSchoolLoop.password else {
+				isInDemo = true
+				simulateNetworkDelay {
+					completion?(.noError)
+				}
+				return
+		}
+		super.logIn(withSchoolName: schoolName, username: username, password: password, completion: completion)
+	}
+
+	override func logOut() {
+		super.logOut()
+		SchoolLoop.sharedInstance = DemoableSchoolLoop()
+	}
+
+	override func getCourses(with completion: (([SchoolLoopCourse], SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getCourses(with: completion)
+			return
+		}
+		simulateNetworkDelay { [weak self] in
+			self?.courses = [
 				SchoolLoopCourse(courseName: "Charms", period: "1", teacherName: "Flitwick, Filius", grade: "E", score: "85.31%", periodID: "1"),
 				{
 					let course = SchoolLoopCourse(courseName: "Defense Against the Dark Arts", period: "2", teacherName: "Snape, Severus", grade: "E", score: "83.75%", periodID: "2")
@@ -130,35 +158,41 @@ class DemoableSchoolLoop: SchoolLoop {
 				}(),
 				SchoolLoopCourse(courseName: "Transfiguration", period: "6", teacherName: "McGonagall, Minerva", grade: "E", score: "83.73%", periodID: "5"),
 			]
-		}
-		set {
-			super.courses = newValue
+			completion?([], .noError)
 		}
 	}
 
-	override var assignments: [SchoolLoopAssignment] {
-		get {
-			guard isInDemo else {
-				return super.assignments
-			}
-			return [
+	override func getGrades(withPeriodID periodID: String, completion: ((SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getGrades(withPeriodID: periodID, completion: completion)
+			return
+		}
+		completion?(.noError)
+	}
+
+	override func getAssignments(with completion: (([SchoolLoopAssignment], SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getAssignments(with: completion)
+			return
+		}
+		simulateNetworkDelay { [weak self] in
+			self?.assignments = [
 				SchoolLoopAssignment(title: "Principles of Rematerialization Essay", assignmentDescription: "", courseName: "Transfiguration", dueDate: "842270400000", links: [], iD: "1"),
 				SchoolLoopAssignment(title: "Essay", assignmentDescription: "", courseName: "Herbology", dueDate: "858081600000", links: [], iD: "2"),
 				SchoolLoopAssignment(title: "Dementor Essay", assignmentDescription: "I hope for your sakes they are better than the tripe I had to endure on resisting the Imperius Curse.", courseName: "Defense Against the Dark Arts", dueDate: "858600000000", links: [], iD: "3"),
 				SchoolLoopAssignment(title: "Practice Turning Vinegar into Wine", assignmentDescription: "", courseName: "Charms", dueDate: "861796800000", links: [], iD: "4"),
 			]
-		}
-		set {
-			super.assignments = newValue
+			completion?([], .noError)
 		}
 	}
 
-	override var loopMail: [SchoolLoopLoopMail] {
-		get {
-			guard isInDemo else {
-				return super.loopMail
-			}
-			return [
+	override func getLoopMail(with completion: (([SchoolLoopLoopMail], SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getLoopMail(with: completion)
+			return
+		}
+		simulateNetworkDelay { [weak self] in
+			self?.loopMail = [
 				SchoolLoopLoopMail(subject: "Please Come Immediately", sender: SchoolLoopContact(id: "", name: "Dumbledore, Albus", role: "", desc: ""), date: "867520800000", ID: "10"),
 				{
 					let loopMail = SchoolLoopLoopMail(subject: "Aragog's Dead", sender: SchoolLoopContact(id: "", name: "Hagrid, Reubeus", role: "", desc: ""), date: "861624000000", ID: "9")
@@ -178,18 +212,47 @@ class DemoableSchoolLoop: SchoolLoop {
 				SchoolLoopLoopMail(subject: "Lessons", sender: SchoolLoopContact(id: "", name: "Dumbledore, Albus", role: "", desc: ""), date: "841694400000", ID: "2"),
 				SchoolLoopLoopMail(subject: "Quidditch Tryouts Names", sender: SchoolLoopContact(id: "", name: "McGonagall, Minerva", role: "", desc: ""), date: "841658400000", ID: "1"),
 			]
-		}
-		set {
-			super.loopMail = newValue
+			completion?([], .noError)
 		}
 	}
 
-	override var news: [SchoolLoopNews] {
-		get {
-			guard isInDemo else {
-				return super.news
-			}
-			return [
+	override func getLoopMailMessage(withID ID: String, completion: ((SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getLoopMailMessage(withID: ID, completion: completion)
+			return
+		}
+		simulateNetworkDelay {
+			completion?(.noError)
+		}
+	}
+
+	override func getLoopMailContacts(withQuery query: String, completion: (([SchoolLoopContact], SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getLoopMailContacts(withQuery: query, completion: completion)
+			return
+		}
+		simulateNetworkDelay {
+			completion?([], .noError)
+		}
+	}
+
+	override func sendLoopMail(with composedLoopMail: SchoolLoopComposedLoopMail, completion: ((SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.sendLoopMail(with: composedLoopMail, completion: completion)
+			return
+		}
+		simulateNetworkDelay {
+			completion?(.noError)
+		}
+	}
+
+	override func getNews(with completion: (([SchoolLoopNews], SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getNews(with: completion)
+			return
+		}
+		simulateNetworkDelay { [weak self] in
+			self?.news = [
 				SchoolLoopNews(title: "Gryffindor House wins House Cup", authorName: "Dumbledore, Albus", createdDate: "863294400000", newsDescription: "", links: [], iD: "9"),
 				SchoolLoopNews(title: "Last Quidditch Match!", authorName: "Hooch, Rolanda", createdDate: "862646400000", newsDescription: "", links: [], iD: "8"),
 				SchoolLoopNews(title: "Apparition Testing", authorName: "Twycross, Wilkie", createdDate: "861004800000", newsDescription: "", links: [], iD: "7"),
@@ -200,18 +263,17 @@ class DemoableSchoolLoop: SchoolLoop {
 				SchoolLoopNews(title: "Gryffindor Quidditch Team Tryouts", authorName: "Potter, Harry J.", createdDate: "842169600000", newsDescription: "Hello, fellow Gryffindor students!<br><br>The Gryffindor Quidditch Team will be holding tryouts next Saturday. We're looking for qualified Chasers, Beaters, and a Keeper, so come out to the Quidditch pitch if you're interested!<br><br>- Harry", links: [], iD: "2"),
 				SchoolLoopNews(title: "Blanket ban on any items from Weasleys' Wizard Wheezes", authorName: "Filch, Argus", createdDate: "841608000000", newsDescription: "", links: [], iD: "1")
 			]
-		}
-		set {
-			super.news = newValue
+			completion?([], .noError)
 		}
 	}
 
-	override var locker: SchoolLoopLockerItem! {
-		get {
-			guard isInDemo else {
-				return super.locker
-			}
-			return {
+	override func getLocker(withPath path: String, completion: ((SchoolLoopError) -> Void)?) {
+		guard isInDemo else {
+			super.getLocker(withPath: path, completion: completion)
+			return
+		}
+		simulateNetworkDelay { [weak self] in
+			self?.locker = {
 				let lockerItem = SchoolLoopLockerItem(name: "", path: "/", type: .directory)
 				lockerItem.lockerItems = [
 					{
@@ -239,105 +301,14 @@ class DemoableSchoolLoop: SchoolLoop {
 				]
 				return lockerItem
 			}()
-		}
-		set {
-			super.locker = newValue
+			completion?(.noError)
 		}
 	}
 
-	override func getSchools(with completion: ((SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getSchools(with: completion)
-			return
+	func simulateNetworkDelay(_ block: @escaping () -> Void) {
+		demoQueue.async {
+			usleep(arc4random_uniform(1_000_000))
+			block()
 		}
-		completion?(.noError)
-	}
-
-	override func logIn(withSchoolName schoolName: String, username: String, password: String, completion: ((SchoolLoopError) -> Void)?) {
-		guard schoolName != DemoableSchoolLoop.schoolName ||
-			username != DemoableSchoolLoop.username ||
-			password != DemoableSchoolLoop.password else {
-				isInDemo = true
-				completion?(.noError)
-				return
-		}
-		super.logIn(withSchoolName: schoolName, username: username, password: password, completion: completion)
-	}
-
-	override func logOut() {
-		super.logOut()
-		SchoolLoop.sharedInstance = DemoableSchoolLoop()
-	}
-
-	override func getCourses(with completion: (([SchoolLoopCourse], SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getCourses(with: completion)
-			return
-		}
-		completion?([], .noError)
-	}
-
-	override func getGrades(withPeriodID periodID: String, completion: ((SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getGrades(withPeriodID: periodID, completion: completion)
-			return
-		}
-		completion?(.noError)
-	}
-
-	override func getAssignments(with completion: (([SchoolLoopAssignment], SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getAssignments(with: completion)
-			return
-		}
-		completion?([], .noError)
-	}
-
-	override func getLoopMail(with completion: (([SchoolLoopLoopMail], SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getLoopMail(with: completion)
-			return
-		}
-		completion?([], .noError)
-	}
-
-	override func getLoopMailMessage(withID ID: String, completion: ((SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getLoopMailMessage(withID: ID, completion: completion)
-			return
-		}
-		completion?(.noError)
-	}
-
-	override func getLoopMailContacts(withQuery query: String, completion: (([SchoolLoopContact], SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getLoopMailContacts(withQuery: query, completion: completion)
-			return
-		}
-		completion?([], .noError)
-	}
-
-	override func sendLoopMail(with composedLoopMail: SchoolLoopComposedLoopMail, completion: ((SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.sendLoopMail(with: composedLoopMail, completion: completion)
-			return
-		}
-		completion?(.noError)
-	}
-
-	override func getNews(with completion: (([SchoolLoopNews], SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getNews(with: completion)
-			return
-		}
-		completion?([], .noError)
-	}
-
-	override func getLocker(withPath path: String, completion: ((SchoolLoopError) -> Void)?) {
-		guard isInDemo else {
-			super.getLocker(withPath: path, completion: completion)
-			return
-		}
-		completion?(.noError)
 	}
 }
