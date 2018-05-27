@@ -341,7 +341,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showAuthententication() {
-		LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { [unowned self] (success, error) in
+		let context = LAContext()
+		// If the user has recently authenticated biometrically, don't ask again
+		// immediately after
+		context.touchIDAuthenticationAllowableReuseDuration = 10
+		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { [unowned self] (success, error) in
 			if success {
 				self.removeSecurityView()
 			} else {
