@@ -610,17 +610,17 @@
 				TargetAttributes = {
 					4906AB781CCDBFB800610448 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 3493UDPWAK;
+						DevelopmentTeam = X4A9GH5NN2;
 						LastSwiftMigration = 0900;
 					};
 					4906AB841CCDBFBA00610448 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 3493UDPWAK;
+						DevelopmentTeam = X4A9GH5NN2;
 						LastSwiftMigration = 0900;
 					};
 					493E17751C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 3493UDPWAK;
+						DevelopmentTeam = X4A9GH5NN2;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -879,7 +879,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3493UDPWAK;
+				DEVELOPMENT_TEAM = X4A9GH5NN2;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
@@ -899,7 +899,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3493UDPWAK;
+				DEVELOPMENT_TEAM = X4A9GH5NN2;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
@@ -918,7 +918,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3493UDPWAK;
+				DEVELOPMENT_TEAM = X4A9GH5NN2;
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp.watchkitextension;
@@ -938,7 +938,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3493UDPWAK;
+				DEVELOPMENT_TEAM = X4A9GH5NN2;
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp.watchkitextension;
@@ -1064,7 +1064,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = break/break.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3493UDPWAK;
+				DEVELOPMENT_TEAM = X4A9GH5NN2;
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1083,7 +1083,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = break/break.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3493UDPWAK;
+				DEVELOPMENT_TEAM = X4A9GH5NN2;
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
