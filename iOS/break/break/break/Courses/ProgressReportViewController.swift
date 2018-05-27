@@ -242,7 +242,9 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		computableCourse.computableGrades.insert(grade, at: 0)
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
-		tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
+		if computableCourse.computableGrades.count >= 1 {
+			tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
+		}
 	}
 
 	override func numberOfSections(in tableView: UITableView) -> Int {
