@@ -509,7 +509,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 extension UITabBarController {
 	func viewControllerOfType<T>(_: T.Type) -> T? where T: UIViewController {
-		return (viewControllers ?? []).flatMap {
+		return (viewControllers ?? []).compactMap {
 			return $0 as? T ?? ($0 as? UINavigationController)?.viewControllers.first as? T
 		}.first
 	}

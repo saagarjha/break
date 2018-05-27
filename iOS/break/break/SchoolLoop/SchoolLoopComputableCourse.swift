@@ -19,7 +19,7 @@ public class SchoolLoopComputableCourse: SchoolLoopCourse {
 	/// The computed score for this course.
 	public var computedScore: Double {
 		typealias SchoolLoopCheckedCategory = (weight: Double, score: Double)
-		let categories = computableCategories.flatMap { (category: SchoolLoopComputableCategory) -> SchoolLoopCheckedCategory? in
+		let categories = computableCategories.compactMap { (category: SchoolLoopComputableCategory) -> SchoolLoopCheckedCategory? in
 			if let weight = category.computedWeight,
 				let score = category.computedScore {
 				return (weight, score)

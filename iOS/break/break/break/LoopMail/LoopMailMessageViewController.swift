@@ -26,7 +26,7 @@ class LoopMailMessageViewController: WebViewToSafariViewControllerShimViewContro
 				}
 				`self`.parentLoopMailViewController?.openLoopMailCompose(for: loopMail)
 			}
-		}].flatMap {
+		}].compactMap {
 			$0
 		}.map {
 			UIPreviewAction(title: "Reply", style: .default, handler: $0)

@@ -55,7 +55,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 				addGradeButtonItem.isEnabled = true
 
 				header.title = (title: title, subtitle: String(format: "%.2f%%", computableCourse.computedScore * 100), comparisonResult: computableCourse.comparisonResult)
-				header.headers = categories.flatMap {
+				header.headers = categories.compactMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					guard let score = category.computedScore else {
@@ -81,7 +81,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 				addGradeButtonItem.isEnabled = true
 
 				header.title = (title: title, subtitle: "", comparisonResult: computableCourse.comparisonResult)
-				header.headers = categories.flatMap {
+				header.headers = categories.compactMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					guard let weight = category.computedWeight else {
@@ -95,7 +95,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 				addGradeButtonItem.isEnabled = true
 
 				header.title = (title: title, subtitle: "", comparisonResult: computableCourse.comparisonResult)
-				header.headers = categories.flatMap {
+				header.headers = categories.compactMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					let (score, maxPoints) = category.computedTotals
@@ -112,7 +112,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 					scoreDifferenceString = "+0.00%"
 				}
 				header.title = (title: title, subtitle: scoreDifferenceString, comparisonResult: computableCourse.comparisonResult)
-				header.headers = categories.flatMap {
+				header.headers = categories.compactMap {
 					$0 as? SchoolLoopComputableCategory
 				}.map { category in
 					guard let scoreDifference = category.computedScoreDifference else {
