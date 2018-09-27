@@ -47,8 +47,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 			guard let message = message else {
 				return
 			}
-			message.data(using: .utf8).flatMap { messageTextView.attributedText = try? NSAttributedString(data: $0, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-			}
+			messageTextView.attributedText = try? NSAttributedString(data: Data(message.utf8), options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
 			messageTextView.textColor = .gray
 
 			messageTextView.textContainerInset = UIEdgeInsets(top: messageTextView.textContainerInset.top, left: LoopMailComposeViewController.leftQuoteInset, bottom: messageTextView.textContainerInset.bottom, right: messageTextView.textContainerInset.right)

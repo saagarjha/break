@@ -932,12 +932,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	/// - Parameters:
 	///   - request: The request to add authentication to
 	private func authenticate(_ request: NSMutableURLRequest) {
-		let plainString = "\(account.username):\(account.password)"
-		guard let base64Data = plainString.data(using: .utf8) else {
-			assertionFailure("Could not encode plainString")
-			return
-		}
-		let base64String = base64Data.base64EncodedString()
+		let base64String = Data("\(account.username):\(account.password)".utf8).base64EncodedString()
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
 	}
 

@@ -22,7 +22,7 @@ public struct SchoolLoopKeychain {
 	///   - username: The username to add the password under
 	/// - Returns: Whether the password was set successfully
 	public func addPassword(_ password: String, forUsername username: String) -> Bool {
-		let item: CFDictionary = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username.data(using: String.Encoding.utf8)!, kSecValueData as String: password.data(using: String.Encoding.utf8)!] as CFDictionary
+		let item: CFDictionary = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: Data(username.utf8), kSecValueData as String: Data(password.utf8)] as CFDictionary
 		var status = SecItemDelete(item)
 		if status != noErr {
 			#if os(iOS)
@@ -53,7 +53,7 @@ public struct SchoolLoopKeychain {
 				#endif
 				return nil
 			}
-			return String(data: reference, encoding: String.Encoding.utf8)
+			return String(data: reference, encoding: .utf8)
 		} else {
 			#if os(iOS)
 				Logger.log("Failed to read password: \(error)")

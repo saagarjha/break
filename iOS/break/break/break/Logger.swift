@@ -25,7 +25,7 @@ class Logger {
 			let file = FileHandle(forUpdatingAtPath: filePath)
 			file?.seekToEndOfFile()
 			print("\(Logger.dateFormatter.string(from: Date())): \(string)")
-			file?.write("\(Logger.dateFormatter.string(from: Date())): \(string)\n".data(using: String.Encoding.utf8)!)
+			file?.write(Data("\(Logger.dateFormatter.string(from: Date())): \(string)\n".utf8))
 			file?.closeFile()
 		}
 	}
