@@ -20,7 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	lazy var securityView: UIView = {
 		let securityView: UIView
 		if !UIAccessibilityIsReduceTransparencyEnabled() {
-			let effect = UIBlurEffect(style: .light)
+			let effect: UIBlurEffect
+			if #available(iOS 10.0, *) {
+				effect = UIBlurEffect(style: .regular)
+			} else {
+				effect = UIBlurEffect(style: .light)
+			}
 			securityView = UIVisualEffectView(effect: effect)
 			securityView.frame = UIScreen.main.bounds
 		} else {
@@ -420,7 +425,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 					// Reset the security view for the next use
 					if let securityView = self.securityView as? UIVisualEffectView {
-						securityView.effect = UIBlurEffect(style: .light)
+						if #available(iOS 10.0, *) {
+							securityView.effect = UIBlurEffect(style: .regular)
+						} else {
+							securityView.effect = UIBlurEffect(style: .light)
+						}
 					} else {
 						self.securityView.alpha = 1
 					}

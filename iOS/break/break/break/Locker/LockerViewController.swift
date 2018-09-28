@@ -15,6 +15,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	static let cellIdentifier = "lockerItem"
 
 	static let cellWidth: CGFloat = 144
+	static let otherCellHeight: CGFloat = 128 + 8
 
 	var path = "/"
 
@@ -136,6 +137,21 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		} else {
 			return UIEdgeInsets(inset: inset)
 		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		let width: CGFloat
+		if #available(iOS 11.0, *) {
+			width = lockerCollectionView.frame.width - lockerCollectionView.safeAreaInsets.right - lockerCollectionView.safeAreaInsets.left
+		} else {
+			width = lockerCollectionView.frame.width
+		}
+		let rowSize = Int(width / LockerViewController.cellWidth)
+		let startIndex = indexPath.row / rowSize
+		let maxTextHeight = (startIndex..<min(lockerItems.endIndex, startIndex + rowSize)).map { index in
+			(lockerItems[index].name as NSString).boundingRect(with: CGSize(width: LockerViewController.cellWidth, height: .infinity), options: .usesLineFragmentOrigin, attributes: [.font: UIFont.preferredFont(forTextStyle: .headline)], context: nil).height
+			}.max() ?? 0
+		return CGSize(width: LockerViewController.cellWidth, height: LockerViewController.otherCellHeight + maxTextHeight)
 	}
 
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
