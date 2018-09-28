@@ -124,7 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
 				if error == .noError {
-					DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
+					DispatchQueue.global(qos: .userInitiated).async {
 						let group = DispatchGroup()
 
 						func completion<T>(updatedItems: [T], error: SchoolLoopError) where T: UpdatableItem {
@@ -183,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		guard launchNotification == nil else {
 			return
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.launchNotification = notification
 			self.completionHandler = completionHandler
 			if self.openContext(for: notification) {
@@ -209,7 +209,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		let schoolLoop = SchoolLoop.sharedInstance
 		if schoolLoop.school != nil && schoolLoop.account != nil && !schoolLoop.account.password.isEmpty {
 			schoolLoop.logIn(withSchoolName: schoolLoop.school.name, username: schoolLoop.account.username, password: schoolLoop.account.password) { error in
-				DispatchQueue.main.async { [unowned self] in
+				DispatchQueue.main.async {
 					Logger.log("Login completed with error \(error)")
 					if error == .noError {
 						// Initialize tab bar controller
@@ -252,7 +252,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 						let alertController = UIAlertController(title: "Authentication failed", message: "Please check your login credentials and try again.", preferredStyle: .alert)
 
 						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-							DispatchQueue.main.async { [unowned self] in
+							DispatchQueue.main.async {
 								self.showLogin()
 							}
 						}
@@ -293,7 +293,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showLogin() {
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			let storyboard = UIStoryboard(name: "Main", bundle: nil)
 			let loginViewController = storyboard.instantiateViewController(withIdentifier: "login")
 			self.window?.makeKeyAndVisible()
@@ -350,7 +350,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		// If the user has recently authenticated biometrically, don't ask again
 		// immediately after
 		context.touchIDAuthenticationAllowableReuseDuration = 10
-		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { [unowned self] (success, error) in
+		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "You'll need to unlock break to continue.") { (success, error) in
 			if success {
 				self.removeSecurityView()
 			} else {
@@ -361,10 +361,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showPassword() {
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			if let tabBarController = self.window?.rootViewController as? UITabBarController {
 				let alertController = UIAlertController(title: "Enter your password", message: "You'll need to enter your password to continue. If you've forgotten it, just press \"Forgot\" and log in with your School Loop account.", preferredStyle: .alert)
-				let forgotAction = UIAlertAction(title: "Forgot", style: .cancel) { [unowned self] _ in
+				let forgotAction = UIAlertAction(title: "Forgot", style: .cancel) { _ in
 					Preferences.isPasswordSet = false
 					Preferences.canUseTouchID = false
 					SchoolLoop.sharedInstance.logOut()
@@ -380,7 +380,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 					} else {
 						let alertController = UIAlertController(title: "Incorrect password", message: "The password you entered was incorrect.", preferredStyle: .alert)
 						let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-							DispatchQueue.main.async { [unowned self] in
+							DispatchQueue.main.async {
 								self.showPassword()
 							}
 						}
@@ -414,13 +414,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func removeSecurityView() {
 		DispatchQueue.main.async {
-			UIView.animate(withDuration: 0.25, animations: { [unowned self] in
+			UIView.animate(withDuration: 0.25, animations: {
 				if let securityView = self.securityView as? UIVisualEffectView {
 					securityView.effect = nil
 				} else {
 					self.securityView.alpha = 0
 				}
-			}, completion: { [unowned self] _ in
+			}, completion: { _ in
 					self.securityView.removeFromSuperview()
 
 					// Reset the security view for the next use

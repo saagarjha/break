@@ -40,7 +40,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		// Wait for the search controller to finish its setup
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.searchController.searchBar.becomeFirstResponder()
 		}
 	}
@@ -106,16 +106,19 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 				guard error == .noError else {
 					return
 				}
-				DispatchQueue.main.async { [unowned self] in
-					self.contacts = contacts.filter {
+				DispatchQueue.main.async { [weak self] in
+					guard let `self` = self else {
+						return
+					}
+					`self`.contacts = contacts.filter {
 						!self.selectedContacts.contains($0)
 					}
-					self.contactsTableView.reloadData()
+					`self`.contactsTableView.reloadData()
 				}
 			}
 		} else {
 			contacts.removeAll()
-			DispatchQueue.main.async { [unowned self] in
+			DispatchQueue.main.async {
 				self.contactsTableView.reloadData()
 			}
 		}
@@ -146,7 +149,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		contactsTableView.contentInset = UIEdgeInsets(top: contactsTableView.contentInset.top, left: contactsTableView.contentInset.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.contentInset.right)
 		contactsTableView.scrollIndicatorInsets = UIEdgeInsets(top: contactsTableView.scrollIndicatorInsets.top, left: contactsTableView.scrollIndicatorInsets.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.scrollIndicatorInsets.right)
 		contactsTableView.flashScrollIndicators()
-		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: { [unowned self] in
+		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
 			self.contactsTableView.layoutIfNeeded()
 		})
 	}

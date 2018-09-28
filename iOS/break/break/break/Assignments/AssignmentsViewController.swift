@@ -112,8 +112,11 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 	}
 
 	override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-		let completeAction = UITableViewRowAction(style: .normal, title: "Mark\nDone") { [unowned self] _, indexPath in
-			(self.filteredAssignments[self.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
+		let completeAction = UITableViewRowAction(style: .normal, title: "Mark\nDone") { [weak self] _, indexPath in
+			guard let `self` = self else {
+				return
+			}
+			(`self`.filteredAssignments[`self`.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
 				assignment.isCompleted = !assignment.isCompleted
 				DispatchQueue.main.async {
 					tableView.reloadData()
@@ -141,7 +144,7 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 		filteredAssignmentDueDates = Array(filteredAssignments.keys).sorted {
 			$0.compare($1) == .orderedAscending
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
 	}

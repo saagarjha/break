@@ -135,7 +135,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 		} else {
 			filteredCourses = courses
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
 	}

@@ -78,7 +78,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 	@objc func changeTitle(_ sender: Any) {
 		let alertController = UIAlertController(title: "Rename Category", message: "Enter a new category name for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return
@@ -99,7 +99,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 	@objc func changeSubtitle(_ sender: UILabel) {
 		let alertController = UIAlertController(title: "Change Weight", message: "Enter a new weight for \"\(titleLabel.text ?? "")\".", preferredStyle: .alert)
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-		let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
+		let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 			guard let text = alertController.textFields?.first?.text else {
 				assertionFailure("Could not get text from text field")
 				return

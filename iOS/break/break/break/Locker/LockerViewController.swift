@@ -215,7 +215,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		coordinator.animate(alongsideTransition: { [unowned self] _ in
+		coordinator.animate(alongsideTransition: { _ in
 			self.lockerCollectionView?.collectionViewLayout.invalidateLayout()
 		}, completion: nil)
 	}

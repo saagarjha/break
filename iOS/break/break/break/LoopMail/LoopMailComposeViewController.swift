@@ -256,7 +256,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		composeTableView.contentInset = UIEdgeInsets(top: composeTableView.contentInset.top, left: composeTableView.contentInset.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.contentInset.right)
 		composeTableView.scrollIndicatorInsets = UIEdgeInsets(top: composeTableView.scrollIndicatorInsets.top, left: composeTableView.scrollIndicatorInsets.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.scrollIndicatorInsets.right)
 		composeTableView.flashScrollIndicators()
-		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: { [unowned self] in
+		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
 			self.composeTableView.layoutIfNeeded()
 		})
 	}
@@ -291,7 +291,7 @@ extension LoopMailComposeViewController: LoopMailContactsDelegate {
 		default:
 			return
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.composeTableView.reloadData()
 		}
 	}

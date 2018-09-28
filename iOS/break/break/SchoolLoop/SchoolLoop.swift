@@ -21,119 +21,99 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 
 	// MARK: - Instance variables
 	
-	private var schoolLock = DispatchSemaphore(value: 1)
+	private var schoolQueue = DispatchQueue(schoolLoopVariableName: "school")
 	private var _school: SchoolLoopSchool!
 
 	/// The current school for this `SchoolLoop`'s account.
 	public var school: SchoolLoopSchool! {
 		get {
-			schoolLock.wait()
-			defer {
-				schoolLock.signal()
+			return schoolQueue.sync {
+				_school
 			}
-			return _school
 		}
 		set {
-			schoolLock.wait()
-			defer {
-				schoolLock.signal()
+			schoolQueue.sync {
+				_school = newValue
 			}
-			_school = newValue
 		}
 	}
 	
-	private var schoolsLock = DispatchSemaphore(value: 1)
+	private var schoolsQueue = DispatchQueue(schoolLoopVariableName: "schools")
 	private var _schools = [SchoolLoopSchool]()
 
 	/// A list of all School Loop schools.
 	public var schools: [SchoolLoopSchool] {
 		get {
-			schoolsLock.wait()
-			defer {
-				schoolsLock.signal()
+			return schoolsQueue.sync {
+				_schools
 			}
-			return _schools
 		}
 		set {
-			schoolsLock.wait()
-			defer {
-				schoolsLock.signal()
+			schoolsQueue.sync {
+				_schools = newValue
 			}
-			_schools = newValue
 		}
 	}
 	
-	private var accountLock = DispatchSemaphore(value: 1)
+	private var accountQueue = DispatchQueue(schoolLoopVariableName: "account")
 	private var _account: SchoolLoopAccount!
 
 	/// The current account managed by this `SchoolLoop`.
 	public var account: SchoolLoopAccount! {
 		get {
-			accountLock.wait()
-			defer {
-				accountLock.signal()
+			return accountQueue.sync {
+				_account
 			}
-			return _account
 		}
 		set {
-			accountLock.wait()
-			defer {
-				accountLock.signal()
+			accountQueue.sync {
+				_account = newValue
 			}
-			_account = newValue
 		}
 	}
 
-	private var coursesLock = DispatchSemaphore(value: 1)
+	private var coursesQueue = DispatchQueue(schoolLoopVariableName: "courses")
 	private var _courses = [SchoolLoopCourse]()
 
 	/// A list of courses for this `SchoolLoop`'s account.
 	public var courses: [SchoolLoopCourse] {
 		get {
-			coursesLock.wait()
-			defer {
-				coursesLock.signal()
+			return coursesQueue.sync {
+				_courses
 			}
-			return _courses
 		}
 		set {
-			coursesLock.wait()
-			defer {
-				coursesLock.signal()
+			coursesQueue.sync {
+				_courses = newValue
 			}
-			_courses = newValue
 		}
 	}
 
-	private var assignmentsLock = DispatchSemaphore(value: 1)
+	private var assignmentsQueue = DispatchQueue(schoolLoopVariableName: "assignments")
 	private var _assignments = [SchoolLoopAssignment]()
 
 	/// A list of assignments for this `SchoolLoop`'s account.
 	public var assignments: [SchoolLoopAssignment] {
 		get {
-			assignmentsLock.wait()
-			defer {
-				assignmentsLock.signal()
+			return assignmentsQueue.sync {
+				_assignments
 			}
-			return _assignments
 		}
 		set {
-			assignmentsLock.wait()
-			defer {
-				assignmentsLock.signal()
+			assignmentsQueue.sync {
+				_assignments = newValue
+				var assignmentsWithDueDates = [Date: [SchoolLoopAssignment]]()
+				for assigment in _assignments {
+					var assignmentsForDate = assignmentsWithDueDates[assigment.dueDate] ?? []
+					assignmentsForDate.append(assigment)
+					assignmentsWithDueDates[assigment.dueDate] = assignmentsForDate
+				}
+				self.assignmentsWithDueDates = assignmentsWithDueDates
 			}
-			_assignments = newValue
-			var assignmentsWithDueDates = [Date: [SchoolLoopAssignment]]()
-			for assigment in _assignments {
-				var assignmentsForDate = assignmentsWithDueDates[assigment.dueDate] ?? []
-				assignmentsForDate.append(assigment)
-				assignmentsWithDueDates[assigment.dueDate] = assignmentsForDate
-			}
-			self.assignmentsWithDueDates = assignmentsWithDueDates
 		}
 	}
 	
-	private var assignmentsWithDueDatesLock = DispatchSemaphore(value: 1)
+	private var assignmentsWithDueDatesQueue = DispatchQueue(schoolLoopVariableName: "assignmentsWithDueDates")
 	private var _assignmentsWithDueDates = [Date: [SchoolLoopAssignment]]()
 
 	/// A list of assignments for this `SchoolLoop`'s account, organized by due
@@ -141,81 +121,65 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	/// the assignments due on that day.
 	public private(set) var assignmentsWithDueDates: [Date: [SchoolLoopAssignment]] {
 		get {
-			assignmentsWithDueDatesLock.wait()
-			defer {
-				assignmentsWithDueDatesLock.signal()
+			return assignmentsWithDueDatesQueue.sync {
+				_assignmentsWithDueDates
 			}
-			return _assignmentsWithDueDates
 		}
 		set {
-			assignmentsWithDueDatesLock.wait()
-			defer {
-				assignmentsWithDueDatesLock.signal()
+			return schoolQueue.sync {
+				_assignmentsWithDueDates = newValue
 			}
-			_assignmentsWithDueDates = newValue
 		}
 	}
 	
-	private var loopMailLock = DispatchSemaphore(value: 1)
+	private var loopMailQueue = DispatchQueue(schoolLoopVariableName: "loopMail")
 	private var _loopMail = [SchoolLoopLoopMail]()
 
 	/// A list of LoopMail for this `SchoolLoop`'s account.
 	public var loopMail: [SchoolLoopLoopMail] {
 		get {
-			loopMailLock.wait()
-			defer {
-				loopMailLock.signal()
+			return loopMailQueue.sync {
+				_loopMail
 			}
-			return _loopMail
 		}
 		set {
-			loopMailLock.wait()
-			defer {
-				loopMailLock.signal()
+			loopMailQueue.sync {
+				_loopMail = newValue
 			}
-			_loopMail = newValue
 		}
 	}
 
-	private var newsLock = DispatchSemaphore(value: 1)
+	private var newsQueue = DispatchQueue(schoolLoopVariableName: "news")
 	private var _news = [SchoolLoopNews]()
 	
 	/// A list of News for this `SchoolLoop`'s account.
 	public var news: [SchoolLoopNews] {
 		get {
-			newsLock.wait()
-			defer {
-				newsLock.signal()
+			return newsQueue.sync {
+				_news
 			}
-			return _news
 		}
 		set {
-			newsLock.wait()
-			defer {
-				newsLock.signal()
+			newsQueue.sync {
+				_news = newValue
 			}
-			_news = newValue
 		}
 	}
 	
-	private var lockerLock = DispatchSemaphore(value: 1)
+	private var lockerQueue = DispatchQueue(schoolLoopVariableName: "locker")
 	private var _locker: SchoolLoopLockerItem!
 
 	/// The top-level (i.e. "/") locker item for this `SchoolLoop`'s account.
 	public var locker: SchoolLoopLockerItem! {
 		get {
-			lockerLock.wait()
-			defer {
-				lockerLock.signal()
+			return lockerQueue.sync {
+				_locker
 			}
-			return _locker
 		}
 		set {
-			lockerLock.wait()
-			defer {
-				lockerLock.signal()
+			lockerQueue.sync {
+				_locker = newValue
 			}
-			_locker = newValue
 		}
 	}
 
@@ -1173,5 +1137,11 @@ extension String {
 	///   `"null"`
 	public static func ?!(lhs: String, rhs: String) -> String {
 		return lhs == "null" ? rhs : lhs
+	}
+}
+
+fileprivate extension DispatchQueue {
+	convenience init(schoolLoopVariableName: String) {
+		self.init(label: "\(Bundle.main.bundleIdentifier!).SchoolLoop.\(schoolLoopVariableName)")
 	}
 }

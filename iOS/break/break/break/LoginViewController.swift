@@ -73,7 +73,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			movingAnimatableViews.forEach {
 				$0.frame = $0.frame.offsetBy(dx: 0, dy: dy)
 			}
-			UIView.animate(withDuration: breakConstants.loginStationaryAnimationDuration, delay: 0, options: .curveEaseInOut, animations: { [unowned self] in
+			UIView.animate(withDuration: breakConstants.loginStationaryAnimationDuration, delay: 0, options: .curveEaseInOut, animations: {
 				self.stationaryAnimatableViews.forEach {
 					$0.alpha = 1
 				}

@@ -62,7 +62,7 @@ class SecurityTableViewController: UITableViewController {
 			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
 				sender.isOn = false
 			}
-			let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
+			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
 				_ = schoolLoop.keychain.addPassword(alertController.textFields?.first?.text ?? "", forUsername: "\(schoolLoop.account.username)appPassword")
 				Preferences.isPasswordSet = sender.isOn
@@ -80,7 +80,7 @@ class SecurityTableViewController: UITableViewController {
 			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
 				sender.isOn = true
 			}
-			let doneAction = UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
+			let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
 				let schoolLoop = SchoolLoop.sharedInstance
 				if alertController.textFields?.first?.text == schoolLoop.keychain.getPassword(forUsername: "\(schoolLoop.account.username)appPassword") {
 					Preferences.isPasswordSet = sender.isOn

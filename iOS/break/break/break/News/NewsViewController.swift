@@ -107,7 +107,7 @@ class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpd
 		} else {
 			filteredNews = news
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
 	}

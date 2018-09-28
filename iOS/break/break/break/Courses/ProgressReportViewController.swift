@@ -197,9 +197,12 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		}
 
 		// Workaround for rdar://problem/35436877
-		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [unowned self] in
-			self.tableView.estimatedRowHeight = 80
-			self.updateSearchResults(for: self.searchController)
+		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [weak self] in
+			guard let `self` = self else {
+				return
+			}
+			`self`.tableView.estimatedRowHeight = 80
+			`self`.updateSearchResults(for: self.searchController)
 		}
 	}
 
@@ -368,7 +371,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		} else {
 			filteredGrades = grades
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.tableView.reloadData()
 			// Workaround for rdar://problem/35436877
 			UIView.setAnimationsEnabled(false)

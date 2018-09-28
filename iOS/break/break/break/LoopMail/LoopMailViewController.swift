@@ -122,7 +122,7 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 		} else {
 			filteredLoopMail = loopMail
 		}
-		DispatchQueue.main.async { [unowned self] in
+		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
 	}
