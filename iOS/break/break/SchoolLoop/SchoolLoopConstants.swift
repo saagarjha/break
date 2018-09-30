@@ -24,12 +24,14 @@ enum SchoolLoopConstants {
 	#endif
 	
 	/// A string describing the device, in this case the model identifier.
-	private static var devOS: String {
+	public static var devOS: String {
 		get {
 			var systemInfo = utsname()
 			uname(&systemInfo)
-			return Mirror(reflecting: systemInfo.machine).children.reduce("") { identifier, element in
-				identifier + ((element.value as? Int8).flatMap { String(UnicodeScalar(UInt8($0))) } ?? "")
+			return withUnsafePointer(to: systemInfo.machine) {
+				$0.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
+					String(cString: $0)
+				}
 			}
 		}
 	}
@@ -42,7 +44,6 @@ enum SchoolLoopConstants {
 			return dateFormatter.string(from: Date())
 		}
 	}
-	
 	
 	/// The max number of items to fetch for rate-limited APIs.
 	private static let max = "25"
