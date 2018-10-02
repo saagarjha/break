@@ -30,10 +30,9 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 			maxPointsLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeMaxPoints)))
 		}
 	}
-	@IBOutlet weak var categoryNameLabel: CategoryNameLabel! {
+	@IBOutlet weak var categoryNameLabel: UILabel! {
 		didSet {
 			categoryNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeCategoryName)))
-			categoryNameLabel.gradeTableViewCell = self
 		}
 	}
 	@IBOutlet weak var percentScoreLabel: UILabel! {
@@ -176,10 +175,6 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 		progressReportViewController.present(alertController, animated: true, completion: nil)
 	}
 
-	func updateCategoryDicriminatorView(_ sender: Any) {
-		categoryDiscriminatorView.backgroundColor = UIColor(string: categoryNameLabel.text ?? "")
-	}
-
 	func textFieldDidBeginEditing(_ textField: UITextField) {
 		if textField !== categoryTextField {
 			textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
@@ -204,15 +199,5 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		categoryTextField.text = categories[row]
-	}
-}
-
-class CategoryNameLabel: UILabel {
-	weak var gradeTableViewCell: GradeTableViewCell!
-
-	override var text: String? {
-		didSet {
-			gradeTableViewCell.updateCategoryDicriminatorView(self)
-		}
 	}
 }

@@ -19,9 +19,19 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 	}()
 
 	var schoolLoop: SchoolLoop!
-	var assignments = [Date: [SchoolLoopAssignment]]()
+	var assignments = [Date: [SchoolLoopAssignment]]() {
+		didSet {
+			courseColors = Dictionary(zip(0..., `self`.schoolLoop.courses).map { index, course in
+					(course.courseName, UIColor(index: index, offset: .courseOffset))
+				}) { first, second in
+				first
+			}
+
+		}
+	}
 	var filteredAssignments = [Date: [SchoolLoopAssignment]]()
 	var filteredAssignmentDueDates = [Date]()
+	var courseColors = [String: UIColor]()
 
 	var destinationViewController: AssignmentDescriptionViewController!
 
@@ -93,7 +103,7 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 			return tableView.dequeueReusableCell(withIdentifier: AssignmentsViewController.cellIdentifier, for: indexPath)
 		}
 		(filteredAssignments[filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
-			cell.courseNameDiscriminatorView.backgroundColor = UIColor(string: assignment.courseName)
+			cell.courseNameDiscriminatorView.backgroundColor = courseColors[assignment.courseName]
 			if assignment.isCompleted {
 				let titleText = NSAttributedString(string: assignment.title, attributes: [NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
 				let courseNameText = NSAttributedString(string: assignment.courseName, attributes: [NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])

@@ -44,6 +44,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 	var grades = [SchoolLoopGrade]()
 	var filteredGrades = [SchoolLoopGrade]()
 	var trendScores = [SchoolLoopTrendScore]()
+	var categoryColors = [String: UIColor]()
 
 	var viewMode = ViewMode.calculated {
 		didSet {
@@ -127,6 +128,13 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 			default:
 				assertionFailure("ViewMode set to invalid value")
 			}
+			categoryColors = Dictionary(zip(0..., header.headers.map {
+				$0.title
+			}).map { index, category in
+					(category, UIColor(index: index, offset: .categoryOffset))
+				}) { first, second in
+				first
+			}
 			UIView.setAnimationsEnabled(false)
 			tableView.beginUpdates()
 			tableView.endUpdates()
@@ -190,7 +198,6 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 					`self`.computableCourse = course.computableCourse
 					`self`.trendScores = course.trendScores
 					`self`.viewMode = .calculated
-					`self`.updateSearchResults(for: `self`.searchController)
 					`self`.titleButton.isEnabled = true
 				}
 			}
@@ -277,6 +284,8 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		cell.indexPath = indexPath
 		cell.categories = ["¯\\_(ツ)_/¯"] + categories.map { $0.name }
 		if viewMode == .original {
+			cell.categoryDiscriminatorView.backgroundColor = categoryColors[grade.categoryName]
+
 			cell.titleLabel.text = grade.title
 			cell.titleLabel.isUserInteractionEnabled = false
 
@@ -304,6 +313,8 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 				cell.accessoryType = .disclosureIndicator
 				cell.selectionStyle = .default
 			}
+
+			cell.categoryDiscriminatorView.backgroundColor = categoryColors[computableGrade.computedCategoryName?.name ?? ""]
 
 			cell.titleLabel.text = computableGrade.title
 			cell.titleLabel.isUserInteractionEnabled = true

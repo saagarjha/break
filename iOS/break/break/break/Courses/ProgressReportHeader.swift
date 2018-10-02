@@ -76,7 +76,7 @@ class ProgressReportHeader: NSObject, UITableViewDataSource, UITableViewDelegate
 			}
 		case 1:
 			let header = headers[indexPath.row]
-			cell.discriminatorView.backgroundColor = UIColor(string: header.title)
+			cell.discriminatorView.backgroundColor = UIColor(index: indexPath.row, offset: .categoryOffset)
 			cell.titleLabel.text = header.title
 			cell.subtitleLabel.text = header.subtitle
 			switch header.comparisonResult {

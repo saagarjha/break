@@ -11,15 +11,20 @@ import UIKit
 extension UIColor {
 	static let `break` = #colorLiteral(red: 0.1019607843, green: 0.737254902, blue: 0.6117647059, alpha: 1)
 
-	convenience init(string: String) {
-		let hashValue = UInt(bitPattern: string.hashValue)
-		let channelSize = UInt(MemoryLayout<UInt>.size * 8 / 3)
-		let mask = 1 << channelSize - 1
-		let red = CGFloat(hashValue & mask) / CGFloat(mask + 1)
-		let green = CGFloat(hashValue >> channelSize & mask) / CGFloat(mask + 1)
-		let blue = CGFloat(hashValue >> (channelSize * 2) & mask) / CGFloat(mask + 1)
-		self.init(red: red, green: green, blue: blue, alpha: 1)
+	// Adapted from https://ridiculousfish.com/blog/posts/colors.html
+	convenience init(index: Int, offset: CGFloat) {
+		precondition(index < 1 << CGFloat.significandBitCount, "Index is too large to convert to a color")
+		var reversed: UInt = 0
+		for i in 0..<index.bitWidth {
+			reversed |= UInt((index & (1 << i)).nonzeroBitCount) * 1 << (reversed.bitWidth - i - 1)
+		}
+		self.init(hue: (scalbn(CGFloat(reversed), -reversed.bitWidth) + offset).truncatingRemainder(dividingBy: 1), saturation: 1, brightness: 1, alpha: 1)
 	}
+}
+
+extension CGFloat {
+	static let courseOffset: CGFloat = 2.0 / 3.0
+	static let categoryOffset: CGFloat = 0
 }
 
 enum breakTabIndices: Int, CustomStringConvertible {

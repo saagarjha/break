@@ -99,7 +99,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 			return tableView.dequeueReusableCell(withIdentifier: CoursesViewController.cellIdentifier, for: indexPath)
 		}
 		let course = filteredCourses[indexPath.row]
-		cell.courseNameDiscriminatorView.backgroundColor = UIColor(string: course.courseName)
+		cell.courseNameDiscriminatorView.backgroundColor = UIColor(index: indexPath.row, offset: .courseOffset)
 		cell.periodLabel.text = course.period
 		cell.courseNameLabel.text = course.courseName
 		cell.teacherNameLabel.text = course.teacherName

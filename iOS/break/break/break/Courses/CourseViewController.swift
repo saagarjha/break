@@ -97,7 +97,7 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 			cell.courseViewController = self
 			cell.indexPath = indexPath
 			cell.isTappable = true
-			cell.discriminatorView.backgroundColor = UIColor(string: category.name)
+			cell.discriminatorView.backgroundColor = UIColor(index: indexPath.row, offset: .categoryOffset)
 			cell.titleLabel.text = category.name
 			if let weightValue = category.computedWeight {
 				cell.subtitleLabel.text = String(format: "%.2f%%", weightValue * 100)
