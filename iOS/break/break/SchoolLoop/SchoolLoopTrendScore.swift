@@ -13,15 +13,15 @@ import Foundation
 public class SchoolLoopTrendScore: NSObject, NSCoding {
 	/// The score of this trend score.
 	public var score: String
-	
+
 	/// The day ID of this trend score.
 	public var dayID: Date
 
-	
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Create a new trend score with the specified values.
 	///
 	/// - Parameters:

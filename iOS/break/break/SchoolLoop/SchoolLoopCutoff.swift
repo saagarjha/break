@@ -13,15 +13,15 @@ import Foundation
 public class SchoolLoopCutoff: NSObject, NSCoding {
 	/// The name of this cutoff.
 	public var Name: String
-	
+
 	// The start of this cutoff.
 	public var Start: String
-	
-	
+
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
 
-	
+
 	/// Create a new cutoff with the specified values.
 	///
 	/// - Parameters:

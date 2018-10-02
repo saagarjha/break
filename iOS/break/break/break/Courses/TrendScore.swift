@@ -15,7 +15,7 @@ class TrendScore: UIView {
 	static let leftInset: CGFloat = 55
 	static let bottomInset: CGFloat = 20
 	static let font: UIFont = UIFont.preferredFont(forTextStyle: .caption1)
-	
+
 	static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/d"
@@ -30,7 +30,7 @@ class TrendScore: UIView {
 
 	func drawTrendLine() {
 		layer.sublayers = nil
-		
+
 		let minimum = trendScores.reduce(1) {
 			return Double(min($0, Double($1.score) ?? 1))
 		}
@@ -41,9 +41,9 @@ class TrendScore: UIView {
 		let startDate = trendScores.first?.dayID ?? Date()
 		let endDate = trendScores.last?.dayID ?? Date()
 		let dateDifference = endDate.timeIntervalSince(startDate)
-		
+
 		let graphFrame = CGRect(x: TrendScore.leftInset, y: 0, width: layer.frame.width - TrendScore.leftInset, height: layer.frame.height - TrendScore.bottomInset)
-		
+
 		let axes = UIBezierPath()
 		axes.move(to: graphFrame.topLeftCorner)
 		axes.addLine(to: graphFrame.bottomLeftCorner)
@@ -55,7 +55,7 @@ class TrendScore: UIView {
 		axesShapeLayer.fillColor = nil
 		axesShapeLayer.lineWidth = 1
 		layer.addSublayer(axesShapeLayer)
-		
+
 		for i in 0..<TrendScore.dateLabels {
 			let date = Date(timeInterval: endDate.timeIntervalSince(startDate) * TimeInterval(i) / TimeInterval(TrendScore.dateLabels), since: startDate)
 			let textLayer = CATextLayer()
@@ -69,7 +69,7 @@ class TrendScore: UIView {
 			textLayer.frame = CGRect(x: graphFrame.minX + graphFrame.width * CGFloat(i) / CGFloat(TrendScore.dateLabels) - textFrame.width / 2, y: graphFrame.height + TrendScore.bottomInset / 2 - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}
-		
+
 		for i in 0..<TrendScore.gradeLabels {
 			let grade = minimum + (maximum - minimum) * Double(i) / Double(TrendScore.gradeLabels)
 			let textLayer = CATextLayer()
@@ -82,7 +82,7 @@ class TrendScore: UIView {
 			textLayer.frame = CGRect(x: TrendScore.leftInset / 2 - textFrame.width / 2, y: graphFrame.height - graphFrame.height * CGFloat(i) / CGFloat(TrendScore.gradeLabels) - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)
 		}
-		
+
 		guard trendScores.count > 0 else {
 			return
 		}
@@ -111,23 +111,15 @@ class TrendScore: UIView {
 
 extension CGRect {
 	var topLeftCorner: CGPoint {
-		get {
-			return CGPoint(x: minX, y: minY)
-		}
+		return CGPoint(x: minX, y: minY)
 	}
 	var topRightCorner: CGPoint {
-		get {
-			return CGPoint(x: maxX, y: minY)
-		}
+		return CGPoint(x: maxX, y: minY)
 	}
 	var bottomLeftCorner: CGPoint {
-		get {
-			return CGPoint(x: minX, y: maxY)
-		}
+		return CGPoint(x: minX, y: maxY)
 	}
 	var bottomRightCorner: CGPoint {
-		get {
-			return CGPoint(x: maxX, y: maxY)
-		}
+		return CGPoint(x: maxX, y: maxY)
 	}
 }

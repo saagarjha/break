@@ -13,27 +13,27 @@ import Foundation
 public class SchoolLoopNews: NSObject, NSCoding {
 	/// The title of this news item.
 	public var title: String
-	
+
 	/// The name of the author of this news item.
 	public var authorName: String
-	
+
 	/// The creation date of this news item.
 	public var createdDate: Date
-	
+
 	/// The description of this news item.
 	public var newsDescription: String
-	
+
 	/// The links associated with this news item.
 	public var links: [(title: String, URL: String)]
-	
+
 	/// The ID of this news item.
 	public var iD: String
 
 
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Create a new news item with the specified values.
 	///
 	/// - Parameters:
@@ -60,7 +60,7 @@ public class SchoolLoopNews: NSObject, NSCoding {
 	func set(newCreatedDate createdDate: String) {
 		self.createdDate = Date(timeIntervalSince1970: (TimeInterval(createdDate) ?? 0) / 1000)
 	}
-	
+
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
 		title = aDecoder.decodeObject(of: NSString.self, forKey: "title") as String? ?? ""
@@ -71,7 +71,7 @@ public class SchoolLoopNews: NSObject, NSCoding {
 		iD = aDecoder.decodeObject(of: NSString.self, forKey: "iD") as String? ?? ""
 		super.init()
 	}
-	
+
 	/// `NSCoding` encoding. You probably don't want to invoke this directly.
 	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(title, forKey: "title")

@@ -18,39 +18,39 @@ public class SchoolLoopGrade: NSObject, NSCoding {
 		return dateFormatter
 	}()
 
-	
+
 	/// The title of this grade.
 	public var title: String
-	
+
 	/// The category name of this grade.
 	public var categoryName: String
-	
+
 	/// The percent score for this grade.
 	public var percentScore: String
-	
+
 	/// The score for this grade.
 	public var score: String
-	
+
 	/// The max points for this grade.
 	public var maxPoints: String
-	
+
 	/// The comment for this grade.
 	public var comment: String
-	
+
 	/// The system ID of this grade.
 	public var systemID: String
-	
+
 	/// The due date of this grade.
 	public var dueDate: Date
-	
+
 	/// The changed date of this grade.
 	public var changedDate: Date
-	
+
 
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Creates a new grade with the specified values.
 	///
 	/// - Parameters:
@@ -82,7 +82,7 @@ public class SchoolLoopGrade: NSObject, NSCoding {
 	convenience init(grade: SchoolLoopGrade) {
 		self.init(title: grade.title, categoryName: grade.categoryName, percentScore: grade.percentScore, score: grade.score, maxPoints: grade.maxPoints, comment: grade.comment, systemID: grade.systemID, dueDate: SchoolLoopGrade.dateFormatter.string(from: grade.dueDate), changedDate: SchoolLoopGrade.dateFormatter.string(from: grade.dueDate))
 	}
-	
+
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
 		title = aDecoder.decodeObject(of: NSString.self, forKey: "title") as String? ?? ""

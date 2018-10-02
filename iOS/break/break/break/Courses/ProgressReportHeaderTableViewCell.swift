@@ -48,7 +48,7 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 			label.setContentHuggingPriority(.required, for: .vertical)
 		}
 		subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-		
+
 		discriminatorView.translatesAutoresizingMaskIntoConstraints = false
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[discriminator]", options: [], metrics: nil, views: ["discriminator": discriminatorView])
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[discriminator]|", options: [], metrics: nil, views: ["discriminator": discriminatorView])

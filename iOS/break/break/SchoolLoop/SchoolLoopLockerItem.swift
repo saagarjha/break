@@ -10,14 +10,14 @@
 public class SchoolLoopLockerItem {
 	/// The name of this locker item.
 	public var name: String
-	
+
 	/// The path of this locker item.
 	public var path: String
-	
+
 	/// The type of this locker item.
 	public var type: SchoolLoopLockerItemType
 
-	
+
 	/// The locker items for this locker item.
 	public var lockerItems = [SchoolLoopLockerItem]()
 
@@ -37,10 +37,10 @@ public class SchoolLoopLockerItem {
 extension SchoolLoopLockerItem: Equatable, Comparable {
 }
 
-public func ==(lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
+public func == (lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
 	return lhs.name == rhs.name && lhs.path == rhs.path && lhs.type == rhs.type
 }
 
-public func <(lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
+public func < (lhs: SchoolLoopLockerItem, rhs: SchoolLoopLockerItem) -> Bool {
 	return lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
 }

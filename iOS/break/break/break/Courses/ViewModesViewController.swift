@@ -39,7 +39,7 @@ class ViewModesViewController: UIViewController, UITableViewDataSource, UITableV
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return ViewMode._count.rawValue
+		return ViewMode.allCases.count
 	}
 
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -12,9 +12,9 @@ import WebKit
 // Since this delegate is expected to be exposed to Objective-C, we can't make
 // this a protocol with a default implementation for UIViewControllers.
 class WebViewToSafariViewControllerShimViewController: UIViewController, WKNavigationDelegate {
-	
+
 	var webView: WKWebView!
-	
+
 	override func loadView() {
 		super.loadView()
 		webView = WKWebView()
@@ -23,7 +23,7 @@ class WebViewToSafariViewControllerShimViewController: UIViewController, WKNavig
 		webView.allowsBackForwardNavigationGestures = true
 		view = webView
 	}
-	
+
 	func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 		guard let url = navigationAction.request.url,
 			let scheme = url.scheme,
@@ -43,12 +43,12 @@ extension WebViewToSafariViewControllerShimViewController: WKUIDelegate {
 	func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
 		return true
 	}
-	
+
 	func webView(_ webView: WKWebView, previewingViewControllerForElement elementInfo: WKPreviewElementInfo, defaultActions previewActions: [WKPreviewActionItem]) -> UIViewController? {
 		let safariViewController = breakSafariViewController(url: elementInfo.linkURL!, entersReaderIfAvailable: false)
 		return safariViewController
 	}
-	
+
 	func webView(_ webView: WKWebView, commitPreviewingViewController previewingViewController: UIViewController) {
 		navigationController?.present(previewingViewController, animated: true, completion: nil)
 	}

@@ -21,7 +21,7 @@ class NewsDescriptionViewController: WebViewToSafariViewControllerShimViewContro
 
 		// Do any additional setup after loading the view.
 		setupSelfAsDetailViewController()
-		
+
 		schoolLoop = SchoolLoop.sharedInstance
 		loadDescription()
 	}

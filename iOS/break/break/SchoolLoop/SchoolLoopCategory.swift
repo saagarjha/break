@@ -13,18 +13,18 @@ import Foundation
 public class SchoolLoopCategory: NSObject, NSSecureCoding {
 	/// The name of this category.
 	public var name: String
-	
+
 	/// The score for this category.
 	public var score: String
-	
+
 	/// The weight of this category.
 	public var weight: String
 
-	
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Create a new category with the specified values.
 	///
 	/// - Parameters:
@@ -38,7 +38,7 @@ public class SchoolLoopCategory: NSObject, NSSecureCoding {
 		super.init()
 	}
 
-	
+
 	/// Copy constructor.
 	///
 	/// - Parameter category: The category to copy

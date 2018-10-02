@@ -18,73 +18,71 @@ public class SchoolLoopCourse: NSObject, NSCoding {
 		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
 		return dateFormatter
 	}()
-	
+
 
 	/// A factory instance variable for a computable course.
 	/// - Remark: This should probably be a method.
 	public var computableCourse: SchoolLoopComputableCourse {
-		get {
-			let computableCourse = SchoolLoopComputableCourse(course: self)
-			computableCourse.computableCategories = self.categories.map {
-				let category = SchoolLoopComputableCategory(category: $0)
-				category.isUserCreated = false
-				category.computableCourse = computableCourse
-				return category
-			}
-			computableCourse.computableGrades = self.grades.map {
-				let grade = SchoolLoopComputableGrade(grade: $0)
-				grade.isUserCreated = false
-				grade.computableCourse = computableCourse
-				return grade
-			}
-			computableCourse.precision = precision
-			return computableCourse
+		let computableCourse = SchoolLoopComputableCourse(course: self)
+		computableCourse.computableCategories = self.categories.map {
+			let category = SchoolLoopComputableCategory(category: $0)
+			category.isUserCreated = false
+			category.computableCourse = computableCourse
+			return category
 		}
+		computableCourse.computableGrades = self.grades.map {
+			let grade = SchoolLoopComputableGrade(grade: $0)
+			grade.isUserCreated = false
+			grade.computableCourse = computableCourse
+			return grade
+		}
+		computableCourse.precision = precision
+		return computableCourse
 	}
 
-	
+
 	/// The name of this course.
 	public var courseName: String
-	
+
 	/// The period for this course.
 	public var period: String
-	
+
 	/// The name of the teacher for this course.
 	public var teacherName: String
-	
+
 	/// The grade for this course.
 	public var grade: String
-	
+
 	/// The score for this course.
 	public var score: String
-	
+
 	/// The period ID of this course.
 	public var periodID: String
-	
+
 	/// The last updated time for this course.
 	public var lastUpdated: Date = Date.distantPast
 
-	
+
 	/// The cutoffs associated with this course.
 	public var cutoffs = [SchoolLoopCutoff]()
-	
+
 	/// The categories associated with this course.
 	public var categories = [SchoolLoopCategory]()
-	
+
 	/// The grades associated with this course.
 	public var grades = [SchoolLoopGrade]()
-	
+
 	/// The trend scores associated with this course.
 	public var trendScores = [SchoolLoopTrendScore]()
-	
+
 	/// The precision of the score for this course.
 	public var precision: Int = 0
-	
-	
+
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Create a new course with the specified values.
 	///
 	/// - Parameters:
@@ -159,12 +157,12 @@ public class SchoolLoopCourse: NSObject, NSCoding {
 		aCoder.encode(grades, forKey: "grades")
 		aCoder.encode(trendScores, forKey: "trendScores")
 	}
-	
+
 	public func set(newPrecision precision: String) {
 		self.precision = Int(precision) ?? 0
 	}
 
-	
+
 	/// Returns the grade with the specified system ID.
 	///
 	/// - Parameters:

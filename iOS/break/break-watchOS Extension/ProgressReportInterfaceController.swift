@@ -33,22 +33,22 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 		// This method is called when watch view controller is about to be visible to user
 		super.willActivate()
 		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID], replyHandler: { response in
-			if let data = response["grades"] as? Data,
-				let grades = NSKeyedUnarchiver.unarchiveObject(with: data) as? [SchoolLoopGrade] {
-				self.grades = grades
-				self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
-				for (index, grade) in grades.enumerated() {
-					if let controller = self.gradesTable.rowController(at: index) as? GradeRowController {
-						controller.titleLabel.setText(grade.title)
-						controller.categoryName.setText(grade.categoryName)
-						controller.scoreLabel.setText("\(grade.score)/\(grade.maxPoints)")
-						controller.percentScoreLabel.setText(grade.percentScore)
+				if let data = response["grades"] as? Data,
+					let grades = NSKeyedUnarchiver.unarchiveObject(with: data) as? [SchoolLoopGrade] {
+					self.grades = grades
+					self.gradesTable.setNumberOfRows(grades.count, withRowType: self.rowType)
+					for (index, grade) in grades.enumerated() {
+						if let controller = self.gradesTable.rowController(at: index) as? GradeRowController {
+							controller.titleLabel.setText(grade.title)
+							controller.categoryName.setText(grade.categoryName)
+							controller.scoreLabel.setText("\(grade.score)/\(grade.maxPoints)")
+							controller.percentScoreLabel.setText(grade.percentScore)
+						}
 					}
 				}
-			}
-		}, errorHandler: { error in
-			print(error)
-		})
+			}, errorHandler: { error in
+				print(error)
+			})
 	}
 
 	override func didDeactivate() {

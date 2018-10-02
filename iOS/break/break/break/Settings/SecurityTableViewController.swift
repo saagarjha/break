@@ -16,7 +16,7 @@ class SecurityTableViewController: UITableViewController {
 			passwordCell.accessoryView = passwordSwitch
 		}
 	}
-	let  passwordSwitch: UISwitch = {
+	let passwordSwitch: UISwitch = {
 		let passwordSwitch = UISwitch()
 		passwordSwitch.addTarget(self, action: #selector(usePassword), for: .valueChanged)
 		return passwordSwitch
@@ -45,7 +45,7 @@ class SecurityTableViewController: UITableViewController {
 		// self.navigationItem.rightBarButtonItem = self.editButtonItem()
 		setupSelfAsDetailViewController()
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		updateTableView()
@@ -126,7 +126,7 @@ class SecurityTableViewController: UITableViewController {
 		}
 		return error == "" ? super.tableView(tableView, titleForFooterInSection: section) : error
 	}
-	
+
 	func updateTableView() {
 		passwordSwitch.isOn = Preferences.isPasswordSet
 		biometricAuthenticationSwitch.isOn = Preferences.canUseTouchID

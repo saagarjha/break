@@ -156,7 +156,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	@IBAction func cancel(_ sender: Any) {
 		navigationController?.dismiss(animated: true, completion: nil)
 	}
-	
+
 	@IBAction func send(_ sender: Any) {
 		schoolLoop.sendLoopMail(with: SchoolLoopComposedLoopMail(subject: subjectTextField.text ?? "", message: "<p>\(composeTextView.text ?? "")</p>\n\n\n\(message ?? "")", to: Array(to), cc: Array(cc))) { error in
 			DispatchQueue.main.async { [weak self] in
@@ -257,8 +257,8 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		composeTableView.scrollIndicatorInsets = UIEdgeInsets(top: composeTableView.scrollIndicatorInsets.top, left: composeTableView.scrollIndicatorInsets.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.scrollIndicatorInsets.right)
 		composeTableView.flashScrollIndicators()
 		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
-			self.composeTableView.layoutIfNeeded()
-		})
+				self.composeTableView.layoutIfNeeded()
+			})
 	}
 
 	@objc func deviceOrientationDidChange(notification: NSNotification) {

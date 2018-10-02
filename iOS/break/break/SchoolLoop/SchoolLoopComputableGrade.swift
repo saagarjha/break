@@ -32,33 +32,25 @@ public class SchoolLoopComputableGrade: SchoolLoopGrade {
 
 	/// The computable category for this computable grade.
 	public var computedCategoryName: SchoolLoopComputableCategory? {
-		get {
-			return computableCourse?.computableCategory(for: categoryName)
-		}
+		return computableCourse?.computableCategory(for: categoryName)
 	}
 
 	/// The computed percent score for this computable grade.
 	public var computedPercentScore: Double? {
-		get {
-			guard let computedScore = computedScore,
-				let computedMaxPoints = computedMaxPoints else {
-					return Double(percent: percentScore).flatMap { $0 / 100 }
-			}
-			return computedScore / computedMaxPoints
+		guard let computedScore = computedScore,
+			let computedMaxPoints = computedMaxPoints else {
+				return Double(percent: percentScore).flatMap { $0 / 100 }
 		}
+		return computedScore / computedMaxPoints
 	}
 
 	/// The computed score for this computable grade.
 	public var computedScore: Double? {
-		get {
-			return Double(score)
-		}
+		return Double(score)
 	}
 
 	/// The computed max points for this computed grade.
 	public var computedMaxPoints: Double? {
-		get {
-			return Double(maxPoints)
-		}
+		return Double(maxPoints)
 	}
 }

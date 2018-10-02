@@ -123,13 +123,13 @@ class CourseViewController: UIViewController, UITableViewDataSource, UITableView
 		tableView.deleteRows(at: [indexPath], with: .fade)
 	}
 
-	func changedTitle(to title: String, forIndexPath indexPath: IndexPath) {
+	func changedTitle(to title: String, for indexPath: IndexPath) {
 		let category = course.computableCategories[indexPath.row]
 		category.name = title
 		courseTableView.reloadData()
 	}
 
-	func changedSubtitle(to subtitle: String, forIndexPath indexPath: IndexPath) {
+	func changedSubtitle(to subtitle: String, for indexPath: IndexPath) {
 		let category = course.computableCategories[indexPath.row]
 		if !subtitle.hasSuffix("%") {
 			category.weight = subtitle.appending("%")

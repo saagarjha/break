@@ -28,7 +28,7 @@ class DemoableSchoolLoop: SchoolLoop {
 			super.school = newValue
 		}
 	}
-	
+
 	override var schools: [SchoolLoopSchool] {
 		get {
 			// This is used for autocomplete, so merge the demo schools with
@@ -307,7 +307,7 @@ class DemoableSchoolLoop: SchoolLoop {
 
 	func simulateNetworkDelay(_ block: @escaping () -> Void) {
 		demoQueue.async {
-			usleep(arc4random_uniform(1_000_000))
+			usleep(useconds_t.random(in: 0..<1_000_000))
 			block()
 		}
 	}

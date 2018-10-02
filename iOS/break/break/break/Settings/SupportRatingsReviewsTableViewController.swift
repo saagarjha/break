@@ -27,11 +27,11 @@ class SupportRatingsReviewsTableViewController: UITableViewController, SKStorePr
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-	
+
 	func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
 		viewController.dismiss(animated: true, completion: nil)
 	}
-	
+
 	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
 		controller.dismiss(animated: true, completion: nil)
 	}

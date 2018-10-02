@@ -125,8 +125,6 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 					}
 					return (title: category.name, subtitle: scoreDifferenceString, comparisonResult: category.comparisonResult)
 				}
-			default:
-				assertionFailure("ViewMode set to invalid value")
 			}
 			categoryColors = Dictionary(zip(0..., header.headers.map {
 				$0.title
@@ -474,8 +472,9 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		}
 		let selectedGrade = grades[indexPath.row]
 		if viewMode != .original {
-			guard let selectedGrade = selectedGrade as? SchoolLoopComputableGrade, !selectedGrade.isUserCreated else {
-				return nil
+			guard let selectedGrade = selectedGrade as? SchoolLoopComputableGrade,
+				!selectedGrade.isUserCreated else {
+					return nil
 			}
 		}
 		destinationViewController.title = selectedGrade.title

@@ -83,7 +83,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 				assertionFailure("Could not get text from text field")
 				return
 			}
-			self.courseViewController.changedTitle(to: text, forIndexPath: self.indexPath)
+			self.courseViewController.changedTitle(to: text, for: self.indexPath)
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)
@@ -104,7 +104,7 @@ class CourseDetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 				assertionFailure("Could not get text from text field")
 				return
 			}
-			self.courseViewController.changedSubtitle(to: text, forIndexPath: self.indexPath)
+			self.courseViewController.changedSubtitle(to: text, for: self.indexPath)
 		}
 		alertController.addAction(cancelAction)
 		alertController.addAction(doneAction)

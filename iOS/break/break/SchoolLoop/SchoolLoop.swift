@@ -20,7 +20,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	public let keychain = SchoolLoopKeychain.sharedInstance
 
 	// MARK: - Instance variables
-	
+
 	private var schoolQueue = DispatchQueue(schoolLoopVariableName: "school")
 	private var _school: SchoolLoopSchool!
 
@@ -37,7 +37,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 			}
 		}
 	}
-	
+
 	private var schoolsQueue = DispatchQueue(schoolLoopVariableName: "schools")
 	private var _schools = [SchoolLoopSchool]()
 
@@ -54,7 +54,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 			}
 		}
 	}
-	
+
 	private var accountQueue = DispatchQueue(schoolLoopVariableName: "account")
 	private var _account: SchoolLoopAccount!
 
@@ -112,7 +112,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 			}
 		}
 	}
-	
+
 	private var assignmentsWithDueDatesQueue = DispatchQueue(schoolLoopVariableName: "assignmentsWithDueDates")
 	private var _assignmentsWithDueDates = [Date: [SchoolLoopAssignment]]()
 
@@ -131,7 +131,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 			}
 		}
 	}
-	
+
 	private var loopMailQueue = DispatchQueue(schoolLoopVariableName: "loopMail")
 	private var _loopMail = [SchoolLoopLoopMail]()
 
@@ -151,7 +151,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 
 	private var newsQueue = DispatchQueue(schoolLoopVariableName: "news")
 	private var _news = [SchoolLoopNews]()
-	
+
 	/// A list of News for this `SchoolLoop`'s account.
 	public var news: [SchoolLoopNews] {
 		get {
@@ -165,7 +165,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 			}
 		}
 	}
-	
+
 	private var lockerQueue = DispatchQueue(schoolLoopVariableName: "locker")
 	private var _locker: SchoolLoopLockerItem!
 

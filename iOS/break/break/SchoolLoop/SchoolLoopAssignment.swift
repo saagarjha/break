@@ -13,31 +13,31 @@ import Foundation
 public class SchoolLoopAssignment: NSObject, NSCoding {
 	/// The title of this assignment.
 	public var title: String
-	
+
 	/// The description of this assignment.
 	public var assignmentDescription: String
-	
+
 	/// The course name associated with this assignment.
 	public var courseName: String
-	
+
 	/// The due date of this assignment.
 	public var dueDate: Date
-	
+
 	/// The links associated with this assignment.
 	public var links: [(title: String, URL: String)]
-	
+
 	/// The ID of this assignment.
 	public var iD: String
 
-	
+
 	/// A Boolean that designates whether this assignment is completed.
 	public var isCompleted: Bool
-	
-	
+
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
 
-	
+
 	/// Create a new assignment with the specified values.
 	///
 	/// - Parameters:

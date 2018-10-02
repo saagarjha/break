@@ -16,18 +16,18 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 	override init() {
 		super.init()
 		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["assignments": ""], replyHandler: { reply in
-			if let data = reply["assignments"] as? Data {
-				if let assignments = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Date: [SchoolLoopAssignment]] {
-					self.assignments = assignments
-					let server = CLKComplicationServer.sharedInstance()
-					for complication in server.activeComplications! {
-						server.reloadTimeline(for: complication)
+				if let data = reply["assignments"] as? Data {
+					if let assignments = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Date: [SchoolLoopAssignment]] {
+						self.assignments = assignments
+						let server = CLKComplicationServer.sharedInstance()
+						for complication in server.activeComplications! {
+							server.reloadTimeline(for: complication)
+						}
 					}
 				}
-			}
-		}, errorHandler: { error in
-			print(error)
-		})
+			}, errorHandler: { error in
+				print(error)
+			})
 	}
 
 	// MARK: - Timeline Configuration
@@ -229,17 +229,17 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
 
 	func requestedUpdateDidBegin() {
 		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["assignments": ""], replyHandler: { reply in
-			if let data = reply["assignments"] as? Data {
-				if let assignments = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Date: [SchoolLoopAssignment]] {
-					self.assignments = assignments
-					let server = CLKComplicationServer.sharedInstance()
-					for complication in server.activeComplications! {
-						server.reloadTimeline(for: complication)
+				if let data = reply["assignments"] as? Data {
+					if let assignments = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Date: [SchoolLoopAssignment]] {
+						self.assignments = assignments
+						let server = CLKComplicationServer.sharedInstance()
+						for complication in server.activeComplications! {
+							server.reloadTimeline(for: complication)
+						}
 					}
 				}
-			}
-		}, errorHandler: { error in
-			print(error)
-		})
+			}, errorHandler: { error in
+				print(error)
+			})
 	}
 }

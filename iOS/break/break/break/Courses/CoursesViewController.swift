@@ -34,7 +34,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 		setupRefreshControl()
 		addSearchBar(from: searchController, to: tableView)
 		setupSelfAsMasterViewController()
-		
+
 		schoolLoop = SchoolLoop.sharedInstance
 		refresh(self)
 	}
@@ -110,14 +110,14 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 			cell.gradeLabel.text = "Grades"
 			cell.scoreLabel.text = "Hidden"
 		}
-		
+
 		// Try to keep the cell's labels from having extraneous line breaks
 		// This can occur after a show/hide event
 		[cell.courseNameLabel, cell.teacherNameLabel].forEach {
 			$0?.numberOfLines = 1
 			$0?.numberOfLines = 0
 		}
-		
+
 		return cell
 	}
 
@@ -152,7 +152,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 		progressReportViewController.periodID = course.periodID
 		navigationController?.pushViewController(progressReportViewController, animated: true)
 	}
-	
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		setupForceTouch(originatingFrom: tableView)
 	}

@@ -14,7 +14,7 @@ enum SchoolLoopConstants {
 	/// The application verion. It appears that School Loop accepts anything
 	/// greater than 2.
 	private static let version = "3"
-	
+
 	#if os(iOS)
 		/// The UUID of the current device.
 		static let devToken = UIDevice.current.identifierForVendor?.uuidString ?? ""
@@ -22,33 +22,29 @@ enum SchoolLoopConstants {
 		/// The UUID of the current device. watchOS does not support this API.
 		static let devToken = ""
 	#endif
-	
+
 	/// A string describing the device, in this case the model identifier.
 	public static var devOS: String {
-		get {
-			var systemInfo = utsname()
-			uname(&systemInfo)
-			return withUnsafePointer(to: systemInfo.machine) {
-				$0.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
-					String(cString: $0)
-				}
+		var systemInfo = utsname()
+		uname(&systemInfo)
+		return withUnsafePointer(to: systemInfo.machine) {
+			$0.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
+				String(cString: $0)
 			}
 		}
 	}
-	
+
 	/// The current year.
 	private static var year: String {
-		get {
-			let dateFormatter = DateFormatter()
-			dateFormatter.dateFormat = "y"
-			return dateFormatter.string(from: Date())
-		}
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "y"
+		return dateFormatter.string(from: Date())
 	}
-	
+
 	/// The max number of items to fetch for rate-limited APIs.
 	private static let max = "25"
-	
-	
+
+
 	/// A URL to the School Loop "forgot password" page.
 	static let forgotURL = URL(string: "https://lol.schoolloop.com/portal/forgot_password")!
 
@@ -94,7 +90,7 @@ enum SchoolLoopConstants {
 	static func gradeURL(domainName: String, studentID: String, periodID: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/progress_report?studentID=\(studentID)&periodID=\(periodID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
-	
+
 	/// Creates a URL to the School Loop assignment endpoint with the specified
 	/// domain name and student ID.
 	///
@@ -155,7 +151,7 @@ enum SchoolLoopConstants {
 	static func loopMailSendURL(domainName: String) -> URL {
 		return URL(string: "https://\(domainName)/mapi/mail_messages".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
-	
+
 	/// Creates a URL to the School Loop news endpoint with the specified domain
 	/// name and student ID.
 	///

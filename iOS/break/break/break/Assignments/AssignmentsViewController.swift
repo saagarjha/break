@@ -48,7 +48,7 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 		schoolLoop = SchoolLoop.sharedInstance
 		refresh(self)
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		assignments = SchoolLoop.sharedInstance.assignmentsWithDueDates
@@ -169,7 +169,7 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 		assignmentDescriptionViewController.iD = assignment.iD
 		navigationController?.pushViewController(assignmentDescriptionViewController, animated: true)
 	}
-	
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		setupForceTouch(originatingFrom: tableView)
 	}

@@ -13,17 +13,17 @@ import Foundation
 public class SchoolLoopComposedLoopMail: NSObject {
 	/// The subject of this LoopMail.
 	public var subject: String
-	
+
 	/// The message of this LoopMail.
 	public var message: String
-	
+
 	/// The recipients of this LoopMail.
 	public var to: [SchoolLoopContact]
-	
+
 	/// The carbon copy recipients of this LoopMail.
 	public var cc: [SchoolLoopContact]
 
-	
+
 	/// Creates a new "composed" LoopMail with the specified values.
 	///
 	/// - Parameters:

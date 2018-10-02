@@ -8,13 +8,12 @@
 
 import Foundation
 
-enum ViewMode: Int, CustomStringConvertible {
+enum ViewMode: Int, CaseIterable, CustomStringConvertible {
 	case calculated = 0
 	case original
 	case weights
 	case totals
 	case differences
-	case _count
 
 	var description: String {
 		switch self {
@@ -28,9 +27,6 @@ enum ViewMode: Int, CustomStringConvertible {
 			return "Totals"
 		case .differences:
 			return "Differences"
-		default:
-			assertionFailure("ViewMode is unrepresentable")
-			return ""
 		}
 	}
 }

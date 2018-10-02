@@ -26,7 +26,7 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 	var destinationViewController: LoopMailMessageViewController!
 
 	let searchController = UISearchController(searchResultsController: nil)
-	
+
 	var forceTouchSourceView: UIView! {
 		return tableView
 	}
@@ -163,7 +163,7 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 			}
 		}
 	}
-	
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		setupForceTouch(originatingFrom: tableView)
 	}

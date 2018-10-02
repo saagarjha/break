@@ -11,7 +11,7 @@ import UIKit
 class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpdating, UIViewControllerPreviewingDelegate {
 
 	static let cellIdentifier = "news"
-	
+
 	static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "M/d/yy"
@@ -33,7 +33,7 @@ class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpd
 		setupRefreshControl()
 		addSearchBar(from: searchController, to: tableView)
 		setupSelfAsMasterViewController()
-		
+
 		schoolLoop = SchoolLoop.sharedInstance
 		refresh(self)
 	}
@@ -122,7 +122,7 @@ class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpd
 		newsDescriptionViewController.iD = news.iD
 		navigationController?.pushViewController(newsDescriptionViewController, animated: true)
 	}
-	
+
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		setupForceTouch(originatingFrom: tableView)
 	}

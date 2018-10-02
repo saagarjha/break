@@ -16,13 +16,13 @@ class LoggerViewController: UIViewController {
 
 		// Do any additional setup after loading the view.
 		setupSelfAsDetailViewController()
-		
+
 		logTextView.text = Logger.readLog()
 	}
-	
+
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
+
 		guard logTextView.text.count > 0 else {
 			return
 		}

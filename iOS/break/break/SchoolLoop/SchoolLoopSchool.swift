@@ -13,18 +13,18 @@ import Foundation
 public class SchoolLoopSchool: NSObject, NSCoding {
 	/// The name of this school.
 	public var name: String
-	
+
 	/// The domain name for this school.
 	public var domainName: String
-	
+
 	/// The district name of this school.
 	public var districtName: String
 
-	
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Creates a new school with the specified values.
 	///
 	/// - Parameters:
@@ -37,7 +37,7 @@ public class SchoolLoopSchool: NSObject, NSCoding {
 		self.districtName = districtName ?! ""
 		super.init()
 	}
-	
+
 	/// `NSCoding` initializer. You probably don't want to invoke this directly.
 	public required init?(coder aDecoder: NSCoder) {
 		name = aDecoder.decodeObject(of: NSString.self, forKey: "name") as String? ?? ""
@@ -45,7 +45,7 @@ public class SchoolLoopSchool: NSObject, NSCoding {
 		districtName = aDecoder.decodeObject(of: NSString.self, forKey: "districtName") as String? ?? ""
 		super.init()
 	}
-	
+
 	/// `NSCoding` encoding. You probably don't want to invoke this directly.
 	public func encode(with aCoder: NSCoder) {
 		aCoder.encode(name, forKey: "name")
@@ -56,10 +56,10 @@ public class SchoolLoopSchool: NSObject, NSCoding {
 
 extension SchoolLoopSchool: Comparable { }
 
-public func ==(lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
+public func == (lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
 	return lhs.name == rhs.name
 }
 
-public func <(lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
+public func < (lhs: SchoolLoopSchool, rhs: SchoolLoopSchool) -> Bool {
 	return lhs.name < rhs.name
 }

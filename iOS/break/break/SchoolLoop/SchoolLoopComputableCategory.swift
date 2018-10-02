@@ -12,12 +12,12 @@ import Foundation
 public class SchoolLoopComputableCategory: SchoolLoopCategory {
 	/// The computable course associated with this computable category.
 	public weak var computableCourse: SchoolLoopComputableCourse?
-	
+
 	/// A Boolean that designates whether this computable cateogory is created
 	/// by the user.
 	public var isUserCreated = true
 
-	
+
 	/// The computed score for this category.
 	public var computedScore: Double? {
 		let (score, maxPoints) = computedTotals
@@ -26,7 +26,7 @@ public class SchoolLoopComputableCategory: SchoolLoopCategory {
 		}
 		return score / maxPoints
 	}
-	
+
 	/// The computed weight for this category.
 	public var computedWeight: Double? {
 		if weight.hasSuffix("%"),
@@ -36,7 +36,7 @@ public class SchoolLoopComputableCategory: SchoolLoopCategory {
 			return Double(weight)
 		}
 	}
-	
+
 	/// The computed totals for this computable category, in the form
 	/// (score, total).
 	public var computedTotals: (Double, Double) {
@@ -59,17 +59,17 @@ public class SchoolLoopComputableCategory: SchoolLoopCategory {
 		}
 		return (score, maxPoints)
 	}
-	
+
 	/// The computed score difference for this computable category.
 	public var computedScoreDifference: Double? {
 		guard let computedScore = computedScore,
 			let score = Double(score) else {
-			return 0
+				return 0
 		}
 		return computedScore - score
 	}
-	
-	
+
+
 	/// The comparison result for this computable category.
 	public var comparisonResult: ComparisonResult {
 		guard let score = Double(score),

@@ -25,12 +25,11 @@ public class SchoolLoopContact: NSObject, NSCoding {
 
 
 	/// The hash value of this contact.
-	public override var hashValue: Int {
-		get {
-			return id.hashValue
-		}
+	public override var hash: Int {
+		var hasher = Hasher()
+		hasher.combine(id)
+		return hasher.finalize()
 	}
-
 
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
@@ -66,6 +65,13 @@ public class SchoolLoopContact: NSObject, NSCoding {
 		aCoder.encode(name, forKey: "name")
 		aCoder.encode(role, forKey: "role")
 		aCoder.encode(desc, forKey: "desc")
+	}
+
+	public override func isEqual(_ object: Any?) -> Bool {
+		guard let object = object as? SchoolLoopContact else {
+			return false
+		}
+		return id == object.id
 	}
 }
 

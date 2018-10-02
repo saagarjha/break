@@ -150,8 +150,8 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 		contactsTableView.scrollIndicatorInsets = UIEdgeInsets(top: contactsTableView.scrollIndicatorInsets.top, left: contactsTableView.scrollIndicatorInsets.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.scrollIndicatorInsets.right)
 		contactsTableView.flashScrollIndicators()
 		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
-			self.contactsTableView.layoutIfNeeded()
-		})
+				self.contactsTableView.layoutIfNeeded()
+			})
 	}
 
 	/*

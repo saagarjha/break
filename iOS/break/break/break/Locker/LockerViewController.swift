@@ -31,9 +31,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 	}
 	var lockerCollectionViewFlowLayout: UICollectionViewFlowLayout? {
-		get {
-			return lockerCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout
-		}
+		return lockerCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout
 	}
 	let refreshControl = UIRefreshControl()
 
@@ -138,7 +136,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			return UIEdgeInsets(inset: inset)
 		}
 	}
-	
+
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		let width: CGFloat
 		if #available(iOS 11.0, *) {
@@ -150,7 +148,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		let startIndex = indexPath.row / rowSize
 		let maxTextHeight = (startIndex..<min(lockerItems.endIndex, startIndex + rowSize)).map { index in
 			(lockerItems[index].name as NSString).boundingRect(with: CGSize(width: LockerViewController.cellWidth, height: .infinity), options: .usesLineFragmentOrigin, attributes: [.font: UIFont.preferredFont(forTextStyle: .headline)], context: nil).height
-			}.max() ?? 0
+		}.max() ?? 0
 		return CGSize(width: LockerViewController.cellWidth, height: LockerViewController.otherCellHeight + maxTextHeight)
 	}
 
@@ -176,7 +174,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let lockerItem = lockerItems[indexPath.row]
 		if lockerItem.type != .directory {
-			presentLockerItemViewController(withLockerItem: lockerItem)
+			presentLockerItemViewController(with: lockerItem)
 		} else {
 			guard let newLockerViewController = navigationController?.storyboard?.instantiateViewController(withIdentifier: "locker") as? LockerViewController else {
 				assertionFailure("Could not open LockerViewController")
@@ -193,7 +191,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 		}
 	}
 
-	func presentLockerItemViewController(withLockerItem lockerItem: SchoolLoopLockerItem) {
+	func presentLockerItemViewController(with lockerItem: SchoolLoopLockerItem) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
 		let file = schoolLoop.file(for: lockerItem)
 		UIApplication.shared.isNetworkActivityIndicatorVisible = false

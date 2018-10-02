@@ -10,7 +10,7 @@ import Foundation
 
 enum Preferences {
 	private static let userDefaults = UserDefaults.standard
-	
+
 	static var isPasswordSet: Bool {
 		get {
 			return userDefaults.bool(forKey: "isPasswordSet")
@@ -20,7 +20,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var canUseTouchID: Bool {
 		get {
 			return userDefaults.bool(forKey: "canUseTouchID")
@@ -30,7 +30,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var startupTabIndex: Int {
 		get {
 			return userDefaults.integer(forKey: "startupTabIndex")
@@ -40,7 +40,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var areCoursesNotificationsAllowed: Bool {
 		get {
 			return userDefaults.bool(forKey: "areCoursesNotificationsAllowed")
@@ -50,7 +50,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var areAssignmentsNotificationsAllowed: Bool {
 		get {
 			return userDefaults.bool(forKey: "areAssignmentsNotificationsAllowed")
@@ -60,7 +60,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var areLoopMailNotificationsAllowed: Bool {
 		get {
 			return userDefaults.bool(forKey: "areLoopMailNotificationsAllowed")
@@ -70,7 +70,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var areNewsNotificationsAllowed: Bool {
 		get {
 			return userDefaults.bool(forKey: "areNewsNotificationsAllowed")
@@ -80,7 +80,7 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
-	
+
 	static var hideGrades: Bool {
 		get {
 			return userDefaults.bool(forKey: "hideGrades")

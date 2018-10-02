@@ -13,33 +13,33 @@ import Foundation
 public class SchoolLoopAccount: NSObject, NSSecureCoding {
 	/// The username for this account.
 	public var username: String
-	
+
 	/// The password for this account.
 	public var password: String
-	
+
 	/// The full name of the user associated with this account.
 	public var fullName: String
 	/// The student ID of the user associated with this account. Note that this
 	/// is the ID School Loop uses to identify users; it may differ from the
 	/// student ID that many institutions give their students.
 	public var studentID: String
-	
+
 	/// The hashed password associated with this account, for School Loop POST
 	/// requests.
 	public var hashedPassword: String
-	
+
 	/// The email of the user associated with this account.
 	public var email: String
-	
-	
+
+
 	/// A Boolean that indicates whether this account is logged in.
 	public var isLoggedIn: Bool = false
-	
-	
+
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Create a new account with the specified values.
 	///
 	/// - Parameters:

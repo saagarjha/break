@@ -176,8 +176,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		UIView.animate(withDuration: 0.25, animations: {
 			oldView.alpha = 0
 		}, completion: { _ in
-			oldView.removeFromSuperview()
-		})
+				oldView.removeFromSuperview()
+			})
 
 		// Force each view controller to load its view so that it is up-to-date
 		var view: UIView?
@@ -228,13 +228,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			assertionFailure("Could not cast mutableCopy to NSMutableAttributedString")
 			return true
 		}
-		
+
 		// Find the position of the user-entered text
 		var attributedRange = NSRange(location: 0, length: 0)
 		if attributedText.length > 0 {
 			attributedText.attribute(.foregroundColor, at: 0, longestEffectiveRange: &attributedRange, in: NSRange(location: 0, length: attributedText.length))
 		}
-		
+
 		// If the range specified is in the user-entered range, use that,
 		// otherwise use the whole string
 		var schoolName: String
@@ -245,12 +245,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		}
 		schoolName = (schoolName as NSString).replacingCharacters(in: range, with: string)
 		let suggestion = getSchoolSuggestion(forSchoolName: schoolName)
-		
+
 		// Display the suggestion
 		let attributedString = NSMutableAttributedString(string: suggestion)
 		attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: schoolName.count, length: suggestion.count - schoolName.count))
 		textField.attributedText = attributedString
-		
+
 		// On iOS, it appears that setting the string "scrolls" the text field
 		// to the end. Setting the cursor location (as below) will work,
 		// however, this is done in a "lazy" way so that minimum "scrolling" is
@@ -260,10 +260,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// moving the cursor to the start of the text, we can prevent this
 		// undesirable behavior and make it appear as if no "scrolling" was
 		// performed.
-		
+
 		// Move the cursor to the start
 		textField.position(from: textField.beginningOfDocument, offset: 0).flatMap { textField.selectedTextRange = textField.textRange(from: $0, to: $0) }
-		
+
 		// Move the cursor to where it should be, in between the user's string
 		// and the suggestion
 		textField.position(from: textField.beginningOfDocument, offset: range.location + string.count).flatMap { textField.selectedTextRange = textField.textRange(from: $0, to: $0) }
@@ -311,8 +311,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		loginScrollView.scrollIndicatorInsets = UIEdgeInsets(top: loginScrollView.scrollIndicatorInsets.top, left: loginScrollView.scrollIndicatorInsets.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.scrollIndicatorInsets.right)
 		loginViewHeightConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
 		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
-			self.view.layoutIfNeeded()
-		})
+				self.view.layoutIfNeeded()
+			})
 		// If scrolling is possible, flash the scroll indicators to show this
 		if view.bounds.height + loginViewHeightConstraint.constant < loginScrollView.contentSize.height {
 			loginScrollView.flashScrollIndicators()

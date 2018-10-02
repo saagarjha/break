@@ -13,28 +13,28 @@ import Foundation
 public class SchoolLoopLoopMail: NSObject, NSCoding {
 	/// The subject of this LoopMail.
 	public var subject: String
-	
+
 	/// The sender of this LoopMail.
 	public var sender: SchoolLoopContact
-	
+
 	/// The date of this LoopMail.
 	public var date: Date
-	
+
 	/// The ID of this LoopMail.
 	public var ID: String
-	
+
 
 	/// The message of this LoopMail.
 	public var message: String = ""
-	
+
 	/// This links associated with this LoopMail.
 	public var links = [(title: String, URL: String)]()
 
-	
+
 	/// This class supports secure coding.
 	public static var supportsSecureCoding = true
-	
-	
+
+
 	/// Creates a new LoopMail with the specified values.
 	///
 	/// - Parameters:
