@@ -89,7 +89,8 @@ extension UISearchResultsUpdating where Self: UIViewController {
 		searchController.dimsBackgroundDuringPresentation = false
 		if #available(iOS 11.0, *),
 			// Workaround for rdar://problem/35436877
-			type(of: self) != ProgressReportViewController.self {
+			type(of: self) != ProgressReportViewController.self ||
+			ProcessInfo.processInfo.environment["testing"] != nil {
 			navigationItem.searchController = searchController
 		} else {
 			tableView.tableHeaderView = searchController.searchBar

@@ -45,7 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-
 		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
 
 		if WCSession.isSupported() {
@@ -56,9 +55,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 		SchoolLoop.sharedInstance = DemoableSchoolLoop()
 
-		if archived {
-			NSKeyedUnarchiver.unarchiveObject(withFile: file)
+		if archived && ProcessInfo.processInfo.environment["testing"] == nil {
+			Logger.log("Decoded school loop: \(String(describing: NSKeyedUnarchiver.unarchiveObject(withFile: file)))")
 			archived = false
+		}
+		
+		if ProcessInfo.processInfo.environment["testing"] != nil {
+			Preferences.clear()
 		}
 
 		launchIndex = AppDelegate.index(forType: (launchOptions?[.shortcutItem] as? UIApplicationShortcutItem)?.type.components(separatedBy: ".").last ?? "") ?? Preferences.startupTabIndex

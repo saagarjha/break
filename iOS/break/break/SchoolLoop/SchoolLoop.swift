@@ -276,11 +276,20 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				let school = SchoolLoopSchool(name: name, domainName: domainName, districtName: districtName)
 				newSchools.append(school)
 			}
-			self.schools = newSchools
+			let groups = Dictionary(grouping: newSchools) {
+				$0.name
+			}
+			for group in groups.values {
+				if group.count > 1 {
+					for school in group {
+						school.name = "\(school.name) (\(school.districtName))"
+					}
+				}
+			}
+			self.schools = groups.values.flatMap { $0 }.sorted()
 			completion?(.noError)
 		}.resume()
 	}
-
 
 	/// Log in asynchronously and update `school` as well as `account`.
 	/// - Important: This method is asynchronous, so put any logic that depends

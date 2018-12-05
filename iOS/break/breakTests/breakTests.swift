@@ -10,27 +10,13 @@ import XCTest
 @testable import `break`
 
 class breakTests: XCTestCase {
-
-	override func setUp() {
-		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
-	}
-
-	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
-		super.tearDown()
-	}
-
-	func testExample() {
-		// This is an example of a functional test case.
-		// Use XCTAssert and related functions to verify your tests produce the correct results.
-	}
-
-	func testPerformanceExample() {
-		// This is an example of a performance test case.
-		self.measure {
-			// Put the code you want to measure the time of here.
+	func testColorUniqueness() {
+		let sampleSize = 0b1_0000_0000
+		var colors = Set<UIColor>()
+		let offset = CGFloat.random(in: 0..<1)
+		for index in 0..<sampleSize {
+			colors.insert(UIColor(index: index, offset: offset))
 		}
+		XCTAssert(colors.count == sampleSize)
 	}
-
 }

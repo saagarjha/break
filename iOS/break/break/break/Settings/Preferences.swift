@@ -90,4 +90,8 @@ enum Preferences {
 			userDefaults.synchronize()
 		}
 	}
+	
+	static func clear() {
+		userDefaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+	}
 }

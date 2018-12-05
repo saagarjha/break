@@ -22,7 +22,11 @@ public struct SchoolLoopKeychain {
 	///   - username: The username to add the password under
 	/// - Returns: Whether the password was set successfully
 	public func addPassword(_ password: String, forUsername username: String) -> Bool {
-		let item: CFDictionary = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: Data(username.utf8), kSecValueData as String: Data(password.utf8)] as CFDictionary
+		let item: CFDictionary = [
+			kSecClass as String: kSecClassGenericPassword as String,
+			kSecAttrAccount as String: Data(username.utf8),
+			kSecValueData as String: Data(password.utf8),
+		] as CFDictionary
 		var status = SecItemDelete(item)
 		if status != noErr {
 			#if os(iOS)
@@ -43,7 +47,11 @@ public struct SchoolLoopKeychain {
 	/// - Parameter username: The username under which the password is stored
 	/// - Returns: The password stored under the specified username, if any
 	public func getPassword(forUsername username: String) -> String? {
-		let item: CFDictionary = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: username, kSecReturnData as String: kCFBooleanTrue, kSecMatchLimit as String: kSecMatchLimitOne] as CFDictionary
+		let item: CFDictionary = [
+			kSecClass as String: kSecClassGenericPassword as String,
+			kSecAttrAccount as String: username,
+			kSecReturnData as String: kCFBooleanTrue,
+		] as CFDictionary
 		var reference: AnyObject?
 		let error = SecItemCopyMatching(item, &reference)
 		if error == noErr {
@@ -68,7 +76,10 @@ public struct SchoolLoopKeychain {
 	/// - Parameter username: The key for the username/password entry to remove
 	/// - Returns: Whether the username/password entry was removed successfully
 	public func removePassword(forUsername username: String) -> Bool {
-		let item: CFDictionary = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: username] as CFDictionary
+		let item: CFDictionary = [
+			kSecClass as String: kSecClassGenericPassword,
+			kSecAttrAccount as String: username,
+		] as CFDictionary
 		return SecItemDelete(item) == noErr
 	}
 }

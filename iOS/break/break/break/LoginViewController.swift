@@ -35,7 +35,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	@IBOutlet weak var passwordTextField: UITextField! {
 		didSet {
 			passwordTextField.delegate = self
-			passwordTextField.isSecureTextEntry = true
 		}
 	}
 	@IBOutlet weak var logInButton: UIButton!
