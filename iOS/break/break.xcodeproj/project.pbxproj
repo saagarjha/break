@@ -109,6 +109,7 @@
 		49DF2B2E1CF3BDF900DC1EB7 /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */; };
 		49E1BD091CF006EE002E819D /* SchoolLoopCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */; };
 		49F128C41F5F365F0000E19A /* RatingsReviewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F128C31F5F365F0000E19A /* RatingsReviewsTableViewController.swift */; };
+		D84C2DBB21B788F3005F4442 /* LoopMail.css in Resources */ = {isa = PBXBuildFile; fileRef = D84C2DBA21B788F3005F4442 /* LoopMail.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -257,6 +258,7 @@
 		49DF2B2D1CF3BDF900DC1EB7 /* CourseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
 		49E1BD081CF006EE002E819D /* SchoolLoopCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolLoopCategory.swift; sourceTree = "<group>"; };
 		49F128C31F5F365F0000E19A /* RatingsReviewsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingsReviewsTableViewController.swift; sourceTree = "<group>"; };
+		D84C2DBA21B788F3005F4442 /* LoopMail.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = LoopMail.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,6 +504,7 @@
 				498665721C8D24E9004BA249 /* Info.plist */,
 				498665731C8D24E9004BA249 /* LaunchScreen.storyboard */,
 				498665671C8D24E9004BA249 /* Main.storyboard */,
+				D84C2DBA21B788F3005F4442 /* LoopMail.css */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -610,17 +613,17 @@
 				TargetAttributes = {
 					4906AB781CCDBFB800610448 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = X4A9GH5NN2;
+						DevelopmentTeam = AP83862692;
 						LastSwiftMigration = 0900;
 					};
 					4906AB841CCDBFBA00610448 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = X4A9GH5NN2;
+						DevelopmentTeam = AP83862692;
 						LastSwiftMigration = 0900;
 					};
 					493E17751C63E95000AFC7A6 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = X4A9GH5NN2;
+						DevelopmentTeam = AP83862692;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -689,6 +692,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D84C2DBB21B788F3005F4442 /* LoopMail.css in Resources */,
 				493DDDEC1EA71AEA006104D4 /* AppIcon.xcassets in Resources */,
 				4986659E1C8D24E9004BA249 /* Main.storyboard in Resources */,
 				498665A71C8D24E9004BA249 /* LaunchScreen.storyboard in Resources */,
@@ -879,10 +883,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = X4A9GH5NN2;
+				DEVELOPMENT_TEAM = AP83862692;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = org.vihan.break.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -899,10 +903,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = X4A9GH5NN2;
+				DEVELOPMENT_TEAM = AP83862692;
 				IBSC_MODULE = break_watchOS_Extension;
 				INFOPLIST_FILE = "break-watchOS/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = org.vihan.break.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -918,10 +922,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = X4A9GH5NN2;
+				DEVELOPMENT_TEAM = AP83862692;
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.vihan.break.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -938,10 +942,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = X4A9GH5NN2;
+				DEVELOPMENT_TEAM = AP83862692;
 				INFOPLIST_FILE = "break-watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.vihan.break.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1064,11 +1068,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = break/break.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = X4A9GH5NN2;
+				DEVELOPMENT_TEAM = AP83862692;
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
+				PRODUCT_BUNDLE_IDENTIFIER = org.vihan.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1083,11 +1087,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = break/break.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = X4A9GH5NN2;
+				DEVELOPMENT_TEAM = AP83862692;
 				INFOPLIST_FILE = "$(SRCROOT)/break/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.saagarjha.break;
+				PRODUCT_BUNDLE_IDENTIFIER = org.vihan.break;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;

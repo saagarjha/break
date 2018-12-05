@@ -28,7 +28,7 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.saagarjha.break</string>
+	<string>org.vihan.break</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>

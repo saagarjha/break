@@ -56,14 +56,25 @@ class LoopMailMessageViewController: WebViewToSafariViewControllerShimViewContro
 						return
 					}
 					`self`.loopMail = loopMail
-					`self`.message = "\(breakConstants.webViewDefaultStyle)<h4><span style=\"font-weight:normal\">From: \(loopMail.sender.name)</span></h4><h3>\(loopMail.subject)</h3><hr>\(loopMail.message)"
+                    `self`.message = """
+<html>
+<head>
+\(breakConstants.webViewDefaultStyle)
+<link rel="stylesheet" href="LoopMail.css"/>
+</head>
+<body>
+<h1 class="subject">\(loopMail.subject)</h1>
+<span class="sender">From:&nbsp;&nbsp;<span class="user">\(loopMail.sender.name)</span></span>
+<hr class="divider">
+<div class="body">\(loopMail.message)</div>
+"""
 					if !loopMail.links.isEmpty {
-						`self`.message += "<hr><h3><span style=\"font-weight:normal\">Links:</span></h3>"
+						`self`.message += "<hr class=\"divider\"><h3><span style=\"font-weight:normal\">Links:</span></h3>"
 					}
 					for link in loopMail.links {
 						`self`.message += "<a href=\(link.URL)>\(link.title)</a><br>"
 					}
-					`self`.webView.loadHTMLString(`self`.message, baseURL: nil)
+					`self`.webView.loadHTMLString(`self`.message, baseURL: Bundle.main.resourceURL)
 				}
 			}
 		}

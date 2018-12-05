@@ -14,6 +14,7 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 
 	static let dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
+        dateFormatter.doesRelativeDateFormatting = true
 		dateFormatter.dateStyle = .long
 		dateFormatter.timeStyle = .short
 		return dateFormatter
@@ -100,6 +101,10 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
 	override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		let replyAction = UITableViewRowAction(style: .default, title: "Reply") { [weak self] _, indexPath in
 			guard let `self` = self else {
