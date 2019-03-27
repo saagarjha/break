@@ -43,11 +43,11 @@ class breakUITests: XCTestCase {
 			application.staticTexts["Potions"].tap()
 			XCTAssert(application.navigationBars["Potions"].exists)
 		}
-		
+
 		// Work around an iOS bug and force a relayout of the table view
 		application.staticTexts["Calculated"].tap()
 		application.navigationBars.buttons["Potions"].tap()
-		
+
 		application.staticTexts["6.0"].firstMatch.tap()
 		application.alerts.textFields.element.typeText("6")
 		takeScreenshot(for: application, named: "02")
@@ -80,7 +80,7 @@ class breakUITests: XCTestCase {
 		XCTAssert(application.navigationBars["LoopMail"].exists)
 		if UIDevice.current.userInterfaceIdiom == .phone {
 			let semaphore = DispatchSemaphore(value: 0)
-			application.staticTexts["Aragog's Dead"].forceTouch(withForce: 1 / 3, duration: 10) {
+			application.staticTexts["Aragog's Dead"].forcePress(withForce: 1 / 3, duration: 10) {
 				semaphore.signal()
 			}
 			XCTAssert(application.staticTexts["Dear Harry, Ron and Hermione,"].waitForExistence(timeout: 10))
@@ -171,11 +171,11 @@ class breakUITests: XCTestCase {
 }
 
 extension XCUIElement {
-	func forceTouch(withForce force: Double, duration: TimeInterval, completion: (() -> Void)? = nil) {
+	func forcePress(withForce force: Double, duration: TimeInterval, completion: (() -> Void)? = nil) {
 		let eventPath = XCPointerEventPath.init(forTouchAtPoint: coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).screenPoint, offset: 0)
 		eventPath.pressDownWithPressure(force, atOffset: 0)
 		eventPath.liftUpAtOffset(duration)
-		let eventRecord = XCSynthesizedEventRecord.init(withName: "force touch", interfaceOrientation: .portrait)
+		let eventRecord = XCSynthesizedEventRecord.init(withName: "force touch", interfaceOrientation: (self as AnyObject).interfaceOrientation) // Fall back to Objective-C runtime for method resolution
 		eventRecord.addPointerEventPath(eventPath)
 		XCTRunnerDaemonSession.sharedSession.synthesizeEvent(eventRecord) { error in
 			XCTAssertNil(error)
@@ -205,3 +205,8 @@ let XCSynthesizedEventRecord = unsafeBitCast(NSClassFromString("XCSynthesizedEve
 }
 
 let XCTRunnerDaemonSession = unsafeBitCast(NSClassFromString("XCTRunnerDaemonSession"), to: XCTRunnerDaemonSessionProtocol.Type.self)
+
+@objc protocol XCUIElementProtocol {
+	// Introduce "interfaceOrientation" as a selector
+	var interfaceOrientation: UIInterfaceOrientation { get }
+}

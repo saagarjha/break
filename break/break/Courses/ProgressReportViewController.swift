@@ -251,7 +251,9 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)
 		if computableCourse.computableGrades.count >= 1 {
-			tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
+			DispatchQueue.main.async {
+				self.tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .none, animated: true)
+			}
 		}
 	}
 
