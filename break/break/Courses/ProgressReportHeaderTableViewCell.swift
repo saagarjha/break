@@ -29,7 +29,7 @@ class ProgressReportHeaderTableViewCell: UITableViewCell {
 		}
 	}
 
-	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+	override init(style: CellStyle, reuseIdentifier: String?) {
 		discriminatorView = UIView()
 		titleLabel = UILabel()
 		subtitleLabel = UILabel()

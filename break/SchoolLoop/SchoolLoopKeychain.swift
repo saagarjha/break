@@ -50,7 +50,7 @@ public struct SchoolLoopKeychain {
 		let item: CFDictionary = [
 			kSecClass as String: kSecClassGenericPassword as String,
 			kSecAttrAccount as String: username,
-			kSecReturnData as String: kCFBooleanTrue,
+			kSecReturnData as String: kCFBooleanTrue as Any,
 		] as CFDictionary
 		var reference: AnyObject?
 		let error = SecItemCopyMatching(item, &reference)

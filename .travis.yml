@@ -1,4 +1,4 @@
 language: objective-c
-osx_image: xcode10
+osx_image: xcode10.2
 
 script: xcodebuild -project break.xcodeproj -scheme break CODE_SIGNING_ALLOWED=NO

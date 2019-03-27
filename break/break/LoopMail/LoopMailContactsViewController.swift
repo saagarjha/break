@@ -30,8 +30,8 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 			navigationItem.hidesSearchBarWhenScrolling = false
 		}
 
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
 
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
 		schoolLoop = SchoolLoop.sharedInstance
@@ -139,17 +139,17 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 
 	@objc func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
-			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
-			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+			let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+			let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
 				return
 		}
 		let convertedKeyboardEndFrame = contactsTableView.convert(keyboardEndFrame, from: contactsTableView.window)
-		let rawAnimationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
-		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
+		let rawAnimationCurve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
+		let animationCurve = UIView.AnimationOptions(rawValue: rawAnimationCurve)
 		contactsTableView.contentInset = UIEdgeInsets(top: contactsTableView.contentInset.top, left: contactsTableView.contentInset.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.contentInset.right)
 		contactsTableView.scrollIndicatorInsets = UIEdgeInsets(top: contactsTableView.scrollIndicatorInsets.top, left: contactsTableView.scrollIndicatorInsets.left, bottom: max(contactsTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: contactsTableView.scrollIndicatorInsets.right)
 		contactsTableView.flashScrollIndicators()
-		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
+		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIView.AnimationOptions.beginFromCurrentState, animationCurve], animations: {
 				self.contactsTableView.layoutIfNeeded()
 			})
 	}

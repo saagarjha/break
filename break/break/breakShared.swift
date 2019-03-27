@@ -134,7 +134,7 @@ extension UICollectionView: RefreshableView { }
 
 enum breakShared {
 	static func autoresizeTableViewCells(for tableView: UITableView) {
-		tableView.rowHeight = UITableViewAutomaticDimension
+		tableView.rowHeight = UITableView.automaticDimension
 		tableView.estimatedRowHeight = 80.0
 	}
 

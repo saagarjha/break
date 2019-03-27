@@ -136,7 +136,7 @@ class GradeTableViewCell: UITableViewCell, UITextFieldDelegate, UIPickerViewData
 			let pickerView = UIPickerView()
 			pickerView.dataSource = self
 			pickerView.delegate = self
-			pickerView.selectRow(self.categories.index(of: textField.text ?? "") ?? 0, inComponent: 0, animated: false)
+			pickerView.selectRow(self.categories.firstIndex(of: textField.text ?? "") ?? 0, inComponent: 0, animated: false)
 			textField.inputView = pickerView
 			textField.delegate = self
 		}

@@ -32,7 +32,7 @@ class ProgressReportInterfaceController: WKInterfaceController, WCSessionDelegat
 	override func willActivate() {
 		// This method is called when watch view controller is about to be visible to user
 		super.willActivate()
-		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID], replyHandler: { response in
+		(WKExtension.shared().delegate as? ExtensionDelegate)?.sendMessage(["grades": periodID as Any], replyHandler: { response in
 				if let data = response["grades"] as? Data,
 					let grades = NSKeyedUnarchiver.unarchiveObject(with: data) as? [SchoolLoopGrade] {
 					self.grades = grades

@@ -89,9 +89,9 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 		composeTextView = UITextView()
 		messageTextView = UITextView()
 
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange), name: .UIDeviceOrientationDidChange, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
 
 		schoolLoop = SchoolLoop.sharedInstance
 	}
@@ -106,7 +106,7 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 	func addComposeView() {
 		composeView.addSubview(composeTextView)
 		composeView.addSubview(messageTextView)
-		let views: [String: Any] = ["compose": composeTextView, "message": messageTextView]
+		let views: [String: UITextView] = ["compose": composeTextView, "message": messageTextView]
 		var constraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[compose][message]|", options: [], metrics: nil, views: views)
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[compose]|", options: [], metrics: nil, views: views)
 		constraints += NSLayoutConstraint.constraints(withVisualFormat: "|[message]|", options: [], metrics: nil, views: views)
@@ -246,17 +246,17 @@ class LoopMailComposeViewController: UIViewController, UITableViewDataSource, UI
 
 	@objc func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
-			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
-			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+			let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+			let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
 				return
 		}
 		let convertedKeyboardEndFrame = composeTableView.convert(keyboardEndFrame, from: composeTableView.window)
-		let rawAnimationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
-		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
+		let rawAnimationCurve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
+		let animationCurve = UIView.AnimationOptions(rawValue: rawAnimationCurve)
 		composeTableView.contentInset = UIEdgeInsets(top: composeTableView.contentInset.top, left: composeTableView.contentInset.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.contentInset.right)
 		composeTableView.scrollIndicatorInsets = UIEdgeInsets(top: composeTableView.scrollIndicatorInsets.top, left: composeTableView.scrollIndicatorInsets.left, bottom: max(composeTableView.bounds.maxY - convertedKeyboardEndFrame.minY, tabBarController?.tabBar.frame.height ?? 0), right: composeTableView.scrollIndicatorInsets.right)
 		composeTableView.flashScrollIndicators()
-		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
+		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIView.AnimationOptions.beginFromCurrentState, animationCurve], animations: {
 				self.composeTableView.layoutIfNeeded()
 			})
 	}

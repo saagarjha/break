@@ -64,7 +64,7 @@ class TrendScore: UIView {
 			textLayer.font = TrendScore.font
 			textLayer.fontSize = TrendScore.font.pointSize
 			textLayer.foregroundColor = UIColor.black.cgColor
-			textLayer.alignmentMode = kCAAlignmentCenter
+			textLayer.alignmentMode = .center
 			let textFrame = (textLayer.string as? NSString ?? "").boundingRect(with: textLayer.frame.size, options: .usesLineFragmentOrigin, attributes: [.font: UIFont.systemFont(ofSize: TrendScore.font.pointSize)], context: nil)
 			textLayer.frame = CGRect(x: graphFrame.minX + graphFrame.width * CGFloat(i) / CGFloat(TrendScore.dateLabels) - textFrame.width / 2, y: graphFrame.height + TrendScore.bottomInset / 2 - textFrame.height / 2, width: textFrame.width, height: textFrame.height)
 			layer.addSublayer(textLayer)

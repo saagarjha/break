@@ -105,8 +105,8 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 		(filteredAssignments[filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
 			cell.courseNameDiscriminatorView.backgroundColor = courseColors[assignment.courseName]
 			if assignment.isCompleted {
-				let titleText = NSAttributedString(string: assignment.title, attributes: [NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
-				let courseNameText = NSAttributedString(string: assignment.courseName, attributes: [NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)])
+				let titleText = NSAttributedString(string: assignment.title, attributes: [.strikethroughStyle: NSNumber(value: NSUnderlineStyle.single.rawValue)])
+				let courseNameText = NSAttributedString(string: assignment.courseName, attributes: [.strikethroughStyle: NSNumber(value: NSUnderlineStyle.single.rawValue)])
 				cell.titleLabel.attributedText = titleText
 				cell.courseNameLabel.attributedText = courseNameText
 			} else {

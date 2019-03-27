@@ -44,7 +44,7 @@ class LockerViewController: UIViewController, UICollectionViewDataSource, UIColl
 			let items = ["My Courses", "My Locker"]
 			let segmentedControl = UISegmentedControl(items: items)
 			navigationItem.titleView = segmentedControl
-			if items.index(of: path.components(separatedBy: "/")[1]) == nil {
+			if items.firstIndex(of: path.components(separatedBy: "/")[1]) == nil {
 				schoolLoop.getLocker(withPath: path, completion: nil)
 				segmentedControl.selectedSegmentIndex = 0
 				if #available(iOS 11.0, *) {

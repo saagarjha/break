@@ -52,8 +52,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
 
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
 
 		schoolLoop = SchoolLoop.sharedInstance
 		getSchools()
@@ -200,7 +200,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			passwordTextField.becomeFirstResponder()
 		} else {
 			view.endEditing(true)
-			logIn(logInButton)
+			logIn(logInButton as Any)
 			return false
 		}
 		return true
@@ -299,17 +299,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	@objc func keyboardWillChange(notification: NSNotification) {
 		guard let userInfo = notification.userInfo,
-			let animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
-			let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+			let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+			let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
 				return
 		}
 		let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
-		let rawAnimationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
-		let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurve)
+		let rawAnimationCurve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
+		let animationCurve = UIView.AnimationOptions(rawValue: rawAnimationCurve)
 		loginScrollView.contentInset = UIEdgeInsets(top: loginScrollView.contentInset.top, left: loginScrollView.contentInset.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.contentInset.right)
 		loginScrollView.scrollIndicatorInsets = UIEdgeInsets(top: loginScrollView.scrollIndicatorInsets.top, left: loginScrollView.scrollIndicatorInsets.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.scrollIndicatorInsets.right)
 		loginViewHeightConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
-		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIViewAnimationOptions.beginFromCurrentState, animationCurve], animations: {
+		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIView.AnimationOptions.beginFromCurrentState, animationCurve], animations: {
 				self.view.layoutIfNeeded()
 			})
 		// If scrolling is possible, flash the scroll indicators to show this

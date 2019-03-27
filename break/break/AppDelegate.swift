@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	var splashView: UIImageView!
 	lazy var securityView: UIView = {
 		let securityView: UIView
-		if !UIAccessibilityIsReduceTransparencyEnabled() {
+		if !UIAccessibility.isReduceTransparencyEnabled {
 			let effect: UIBlurEffect
 			if #available(iOS 10.0, *) {
 				effect = UIBlurEffect(style: .regular)
@@ -43,9 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	var completionHandler: (() -> Void)?
 	var loginTries = 0
 
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
 		// Override point for customization after application launch.
-		application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+		application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
 
 		if WCSession.isSupported() {
 			let session = WCSession.default
@@ -305,7 +305,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 
 	func showLogout() {
-		UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
+		UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalNever)
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let loginViewController = storyboard.instantiateViewController(withIdentifier: "login")
 		window?.rootViewController = loginViewController

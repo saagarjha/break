@@ -65,7 +65,7 @@ class GradeViewController: UIViewController, UITableViewDelegate, UITableViewDat
 	}
 
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return commentsView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+		return commentsView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

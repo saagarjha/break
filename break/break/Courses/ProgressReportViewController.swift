@@ -363,7 +363,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 		return viewMode != .original
 	}
 
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		computableCourse.computableGrades.remove(at: indexPath.row)
 		grades = computableCourse.computableGrades
 		updateSearchResults(for: searchController)

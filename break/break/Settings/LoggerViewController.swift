@@ -42,7 +42,7 @@ class LoggerViewController: UIViewController {
 	}
 
 	@IBAction func share(_ sender: Any) {
-		let activityViewController = UIActivityViewController(activityItems: [logTextView.text], applicationActivities: nil)
+		let activityViewController = UIActivityViewController(activityItems: [logTextView.text as Any], applicationActivities: nil)
 		present(activityViewController, animated: true, completion: nil)
 	}
 

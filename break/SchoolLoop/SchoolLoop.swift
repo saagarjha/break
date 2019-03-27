@@ -257,13 +257,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
+				let schoolsJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
 					completion?(.parseError)
 					return
-			}
-			guard let schoolsJSON = dataJSON else {
-				completion?(.parseError)
-				return
 			}
 			for schoolJSON in schoolsJSON {
 				guard let schoolJSON = schoolJSON as? [String: Any] else {
@@ -328,13 +324,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+				let loginJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
 					completion?(.parseError)
 					return
-			}
-			guard let loginJSON = dataJSON else {
-				completion?(.parseError)
-				return
 			}
 			let fullName = loginJSON["fullName"] as? String ?? ""
 			let studentID = loginJSON["userID"] as? String ?? ""
@@ -375,13 +367,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
+				let coursesJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
 					completion?(updatedCourses, .parseError)
 					return
-			}
-			guard let coursesJSON = dataJSON else {
-				completion?(updatedCourses, .parseError)
-				return
 			}
 			for courseJSON in coursesJSON {
 				guard let courseJSON = courseJSON as? [String: Any] else {
@@ -445,7 +433,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 					completion?(.parseError)
 					return
 			}
-			guard let categoriesJSON = (dataJSON?.first as? [String: Any])?["categories"] as? [Any] else {
+			guard let categoriesJSON = (dataJSON.first as? [String: Any])?["categories"] as? [Any] else {
 				completion?(.parseError)
 				return
 			}
@@ -461,7 +449,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				course.categories.append(category)
 
 			}
-			guard let GradingScaleJSON = (dataJSON?.first as? [String: Any])?["GradingScale"] as? [String: Any], let CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [Any] else {
+			guard let GradingScaleJSON = (dataJSON.first as? [String: Any])?["GradingScale"] as? [String: Any], let CutoffsJSON = GradingScaleJSON["Cutoffs"] as? [Any] else {
 				completion?(.parseError)
 				return
 			}
@@ -476,7 +464,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				course.cutoffs.append(cutoff)
 
 			}
-			guard let gradesJSON = (dataJSON?.first as? [String: Any])?["grades"] as? [Any] else {
+			guard let gradesJSON = (dataJSON.first as? [String: Any])?["grades"] as? [Any] else {
 				completion?(.parseError)
 				return
 			}
@@ -501,9 +489,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				let grade = SchoolLoopGrade(title: title, categoryName: categoryName, percentScore: percentScore, score: score, maxPoints: maxPoints, comment: comment, systemID: systemID, dueDate: dueDate, changedDate: changedDate)
 				course.grades.append(grade)
 			}
-			let precision = (dataJSON?.first as? [String: Any])?["precision"] as? String ?? ""
+			let precision = (dataJSON.first as? [String: Any])?["precision"] as? String ?? ""
 			course.set(newPrecision: precision)
-			guard let trendScoresJSON = (dataJSON?.first as? [String: Any])?["trendScores"] as? [Any] else {
+			guard let trendScoresJSON = (dataJSON.first as? [String: Any])?["trendScores"] as? [Any] else {
 				completion?(.trendScoreError)
 				return
 			}
@@ -543,14 +531,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments
-				) as? [Any] else {
+				let assignmentsJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
 					completion?(updatedAssignments, .parseError)
 					return
-			}
-			guard let assignmentsJSON = dataJSON else {
-				completion?(updatedAssignments, .parseError)
-				return
 			}
 			for assignmentJSON in assignmentsJSON {
 				guard let assignmentJSON = assignmentJSON as? [String: Any] else {
@@ -609,13 +592,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
+				let loopMailJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
 					completion?(updatedLoopMail, .parseError)
 					return
-			}
-			guard let loopMailJSON = dataJSON else {
-				completion?(updatedLoopMail, .parseError)
-				return
 			}
 			for loopMailJSON in loopMailJSON {
 				guard let loopMailJSON = loopMailJSON as? [String: Any] else {
@@ -667,13 +646,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+				let messageJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
 					completion?(.parseError)
 					return
-			}
-			guard let messageJSON = dataJSON else {
-				completion?(.parseError)
-				return
 			}
 			let message = messageJSON["message"] as? String ?? ""
 			var links = [(title: String, URL: String)]()
@@ -712,13 +687,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
+				let contactsJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
 					completion?(contacts, .parseError)
 					return
-			}
-			guard let contactsJSON = dataJSON else {
-				completion?(contacts, .parseError)
-				return
 			}
 			for contactJSON in contactsJSON {
 				guard let contactJSON = contactJSON as? [String: Any] else {
@@ -778,13 +749,9 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 				return
 			}
 			guard let data = data,
-				let dataJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
+				let newsJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [Any] else {
 					completion?(updatedNews, .parseError)
 					return
-			}
-			guard let newsJSON = dataJSON else {
-				completion?(updatedNews, .parseError)
-				return
 			}
 			for newsJSON in newsJSON {
 				guard let newsJSON = newsJSON as? [String: Any] else {
@@ -1067,9 +1034,9 @@ extension SchoolLoop: XMLParserDelegate {
 	public func parser(_ parser: XMLParser, foundCharacters string: String) {
 		if currentTokens.last == "d:href" {
 			// Drop the leading "/users/[username]"
-			if let path1 = string.index(of: "/").map({ string[string.index(after: $0)...] }),
-				let path2 = path1.index(of: "/").map({ path1[path1.index(after: $0)...] }),
-				let path3 = path2.index(of: "/").map({ path2[$0...] }) {
+			if let path1 = string.firstIndex(of: "/").map({ string[string.index(after: $0)...] }),
+				let path2 = path1.firstIndex(of: "/").map({ path1[path1.index(after: $0)...] }),
+				let path3 = path2.firstIndex(of: "/").map({ path2[$0...] }) {
 				currentPath = String(path3)
 			}
 		} else if currentTokens.last == "d:displayname" {
