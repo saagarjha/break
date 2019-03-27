@@ -9,7 +9,8 @@
 import SafariServices
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, KeyboardHandler {
+	
 	let logInSegueIdentifier = "logInSegue"
 
 	var schoolLoop: SchoolLoop!
@@ -52,9 +53,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		// Do any additional setup after loading the view.
 		navigationController?.setNavigationBarHidden(true, animated: false)
 
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+		setupDefaultKeyboardHandler()
+		
 		schoolLoop = SchoolLoop.sharedInstance
 		getSchools()
 
@@ -297,25 +297,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		view.endEditing(true)
 	}
 
-	@objc func keyboardWillChange(notification: NSNotification) {
-		guard let userInfo = notification.userInfo,
-			let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
-			let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-				return
-		}
-		let convertedKeyboardEndFrame = view.convert(keyboardEndFrame, from: view.window)
-		let rawAnimationCurve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue ?? 0
-		let animationCurve = UIView.AnimationOptions(rawValue: rawAnimationCurve)
-		loginScrollView.contentInset = UIEdgeInsets(top: loginScrollView.contentInset.top, left: loginScrollView.contentInset.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.contentInset.right)
-		loginScrollView.scrollIndicatorInsets = UIEdgeInsets(top: loginScrollView.scrollIndicatorInsets.top, left: loginScrollView.scrollIndicatorInsets.left, bottom: view.bounds.maxY - convertedKeyboardEndFrame.minY, right: loginScrollView.scrollIndicatorInsets.right)
-		loginViewHeightConstraint.constant = convertedKeyboardEndFrame.minY - view.bounds.maxY
-		UIView.animate(withDuration: animationDuration, delay: 0, options: [UIView.AnimationOptions.beginFromCurrentState, animationCurve], animations: {
-				self.view.layoutIfNeeded()
-			})
+	func keyboardUpdated(to endFrame: CGRect) -> UIView {
+		loginScrollView.contentInset = UIEdgeInsets(top: loginScrollView.contentInset.top, left: loginScrollView.contentInset.left, bottom: view.bounds.maxY - endFrame.minY, right: loginScrollView.contentInset.right)
+		loginScrollView.scrollIndicatorInsets = UIEdgeInsets(top: loginScrollView.scrollIndicatorInsets.top, left: loginScrollView.scrollIndicatorInsets.left, bottom: view.bounds.maxY - endFrame.minY, right: loginScrollView.scrollIndicatorInsets.right)
+		loginViewHeightConstraint.constant = endFrame.minY - view.bounds.maxY
+		
 		// If scrolling is possible, flash the scroll indicators to show this
 		if view.bounds.height + loginViewHeightConstraint.constant < loginScrollView.contentSize.height {
 			loginScrollView.flashScrollIndicators()
 		}
+		return view
 	}
 
 	// MARK: - Navigation

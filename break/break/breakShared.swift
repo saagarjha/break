@@ -71,6 +71,38 @@ extension UIViewController {
 	}
 }
 
+@objc /* sigh */ protocol KeyboardHandler {
+	func keyboardUpdated(to keyboardEndFrame: CGRect) -> UIView
+}
+
+extension KeyboardHandler {
+	func setupKeyboardHandling(withAction selector: Selector) {
+		NotificationCenter.default.addObserver(self, selector: selector, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: selector, name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
+	}
+}
+
+extension KeyboardHandler where Self: UIViewController {
+	func setupDefaultKeyboardHandler() {
+		let handler = Selector(("handleKeyboardUpdate:"))
+		let implementation = imp_implementationWithBlock({ (self: UIViewController & KeyboardHandler, notification: Notification) in
+			guard let userInfo = notification.userInfo,
+				let animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+				let keyboardEndFrame = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue).map({ self.view.convert($0, from: self.view.window) }),
+				let animationCurve = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue).map(UIView.AnimationOptions.init(rawValue:)),
+				keyboardEndFrame != .zero else {
+					return
+			}
+			let dirtyRootView = self.keyboardUpdated(to: keyboardEndFrame)
+			UIView.animate(withDuration: animationDuration, delay: 0, options: [UIView.AnimationOptions.beginFromCurrentState, animationCurve], animations: {
+					dirtyRootView.layoutIfNeeded()
+				})
+		} as @convention(block) (UIViewController & KeyboardHandler, Notification) -> Void)
+		class_addMethod(type(of: self), handler, implementation, "v@:@")
+		setupKeyboardHandling(withAction: handler)
+	}
+}
+
 @objc protocol Refreshable {
 	func refresh(_ sender: Any)
 }
