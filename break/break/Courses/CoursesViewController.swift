@@ -81,7 +81,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 		} else {
 			showHideBarButtonItem.image = #imageLiteral(resourceName: "ShowBarButtonIcon")
 		}
-		Preferences.hideGrades = !Preferences.hideGrades
+		Preferences.hideGrades.toggle()
 		updateSearchResults(for: searchController)
 	}
 
@@ -127,7 +127,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		if filter != "" {
+		if !filter.isEmpty {
 			filteredCourses.removeAll()
 			filteredCourses = courses.filter { course in
 				return course.courseName.lowercased().contains(filter) || course.teacherName.lowercased().contains(filter)
@@ -135,9 +135,7 @@ class CoursesViewController: UITableViewController, Refreshable, UISearchResults
 		} else {
 			filteredCourses = courses
 		}
-		DispatchQueue.main.async {
-			self.tableView.reloadData()
-		}
+		tableView.reloadData()
 	}
 
 	// MARK: - Navigation

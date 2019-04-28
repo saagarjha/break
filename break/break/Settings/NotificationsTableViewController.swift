@@ -93,13 +93,13 @@ class NotificationsTableViewController: UITableViewController {
 		tableView.deselectRow(at: indexPath, animated: true)
 		switch indexPath.row {
 		case breakTabIndices.courses.rawValue:
-			Preferences.areCoursesNotificationsAllowed = !Preferences.areCoursesNotificationsAllowed
+			Preferences.areCoursesNotificationsAllowed.toggle()
 		case breakTabIndices.assignments.rawValue:
-			Preferences.areAssignmentsNotificationsAllowed = !Preferences.areAssignmentsNotificationsAllowed
+			Preferences.areAssignmentsNotificationsAllowed.toggle()
 		case breakTabIndices.loopMail.rawValue:
-			Preferences.areLoopMailNotificationsAllowed = !Preferences.areLoopMailNotificationsAllowed
+			Preferences.areLoopMailNotificationsAllowed.toggle()
 		case breakTabIndices.news.rawValue:
-			Preferences.areNewsNotificationsAllowed = !Preferences.areNewsNotificationsAllowed
+			Preferences.areNewsNotificationsAllowed.toggle()
 		default:
 			assertionFailure("Invalid notification index")
 		}

@@ -126,9 +126,9 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 					return (title: category.name, subtitle: scoreDifferenceString, comparisonResult: category.comparisonResult)
 				}
 			}
-			categoryColors = Dictionary(zip(0..., header.headers.map {
+			categoryColors = Dictionary(header.headers.map {
 				$0.title
-			}).map { index, category in
+			}.enumerated().map { index, category in
 					(category, UIColor(index: index, offset: .categoryOffset))
 				}) { first, second in
 				first
@@ -374,7 +374,7 @@ class ProgressReportViewController: UITableViewController, UISearchResultsUpdati
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		if filter != "" {
+		if !filter.isEmpty {
 			filteredGrades.removeAll()
 			filteredGrades = grades.filter { grade in
 				return grade.title.lowercased().contains(filter) || grade.categoryName.lowercased().contains(filter)

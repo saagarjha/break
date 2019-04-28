@@ -114,7 +114,7 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		if filter != "" {
+		if !filter.isEmpty {
 			filteredLoopMail.removeAll()
 			filteredLoopMail = loopMail.filter { loopMail in
 				return loopMail.subject.lowercased().contains(filter) || loopMail.sender.name.lowercased().contains(filter)
@@ -122,9 +122,7 @@ class LoopMailViewController: UITableViewController, Refreshable, UISearchResult
 		} else {
 			filteredLoopMail = loopMail
 		}
-		DispatchQueue.main.async {
-			self.tableView.reloadData()
-		}
+		tableView.reloadData()
 	}
 
 	// MARK: - Navigation

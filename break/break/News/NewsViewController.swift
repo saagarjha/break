@@ -99,7 +99,7 @@ class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpd
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		if filter != "" {
+		if !filter.isEmpty {
 			filteredNews.removeAll()
 			filteredNews = news.filter { news in
 				return news.title.lowercased().contains(filter) || news.authorName.lowercased().contains(filter)
@@ -107,9 +107,7 @@ class NewsViewController: UITableViewController, Refreshable, UISearchResultsUpd
 		} else {
 			filteredNews = news
 		}
-		DispatchQueue.main.async {
-			self.tableView.reloadData()
-		}
+		self.tableView.reloadData()
 	}
 
 	// MARK: - Navigation

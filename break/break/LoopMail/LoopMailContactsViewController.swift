@@ -100,7 +100,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		if filter != "" {
+		if !filter.isEmpty {
 			schoolLoop.getLoopMailContacts(withQuery: filter) { contacts, error in
 				guard error == .noError else {
 					return
@@ -117,9 +117,7 @@ class LoopMailContactsViewController: UIViewController, UITableViewDataSource, U
 			}
 		} else {
 			contacts.removeAll()
-			DispatchQueue.main.async {
-				self.contactsTableView.reloadData()
-			}
+			contactsTableView.reloadData()
 		}
 	}
 

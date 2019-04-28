@@ -21,7 +21,7 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 	var schoolLoop: SchoolLoop!
 	var assignments = [Date: [SchoolLoopAssignment]]() {
 		didSet {
-			courseColors = Dictionary(zip(0..., `self`.schoolLoop.courses).map { index, course in
+			courseColors = Dictionary(schoolLoop.courses.enumerated().map { index, course in
 					(course.courseName, UIColor(index: index, offset: .courseOffset))
 				}) { first, second in
 				first
@@ -127,10 +127,8 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 				return
 			}
 			(`self`.filteredAssignments[`self`.filteredAssignmentDueDates[indexPath.section]]?[indexPath.row]).flatMap { assignment in
-				assignment.isCompleted = !assignment.isCompleted
-				DispatchQueue.main.async {
-					tableView.reloadData()
-				}
+				assignment.isCompleted.toggle()
+				`self`.updateSearchResults(for: `self`.searchController)
 			}
 		}
 		completeAction.backgroundColor = view.tintColor
@@ -139,13 +137,11 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 
 	func updateSearchResults(for searchController: UISearchController) {
 		let filter = searchController.searchBar.text?.lowercased() ?? ""
-		if filter != "" {
+		if !filter.isEmpty {
 			filteredAssignments.removeAll()
 			for assignment in Array(assignments.values).flatMap({ $0 }) {
 				if assignment.title.lowercased().contains(filter) || assignment.courseName.lowercased().contains(filter) {
-					var assignments = filteredAssignments[assignment.dueDate] ?? []
-					assignments.append(assignment)
-					filteredAssignments[assignment.dueDate] = assignments
+					filteredAssignments[assignment.dueDate, default: []].append(assignment)
 				}
 			}
 		} else {
@@ -154,9 +150,7 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 		filteredAssignmentDueDates = Array(filteredAssignments.keys).sorted {
 			$0.compare($1) == .orderedAscending
 		}
-		DispatchQueue.main.async {
-			self.tableView.reloadData()
-		}
+		tableView.reloadData()
 	}
 
 	// MARK: - Navigation

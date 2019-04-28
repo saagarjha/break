@@ -149,7 +149,7 @@ enum SchoolLoopConstants {
 	/// - Returns: A URL to the School Loop LoopMail send endpoint with the
 	///   specified domain name
 	static func loopMailSendURL(domainName: String) -> URL {
-		return URL(string: "https://\(domainName)/mapi/mail_messages".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+		return URL(string: "https://\(domainName)/mapi/mail_messages")!
 	}
 
 	/// Creates a URL to the School Loop news endpoint with the specified domain
