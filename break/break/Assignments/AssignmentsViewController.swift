@@ -110,8 +110,8 @@ class AssignmentsViewController: UITableViewController, Refreshable, UISearchRes
 				cell.titleLabel.attributedText = titleText
 				cell.courseNameLabel.attributedText = courseNameText
 			} else {
-				cell.titleLabel.text = assignment.title
-				cell.courseNameLabel.text = assignment.courseName
+				cell.titleLabel.attributedText = NSAttributedString(string: assignment.title)
+				cell.courseNameLabel.attributedText = NSAttributedString(string: assignment.courseName)
 			}
 		}
 		return cell
