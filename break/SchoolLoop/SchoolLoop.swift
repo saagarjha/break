@@ -715,7 +715,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///     any errors that occurred during the send.
 	public func sendLoopMail(with composedLoopMail: SchoolLoopComposedLoopMail, completion: ((_ error: SchoolLoopError) -> Void)?) {
 		let url = SchoolLoopConstants.loopMailSendURL(domainName: school.domainName)
-		var request = hashedAuthenticatedRequest(url: url)
+		var request = authenticatedRequest(url: url, httpMethod: "POST")
 		modify(&request, forSendingUsing: composedLoopMail)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
@@ -809,7 +809,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///     any errors that occurred during the fetch
 	public func getLocker(withPath path: String, completion: ((_ error: SchoolLoopError) -> Void)?) {
 		let url = SchoolLoopConstants.lockerURL(path: path, domainName: school.domainName, username: account.username)
-		let request = authenticatedRequest(url: url, httpMethod: "PROPFIND")
+		let request = authenticatedRequest(url: url, httpMethod: "PROPFIND", useRealPassword: true)
 		let session = URLSession.shared
 		session.dataTask(with: request) { (data, response, error) in
 			let httpResponse = response as? HTTPURLResponse
@@ -841,27 +841,10 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///   - url: The URL to used for creation of the request
 	///   - httpMethod: The HTTP method used for the creation of the request
 	/// - Returns: An authenticated request with the current user's credentials
-	private func authenticatedRequest(url: URL, httpMethod: String = "GET") -> URLRequest {
+	private func authenticatedRequest(url: URL, httpMethod: String = "GET", useRealPassword: Bool = false) -> URLRequest {
 		let request = NSMutableURLRequest(url: url)
 		request.httpMethod = httpMethod
-		authenticate(request)
-		return request as URLRequest
-	}
-
-	/// Creates an hashed, authenticated request with the current user's
-	/// credentials, suitable for interaction with School Loop's POST API.
-	///
-	/// - Parameters:
-	///   - url: The URL to used for creation of the request
-	///   - httpMethod: The HTTP method used for the creation of the request
-	/// - Returns: An hashed, authenticated request with the current user's
-	///   credentials
-	private func hashedAuthenticatedRequest(url: URL, httpMethod: String = "POST") -> URLRequest {
-		let request = NSMutableURLRequest(url: url)
-		request.httpMethod = httpMethod
-		authenticate(request)
-		request.addValue("true", forHTTPHeaderField: "SL-HASH")
-		request.addValue(SchoolLoopConstants.devToken, forHTTPHeaderField: "SL-UUID")
+		authenticate(request, useRealPassword: useRealPassword)
 		return request as URLRequest
 	}
 
@@ -871,9 +854,13 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///
 	/// - Parameters:
 	///   - request: The request to add authentication to
-	private func authenticate(_ request: NSMutableURLRequest) {
-		let base64String = Data("\(account.username):\(account.password)".utf8).base64EncodedString()
+	private func authenticate(_ request: NSMutableURLRequest, useRealPassword: Bool) {
+		let base64String = Data("\(account.username):\(useRealPassword ? account.password : account.hashedPassword)".utf8).base64EncodedString()
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
+		if !useRealPassword {
+			request.addValue("true", forHTTPHeaderField: "SL-HASH")
+			request.addValue(SchoolLoopConstants.devToken, forHTTPHeaderField: "SL-UUID")
+		}
 	}
 
 	/// Modifies a request for sending based on the specified composed LoopMail.
@@ -896,7 +883,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	///     request
 	/// - Returns: A request for the specified locker item
 	private func request(lockerItemPath path: String) -> URLRequest {
-		return authenticatedRequest(url: SchoolLoopConstants.lockerURL(path: path, domainName: school.domainName, username: account.username))
+		return authenticatedRequest(url: SchoolLoopConstants.lockerURL(path: path, domainName: school.domainName, username: account.username), useRealPassword: true)
 	}
 
 	// MARK: - Lookup methods
