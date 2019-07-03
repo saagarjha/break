@@ -63,7 +63,7 @@ enum SchoolLoopConstants {
 	/// - Returns: A URL to the School Loop login endpoint with the specified
 	///   domain name
 	static func loginURL(domainName: String) -> URL {
-		return URL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+		return URL(string: "https://\(domainName)/mapi/login?version=\(version)&devToken=\(SchoolLoopConstants.devToken)&devOS=\(SchoolLoopConstants.devOS)&year=\(SchoolLoopConstants.year)&uuid=\(devToken)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 	}
 
 	/// Creates a URL to the School Loop course endpoint with the specified
