@@ -857,7 +857,7 @@ public class SchoolLoop: NSObject, NSSecureCoding {
 	private func authenticate(_ request: NSMutableURLRequest, useRealPassword: Bool) {
 		let base64String = Data("\(account.username):\(useRealPassword ? account.password : account.hashedPassword)".utf8).base64EncodedString()
 		request.addValue("Basic \(base64String)", forHTTPHeaderField: "Authorization")
-		if (!useRealPassword) {
+		if !useRealPassword {
 			request.addValue("true", forHTTPHeaderField: "SL-HASH")
 			request.addValue(SchoolLoopConstants.devToken, forHTTPHeaderField: "SL-UUID")
 		}
