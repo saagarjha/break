@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1220"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -55,8 +55,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -66,8 +64,8 @@
             ReferencedContainer = "container:break.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -81,7 +79,7 @@
       allowLocationSimulation = "YES">
       <RemoteRunnable
          runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.carousel"
+         BundleIdentifier = "com.apple.Carousel"
          RemotePath = "/break">
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -91,17 +89,6 @@
             ReferencedContainer = "container:break.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4906AB781CCDBFB800610448"
-            BuildableName = "break-watchOS.app"
-            BlueprintName = "break-watchOS"
-            ReferencedContainer = "container:break.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -111,7 +98,7 @@
       debugDocumentVersioning = "YES">
       <RemoteRunnable
          runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.carousel"
+         BundleIdentifier = "com.apple.Carousel"
          RemotePath = "/break">
          <BuildableReference
             BuildableIdentifier = "primary"
