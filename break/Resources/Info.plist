@@ -24,6 +24,11 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>You'll need to enable this if you want to unlock break using your face.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
